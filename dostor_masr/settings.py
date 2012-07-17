@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Django settings for dostor_masr project.
 
 FACEBOOK_APP_ID = '337841982964299'
