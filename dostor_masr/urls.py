@@ -5,9 +5,9 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'dostor_masr.views.home', name='home'),
-    # url(r'^dostor_masr/', include('dostor_masr.foo.urls')),
+
+    # Uncomment the next line to enable the admin:
+    url(r'^admin/', include(admin.site.urls)),
     
     #Home  Tags index
     url(r'^$', 'dostor.views.index'),
@@ -17,7 +17,4 @@ urlpatterns = patterns('',
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
 )
