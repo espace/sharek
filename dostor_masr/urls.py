@@ -7,13 +7,15 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     #Facebook
-    url(r'facebook/login', 'app.facebook.views.login'),
-    url(r'facebook/logout', 'app.facebook.views.logout'),
-    url(r'facebook/welcome/', 'app.facebook.views.welcome'),
+    url(r'facebook/login', 'dostor.facebook.views.login'),
+    url(r'facebook/logout', 'dostor.facebook.views.logout'),
+    url(r'facebook/welcome/', 'dostor.facebook.views.welcome'),
     
     #Home  Tags index
     url(r'^$', 'dostor.views.index'),
     
+    url(r'^admin/', include(admin.site.urls)),
+
     url(r'^(?P<tag_slug>[-\w]+)/$', 'dostor.views.tag_detail'),
 
 
@@ -21,5 +23,5 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-    url(r'^admin/', include(admin.site.urls)),
+    
 )
