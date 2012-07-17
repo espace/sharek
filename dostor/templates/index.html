@@ -1,0 +1,8 @@
+{% load replace %} 
+<ul>
+{% for tag in tags %}
+  <li>
+      {{tag.name}}<a href="{{tag.get_absolute_url}}" class="nailthumb-container  square" ><img alt="" src="{{STATIC_URL}}{{tag.photo|replace:"dostor/static/, "}}"></a>
+  </li>
+{% endfor %}
+</ul>
