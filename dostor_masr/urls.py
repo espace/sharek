@@ -5,9 +5,11 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'dostor_masr.views.home', name='home'),
-    # url(r'^dostor_masr/', include('dostor_masr.foo.urls')),
+
+    #Facebook
+    url(r'facebook/login', 'app.facebook.views.login'),
+    url(r'facebook/logout', 'app.facebook.views.logout'),
+    url(r'facebook/welcome/', 'app.facebook.views.welcome'),
     
     #Home  Tags index
     url(r'^$', 'dostor.views.index'),

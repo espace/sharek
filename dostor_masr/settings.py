@@ -1,5 +1,14 @@
 # Django settings for dostor_masr project.
 
+FACEBOOK_APP_ID = '337841982964299'
+FACEBOOK_API_KEY = ''
+FACEBOOK_API_SECRET = 'a21b5514d63bb2969b078e31273314de'
+FACEBOOK_REDIRECT_URI = 'http://localhost:8080/facebook/login'
+
+AUTHENTICATION_BACKENDS = (
+    'app.facebook.backends.FacebookBackend',
+)
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
