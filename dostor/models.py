@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+from datetime import datetime
 from markitup.fields import MarkupField
 from django.core import exceptions
 
@@ -39,4 +41,17 @@ class Article(models.Model):
         return "/%s/%s/" % (self.tag.slug ,self.slug)
 
     class Meta:
-       ordering = ["name"]       
+       ordering = ["name"] 
+class Feedback(models.Model):
+    article = models.ForeignKey(Article)
+    name = models.CharField(max_length=200)
+    email = models.SlugField(default='')
+    suggestion = MarkupField(default='')
+    date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc))
+    order = models.IntegerField(default=0)
+
+class Rating(models.Model):
+    article = models.ForeignKey(Article)
+    modification = models.ForeignKey(Feedback)
+    ip = models.CharField(max_length=200)
+    vote = models.BooleanField()
