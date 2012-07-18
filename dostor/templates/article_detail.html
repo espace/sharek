@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% load replace %} 
+{% block title %}{{article.name}}{% endblock %}
+
+{% block content %}
+<div id="sub_container">
+  <div id="article_detail">
+    disc:{{article.summery}}
+
+    <div class="comment-block comment-entry ">
+      <fieldset>
+        <legend>أضف تعديل </legend>
+         <div class="control-group">
+              <label for="textarea" class="control-label">التعديل</label>
+              <div class="controls">
+                <textarea id="suggestion" class="input-xlarge" id="textarea" rows="3" name="suggestion"></textarea>
+              </div>
+         </div>
+          <div class="form-actions">
+              <input class="btn btn-primary" type="submit" name="submit" id="modify" value="أضف الآن !">
+          </div>
+      </fieldset>    
+    </div>
+
+
+  </div>
+</div>
+{% endblock %}

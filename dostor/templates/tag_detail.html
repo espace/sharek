@@ -1,7 +1,29 @@
-<ul>
-{% for article in articles %}
-  <li>
-      {{article.name}}
-  </li>
-{% endfor %}
-</ul>
+{% extends 'base.html' %}
+
+{% load replace %} 
+{% block title %}{{tag.name}}{% endblock %}
+
+{% block content %}
+
+<div id="sub_container">
+  <div id="tag_detail">
+    {% for article in articles %}
+        <a class="article" rel="{{tag.slug}}/#{{article.slug}}" href="/{{tag.slug}}{{article.get_absolute_url}}" >{{article.name}}</a>
+    {% endfor %}
+
+    <script type="text/javascript">
+     $(document).ready(function() {
+        $('#tag_detail a').ajaxify({
+            target:'#sub_container',
+            loadHash:'attr:rel',
+            tagToload: '#article_detail'
+        });
+     });
+    </script>
+  </div>
+</div>
+
+
+
+{% endblock %}
+

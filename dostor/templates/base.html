@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery-1.2.6.min.js" ></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery.history.js" ></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery.ajaxify.js" ></script>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>دستور مصر :: {% block title %}{% endblock %}</title>
+
+    <style type="text/css">
+      a.up { color: red; }
+    </style>
+
+  </head>
+
+  <body>
+    header
+    {% include "side_bar.html" %} 
+    after sidebar 
+    <div class="container content">
+        {% block content %}{% endblock %}
+    </div><!-- content -->
+    footer
+  </body>
+</html>

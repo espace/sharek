@@ -32,7 +32,7 @@ class Article(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return "/%s/%s/" % (self.tag.slug ,self.slug)
+        return "/%s/" % (self.slug)
 
     class Meta:
        ordering = ["name"]       

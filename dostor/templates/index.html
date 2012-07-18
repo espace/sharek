@@ -1,8 +1,12 @@
-{% load replace %} 
-<ul>
-{% for tag in tags %}
-  <li>
-      <a href="{{tag.get_absolute_url}}" class="nailthumb-container  square" >{{tag.name}}<img alt="" src="{{STATIC_URL}}{{tag.photo|replace:"dostor/static/, "}}"></a>
-  </li>
-{% endfor %}
-</ul>
+{% extends 'base.html' %}
+  {% load replace %} 
+
+
+  {% block title %}الصفحة الرئيسية{% endblock %}
+
+  {% block content %}
+
+<div id="sub_container"></div>
+
+
+{% endblock %}
