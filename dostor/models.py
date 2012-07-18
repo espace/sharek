@@ -1,5 +1,6 @@
 from django.db import models
 from markitup.fields import MarkupField
+from django.core import exceptions
 
 class Tag(models.Model):
     name = models.CharField(max_length=30)
@@ -25,6 +26,11 @@ class Article(models.Model):
     name = models.CharField(max_length=40)
     slug 	 = models.SlugField(max_length=40, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
+
+    def clean(self):
+        if len(self.name) >= 40:
+            raise exceptions.ValidationError('Too many characters ...')
+        return self.name
     
     def __unicode__(self):
         return self.name
