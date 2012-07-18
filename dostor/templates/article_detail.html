@@ -4,12 +4,12 @@
 {% block title %}{{article.name}}{% endblock %}
 
 {% block content %}
-<div id="sub_container">
-  <div id="article_detail">
-    disc:{{article.summery}}
 
+<div id="article_detail">
+    disc:{{article.summery}}
+    
     <div class="comment-block comment-entry ">
-      <fieldset>
+    <fieldset>
         <legend>أضف تعديل </legend>
          <div class="control-group">
               <label for="textarea" class="control-label">التعديل</label>
@@ -20,10 +20,9 @@
           <div class="form-actions">
               <input class="btn btn-primary" type="submit" name="submit" id="modify" value="أضف الآن !">
           </div>
-      </fieldset>    
-    </div>
+    </fieldset>    
+	</div>
 
-
-  </div>
 </div>
+  
 {% endblock %}

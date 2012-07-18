@@ -1,19 +1,5 @@
-<div id="tags">
+<div class="box" id="tags">
 {% for tag_list in tags %}
-  <a id="{{tag_list.slug}}" class="tags {% ifequal tag_list.id tag.id %}up{% endifequal %}" rel="{{tag_list.slug}}" href="{{tag_list.get_absolute_url}}" >{{tag_list.name}}</a>
+  <a id="{{tag_list.slug}}" class="tags {% ifequal tag_list.id tag.id %}up{% endifequal %}" rel="{{tag_list.slug}}" href="{{tag_list.get_absolute_url}}" >{{tag_list.name}}</a><br />
 {% endfor %}
 </div>
-
- <script type="text/javascript">
- $(document).ready(function() {
-    $('#tags a').ajaxify({
-        target:'#sub_container',
-        loadHash:'attr:rel',
-        tagToload: '#tag_detail'
-    });
-    $("#tags a").click(function(){
-      $(".tags").removeClass('up');
-      $(this).addClass('up');
-    });
- });
- </script>

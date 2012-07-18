@@ -10,17 +10,38 @@
 
     <style type="text/css">
       a.up { color: red; }
+	  div.box { display: block; border: 1px solid red; padding: 20px 40px; }
     </style>
 
   </head>
 
   <body>
-    header
+  
+    <div class="box">Header</div>
+    
     {% include "side_bar.html" %} 
-    after sidebar 
+    
     <div class="container content">
+    	<div class="box" id="sub_container"></div>
         {% block content %}{% endblock %}
-    </div><!-- content -->
-    footer
+    </div>
+    
+    <div class="box" >footer</div>
+
+	<script type="text/javascript">
+    $(document).ready(function() {
+		$('#tags a').ajaxify({
+			target:'#sub_container',
+			loadHash:'attr:rel',
+			tagToload: '#tag_detail'
+		});
+		
+		$("#tags a").click(function(){
+		  $(".tags").removeClass('up');
+		  $(this).addClass('up');
+		});
+    });
+    </script>
+    
   </body>
 </html>
