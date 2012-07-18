@@ -17,7 +17,15 @@
 
   <body>
   
-    <div class="box">Header</div>
+    <div class="box">
+    	{% if error %}
+        	<p>Error</p>
+        {% else %}
+        <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email&display=popup">
+          <img src="http://developers.facebook.com/images/devsite/login-button.png"/>
+        </a>
+        {% endif %}
+    </div>
     
     {% include "side_bar.html" %} 
     
