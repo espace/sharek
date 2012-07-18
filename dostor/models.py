@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from datetime import datetime
 from markitup.fields import MarkupField
+from django.core import exceptions
 
 class Tag(models.Model):
     name = models.CharField(max_length=30)
@@ -27,6 +28,11 @@ class Article(models.Model):
     name = models.CharField(max_length=40)
     slug 	 = models.SlugField(max_length=40, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
+
+    def clean(self):
+        if len(self.name) >= 40:
+            raise exceptions.ValidationError('Too many characters ...')
+        return self.name
     
     def __unicode__(self):
         return self.name
@@ -35,8 +41,7 @@ class Article(models.Model):
         return "/%s/" % (self.slug)
 
     class Meta:
-       ordering = ["name"]       
-
+       ordering = ["name"] 
 class Feedback(models.Model):
     article = models.ForeignKey(Article)
     name = models.CharField(max_length=200)
@@ -50,3 +55,4 @@ class Rating(models.Model):
     modification = models.ForeignKey(Feedback)
     ip = models.CharField(max_length=200)
     vote = models.BooleanField()
+
