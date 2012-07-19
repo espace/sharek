@@ -7,7 +7,9 @@
 <div id="sub_container">
   <div id="article_detail">
     disc:{{article.summery}}
-
+   
+    {% if user %}
+    user:{{ user}}
     <div class="comment-block comment-entry ">
       <fieldset>
         <legend>أضف تعديل </legend>
@@ -22,8 +24,33 @@
           </div>
       </fieldset>    
     </div>
+    {% endif %}
 
+
+   <script type="text/javascript">
+    $(document).ready(function() {
+      $("#modify").click(function(){
+        $.ajax({
+              type:"POST",
+              url :"/modify/",
+              data:{
+                  'article':"{{article.id}}",
+                  'email': "{{user.email}}",
+                  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
+                  'suggestion': $("#suggestion").val()},
+              dataType:"json",
+              error:function(data){},
+              success:function(data){
+              $("#suggestion").val("");
+              $(".comment-block.comment-entry").after($("#modification_temp").tmpl({"name": data.name, "suggestion": data.suggestion, "id":data.id}));
+              },
+          });
+      });
+    });
+   </script>
 
   </div>
+</div>
+
 </div>
 {% endblock %}
