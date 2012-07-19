@@ -131,6 +131,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'dostor',
+    'dostor.facebook',
     'django.contrib.admin',
     'markitup',
     'django_evolution',
