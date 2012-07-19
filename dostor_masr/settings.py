@@ -5,9 +5,10 @@ FACEBOOK_API_KEY = ''
 FACEBOOK_API_SECRET = 'a21b5514d63bb2969b078e31273314de'
 FACEBOOK_REDIRECT_URI = 'http://localhost:8080/facebook/login'
 
-# AUTHENTICATION_BACKENDS = (
-#     'dostor.facebook.backends.FacebookBackend',
-# )
+AUTHENTICATION_BACKENDS = (
+	'django.contrib.auth.backends.ModelBackend',
+    'dostor.facebook.backends.FacebookBackend',
+)
 
 AJAXIFY = False
 
