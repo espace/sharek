@@ -29,6 +29,7 @@ def tag_detail(request, tag_slug):
     tags = Tag.objects.all
     tag = get_object_or_404( Tag, slug=tag_slug )
     articles = tag.article_set.all()
+
     template_context = {'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('tag.html',template_context ,RequestContext(request))
 

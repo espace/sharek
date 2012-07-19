@@ -30,6 +30,9 @@ class Article(models.Model):
     slug 	 = models.SlugField(max_length=40, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
 
+    def feedback_count(self):
+        return len(Feedback.objects.filter(article_id = self.id))
+        
     def clean(self):
         if len(self.name) >= 40:
             raise exceptions.ValidationError('Too many characters ...')

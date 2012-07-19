@@ -78,4 +78,4 @@ def login(request):
 def logout(request):
     template_context = {}
     auth.logout(request)
-    return render_to_response('facebook/logout.html', template_context, context_instance=RequestContext(request))
+    return HttpResponseRedirect('/')
