@@ -1,0 +1,436 @@
+@font-face {
+
+    font-family: 'FrutigerBold';
+
+    src: url('../fonts/FrutigerLTArabic-65Bold.ttf');
+
+    src: url('../fonts/FrutigerLTArabic-65Bold.eot?#iefix') format('embedded-opentype'),
+
+    url('../fonts/FrutigerLTArabic-65Bold.woff') format('woff'),
+
+    url('../fonts/FrutigerLTArabic-65Bold.ttf') format('truetype'),
+
+    url('../fonts/FrutigerLTArabic-65Bold.svg#FrutigerLTArabic-65Bold.ttf') format('svg');
+
+    font-weight: normal;
+
+    font-style: normal;
+
+    }
+
+    
+
+    @font-face {
+
+    font-family: 'FrutigerLight';
+
+    src: url('../fonts/frutigerltarabic-45light.eot');
+
+    src: url('../fonts/frutigerltarabic-45light.eot?#iefix') format('embedded-opentype'),
+
+    url('../fonts/frutigerltarabic-45light.woff') format('woff'),
+
+    url('../fonts/frutigerltarabic-45light.ttf') format('truetype'),
+
+    url('../fonts/frutigerltarabic-45light.svg#frutigerltarabic-45light') format('svg');
+
+    font-weight: normal;
+
+    font-style: normal;
+
+    }
+
+
+body {
+    background: url("../images/grid_noise.png") repeat scroll center top #EEEEEE;
+    color: #444444;
+    font-family: Tahoma,Geneva,sans-serif;
+    font-size: 12px;
+    direction: rtl;
+}
+
+
+/*------------   header    ------ */
+.header-wrapper{
+    width: 100%;
+    background: url("../images/header.jpg") repeat-x center top #EEEEEE;
+    height: 128px;
+}
+
+.logo{
+	margin:20px;
+}
+.search {
+	margin:30px 0 0 0 ;
+}
+
+
+
+
+/*------------   Navigation    ------ */
+/*.nav{
+	background: url("../images/menu-slice.png") repeat-x  0 0 ;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 1px 1px #CCCCCC;
+    height: 36px;
+    text-align: center;
+    width: 100%;
+}
+.nav ul{ margin:0;}
+
+.nav li{
+	list-style:none;
+	display: inline;
+    float: right;
+    height: 36px;
+    margin: 0 10px;
+}
+
+.nav li a{
+    color: white;
+    display: block;
+    float: left;
+    font-size: 11px;
+    font-weight: bold;
+    height: 15px;
+    text-decoration: none;
+    padding: 8px 8px;
+}
+
+.nav ul li.active a{
+    background-image: -ms-linear-gradient(top, #555555, #000000);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#555555), to(#000000));
+    background-image: -webkit-linear-gradient(top, #555555, #000000);
+    background-image: -o-linear-gradient(top, #555555, #000000);
+    background-image: linear-gradient(top, #555555, #000000);
+    background-image: -moz-linear-gradient(top, #555555, #000000);
+}
+.nav ul li:hover a{
+    background-image: -ms-linear-gradient(top, #555555, #000000);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#555555), to(#000000));
+    background-image: -webkit-linear-gradient(top, #555555, #000000);
+    background-image: -o-linear-gradient(top, #555555, #000000);
+    background-image: linear-gradient(top, #555555, #000000);
+    background-image: -moz-linear-gradient(top, #555555, #000000);}
+*/
+
+
+/* ------------------sidebar --------------------------- */
+.sidebar .nav li a{
+    height: 60px;
+    text-indent: 40px;
+    padding: 50px 0 0 0 ;
+    font-size: 24px;
+    color: #b8babb !important;
+    font-family: FrutigerBold;
+    -webkit-border-radius:0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
+
+}
+.sidebar .nav li.active a{
+    background: #a11212;
+    color: #fff !important;
+
+}
+
+.sidebar-icon{
+    width: 115px;
+    height: 100px;
+    float: right;
+    margin-right: 10px;
+    margin-top: -50px;
+    background: url("../images/sprite.png") no-repeat;
+}
+.judge{
+    background-position: left 10px ;
+}
+        .sidebar .nav li.active .judge{
+            background-position: right 10px; 
+        }
+.treasury{
+    background-position: left -666px ;
+}
+        .sidebar .nav li.active .treasury{
+            background-position: right -666px; 
+        }
+.security{
+    background-position: left -1003px ;
+}
+        .sidebar .nav li.active .security{
+            background-position: right -1003px ;
+        }
+.identity{
+    background-position: left -325px ;
+}
+        .sidebar .nav li.active .identity{
+            background-position: right -325px ;
+        }
+.freeMedia{
+    background-position: left -1344px ;
+}
+        .sidebar .nav li.active .freeMedia{
+            background-position: right -1344px ;
+        }
+.authorities{
+    background-position: left -1684px ;
+}
+        .sidebar .nav li.active .authorities{
+            background-position: right -1684px ;
+        }
+
+/*------------   dostor-image    ------ */
+.dostor-image{
+    margin-bottom: 20px;
+}
+/*------------   general-info    ------ */
+
+.general-info ul{
+	margin: 0;
+    margin-bottom: 20px;
+}
+
+.general-info ul li{
+	list-style: none;
+	margin: 0 20px 0px 0px;
+    background: url("../images/list.png") no-repeat scroll right 9px transparent;
+    padding-right: 20px;
+
+
+}
+
+/*------------  members    ------ */
+
+
+.members ul{
+	margin: 0;
+}
+.members ul li{
+	list-style: none;
+	margin: 5px 20px 0px 0px;
+    background: url("../images/list.png") no-repeat scroll right 9px transparent;
+    float: right;
+    list-style-type: none;
+    padding-right: 20px;
+
+}
+.member-summary span{
+    display: block;
+    margin-bottom: 5px;
+}
+.member-summary p{
+    margin-top: 20px;
+}
+
+/*------------   subject-title    ------ */
+
+.headtitle,
+.headtitle a,
+.headsubtitle,
+.headsubtitle a{
+	color: #fff;
+    /*display: block;*/
+    font: bold 28px FrutigerBold,"Trebuchet MS",Arial,Helvetica,sans-serif;
+	margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.headsubtitle,
+.headsubtitle a{
+    font: bold 25px FrutigerBold,"Trebuchet MS",Arial,Helvetica,sans-serif;
+}
+
+.headtitle a,
+.headsubtitle a {
+	text-decoration: none;
+}
+.headtitle{
+    background: url("../images/ribbon.png") no-repeat  center top transparent;
+    padding-top: 10px;
+    min-width: 440px;
+    min-height: 80px;
+    text-align: center;
+
+
+}
+/*------------   subject-title    ------ */
+
+.subject-title{
+
+    background-image: -ms-linear-gradient(top, #F7F7F7, #ECECEC);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#F7F7F7), to(#ECECEC));
+    background-image: -webkit-linear-gradient(top, #F7F7F7, #ECECEC);
+    background-image: -o-linear-gradient(top, #F7F7F7, #ECECEC);
+    background-image: linear-gradient(top, #F7F7F7, #ECECEC);
+    background-image: -moz-linear-gradient(top, #F7F7F7, #ECECEC);
+    border: 1px solid #D8D8D8 !important;
+    border-radius: 5px 5px 5px 5px;
+    box-shadow: 0 1px 1px #E7E7E7;
+    font: bold 12px Tahoma,Geneva,sans-serif !important;
+    height: 16px;
+    padding: 10px 15px 10px 0 !important;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+.subject-title a{
+	color: #000;
+
+}
+
+
+/*------------   Topics    ------ */
+
+.topic { 
+    background: #e9e9e9  url("../images/comments-bg.jpg") repeat right top ;
+    margin-bottom: 20px;
+    box-shadow: 0px 3px 1px rgba(0,0,0,0.1);
+    padding: 20px;
+    position: relative;
+    border-top: solid 1px #f2f2f2;
+}
+
+.mada-title{
+    color:#000;
+    font-size: 24px;
+    font-family: FrutigerBold
+}
+.mada-title a{
+    color:#000;
+}
+.comments-number {
+    background: url("../images/small-ribbon.png") no-repeat  right top transparent;
+    color:#fff !important;
+    width: 159px;
+    height: 38px;
+    float: left;
+    font-size: 12px;
+    position: absolute;
+    top: 15px;
+    left: -14px;
+    padding: 5px 0 0 0;
+    text-align: center;
+}
+
+
+/*------------   comment-block    ------ */
+
+.comment-block{   
+    background: #e9e9e9  url("../images/comments-bg.jpg") repeat right top ;
+    margin: 10px 0;
+    box-shadow: 0px 1px 0px rgba(0,0,0,0.1);
+    float: right;
+    padding: 20px;
+    position: relative;
+    border: solid 10px #fcfcfc;
+}
+.comment-block .name{
+   
+    display: inline;
+
+}
+.comment-block .name a{
+    font-size:12px;
+    color:#333 !important;
+}
+.comment-block .on-subject{
+    display: inline;
+    margin-right: 10px;
+}
+.comment-block .on-subject a{
+    font-size:12px;
+}
+.comment-block .date{
+    float:left;
+    position: absolute;
+    border-bottom:20px;
+    left:20px;
+    color:#9d9d9d;
+}
+span.divider{  
+    *width: 100%;
+    width:100%;
+    height: 1px;
+    margin: 8px 1px;
+    *margin: -5px 0 5px;
+    overflow: hidden;
+    background-color: #e5e5e5;
+    border-bottom: 1px solid #ffffff;
+    clear: both;
+    float: right;
+}
+.comment-info{
+    float:right;
+    clear: both;
+    width:100%;
+    margin: 10px 0 15px 0;
+}
+.comment-entry{
+    width:90%;
+
+}
+.comment-entry .form-actions{
+    background: none;
+    border: none;
+}
+
+.comment-entry legend{
+    font: bold 16px FrutigerBold,"Trebuchet MS",Arial,Helvetica,sans-serif;
+
+}
+.comment-count{
+    padding: 10px;
+}
+
+.like-group{
+    float: left;
+    position: absolute;
+    top:10px;
+    left:10px;
+    background: #d9d8d8;
+    color: #000;
+    box-shadow: 0px 1px 0px rgba(255,255,255,1);
+    border-top: solid 1px #cacaca;
+
+}
+.like-group a{
+    padding:5px 10px;
+    float: left;
+    font-weight: bold;
+}
+.like-group a.like{
+    color: #4aad2b;
+}
+.like-group a.dislike{
+    color: #ad2b2b;
+}
+.like-group a:hover{
+    background: #e7e7e7;
+}
+/*------------  chapters    ------ */
+.chapters{margin-top: 20px;}
+.chapters li {
+    list-style-type: none;
+    border-bottom: 1px solid #e5e5e5;
+    box-shadow:0 1px 0 #ffffff;
+    margin: 10px 0;
+}
+.chapters li h1 a{
+    color:#222;
+    font-size:20px;
+}
+.chapters li h1 a:hover{
+    color:#f10000;
+    text-decoration: none;
+}
+.chapters li h1 a.comments-number{
+    font-family: Tahoma,Geneva,sans-serif;
+    font-size:11px;
+    padding-top: 20px;
+}
+
+/*--------------------footer-----------------  */
+.footer{
+    background: #030303;
+}
+.footer .copyrights{
+    margin: 20px;
+}

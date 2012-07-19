@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
-  {% load replace %} 
 
+{% block title %}الصفحة الرئيسية{% endblock %}
 
-  {% block title %}الصفحة الرئيسية{% endblock %}
+{% block content %}
 
-  {% block content %}
+<div class="row">
 
-<div id="sub_container"></div>
+    <div class="span4">
+        {% include "sidebar.html" %}
+    </div><!-- span3 -->
 
+    <div class="span8">
+       
+    </div>
+    
+</div><!-- row end -->
 
 {% endblock %}

@@ -1,50 +1,53 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery-1.2.6.min.js" ></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery.history.js" ></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery.ajaxify.js" ></script>
+<head>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>دستور مصر :: {% block title %}{% endblock %}</title>
+  <title>دستور مصر :: {% block title %}{% endblock %}</title>
+  
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet" />
+  <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet" />
+  <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet" />
+  
+  <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery-1.2.6.min.js" ></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery.history.js" ></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery.ajaxify.js" ></script>
+  
+</head>
 
-    <style type="text/css">
-      a.up { color: red; }
-    </style>
-    {% if user %}
-    {{user}}
-      <img src="http://graph.facebook.com/{{ user }}/picture" /><br />
-        {{ user.first_name }} {{ user.last_name }}<br />
-        {{ user.email }}<br />
-      <a id="logout" href="/facebook/logout" >Logout</a>
-    {% else %}  
-      {% if error %}
-        {% if error == 'AUTH_FAILED' %}
-            <p>Authentication failed</p>
-        {% else %}
-          {% if error == 'AUTH_DISABLED' %}
-            <p>Your account is disabled</p>
-          {% else %}
-            {% if error == 'AUTH_DENIED' %}
-            <p>You did not allow access</p>
-            {% endif %}
-          {% endif %}
-        {% endif %}
-      {% else %}
-      <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email&display=popup">
-        <img src="http://developers.facebook.com/images/devsite/login-button.png"/>
-      </a>
-      {% endif %}
-    {% endif %}
-  </head>
+<body>
 
-  <body>
-    header
-    {% include "side_bar.html" %} 
-    after sidebar 
-    <div class="container content">
+    <div class="header-wrapper">	
+        {% include "header.html" %}
+    </div> <!-- header-wrapper  -->
+    
+    <div id="target_container" class="container content">
         {% block content %}{% endblock %}
     </div><!-- content -->
-    footer
-  </body>
+    
+    <div class="container footer">
+        {% include "footer.html" %}
+    </div><!-- footer -->
+    
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('.tag_item a').ajaxify({
+            target:'#ajax-container',
+            tagToload: '#ajax-container',
+			loading_img:"{{ STATIC_URL }}images/loading.gif",
+            loadHash:'attr:rel'
+        });
+        
+        $(".tag_item a").click(function(){
+          $(".tag_item").removeClass('active');
+          $(this).parent().addClass('active');
+		  
+		  $("#headtitle").html($(this).attr("alt"))
+        });
+    });
+    </script>
+
+</body>
 </html>

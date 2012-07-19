@@ -27,7 +27,7 @@ def tag_detail(request, tag_slug):
     tag = get_object_or_404( Tag, slug=tag_slug )
     articles = tag.article_set.all()
     template_context = {'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
-    return render_to_response('tag_detail.html',template_context ,RequestContext(request))
+    return render_to_response('tag.html',template_context ,RequestContext(request))
 
 def article_detail(request, tag_slug, article_slug):
     user = None
@@ -37,7 +37,7 @@ def article_detail(request, tag_slug, article_slug):
     tag = get_object_or_404( Tag, slug=tag_slug )
     article = get_object_or_404( Article, slug=article_slug )
     template_context = {'tags':tags,'tag':tag,'article': article,'user':user,'settings': settings,}
-    return render_to_response('article_detail.html',template_context ,RequestContext(request))
+    return render_to_response('article.html',template_context ,RequestContext(request))
 
 
 def modify(request):
