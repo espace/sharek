@@ -15,13 +15,13 @@
         {% include "sidebar.html" %}
     </div><!-- span3 -->
 
-    <div class="span8">
+    <div id="ajax-container" class="span8">
 
             {% for article in articles %}
             <div class="topic">
                 <h3>
                     <p class="mada-title">
-                        <a href="/{{tag.slug}}{{article.get_absolute_url}}">{{article.name}}</a> <a href="#" class="comments-number pull-left"><i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i>32,210 تعليق</a>
+                        <a href="/{{tag.slug}}{{article.get_absolute_url}}" rel="{{tag.slug}}/{{article.slug}}">{{article.name}}</a> <a href="#" class="comments-number pull-left"><i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i>32,210 تعليق</a>
                     </p>
                 </h3>  
                 <p>{{article.summary|safe|truncatewords_html:35}}</p>
@@ -31,9 +31,9 @@
             <script type="text/javascript">
              $(document).ready(function() {
                 $('.mada-title a').ajaxify({
-                    target:'#target_container',
-                    loadHash:'attr:rel',
-                    tagToload: '#target_container'
+                    target:'#ajax-container',
+                    tagToload: '#ajax-container',
+                    loadHash:'attr:rel'
                 });
              });
             </script>  

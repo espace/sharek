@@ -34,9 +34,9 @@
     <script type="text/javascript">
     $(document).ready(function() {
         $('.tag_item a').ajaxify({
-            target:'#target_container',
-            loadHash:'attr:rel',
-            tagToload: '#target_container'
+            target:'#ajax-container',
+            tagToload: '#ajax-container',
+            loadHash:'attr:rel'
         });
         
         $(".tag_item a").click(function(){
