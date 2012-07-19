@@ -14,6 +14,7 @@ from dostor.facebook.models import FacebookSession
 from dostor_masr import settings
 
 def welcome(request):
+    print request.user
     fb_user = FacebookSession.objects.get(user = request.user)
     # GraphAPI is the main class from facebook_sdp.py
     graph = facebook_sdk.GraphAPI(fb_user.access_token)
@@ -25,7 +26,7 @@ def welcome(request):
     attachment['name'] = 'test name'
     #attachment['link'] = 'link_to_picture'
     attachment['description'] = 'test description'
-    graph.put_wall_post(message, attachment)
+    #graph.put_wall_post(message, attachment)
     #return 0
 
     template_context = {'user':request.user,}
@@ -35,7 +36,7 @@ def login(request):
     error = None
 
     if request.user.is_authenticated():
-        return HttpResponseRedirect('/facebook/welcome/')
+        return HttpResponseRedirect('/')
 
     if request.GET:
         if 'code' in request.GET:
@@ -63,7 +64,7 @@ def login(request):
             if user:
                 if user.is_active:
                     auth.login(request, user)
-                    return HttpResponseRedirect('/facebook/welcome/')
+                    return HttpResponseRedirect(request.path)
                 else:
                     error = 'AUTH_DISABLED'
             else:
