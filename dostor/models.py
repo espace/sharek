@@ -7,9 +7,10 @@ from django.contrib.auth.models import User
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=30, default='')
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
     #photo = models.ImageField(upload_to="dostor/static/photos/", blank=True)
-    #summary = MarkupField(blank=True, default='')
+    summary = MarkupField(blank=True, default='')
 
     def __unicode__(self):
         #return u'%s - %s' % (self.topic.name, self.name)
@@ -46,6 +47,7 @@ class Article(models.Model):
 
     class Meta:
        ordering = ["name"] 
+
 class Feedback(models.Model):
     article = models.ForeignKey(Article)
     name = models.CharField(max_length=200)
