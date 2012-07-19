@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
-            
+
+{% load settings %}
+{% get_setting AJAXIFY as ajaxify %}
+
 {% block title %}{{tag.name}}{% endblock %}
 
 {% block content %}
@@ -28,6 +31,7 @@
             </div><!-- topic end -->
             {% endfor %}
             
+			{% if ajaxify %}
             <script type="text/javascript">
              $(document).ready(function() {
                 $('.mada-title a').ajaxify({
@@ -38,6 +42,7 @@
                 });
              });
             </script>
+            {% endif %}
     </div>
 </div><!-- row end -->
 

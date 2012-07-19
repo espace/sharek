@@ -6,7 +6,7 @@
 
     src: url('../fonts/FrutigerLTArabic-65Bold.eot?#iefix') format('embedded-opentype'),
 
-    url('../fonts/FrutigerLTArabic-65Bold.woff') format('woff'),
+    /*url('../fonts/FrutigerLTArabic-65Bold.woff') format('woff'),*/
 
     url('../fonts/FrutigerLTArabic-65Bold.ttf') format('truetype'),
 
@@ -28,7 +28,7 @@
 
     src: url('../fonts/frutigerltarabic-45light.eot?#iefix') format('embedded-opentype'),
 
-    url('../fonts/frutigerltarabic-45light.woff') format('woff'),
+    /*url('../fonts/frutigerltarabic-45light.woff') format('woff'),*/
 
     url('../fonts/frutigerltarabic-45light.ttf') format('truetype'),
 
