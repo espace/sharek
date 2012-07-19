@@ -1,5 +1,11 @@
-<div class="box" id="tags">
-{% for tag_list in tags %}
-  <a id="{{tag_list.slug}}" class="tags {% ifequal tag_list.id tag.id %}up{% endifequal %}" rel="{{tag_list.slug}}" href="{{tag_list.get_absolute_url}}" >{{tag_list.name}}</a><br />
-{% endfor %}
+<div class="sidebar">
+    <ul class="nav nav-pills nav-stacked">
+    	{% for tag_list in tags %}
+        <li class="tag_item {% ifequal tag_list.id tag.id %}active{% endifequal %}" >
+        	<a id="{{tag_list.slug}}" class="tags" rel="{{tag_list.slug}}" href="{{tag_list.get_absolute_url}}" >
+            	<span class="sidebar-icon {{tag_list.slug}}"></span>{{tag_list.name}}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
 </div>

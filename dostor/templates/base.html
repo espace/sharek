@@ -1,55 +1,78 @@
 <!DOCTYPE HTML>
 <html>
-  <head>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery-1.2.6.min.js" ></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery.history.js" ></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery.ajaxify.js" ></script>
+<head>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>دستور مصر :: {% block title %}{% endblock %}</title>
-
-    <style type="text/css">
-      a.up { color: red; }
-	  div.box { display: block; border: 1px solid red; padding: 20px 40px; }
-    </style>
-
-  </head>
-
-  <body>
+  <title>دستور مصر :: {% block title %}{% endblock %}</title>
   
-    <div class="box">
-    	{% if error %}
-        	<p>Error</p>
-        {% else %}
-        <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email&display=popup">
-          <img src="http://developers.facebook.com/images/devsite/login-button.png"/>
-        </a>
-        {% endif %}
-    </div>
-    
-    {% include "side_bar.html" %} 
-    
-    <div class="container content">
-    	<div class="box" id="sub_container"></div>
-        {% block content %}{% endblock %}
-    </div>
-    
-    <div class="box" >footer</div>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet" />
+  <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet" />
+  <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet" />
+  
+  <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery-1.2.6.min.js" ></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery.history.js" ></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery.ajaxify.js" ></script>
+  
+</head>
 
-	<script type="text/javascript">
-    $(document).ready(function() {
-		$('#tags a').ajaxify({
-			target:'#sub_container',
-			loadHash:'attr:rel',
-			tagToload: '#tag_detail'
-		});
-		
-		$("#tags a").click(function(){
-		  $(".tags").removeClass('up');
-		  $(this).addClass('up');
-		});
-    });
-    </script>
-    
-  </body>
+<body>
+
+<div class="header-wrapper">	
+	<div class="container header">
+		<div class="row">
+
+				<div class="span4">
+					<div class="pull-right logo">
+						<img src="{{ STATIC_URL }}images/logo.png" alt="دستور مصر">
+					</div>
+				</div><!-- logo end -->
+				
+				<div class=" pull-left">
+					<div class="search form-search">
+						<div id="top_menu_login">
+	               			<a href="https://www.facebook.com/dialog/oauth?client_id=190287601052706&amp;redirect_uri=http%3A%2F%2Fegynda.com%2Fevent%2F3sgaaqtj97&amp;scope=user_birthday%2Cuser_events%2Cemail%2Cpublish_stream%2Crsvp_event&amp;state=b8490d1c6a063c8711ae4577dffce44b">
+	                    		<img width="150" src="http://egynda.com/resource/images/fb_sign.png">
+	                		</a>
+	            		</div>
+					</div>
+				</div><!-- search -->
+
+		</div><!-- row end -->
+	</div><!-- header -->
+</div> <!-- header-wrapper  -->
+
+
+<div class="container content">
+	{% block content %}{% endblock %}
+</div><!-- content -->
+
+<div class="container footer">
+	<div class="row">
+			<div class="span12">
+				<div class="pull-right logo">
+					<img src="images/footer-logo.png" alt="دستور مصر">
+				</div>
+				<p class="copyrights pull-left">جميع الحقوق محفوظة</p>
+			</div><!--  end -->
+	</div><!-- row end -->
+</div><!-- footer -->
+
+<script type="text/javascript">
+$(document).ready(function() {
+	$('.tag_item a').ajaxify({
+		target:'#sub_container',
+		loadHash:'attr:rel',
+		tagToload: '#tag_detail'
+	});
+	
+	$(".tag_item a").click(function(){
+	  $(".tag_item").removeClass('active');
+	  $(this).parent().addClass('active');
+	});
+});
+</script>
+
+</body>
 </html>
