@@ -6,7 +6,7 @@
 
 <div class="row">
     <div class="span12 ">
-        <h1 class="headtitle">{{tag.name}}</h1>
+        <h1 id="headtitle" class="headtitle">{{tag.name}}</h1>
     </div>
 </div><!-- row -end -->
 <div class="row">
@@ -33,6 +33,7 @@
                 $('.mada-title a').ajaxify({
                     target:'#ajax-container',
                     tagToload: '#ajax-container',
+					loading_img:"{{ STATIC_URL }}images/loading.gif",
                     loadHash:'attr:rel'
                 });
              });

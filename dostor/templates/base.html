@@ -36,12 +36,15 @@
         $('.tag_item a').ajaxify({
             target:'#ajax-container',
             tagToload: '#ajax-container',
+			loading_img:"{{ STATIC_URL }}images/loading.gif",
             loadHash:'attr:rel'
         });
         
         $(".tag_item a").click(function(){
           $(".tag_item").removeClass('active');
           $(this).parent().addClass('active');
+		  
+		  $("#headtitle").html($(this).attr("alt"))
         });
     });
     </script>
