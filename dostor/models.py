@@ -5,10 +5,10 @@ from markitup.fields import MarkupField
 from django.core import exceptions
 
 class Tag(models.Model):
-    name = models.CharField(max_length=30)
-    slug = models.SlugField(max_length=30, unique=True, help_text="created from name")
-    photo = models.ImageField(upload_to="dostor/static/photos/", blank=True)
-    summary = MarkupField(blank=True, default='')
+    name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
+    #photo = models.ImageField(upload_to="dostor/static/photos/", blank=True)
+    #summary = MarkupField(blank=True, default='')
 
     def __unicode__(self):
         #return u'%s - %s' % (self.topic.name, self.name)
