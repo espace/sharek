@@ -15,7 +15,8 @@ urlpatterns = patterns('',
     url(r'^$', 'dostor.views.index'),
     
     url(r'^admin/', include(admin.site.urls)),
-
+    
+    url(r'^modify/', 'dostor.views.modify'),
     #Tag detail URL
     url(r'^(?P<tag_slug>[-\w]+)/$', 'dostor.views.tag_detail'),
     #Article detail URL

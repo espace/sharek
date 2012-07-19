@@ -3,6 +3,7 @@ from django.utils import timezone
 from datetime import datetime
 from markitup.fields import MarkupField
 from django.core import exceptions
+from django.contrib.auth.models import User
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
@@ -49,10 +50,10 @@ class Feedback(models.Model):
     suggestion = MarkupField(default='')
     date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc))
     order = models.IntegerField(default=0)
+    user = models.CharField(max_length=200,default='')
 
 class Rating(models.Model):
     article = models.ForeignKey(Article)
     modification = models.ForeignKey(Feedback)
     ip = models.CharField(max_length=200)
     vote = models.BooleanField()
-
