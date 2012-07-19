@@ -6,13 +6,11 @@
 
 <div class="row">
 
-    <div class="span4">
-        {% include "sidebar.html" %}
-    </div><!-- span3 -->
-
-    <div class="span8">
-       
-    </div>
+<p>
+{% for tag_list in tags %}
+    <p><a href="{{tag_list.get_absolute_url}}" >{{tag_list.name}}</a></p>
+{% endfor %}
+</p>
     
 </div><!-- row end -->
 

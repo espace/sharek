@@ -3,7 +3,6 @@ from dostor.models import Article
 
 from django.contrib import admin
 
-
 class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
     list_display = ('name',)
@@ -13,6 +12,7 @@ class ArticleAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
     list_display = ('name',)
+
     
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Tag, TagAdmin)
