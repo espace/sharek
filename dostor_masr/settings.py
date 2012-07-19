@@ -10,7 +10,7 @@ AUTHENTICATION_BACKENDS = (
     'dostor.facebook.backends.FacebookBackend',
 )
 
-AJAXIFY = False
+AJAXIFY = True
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
