@@ -26,7 +26,7 @@
             <span class="divider"></span>
             {% if user %}
             <div class="comment-block comment-entry">
-                <form class="form-horizontal">
+                <div class="form-horizontal">
                     <fieldset>
                         <legend>أضف تعليق </legend>
                          <div class="control-group">
@@ -36,50 +36,67 @@
                               </div>
                          </div>
                          <div class="form-actions">
-                              <button class="btn btn-inverse" type="submit" id="modify">أضف الآن !</button>
+                              <button class="btn btn-inverse" id="modify">أضف الآن !</button>
                          </div>
                     </fieldset> 
-                </form>
+                </div>
             </div><!-- comment end -->
             {% endif %}
 
+            {% for feedback in feedbacks %}
             <div class="comment-block ">
     
-                <h3><p class="name"><a href="#"> محمد محمود محمد أمين</a></p></h3> 
-                <img src="images/loader.gif" alt="" class="loader">
+                <h3><p class="name"><a href="#">{{feedback.name}}</a></p></h3> 
+                <img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/>
                 <div class="like-group">
                    <a href="#" class="like"><i class="icon-thumbs-up"></i> <small>25</small></a>
                    <a href="#" class="dislike"><i class="icon-thumbs-down"></i> <small>12</small> </a>
                 </div>
-                <p>
-    وأوضح أن اللقاء عمل لأول مرة على تقريب شخصيات مثلي ومثل د. عبدالجليل مصطفى، د. حسن نافعة ، د. سيف عبدالفتاح، د.علاء الأسواني ، ا. سكينة فؤاد، د.
-                </p>
-                <span class="date">20-10-2011</span>
+                <p>{{feedback.suggestion}}</p>
+                <span class="date">{{feedback.date}}</span>
     
             </div><!-- comment end -->
-    
+            {% endfor %}
 
-      <script type="text/javascript">
-      $(document).ready(function() {
-        $("#modify").click(function(){
-          $.ajax({
-                type:"POST",
-                url :"/modify/",
-                data:{
-                    'article':"{{article.id}}",
-                    'email': "{{user.email}}",
-                    'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
-                    'suggestion': $("#suggestion").val()},
-                dataType:"json",
-                error:function(data){},
-                success:function(data){
-                $("#suggestion").val("");
-                $(".comment-block.comment-entry").after($("#modification_temp").tmpl({"name": data.name, "suggestion": data.suggestion, "id":data.id}));
-                },
-            });
-        });
-      });
-      </script>
+            <script type="text/javascript">
+              $(document).ready(function() {
+                $("#modify").click(function(){
+                  $.ajax({
+                        type:"POST",
+                        url :"/modify/",
+                        data:{
+                            'link': document.URL,
+                            'user_id':"{{user}}",
+                            'name':"{{user.first_name}} {{ user.last_name }}",
+                            'article':"{{article.id}}",
+                            'email': "{{user.email}}",
+                            'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
+                            'suggestion': $("#suggestion").val()},
+                        dataType:"json",
+                        error:function(data){},
+                        success:function(data){
+                        $("#suggestion").val("");
+                        $(".comment-block.comment-entry").after($("#modification_temp").tmpl({"date": "Just now", "suggestion": data.suggestion}));
+                        },
+                    });
+                });
+              });
+            </script>
+
+
+            <script id="modification_temp" type="text/x-jquery-tmpl">
+              <div class="comment-block ">
+                <h3><p class="name"><a href="#">{{user.first_name}} {{ user.last_name }}</a></p></h3> 
+                <img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/>
+                <div class="like-group">
+                   <a href="#" class="like"><i class="icon-thumbs-up"></i> <small>25</small></a>
+                   <a href="#" class="dislike"><i class="icon-thumbs-down"></i> <small>12</small> </a>
+                </div>
+                <p>${suggestion}</p>
+                <span class="date">${date}</span>
+              </div><!-- comment end -->
+            </script>
+
     </div><!-- span 8 -->
 
 </div><!-- row end -->

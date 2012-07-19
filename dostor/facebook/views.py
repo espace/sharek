@@ -24,7 +24,7 @@ def welcome(request):
     caption = 'test caption'
     attachment['caption'] = caption
     attachment['name'] = 'test name'
-    #attachment['link'] = 'link_to_picture'
+    attachment['link'] = 'link_to_picture'
     attachment['description'] = 'test description'
     #graph.put_wall_post(message, attachment)
     #return 0

@@ -321,6 +321,7 @@ body {
     padding: 20px;
     position: relative;
     border: solid 10px #fcfcfc;
+    width: 90%;
 }
 .comment-block .name{
    
