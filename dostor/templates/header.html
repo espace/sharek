@@ -1,46 +1,51 @@
-<div class="container header">
-    <div class="row">
 
-            <div class="span4">
-                <div class="pull-right logo">
-                    <img src="{{ STATIC_URL }}images/logo.png" alt="دستور مصر">
-                </div>
-            </div><!-- logo end -->
+<div class="{% if home %}header-big-wrapper{% else %}header-wrapper{% endif %}">
+ 
+  <div class="container header">
+      <div class="row">
 
-            <div class="span6 pull-left">
-              <p class="intro-text">الدور أتى عليك ليكن صوتك مسموعا وتشارك فى دستور بلادك الذى سيرثه أبناؤك و تسير عليه الأمة المصرية و يحدد سقف آمالها وطموحاتها و يحدد مكانة أبنائها و هويتها و ثقافتها ومرجعيتها ... إنه دورك الآن لتكون مسموعا !</p>
-            </div>
-
-            <div class=" pull-left">
-                <div class="search form-search">
-                    <div id="top_menu_login">
-                        {% if user %}
-                          <img src="http://graph.facebook.com/{{ user }}/picture" /><br />
-                            {{ user.first_name }} {{ user.last_name }}<br />
-                            {{ user.email }}<br />
-                          <a id="logout" href="/facebook/logout" >Logout</a>
-                        {% else %}  
-                          {% if error %}
-                            {% if error == 'AUTH_FAILED' %}
-                                <p>Authentication failed</p>
-                            {% else %}
-                              {% if error == 'AUTH_DISABLED' %}
-                                <p>Your account is disabled</p>
-                              {% else %}
-                                {% if error == 'AUTH_DENIED' %}
-                                <p>You did not allow access</p>
-                                {% endif %}
-                              {% endif %}
-                            {% endif %}
+              <div class="span4">
+                  <div class="pull-right logo">
+                      <img src="{{ STATIC_URL }}images/logo.png" alt="دستور مصر">
+                  </div>
+              </div><!-- logo end -->
+             
+              {% if home %}
+              <div class="span6 pull-left">
+                <p class="intro-text">الدور أتى عليك ليكن صوتك مسموعا وتشارك فى دستور بلادك الذى سيرثه أبناؤك و تسير عليه الأمة المصرية و يحدد سقف آمالها وطموحاتها و يحدد مكانة أبنائها و هويتها و ثقافتها ومرجعيتها ... إنه دورك الآن لتكون مسموعا !</p>
+              </div>
+              {% endif %}
+              <div class=" pull-left">
+                <div class="facebook_log_in">
+                  <p> 
+                    {% if user %}
+                      <img src="http://graph.facebook.com/{{ user }}/picture"  class="user_img" />
+                      <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
+                      <a id="logout" href="/facebook/logout" >Logout</a>
+                    {% else %}  
+                      {% if error %}
+                        {% if error == 'AUTH_FAILED' %}
+                            <p>Authentication failed</p>
+                        {% else %}
+                          {% if error == 'AUTH_DISABLED' %}
+                            <p>Your account is disabled</p>
                           {% else %}
-                          <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email&display=popup">
-                            <img src="http://developers.facebook.com/images/devsite/login-button.png"/>
-                          </a>
+                            {% if error == 'AUTH_DENIED' %}
+                            <p>You did not allow access</p>
+                            {% endif %}
                           {% endif %}
                         {% endif %}
-                    </div>
+                      {% else %}
+                      <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&scope=publish_stream,email&display=popup">
+                        <img src="http://developers.facebook.com/images/devsite/login-button.png"/>
+                      </a>
+                      {% endif %}
+                    {% endif %}
+                  </p>
+                  
                 </div>
-            </div><!-- search -->
+             </div> 
 
-    </div><!-- row end -->
-</div><!-- header -->
+      </div><!-- row end -->
+  </div><!-- header -->
+</div> <!-- header-wrapper  -->
