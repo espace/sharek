@@ -93,8 +93,8 @@ def modify(request):
         print request.POST.get("article_slug")
         print settings.domain+request.POST.get("tag_slug")+"/"+request.POST.get("article_slug")
         attachment['link'] = settings.domain+request.POST.get("tag_slug")+"/"+request.POST.get("article_slug")
-        #attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook-thumb.jpg"
-        message = request.POST.get("suggestion")
+        attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook-thumb.jpg"
+        message = request.POST.get("suggestion").encode('utf8') 
         graph.put_wall_post(message, attachment)
 
 
