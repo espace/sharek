@@ -15,10 +15,9 @@ def index(request):
     user = None
     if request.user.is_authenticated():
       user = request.user
-    print
-    print request.path
     tags = Tag.objects.all
-    template_context = {'tags':tags,'settings': settings,'user':user,}
+    feedback_count = len(Feedback.objects.all())
+    template_context = {'tags':tags,'settings': settings,'user':user,'count':feedback_count}
     return render_to_response('index.html', template_context ,RequestContext(request))
     
     

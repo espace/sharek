@@ -4,13 +4,44 @@
 
 {% block content %}
 
+  <div class="row">
+    <div class="promo">
+      <div class="span7 progress-promo">
+        <p>
+          شارك فى مبادرة <strong>نصف مليون</strong> مشاركة على مسودة الدستور المصرى
+        </p>
+        <span class="comments-till-now">عدد التعليقات حتى الآن {{count}}</span>
+        <div class="progress progress-striped">
+            <div class="bar" style="width: 20%;"></div>
+          </div>
+      </div>
+      <div class="span5 map">
+          <a href="#">
+            <img src="{{ STATIC_URL }}images/map.png">
+          </a>
+      </div>
+    </div><!-- below header -->
+  </div><!-- row -->
+
+  <div class="row">
+    <div class="span12 ">
+      <h1 class="headtitle"> تصفح الآن مواضيع الدستور </h1>
+    </div>
+  </div><!-- row -end -->
+
+
 <div class="row">
 
-<p>
-{% for tag_list in tags %}
-    <p><a href="{{tag_list.get_absolute_url}}" >{{tag_list.name}}</a></p>
-{% endfor %}
-</p>
+  <div class="home-sections span10">
+    <ul class="nav nav-pills">
+      {% for tag_list in tags %}
+      <li class="span3"><span class="home-sections-icon {{tag.slug}}"></span>
+        <a href="{{tag_list.get_absolute_url}}">{{tag_list.name}}</a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div><!-- sidebar -->
+
     
 </div><!-- row end -->
 

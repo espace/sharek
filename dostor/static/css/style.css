@@ -1,45 +1,56 @@
 @font-face {
-
     font-family: 'FrutigerBold';
-
     src: url('../fonts/FrutigerLTArabic-65Bold.ttf');
-
     src: url('../fonts/FrutigerLTArabic-65Bold.eot?#iefix') format('embedded-opentype'),
-
-    /*url('../fonts/FrutigerLTArabic-65Bold.woff') format('woff'),*/
-
-    url('../fonts/FrutigerLTArabic-65Bold.ttf') format('truetype'),
-
-    url('../fonts/FrutigerLTArabic-65Bold.svg#FrutigerLTArabic-65Bold.ttf') format('svg');
-
+         url('../fonts/FrutigerLTArabic-65Bold.woff') format('woff'),
+         url('../fonts/FrutigerLTArabic-65Bold.ttf') format('truetype'),
+         url('../fonts/FrutigerLTArabic-65Bold.svg#FrutigerLTArabic-65Bold.ttf') format('svg');
     font-weight: normal;
-
     font-style: normal;
-
     }
 
     
 
-    @font-face {
-
+ @font-face {
     font-family: 'FrutigerLight';
-
     src: url('../fonts/frutigerltarabic-45light.eot');
-
     src: url('../fonts/frutigerltarabic-45light.eot?#iefix') format('embedded-opentype'),
-
-    /*url('../fonts/frutigerltarabic-45light.woff') format('woff'),*/
-
-    url('../fonts/frutigerltarabic-45light.ttf') format('truetype'),
-
-    url('../fonts/frutigerltarabic-45light.svg#frutigerltarabic-45light') format('svg');
-
+         url('../fonts/frutigerltarabic-45light.woff') format('woff'),
+         url('../fonts/frutigerltarabic-45light.ttf') format('truetype'),
+         url('../fonts/frutigerltarabic-45light.svg#frutigerltarabic-45light') format('svg');
     font-weight: normal;
-
     font-style: normal;
-
     }
 
+
+@font-face {
+    font-family: 'GESSTwoBoldRegular';
+    src: url('../fonts/gess-bold.eot');
+    src: url('../fonts/gess-bold.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/gess-bold.woff') format('woff'),
+         url('../fonts/gess-bold.ttf') format('truetype'),
+         url('../fonts/gess-bold.svg#GESSTwoBoldRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+
+
+
+
+@font-face {
+    font-family: 'GESSTwoMediumRegular';
+    src: url('../fonts/gess-med.eot');
+    src: url('../fonts/gess-med.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/gess-med.woff') format('woff'),
+         url('../fonts/gess-med.ttf') format('truetype'),
+         url('../fonts/gess-med.svg#GESSTwoMediumRegular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
 
 body {
     background: url("../images/grid_noise.png") repeat scroll center top #EEEEEE;
@@ -56,14 +67,112 @@ body {
     background: url("../images/header.jpg") repeat-x center top #EEEEEE;
     height: 128px;
 }
-
+.header-big-wrapper{
+    width: 100%;
+    background: url("../images/header-big.jpg") repeat-x center top #EEEEEE;
+    height: 332px;
+}
 .logo{
 	margin:20px;
+}
+.biglogo{
+    margin-top:110px;
 }
 .search {
 	margin:30px 0 0 0 ;
 }
 
+.intro-text{
+    font: 20px GESSTwoMediumRegular;
+    margin: 80px 0 0 0;
+}
+
+/*------------------------  promo -----------------------*/
+.promo{
+    margin-top: 20px;
+}
+.progress-promo p{
+    font: 30px GESSTwoMediumRegular;
+    color: #a11212;
+}
+.progress-promo p strong{
+    font-size: 36px;
+    font: 36px GESSTwoBoldRegular;
+}
+.progress-promo .progress{
+    margin-top: 20px;
+}
+.progress-promo .comments-till-now{
+        font: 20px GESSTwoMediumRegular;
+        color: #abacae;
+        margin-top: 60px;
+        display: block;
+}
+
+/*------------   home-sections    ------ */
+
+.home-sections .nav li a{
+    height: 60px;
+    text-align: center;
+    padding: 120px 0 0 0 ;
+    font-size: 24px;
+    color: #b8babb !important;
+    font-family: FrutigerBold;
+    -webkit-border-radius:0 !important;
+     -moz-border-radius: 0 !important;
+          border-radius: 0 !important;
+
+}
+.home-sections .nav li:hover a{
+    background: #a11212;
+    color: #fff !important;
+
+}
+
+.home-sections-icon{
+    width: 115px;
+    height: 100px;
+    float: right;
+    margin-right: 36px;
+    margin-top: 0;
+    background: url("../images/sprite.png") no-repeat;
+}
+.judge{
+    background-position: left 10px ;
+}
+        .home-sections .nav li:hover .judge{
+            background-position: right 10px; 
+        }
+.treasury{
+    background-position: left -666px ;
+}
+        .home-sections .nav li:hover .treasury{
+            background-position: right -666px; 
+        }
+.security{
+    background-position: left -1003px ;
+}
+        .home-sections .nav li:hover .security{
+            background-position: right -1003px ;
+        }
+.identity{
+    background-position: left -325px ;
+}
+        .home-sections .nav li:hover .identity{
+            background-position: right -325px ;
+        }
+.freeMedia{
+    background-position: left -1344px ;
+}
+        .home-sections .nav li:hover .freeMedia{
+            background-position: right -1344px ;
+        }
+.authorities{
+    background-position: left -1684px ;
+}
+        .home-sections .nav li:hover .authorities{
+            background-position: right -1684px ;
+        }
 
 
 
@@ -390,13 +499,12 @@ span.divider{
     color: #000;
     box-shadow: 0px 1px 0px rgba(255,255,255,1);
     border-top: solid 1px #cacaca;
-    min-width: 85px;
-    width: auto;
+
 }
 .like-group a{
-   padding:5px 10px;
-   float: left;
-   font-weight: bold;
+    padding:5px 10px;
+    float: left;
+    font-weight: bold;
 }
 .like-group a.like{
     color: #4aad2b;
