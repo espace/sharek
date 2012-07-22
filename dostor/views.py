@@ -93,13 +93,12 @@ def modify(request):
         print request.POST.get("article_slug")
         print settings.domain+request.POST.get("tag_slug")+"/"+request.POST.get("article_slug")
         attachment['link'] = settings.domain+request.POST.get("tag_slug")+"/"+request.POST.get("article_slug")
-        attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook-thumb.jpg"
+        #attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook-thumb.jpg"
         message = request.POST.get("suggestion")
         graph.put_wall_post(message, attachment)
 
 
         return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
-
 
 
 def vote(request):
