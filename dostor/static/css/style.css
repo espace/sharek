@@ -394,7 +394,7 @@ span.divider{
     width: auto;
 }
 .like-group a{
-   padding:5px 10px 5px 25px;
+   padding:5px 10px;
    float: left;
    font-weight: bold;
 }
@@ -406,12 +406,6 @@ span.divider{
 }
 .like-group a:hover{
     background: #e7e7e7;
-}
-.like-group i{
-   float: left;
-   margin: 8px -24px 0 8px;
-   position: relative;
-   z-index: 1000;
 }
 /*------------  chapters    ------ */
 .chapters{margin-top: 20px;}
