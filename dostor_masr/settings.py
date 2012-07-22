@@ -3,7 +3,7 @@
 FACEBOOK_APP_ID = '462028557155670'
 FACEBOOK_API_KEY = ''
 FACEBOOK_API_SECRET = 'be12f929d5bb8c51129b798f88548cfa'
-FACEBOOK_REDIRECT_URI = 'http://dostor-masr.espace-technologies.com/login'
+FACEBOOK_REDIRECT_URI = 'http://dostor-masr.espace-technologies.com/facebook/login'
 
 domain = "http://dostor-masr.espace-technologies.com/"
 
