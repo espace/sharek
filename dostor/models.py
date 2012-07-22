@@ -33,7 +33,10 @@ class Article(models.Model):
 
     def feedback_count(self):
         return len(Feedback.objects.filter(article_id = self.id))
-        
+
+    def get_votes(self):
+        return Rating.objects.filter(article_id= self.id)
+
     def clean(self):
         if len(self.name) >= 40:
             raise exceptions.ValidationError('Too many characters ...')
@@ -59,6 +62,6 @@ class Feedback(models.Model):
 
 class Rating(models.Model):
     article = models.ForeignKey(Article)
-    modification = models.ForeignKey(Feedback)
-    ip = models.CharField(max_length=200)
+    feedback = models.ForeignKey(Feedback)
+    user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()

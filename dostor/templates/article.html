@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
-{% load replace %} 
+{% load replace %}
+{% load hash %} 
 {% block title %}{{article.name}}{% endblock %}
 
 {% block content %}
@@ -49,8 +50,8 @@
                 <h3><p class="name"><a href="#">{{feedback.name}}</a></p></h3> 
                 <img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/>
                 <div class="like-group">
-                   <a href="#" class="like"><i class="icon-thumbs-up"></i> <small>25</small></a>
-                   <a href="#" class="dislike"><i class="icon-thumbs-down"></i> <small>12</small> </a>
+                   <i class="icon-thumbs-up"></i><a href="#" class="like vote {{feedback.id}}" id="{{feedback.id}}" vote="1">{{p_votes|key:feedback.id }}</a>
+                   <i class="icon-thumbs-down"></i><a href="#" class="dislike vote {{feedback.id}}" id="{{feedback.id}}" vote="0">{{n_votes|key:feedback.id }} </a>
                 </div>
                 <p>{{feedback.suggestion}}</p>
                 <span class="date">{{feedback.date}}</span>
@@ -60,6 +61,21 @@
 
             <script type="text/javascript">
               $(document).ready(function() {
+
+               $(".vote").live("click",function(){
+                $.ajax({
+                        type:"POST",
+                        url :"/vote/",
+                        data:{'article':{{article.id}},'modification': this.id ,'type': $(this).attr('vote') ,'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+                        dataType:"json",
+                        error:function(data){},
+                        success:function(data){
+                        $(".like"+"."+data.modification).text(data.p);  
+                        $(".dislike"+"."+data.modification).text(data.n);  
+                        },
+                      });
+                    });
+
                 $("#modify").click(function(){
                   $.ajax({
                         type:"POST",
@@ -76,7 +92,7 @@
                         error:function(data){},
                         success:function(data){
                         $("#suggestion").val("");
-                        $(".comment-block.comment-entry").after($("#modification_temp").tmpl({"date": "Just now", "suggestion": data.suggestion}));
+                        $(".comment-block.comment-entry").after($("#modification_temp").tmpl({"id":data.id ,"date": "Just now", "suggestion": data.suggestion}));
                         },
                     });
                 });
@@ -89,8 +105,8 @@
                 <h3><p class="name"><a href="#">{{user.first_name}} {{ user.last_name }}</a></p></h3> 
                 <img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/>
                 <div class="like-group">
-                   <a href="#" class="like"><i class="icon-thumbs-up"></i> <small>25</small></a>
-                   <a href="#" class="dislike"><i class="icon-thumbs-down"></i> <small>12</small> </a>
+                   <i class="icon-thumbs-up"></i><a href="#" class="like vote ${id}" id="${id}" vote="1">0</a>
+                   <i class="icon-thumbs-down"></i><a href="#" class="dislike vote ${id}" id="${id}" vote="0">0</a>
                 </div>
                 <p>${suggestion}</p>
                 <span class="date">${date}</span>
