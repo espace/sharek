@@ -67,7 +67,11 @@ def modify(request):
         # GraphAPI is the main class from facebook_sdp.py
         graph = facebook_sdk.GraphAPI(fb_user.access_token)
         attachment = {}
-        attachment['link'] = 'http://www.google.com'
+        print settings.domain
+        print request.POST.get("tag_slug")
+        print request.POST.get("article_slug")
+        print settings.domain+request.POST.get("tag_slug")+"/"+request.POST.get("article_slug")
+        attachment['link'] = settings.domain+request.POST.get("tag_slug")+"/"+request.POST.get("article_slug")
         attachment['picture'] = 'https://www.facebook.com/app_full_proxy.php?app=2231777543&v=1&size=z&cksum=70b5d7cc30cfba37533c713f0929b221&src=http%3A%2F%2Fespace.com.eg%2Fimages%2Frotator%2Felections.jpg'
         message = request.POST.get("suggestion")
         graph.put_wall_post(message, attachment)

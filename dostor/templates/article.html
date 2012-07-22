@@ -82,6 +82,8 @@
                         url :"/modify/",
                         data:{
                             'link': document.URL,
+                            'article_slug': "{{article.slug}}",
+                            'tag_slug': "{{tag.slug}}",
                             'user_id':"{{user}}",
                             'name':"{{user.first_name}} {{ user.last_name }}",
                             'article':"{{article.id}}",
