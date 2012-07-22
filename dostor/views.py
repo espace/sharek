@@ -6,6 +6,8 @@ from datetime import datetime
 
 from dostor.models import Tag, Article, Feedback, Rating
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from dostor.facebook.models import FacebookSession
 from dostor.facebook import facebook_sdk
 from dostor_masr import settings
@@ -34,14 +36,31 @@ def tag_detail(request, tag_slug):
     template_context = {'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('tag.html',template_context ,RequestContext(request))
 
-def article_detail(request, tag_slug, article_slug):
+def article_detail(request, tag_slug, article_slug, order_by="latest"):
     user = None
     if request.user.is_authenticated():
       user = request.user
     tags = Tag.objects.all
     tag = get_object_or_404( Tag, slug=tag_slug )
     article = get_object_or_404( Article, slug=article_slug )
-    feedbacks = Feedback.objects.filter(article_id = article.id)
+    if order_by == "latest":
+        feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-date')
+    else:
+        feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-order')
+
+    paginator = Paginator(feedbacks, settings.paginator) 
+    page = request.GET.get('page')
+
+
+    try:
+        feedbacks = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        feedbacks = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        feedbacks = paginator.page(paginator.num_pages)
+    
     votes = article.get_votes()
     p_votes = {}
     n_votes = {}
@@ -74,7 +93,7 @@ def modify(request):
         print request.POST.get("article_slug")
         print settings.domain+request.POST.get("tag_slug")+"/"+request.POST.get("article_slug")
         attachment['link'] = settings.domain+request.POST.get("tag_slug")+"/"+request.POST.get("article_slug")
-        attachment['picture'] = 'https://www.facebook.com/app_full_proxy.php?app=2231777543&v=1&size=z&cksum=70b5d7cc30cfba37533c713f0929b221&src=http%3A%2F%2Fespace.com.eg%2Fimages%2Frotator%2Felections.jpg'
+        attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook-thumb.jpg"
         message = request.POST.get("suggestion")
         graph.put_wall_post(message, attachment)
 
@@ -101,6 +120,14 @@ def vote(request):
                 record[0].save()
             else:
                 Rating(user = user, vote = vote, feedback_id = feedback,article_id = request.POST.get("article")).save()
+            
+            mod = Feedback.objects.get(id=feedback)
+            if request.POST.get("type") == "1" :
+                temp = 1
+            else:
+                temp = -1
+            mod.order = mod.order + temp
+            mod.save()
 
             votes = Rating.objects.filter(feedback_id = feedback)
             p = 0

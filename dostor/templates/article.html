@@ -43,7 +43,24 @@
                 </div>
             </div><!-- comment end -->
             {% endif %}
+            <div class="comment-block well">
+              <a href="/{{tag.slug}}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | <a href="/{{tag.slug}}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
+            </div>
+            <div class="pagination top">
+              <span class="step-links">
+                  {% if feedbacks.has_previous %}
+                      <a href="?page={{ feedbacks.previous_page_number }}">السابق</a>
+                  {% endif %}
 
+                  <span class="current">
+                      Page {{ feedbacks.number }} of {{ feedbacks.paginator.num_pages }}.
+                  </span>
+
+                  {% if feedbacks.has_next %}
+                      <a href="?page={{ feedbacks.next_page_number }}">التالي</a>
+                  {% endif %}
+              </span>
+            </div>
             {% for feedback in feedbacks %}
             <div class="comment-block ">
     
@@ -58,6 +75,21 @@
     
             </div><!-- comment end -->
             {% endfor %}
+            <div class="pagination">
+              <span class="step-links">
+                  {% if feedbacks.has_previous %}
+                      <a href="?page={{ feedbacks.previous_page_number }}">السابق</a>
+                  {% endif %}
+
+                  <span class="current">
+                      Page {{ feedbacks.number }} of {{ feedbacks.paginator.num_pages }}.
+                  </span>
+
+                  {% if feedbacks.has_next %}
+                      <a href="?page={{ feedbacks.next_page_number }}">التالي</a>
+                  {% endif %}
+              </span>
+            </div>
 
             <script type="text/javascript">
               $(document).ready(function() {
@@ -94,7 +126,7 @@
                         error:function(data){},
                         success:function(data){
                         $("#suggestion").val("");
-                        $(".comment-block.comment-entry").after($("#modification_temp").tmpl({"id":data.id ,"date": "Just now", "suggestion": data.suggestion}));
+                        $(".pagination.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "Just now", "suggestion": data.suggestion}));
                         },
                     });
                 });
