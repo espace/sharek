@@ -4,3 +4,4 @@
 .DS_Store
 .coverage
 dostor/static/photos/
+dostor_masr/settings.py
