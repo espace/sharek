@@ -5,8 +5,9 @@ FACEBOOK_API_KEY = ''
 FACEBOOK_API_SECRET = 'be12f929d5bb8c51129b798f88548cfa'
 FACEBOOK_REDIRECT_URI = 'http://dostor-masr.espace-technologies.com/facebook/login'
 
+paginator = 10
 domain = "http://dostor-masr.espace-technologies.com/"
-paginator = 16
+
 
 AUTHENTICATION_BACKENDS = (
 	'django.contrib.auth.backends.ModelBackend',
