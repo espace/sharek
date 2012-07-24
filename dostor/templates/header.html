@@ -10,18 +10,17 @@
                   </div>
               </div><!-- logo end -->
              
-              {% if home %}
+
               <div class="span6 pull-left">
-                <p class="intro-text">الدور أتى عليك ليكن صوتك مسموعا وتشارك فى دستور بلادك الذى سيرثه أبناؤك و تسير عليه الأمة المصرية و يحدد سقف آمالها وطموحاتها و يحدد مكانة أبنائها و هويتها و ثقافتها ومرجعيتها ... إنه دورك الآن لتكون مسموعا !</p>
-              </div>
-              {% endif %}
-              <div class=" pull-left">
                 <div class="facebook_log_in">
-                  <p> 
                     {% if user %}
-                      <img src="http://graph.facebook.com/{{ user }}/picture"  class="user_img" />
-                      <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
-                      <a id="logout" href="/facebook/logout" >Logout</a>
+                    <div class="facebook_log_in">
+                        <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
+                        <div class="attrs">
+                          <p href="#" class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
+                          <a href="/facebook/logout" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                        </div>
+                    </div>
                     {% else %}  
                       {% if error %}
                         {% if error == 'AUTH_FAILED' %}
@@ -41,9 +40,10 @@
                       </a>
                       {% endif %}
                     {% endif %}
-                  </p>
-                  
                 </div>
+                {% if home %}
+                <p class="intro-text">الدور أتى عليك ليكن صوتك مسموعا وتشارك فى دستور بلادك الذى سيرثه أبناؤك و تسير عليه الأمة المصرية و يحدد سقف آمالها وطموحاتها و يحدد مكانة أبنائها و هويتها و ثقافتها ومرجعيتها ... إنه دورك الآن لتكون مسموعا !</p>
+                {% endif %}
              </div> 
 
       </div><!-- row end -->

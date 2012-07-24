@@ -80,19 +80,33 @@ body {
 }
 .facebook_log_in {
 	margin:30px 0 0 0 ;
+    clear: both;
 }
 .user_img{
     border: solid 2px rgba(75,1,0,0.2);
     border-radius: 10px;
     vertical-align: middle;
+    float: right;
+}
+.attrs{
+    float: right;
+}
+.attrs a{
+    margin-right: 10px;
 }
 .user_name{
     color:#9d0d0b;
     font-weight: bold;
+    float: right;
+    margin: 14px 10px 0 0;
+}
+.log_out{
+    float: right;
+    clear: right;
 }
 .intro-text{
     font: 20px GESSTwoMediumRegular;
-    margin: 80px 0 0 0;
+    margin: 110px 0 0 0;
 }
 
 /*------------------------  promo -----------------------*/

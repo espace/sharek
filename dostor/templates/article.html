@@ -48,21 +48,6 @@
             <div class="comment-block well">
               <a href="/{{tag.slug}}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | <a href="/{{tag.slug}}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
             </div>
-            <div class="pagination top">
-              <span class="step-links">
-                  {% if feedbacks.has_previous %}
-                      <a href="?page={{ feedbacks.previous_page_number }}">السابق</a>
-                  {% endif %}
-
-                  <span class="current">
-                      Page {{ feedbacks.number }} of {{ feedbacks.paginator.num_pages }}.
-                  </span>
-
-                  {% if feedbacks.has_next %}
-                      <a href="?page={{ feedbacks.next_page_number }}">التالي</a>
-                  {% endif %}
-              </span>
-            </div>
             {% for feedback in feedbacks %}
             <div class="comment-block ">
     
@@ -77,21 +62,24 @@
     
             </div><!-- comment end -->
             {% endfor %}
-            <div class="pagination">
-              <span class="step-links">
-                  {% if feedbacks.has_previous %}
-                      <a href="?page={{ feedbacks.previous_page_number }}">السابق</a>
-                  {% endif %}
+            <ul class=" pager">
+              <li class="next">
+              {% if feedbacks.has_next %}
+              <a href="?page={{ feedbacks.next_page_number }}">التالى &larr; </a>
+              {% endif %}
+              </li>
+              <li>
+                <span class="current">
+                      صفحه {{ feedbacks.number }} من {{ feedbacks.paginator.num_pages }}.
+                </span>
+              </li>
+              <li class="previous">
+              {% if feedbacks.has_previous %}
+              <a href="?page={{ feedbacks.previous_page_number }}"> &rarr; لسابق</a>
+              {% endif %}
+              </li>
+            </ul>
 
-                  <span class="current">
-                      Page {{ feedbacks.number }} of {{ feedbacks.paginator.num_pages }}.
-                  </span>
-
-                  {% if feedbacks.has_next %}
-                      <a href="?page={{ feedbacks.next_page_number }}">التالي</a>
-                  {% endif %}
-              </span>
-            </div>
 
             <script type="text/javascript">
               $(document).ready(function() {
