@@ -45,7 +45,7 @@
                 </div>
             </div><!-- comment end -->
             {% endif %}
-            <div class="comment-block well">
+            <div class="comment-block well top">
               <a href="/{{tag.slug}}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | <a href="/{{tag.slug}}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
             </div>
             {% for feedback in feedbacks %}
@@ -116,9 +116,9 @@
                         dataType:"json",
                         error:function(data){},
                         success:function(data){
-                        $("#load").remove();
+                        $("#load-img").remove();
                         $("#suggestion").val("");
-                        $(".pagination.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "Just now", "suggestion": data.suggestion}));
+                        $(".comment-block.well.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "Just now", "suggestion": data.suggestion}));
                         },
                     });
                 });
@@ -139,7 +139,7 @@
               </div><!-- comment end -->
             </script>
             <script id="loading_temp" type="text/x-jquery-tmpl">
-                <img style="margin-right:20px;" id="load" src="{{ STATIC_URL }}images/loading.gif" alt="loading"/>
+                <img style="margin-right:20px;" id="load-img" src="{{ STATIC_URL }}images/loading.gif" alt="loading"/>
             </script>
 
     </div><!-- span 8 -->
