@@ -99,7 +99,7 @@
                     });
 
                 $("#modify").click(function(){
-                  $(".btn.btn-inverse").after($("#loading_temp").tmpl());
+                  $("#modify").after($("#loading_temp").tmpl());
                   $.ajax({
                         type:"POST",
                         url :"/modify/",
@@ -116,9 +116,9 @@
                         dataType:"json",
                         error:function(data){},
                         success:function(data){
-                        $("#load-img").remove();
                         $("#suggestion").val("");
                         $(".comment-block.well.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "Just now", "suggestion": data.suggestion}));
+                        $("#load-img").remove();
                         },
                     });
                 });
