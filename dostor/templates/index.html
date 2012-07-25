@@ -72,7 +72,7 @@
     <ul class="nav nav-pills">
       {% for tag_list in tags %}
       <a href="{{tag_list.get_absolute_url}}">
-      <li class="span3"><span class="home-sections-icon {{tag.slug}}"></span>
+      <li class="span3"><span class="home-sections-icon {{tag_list.slug}}"></span>
         <a href="{{tag_list.get_absolute_url}}">{{tag_list.name}}</a>
       </li>
       </a>

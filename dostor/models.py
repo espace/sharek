@@ -24,9 +24,29 @@ class Tag(models.Model):
         
     class Meta:
        ordering = ["name"]
+
+class Topic(models.Model):
+    name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=30, default='')
+    slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
+    summary = MarkupField(blank=True, default='')
+
+    def __unicode__(self):
+        #return u'%s - %s' % (self.topic.name, self.name)
+        return self.name
+
+    def get_absolute_url(self):
+        return "/topics/%s" % (self.slug)
+    
+    def get_articles(self):
+        return Article.objects.filter(topic_id= self.id)
+        
+    class Meta:
+       ordering = ["name"]
        
 class Article(models.Model):
     tags = models.ManyToManyField(Tag)
+    topic = models.ForeignKey(Topic,blank=True,null=True)
     name = models.CharField(max_length=40)
     slug 	 = models.SlugField(max_length=40, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
