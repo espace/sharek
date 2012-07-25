@@ -1,10 +1,10 @@
 from django.template import Context, loader, RequestContext
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.utils import simplejson
 from datetime import datetime
 
-from dostor.models import Tag, Article, Feedback, Rating
+from dostor.models import Tag, Article, Feedback, Rating, Topic
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -36,13 +36,33 @@ def tag_detail(request, tag_slug):
     template_context = {'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('tag.html',template_context ,RequestContext(request))
 
-def article_detail(request, tag_slug, article_slug, order_by="latest"):
+def topic_detail(request, topic_slug):
     user = None
     if request.user.is_authenticated():
       user = request.user
-    tags = Tag.objects.all
-    tag = get_object_or_404( Tag, slug=tag_slug )
+    topics = Topic.objects.all
+    topic = get_object_or_404( Topic, slug=topic_slug )
+    articles = topic.article_set.all()
+
+    template_context = {'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
+    return render_to_response('topic.html',template_context ,RequestContext(request))
+
+def article_detail(request, classified_by, class_slug, article_slug, order_by="latest"):
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
+    if classified_by == "tags":  
+        tags = Tag.objects.all
+        tag = get_object_or_404( Tag, slug=class_slug )
+    elif classified_by == "topics":
+        topics = Topic.objects.all
+        topic = get_object_or_404( Topic, slug=class_slug )
+    else:
+        return HttpResponseNotFound('<h1>Page not found</h1>')
+
     article = get_object_or_404( Article, slug=article_slug )
+
     if order_by == "latest":
         feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-date')
     else:
@@ -75,7 +95,12 @@ def article_detail(request, tag_slug, article_slug, order_by="latest"):
           n_votes[vote.feedback_id] += 1
         else:
           n_votes[vote.feedback_id] = 1
-    template_context = {'feedbacks':feedbacks,'tags':tags,'tag':tag,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,}
+
+    if classified_by == "tags":  
+        template_context = {'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+    elif classified_by == "topics":
+        template_context = {'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+    
     return render_to_response('article.html',template_context ,RequestContext(request))
 
 
@@ -88,11 +113,7 @@ def modify(request):
         # GraphAPI is the main class from facebook_sdp.py
         graph = facebook_sdk.GraphAPI(fb_user.access_token)
         attachment = {}
-        print settings.domain
-        print request.POST.get("tag_slug")
-        print request.POST.get("article_slug")
-        print settings.domain+request.POST.get("tag_slug")+"/"+request.POST.get("article_slug")
-        attachment['link'] = settings.domain+request.POST.get("tag_slug")+"/"+request.POST.get("article_slug")
+        attachment['link'] = settings.domain+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")
         attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook-thumb.jpg"
         message = request.POST.get("suggestion").encode('utf8') 
         graph.put_wall_post(message, attachment)

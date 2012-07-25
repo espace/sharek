@@ -49,7 +49,8 @@
             </div><!-- comment end -->
             {% endif %}
             <div class="comment-block well top">
-              <a href="/{{tag.slug}}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | <a href="/{{tag.slug}}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
+              <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | 
+              <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
             </div>
             {% for feedback in feedbacks %}
             <div class="comment-block ">
@@ -109,7 +110,7 @@
                         data:{
                             'link': document.URL,
                             'article_slug': "{{article.slug}}",
-                            'tag_slug': "{{tag.slug}}",
+                            'class_slug': "{%if tags%}tags/{{tag.slug}}{%else%}topics/{{topic.slug}}{%endif%}",
                             'user_id':"{{user}}",
                             'name':"{{user.first_name}} {{ user.last_name }}",
                             'article':"{{article.id}}",
