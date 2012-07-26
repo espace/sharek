@@ -36,17 +36,6 @@ def tag_detail(request, tag_slug):
     template_context = {'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('tag.html',template_context ,RequestContext(request))
 
-def topics(request):
-    user = None
-    if request.user.is_authenticated():
-      user = request.user
-    topics = Topic.objects.filter()
-    topic = topics[0]
-    articles = topic.article_set.all()
-
-    template_context = {'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
-    return render_to_response('topic.html',template_context ,RequestContext(request))
-
 def topic_detail(request, topic_slug=None):
     user = None
     if request.user.is_authenticated():
@@ -57,7 +46,7 @@ def topic_detail(request, topic_slug=None):
     else:
         topics = Topic.objects.filter()
         topic = topics[0]
-      
+
     articles = topic.article_set.all()
 
     template_context = {'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
@@ -78,7 +67,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="l
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
     article = get_object_or_404( Article, slug=article_slug )
-
+    related_tags = article.tags.all
     if order_by == "latest":
         feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
     else:
@@ -113,9 +102,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="l
           n_votes[vote.feedback_id] = 1
 
     if classified_by == "tags":  
-        template_context = {'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+        template_context = {'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
     elif classified_by == "topics":
-        template_context = {'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+        template_context = {'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
