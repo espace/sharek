@@ -36,12 +36,28 @@ def tag_detail(request, tag_slug):
     template_context = {'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('tag.html',template_context ,RequestContext(request))
 
-def topic_detail(request, topic_slug):
+def topics(request):
     user = None
     if request.user.is_authenticated():
       user = request.user
-    topics = Topic.objects.all
-    topic = get_object_or_404( Topic, slug=topic_slug )
+    topics = Topic.objects.filter()
+    topic = topics[0]
+    articles = topic.article_set.all()
+
+    template_context = {'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
+    return render_to_response('topic.html',template_context ,RequestContext(request))
+
+def topic_detail(request, topic_slug=None):
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+    if topic_slug:
+        topics = Topic.objects.all
+        topic = get_object_or_404( Topic, slug=topic_slug )
+    else:
+        topics = Topic.objects.filter()
+        topic = topics[0]
+      
     articles = topic.article_set.all()
 
     template_context = {'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
@@ -64,7 +80,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="l
     article = get_object_or_404( Article, slug=article_slug )
 
     if order_by == "latest":
-        feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-date')
+        feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
     else:
         feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-order')
 
@@ -161,4 +177,3 @@ def vote(request):
           
 def facebook_comment(request):
     return render_to_response('facebook_comment.html', {},RequestContext(request))
-    

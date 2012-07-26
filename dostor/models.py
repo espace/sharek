@@ -76,7 +76,7 @@ class Feedback(models.Model):
     name = models.CharField(max_length=200)
     email = models.SlugField(default='')
     suggestion = MarkupField(default='')
-    date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc))
+    date = models.DateTimeField( auto_now_add=True, default=datetime.now() ,blank=True,null=True)
     order = models.IntegerField(default=0)
     user = models.CharField(max_length=200,default='')
 
