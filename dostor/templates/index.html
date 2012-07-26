@@ -38,14 +38,7 @@
 
       <ul class="nav nav-pills  divider-vert">
       {% for tag_list in tags %}
-      <li class="span5">
-        <a href="tags{{tag_list.get_absolute_url}}">
-          <span class="home-sections-icon {{tag_list.slug}}"></span>
-          "{{tag_list.name}}"
-          <p>"{{tag_list.summary}}"</p>
-        </a>
-      </li>
-
+        <li class="span5"><a href="tags{{tag_list.get_absolute_url}}"><span class="home-sections-icon {{tag_list.slug}}"></span>{{tag_list.name}}<p>{{tag_list.summary}}</p></a></li>
       {% endfor %}
         </ul>
     </div><!-- sidebar -->
