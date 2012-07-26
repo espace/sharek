@@ -40,7 +40,7 @@
       {% for tag_list in tags %}
       <li class="span5">
         <a href="tags{{tag_list.get_absolute_url}}">
-          <span class="home-sections-icon judge"></span>
+          <span class="home-sections-icon {{tag_list.slug}}"></span>
           "{{tag_list.name}}"
           <p>"{{tag_list.summary}}"</p>
         </a>
