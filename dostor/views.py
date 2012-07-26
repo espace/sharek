@@ -159,3 +159,6 @@ def vote(request):
                 n += 1            
             return HttpResponse(simplejson.dumps({'modification':request.POST.get("modification"),'p':p,'n':n}))
           
+def facebook_comment(request):
+    return render_to_response('facebook_comment.html', {},RequestContext(request))
+    

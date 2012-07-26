@@ -1,0 +1,22 @@
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js" ></script>
+
+  <input id="facebook" type="submit" />
+
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+     $("#facebook").live("click",function(){
+      $.ajax({
+              type:"GET",
+              url :"http://graph.facebook.com/?ids=http://morsimeter.com/security",
+              dataType: "json",
+              error:function(data){},
+              success:function(data){
+                //var myObj = jQuery.parseJSON(data);
+                console.log(data["http://morsimeter.com/security"]["comments"]);
+              //alert(myObj);
+              },
+            });
+          });
+    });
+  </script>

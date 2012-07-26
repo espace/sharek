@@ -18,6 +18,7 @@ urlpatterns = patterns('',
 
     url(r'^vote/', 'dostor.views.vote'),
     url(r'^modify/', 'dostor.views.modify'),
+    url(r'^facebook/', 'dostor.views.facebook_comment'),
 
 
     #Tag detail URL

@@ -36,7 +36,7 @@ class Topic(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return "/topics/%s" % (self.slug)
+        return "/%s" % (self.slug)
     
     def get_articles(self):
         return Article.objects.filter(topic_id= self.id)
