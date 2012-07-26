@@ -3,51 +3,18 @@
 {% block title %}الصفحة الرئيسية{% endblock %}
 
 {% block content %}
-<STYLE TYPE="text/css">
-.progress-promo .comments-till-now{
-      font: 14px GESSTwoMediumRegular;
-      color: #abacae;
-      top: 185px;
-      right: 20%;
-      margin-right: -106px;
-      display: block;
-      position: absolute;
-      width: 200px;
-      height: 20px;
-      line-height: 20px;
-      padding: 10px;
-      font-size: 14px;
-      text-align: center;
-      color: #fff;
-      background: rgb(255, 85, 25);
-      border: 4px solid rgb(255, 85, 25);
-      border-radius: 5px;
-      text-shadow: rgba(0, 0, 0, 0.1) 1px 1px 1px;
-      box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 2px 0px;
-}
 
-.progress-promo .comments-till-now:after{
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-width: 10px;
-      border-style: solid;
-      border-color: #ff5519 transparent transparent transparent;
-      top: 44px;
-      left: 106px;
-}
-
-
-</STYLE>
-  <div class="row">
-    <div class="promo">
+  <div class="row promo">
+    <div class="">
       <div class="span7 progress-promo">
         <p>
-          شارك فى مبادرة <strong>نصف مليون</strong> مشاركة على مسودة الدستور المصرى
+          مبادرة <strong>نصف مليون </strong> مشاركة على مسودة دستور مصر 
+          <a href="#" class="btn btn-success btn-large"> شارك الآن !</a>
         </p>
-        <span class="comments-till-now">عدد التعليقات حتى الآن {{count}}</span>
-        <div class="progress progress-striped">
+                <span class="tooltip">Welcome!!!</span>
+
+        <span class="comments-till-now">عدد التعليقات حتى الآن 32,129</span>
+        <div class="progress progress-success progress-striped">
             <div class="bar" style="width: {{perecent}}%;"></div>
           </div>
       </div>
@@ -61,26 +28,33 @@
 
   <div class="row">
     <div class="span12 ">
-      <h1 class="headtitle"> تصفح الآن مواضيع الدستور </h1>
+      <span class="divider pushed-up"></span>
     </div>
   </div><!-- row -end -->
 
+  <div class="row">
+    <div class="home-sections span10">
+      <h1 class="headtitle pushed-up">مواضيع الدستور </h1>
 
-<div class="row">
-
-  <div class="home-sections span10">
-    <ul class="nav nav-pills">
+      <ul class="nav nav-pills  divider-vert">
       {% for tag_list in tags %}
-      <a href="tags{{tag_list.get_absolute_url}}">
-      <li class="span3"><span class="home-sections-icon {{tag_list.slug}}"></span>
-        <a href="tags{{tag_list.get_absolute_url}}">{{tag_list.name}}</a>
+      <li class="span5">
+        <a href="tags{{tag_list.get_absolute_url}}">
+          <span class="home-sections-icon judge"></span>
+          "{{tag_list.name}}"
+          <p>"{{tag_list.summary}}"</p>
+        </a>
       </li>
-      </a>
-      {% endfor %}
-    </ul>
-  </div><!-- sidebar -->
 
-    
-</div><!-- row end -->
+      {% endfor %}
+        </ul>
+    </div><!-- sidebar -->
+
+    <div class="facebook-plugin span2">
+      <img src="{{STATIC_URL}}images/face.jpg" alt="">
+    </div><!--span -->
+  </div><!-- row end -->
+
+
 
 {% endblock %}
