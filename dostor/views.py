@@ -57,7 +57,7 @@ def topic_detail(request, topic_slug=None):
     else:
         topics = Topic.objects.filter()
         topic = topics[0]
-      
+
     articles = topic.article_set.all()
 
     template_context = {'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
@@ -80,7 +80,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="l
     article = get_object_or_404( Article, slug=article_slug )
 
     if order_by == "latest":
-        feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
+        feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-date')
     else:
         feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-order')
 
