@@ -182,13 +182,13 @@ left: 106px;
     text-align: right;
     padding: 10px 0 0 0 ;
     margin-bottom: 40px;
-    font-size: 16px;
-    color: #b8babb !important;
+    font-size: 18px;
+    color: #444 !important;
     font-family: GESSTwoMediumRegular;
     line-height: 30px;
     -webkit-border-radius:0 !important;
-     -moz-border-radius: 0 !important;
-          border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
 
 }
 .home-sections .nav li:hover a{
@@ -201,7 +201,8 @@ left: 106px;
     float: right;
     font:normal 12px Tahoma,Geneva ;
     width: 75%;
-    margin-top: 10px;
+    /*margin-top: 10px;*/
+	color: #b8babb;
  }
 .home-sections-icon{
     width: 90px;
