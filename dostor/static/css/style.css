@@ -361,7 +361,13 @@ left: 106px;
         .sidebar .nav li.active .authorities{
             background-position: -141px -1706px ;
         }
-
+.sidebar .chapter{
+    background-position: -23px  -1857px ;
+}
+        .sidebar .nav li.active .chapter{
+            background-position: -141px -1857px ;
+        }
+        
 /*------------   dostor-image    ------ */
 .dostor-image{
     margin-bottom: 20px;
