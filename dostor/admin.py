@@ -16,7 +16,7 @@ class ArticleAdmin(admin.ModelAdmin):
 
 class TagAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
-    list_display = ('name','order')
+    list_display = ('short_name','name','order')
     list_editable = ['order']
 
     class Media:
@@ -24,7 +24,7 @@ class TagAdmin(admin.ModelAdmin):
 
 class TopicAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
-    list_display = ('name','order')
+    list_display = ('short_name','name','order')
     list_editable = ['order']
 
     class Media:
