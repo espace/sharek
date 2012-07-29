@@ -60,7 +60,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="l
     if classified_by == "tags":  
         tags = Tag.objects.all
         tag = get_object_or_404( Tag, slug=class_slug )
-    elif classified_by == "topics":
+    elif classified_by == "topic":
         topics = Topic.objects.all
         topic = get_object_or_404( Topic, slug=class_slug )
     else:
