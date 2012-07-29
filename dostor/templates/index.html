@@ -6,9 +6,8 @@
 
 {% if perecent > 50 %}
 <style>
-.progress-promo .comments-till-now::after {
-	left: 20px;
-}
+.progress-promo .comments-till-now { margin-right: -194px; }
+.progress-promo .comments-till-now::after { left: 20px; }
 </style>
 {% endif %}
 
@@ -21,7 +20,7 @@
         </p>
                 <span class="tooltip">Welcome!!!</span>
 
-        <span style="right: {{perecent}}% !important;" class="comments-till-now">عدد التعليقات حتى الآن {{perecent}}</span>
+        <span style="right: {{perecent}}% !important;" class="comments-till-now">عدد التعليقات حتى الآن {{count}}</span>
         <div class="progress progress-success progress-striped">
             <div class="bar" style="width: {{perecent}}%;"></div>
           </div>
