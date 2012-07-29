@@ -665,8 +665,9 @@ span.divider{
 
 /*--------------------footer-----------------  */
 .footer{
-    background: #554437;
     margin-top: 20px;
+    box-shadow:0 -1px 0 #ebdfd8;
+    border-top: 1px solid #f8f3ed;
 
 }
 .footer .logo{
