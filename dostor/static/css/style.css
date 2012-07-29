@@ -141,7 +141,7 @@ font: 14px GESSTwoMediumRegular;
 color: #fff;
 top: 155px;
 right: 20%;
-margin-right: -106px;
+margin-right: -30px;
 display: block;
 position: absolute;
 width: 200px;
@@ -166,7 +166,7 @@ border-width: 10px;
 border-style: solid;
 border-color: #9b0a0a transparent transparent transparent;
 top: 44px;
-left: 106px;
+left: 180px;
 }
 
 /*------------   home-sections    ------ */

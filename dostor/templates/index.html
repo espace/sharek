@@ -4,6 +4,14 @@
 
 {% block content %}
 
+{% if perecent > 50 %}
+<style>
+.progress-promo .comments-till-now::after {
+	left: 20px;
+}
+</style>
+{% endif %}
+
   <div class="row promo">
     <div class="">
       <div class="span7 progress-promo">
