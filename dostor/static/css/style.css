@@ -301,14 +301,14 @@ left: 106px;
 /* ------------------sidebar --------------------------- */
 .sidebar .nav li a{
     height: 40px;
-    text-indent: 40px;
+    /*text-indent: 40px;*/
     padding: 20px 0 0 0 ;
-    font-size: 18px;
+    font-size: 15px;
     color: #b8babb !important;
     font-family: FrutigerBold;
     -webkit-border-radius:0 !important;
-     -moz-border-radius: 0 !important;
-          border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
 
 }
 .sidebar .nav li.active a{
