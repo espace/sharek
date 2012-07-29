@@ -12,7 +12,7 @@
         {% for topic_list in topics %}
           <li class="tag_item {% ifequal topic_list.id topic.id %}active{% endifequal %}" >
             <a id="{{topic_list.slug}}" alt="{{topic_list.name}}" rel="{{topic_list.slug}}" href="/topic{{topic_list.get_absolute_url}}" >
-                <span class="sidebar-icon {{topic_list.slug}}"></span>{{topic_list.name}}
+                <span class="sidebar-icon judge"></span>{{topic_list.name}}
               </a>
           </li>
         {% endfor %}
