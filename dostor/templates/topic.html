@@ -22,7 +22,7 @@
             <div class="topic">
                 <h3>
                     <p class="mada-title">
-                        <a href="/topics/{{topic.slug}}{{article.get_absolute_url}}">{{article.name}}</a> <a href="/topics/{{topic.slug}}{{article.get_absolute_url}}" class="comments-number pull-left"><i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i>{% if article.feedback_count > 0 %}{{article.feedback_count}}تعليق{% else %}لا توجد تعليقات{% endif %}</a>
+                        <a href="/topic/{{topic.slug}}{{article.get_absolute_url}}">{{article.name}}</a> <a href="/topic/{{topic.slug}}{{article.get_absolute_url}}" class="comments-number pull-left"><i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i>{% if article.feedback_count > 0 %}{{article.feedback_count}}تعليق{% else %}لا توجد تعليقات{% endif %}</a>
                     </p>
                 </h3>  
                 <p>{{article.summary|safe|truncatewords_html:35}}</p>
