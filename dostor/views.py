@@ -19,7 +19,8 @@ def index(request):
       user = request.user
     tags = Tag.objects.all
     feedback_count = len(Feedback.objects.all())
-    perecent = int(feedback_count/5000)
+    perecent = float(1.0*feedback_count/5000)
+    print perecent
     home = True
     template_context = {'home':home,'tags':tags,'settings': settings,'user':user,'count':feedback_count,'perecent':perecent}
     return render_to_response('index.html', template_context ,RequestContext(request))
