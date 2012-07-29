@@ -11,6 +11,7 @@ class Tag(models.Model):
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
     #photo = models.ImageField(upload_to="dostor/static/photos/", blank=True)
     summary = MarkupField(blank=True, default='')
+    order = models.IntegerField(blank = True, null = True)
 
     def __unicode__(self):
         #return u'%s - %s' % (self.topic.name, self.name)
@@ -23,13 +24,14 @@ class Tag(models.Model):
         return Article.objects.filter(tag_id= self.id)
         
     class Meta:
-       ordering = ["name"]
+       ordering = ["order"]
 
 class Topic(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
+    order = models.IntegerField(blank = True, null = True)
 
     def __unicode__(self):
         #return u'%s - %s' % (self.topic.name, self.name)
@@ -40,9 +42,9 @@ class Topic(models.Model):
     
     def get_articles(self):
         return Article.objects.filter(topic_id= self.id)
-        
+    
     class Meta:
-       ordering = ["name"]
+       ordering = ["order"]
        
 class Article(models.Model):
     tags = models.ManyToManyField(Tag)
@@ -50,6 +52,7 @@ class Article(models.Model):
     name = models.CharField(max_length=40)
     slug 	 = models.SlugField(max_length=40, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
+    order = models.IntegerField(blank = True, null = True)
 
     def feedback_count(self):
         return len(Feedback.objects.filter(article_id = self.id))
@@ -69,7 +72,7 @@ class Article(models.Model):
         return "/%s/" % (self.slug)
 
     class Meta:
-       ordering = ["name"] 
+       ordering = ["order"] 
 
 class Feedback(models.Model):
     article = models.ForeignKey(Article)
