@@ -26,7 +26,7 @@ urlpatterns = patterns('',
     #Topc detail URL
     
     url(r'^topics', 'dostor.views.topic_detail'),
-    url(r'^topics/(?P<topic_slug>[-\w]+)/$', 'dostor.views.topic_detail'),
+    url(r'^topic/(?P<topic_slug>[-\w]+)/$', 'dostor.views.topic_detail'),
     #Article detail URL
     url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/$', 'dostor.views.article_detail'),
     url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'dostor.views.article_detail'),
