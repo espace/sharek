@@ -103,7 +103,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="l
 
     if classified_by == "tags":  
         template_context = {'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
-    elif classified_by == "topics":
+    elif classified_by == "topic":
         template_context = {'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
