@@ -134,6 +134,7 @@ body {
 .progress-promo .progress{
     margin-top: 65px;
     margin-bottom: 10px;
+	width: 99%;
 }
 
 .percentage-till-now{
