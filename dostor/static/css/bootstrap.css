@@ -2714,7 +2714,9 @@ button.close {
 .btn-info,
 .btn-info:hover,
 .btn-inverse,
-.btn-inverse:hover {
+.btn-inverse:hover 
+,.btn-primary-green,
+.btn-primary-green:hover{
   color: #ffffff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
@@ -2911,6 +2913,33 @@ button.close {
 .btn-inverse:active,
 .btn-inverse.active {
   background-color: #080808 \9;
+}
+
+
+/* By Amin */
+.btn-primary-green {
+  background-color: #0074cc;
+  *background-color: #0055cc;
+  background-image: -ms-linear-gradient(top, #8fc836, #428e0b);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#8fc836), to(#428e0b));
+  background-image: -webkit-linear-gradient(top, #8fc836, #428e0b);
+  background-image: -o-linear-gradient(top, #8fc836, #428e0b);
+  background-image: -moz-linear-gradient(top, #8fc836, #428e0b);
+  background-image: linear-gradient(top, #8fc836, #428e0b);
+  background-repeat: repeat-x;
+  border-color: #fff;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#8fc836', endColorstr='#428e0b', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+
+.btn-primary-green:hover,
+.btn-primary-green:active,
+.btn-primary-green.active,
+.btn-primary-green.disabled,
+.btn-primary-green[disabled] {
+  background-color: #8fc836;
+  *background-color: #8fc836;
 }
 
 button.btn,

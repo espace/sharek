@@ -119,35 +119,39 @@ body {
     margin-top: 20px;
 }
 .progress-promo p{
-    font: 31px GESSTwoMediumRegular;
+    font: 22px GESSTwoMediumRegular;
     color: #887a70;
-    line-height: 56px;
+    line-height: 42px;
 }
 .progress-promo a.btn{
-    font: 31px GESSTwoMediumRegular;
+    font: 20px GESSTwoMediumRegular;
 
 }
 .progress-promo p strong{
-    font: 52px GESSTwoBoldRegular;
+    font: 34px GESSTwoBoldRegular;
     color: #a11212;
 }
 .progress-promo .progress{
-    margin-top: 85px;
+    margin-top: 65px;
+    margin-bottom: 10px;
 }
 
+.percentage-till-now{
+    float: right;
+}
 
 .progress-promo .comments-till-now{
 font: 14px GESSTwoMediumRegular;
 color: #fff;
-top: 155px;
+top: 15px;
 right: 20%;
-margin-right: -30px;
+margin-right: -96px;
 display: block;
 position: absolute;
 width: 200px;
 height: 20px;
 line-height: 20px;
-padding: 10px;
+padding: 5px;
 font-size: 14px;
 text-align: center;
 color: #fff;
@@ -165,10 +169,60 @@ height: 0;
 border-width: 10px;
 border-style: solid;
 border-color: #9b0a0a transparent transparent transparent;
-top: 44px;
-left: 180px;
+top: 34px;
+left: 99px;
 }
 
+
+.progress-promo .comments-will-be{
+font: 14px GESSTwoMediumRegular;
+color: #fff;
+top: 15px;
+left: 10px;
+margin-right: -96px;
+display: block;
+position: absolute;
+width: 140px;
+height: 20px;
+line-height: 20px;
+padding: 5px;
+font-size: 14px;
+text-align: center;
+color: #fff;
+background: rgb(115, 170, 0);
+border: 4px solid rgb(115, 170, 0);
+border-radius: 5px;
+text-shadow: rgba(0, 0, 0, 0.1) 1px 1px 1px;
+box-shadow: rgba(0, 0, 0, 0.1) 1px 1px 2px 0px;
+
+}
+
+.progress-promo .comments-will-be:after{
+content: "";
+position: absolute;
+width: 0;
+height: 0;
+border-width: 10px;
+border-style: solid;
+border-color: #71a900 transparent transparent transparent;
+top: 34px;
+left: 1px;
+}
+.progress-promo .comments-will-be strong{
+    font-size: 32px;
+}
+
+.bar{
+    text-align: center;
+    font-weight: bold;
+    color: #003300 !important;
+    font: 16px GESSTwoBoldRegular !important;
+}
+
+.progress-promo .well{
+    background: url("../images/pattern.png") repeat #cabcac;
+    padding: 0 10px !important;
+}
 /*------------   home-sections    ------ */
 
 .home-sections .nav{
@@ -182,8 +236,8 @@ left: 180px;
     text-align: right;
     padding: 10px 0 0 0 ;
     margin-bottom: 40px;
-    font-size: 18px;
-    color: #444 !important;
+    font-size: 16px;
+    color: #b8babb !important;
     font-family: GESSTwoMediumRegular;
     line-height: 30px;
     -webkit-border-radius:0 !important;
@@ -200,9 +254,8 @@ left: 180px;
 .home-sections .nav li p{
     float: right;
     font:normal 12px Tahoma,Geneva ;
-    width: 75%;
-    /*margin-top: 10px;*/
-	color: #b8babb;
+    width: 69%;
+    margin-top: 10px;
  }
 .home-sections-icon{
     width: 90px;
@@ -434,19 +487,23 @@ left: 180px;
 	text-decoration: none;
 }
 .headtitle{
-    background: url("../images/headtitle.png") no-repeat  center top transparent;
+   /* background: url("../images/headtitle.png") no-repeat  center top transparent;*/
     padding-top: 5px;
     min-width: 440px;
     min-height: 55px;
     text-align: center;
 
-
+}
+.headtitle span{
+    background: url("../images/pattern.png") repeat #9b0a0a;
+    padding: 5px 20px;
+    border-radius: 5px;
 }
 .headtitle.pushed-up{
     margin-top: -40px;
 }
 .divider.pushed-up{
-    margin-top: 80px;
+    margin-top: 50px;
 }
 /*------------   subject-title    ------ */
 
