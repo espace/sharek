@@ -21,6 +21,8 @@ import urllib
 
 def index(request):
     user = None
+
+    login(request)
     home = True
     if request.user.is_authenticated():
       user = request.user
