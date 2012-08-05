@@ -19,9 +19,10 @@ def index(request):
     if request.user.is_authenticated():
       user = request.user
     tags = Tag.objects.all
+    target = 150
     feedback_count = len(Feedback.objects.all())
-    perecent = int((float(feedback_count)/150)*100)
-    template_context = {'home':home,'tags':tags,'settings': settings,'user':user,'count':feedback_count,'perecent':perecent}
+    percent = int((float(feedback_count)/target)*100)
+    template_context = {'request':request, 'home':home,'tags':tags,'target':target,'settings': settings,'user':user,'count':feedback_count,'percent':percent}
     return render_to_response('index.html', template_context ,RequestContext(request))
     
     
@@ -33,7 +34,7 @@ def tag_detail(request, tag_slug):
     tag = get_object_or_404( Tag, slug=tag_slug )
     articles = tag.article_set.all()
 
-    template_context = {'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
+    template_context = {'request':request, 'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('tag.html',template_context ,RequestContext(request))
 
 def topic_detail(request, topic_slug=None):
@@ -55,7 +56,7 @@ def topic_detail(request, topic_slug=None):
 
     #articles = topic.article_set.all()
 
-    template_context = {'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
+    template_context = {'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('topic.html',template_context ,RequestContext(request))
 
 def article_detail(request, classified_by, class_slug, article_slug, order_by="latest"):
@@ -108,9 +109,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="l
           n_votes[vote.feedback_id] = 1
 
     if classified_by == "tags":  
-        template_context = {'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+        template_context = {'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
     elif classified_by == "topic":
-        template_context = {'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+        template_context = {'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 

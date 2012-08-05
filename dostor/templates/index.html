@@ -11,60 +11,65 @@
 </style>
 {% endif %}
 
-  <div class="row promo">
-    <div class="">
-      <div class="span7 progress-promo">
-        <p>
-          مبادرة <strong>نصف مليون </strong> مشاركة على مسودة دستور مصر 
-          <a href="#" class="btn btn-success btn-large"> شارك الآن !</a>
-        </p>
-                <span class="tooltip">Welcome!!!</span>
+<div class="row promo">
+  <div class="">
+    <div class="span7 progress-promo">
+      <p> مبادرة <strong>نصف مليون </strong> مشاركة على مسودة دستور مصر 
+        نحو حوار مجتمعى هادف و مشاركة فاعلة على مسودة دستور مصر القادم بقدر واسع من التفاعلية والشفافية و إعلاء لقيم المشاركة المجتمعية التى تصيغ الوعى والشكل والمضمون . </p>
+      <a href="#" class="btn btn-primary-green"> شارك الآن فى كتابة الدستور!</a> </div>
+    <div class="span5 map"> <a href="#"> <img src="{{STATIC_URL}}images/map.png"> </a> </div>
+  </div>
+  <!-- below header --> 
+  
+</div>
+<!-- row -->
 
-        <span style="right: {{perecent}}% !important;" class="comments-till-now">عدد التعليقات حتى الآن {{count}}</span>
-        <div class="progress progress-success progress-striped">
-            <div class="bar" style="width: {{perecent}}%;"></div>
-          </div>
+<div class="row">
+  <!--div class="span12 progress-promo">
+    <div class="well"> <span class="comments-will-be">هدفنا <strong>{{ target }} !</strong></span> <span style="right: {{ percent }}%;" class="comments-till-now">عدد التعليقات حتى الآن {{ count }}</span>
+      <div class="progress progress-success progress-striped">
+        <div class="bar" style="width: {{ percent }}%;"> {{ percent }}% </div>
       </div>
-      <div class="span5 map">
-          <a href="#">
-            <img src="{{ STATIC_URL }}images/map.png">
-          </a>
-      </div>
-    </div><!-- below header -->
-  </div><!-- row -->
-
-  <div class="row">
-    <div class="span12 ">
-      <span class="divider pushed-up"></span>
     </div>
-  </div><!-- row -end -->
+  </div-->
+</div>
+<!-- row -end -->
 
-  <div class="row">
-    <div class="home-sections span10">
-      <h1 class="headtitle pushed-up">مواضيع الدستور </h1>
+<div class="row">
+  <div class="span12 "> <span class="divider pushed-up"></span> </div>
+</div>
+<!-- row -end -->
 
-      <ul class="nav nav-pills  divider-vert">
+<div class="row">
+  <div class="home-sections span8">
+	<h1 class="headtitle pushed-up"> <span> مواضيع الدستور </span> </h1>
+    <ul class="nav nav-pills  divider-vert">
       {% for tag_list in tags %}
-        <li class="span5">
-        	<a href="tags{{tag_list.get_absolute_url}}">
-                <span class="home-sections-icon {{tag_list.slug}}"></span>
-                {{tag_list.name}}
-                {% ifequal tag_list.summary '' %}
-                <p>{{tag_list.summary}}</p>
-                {% else %}
-                <p>ناقش سلطات القضاء واأجهزة الدولة وسلطاته على الشرطة والقوات المسلحة.</p>
-                {% endifequal %}
-            </a>
-        </li>
+      <li class="span4"> <a href="tags{{tag_list.get_absolute_url}}"> <span class="home-sections-icon {{tag_list.slug}}"></span> {{tag_list.name}}
+        {% ifequal tag_list.summary '' %}
+        <p>{{tag_list.summary}}</p>
+        {% else %}
+        <p>ناقش سلطات القضاء واأجهزة الدولة وسلطاته على الشرطة والقوات المسلحة.</p>
+        {% endifequal %} </a> </li>
       {% endfor %}
-        </ul>
-    </div><!-- sidebar -->
-
-    <div class="facebook-plugin span2">
-      <img src="{{STATIC_URL}}images/face.jpg" alt="">
-    </div><!--span -->
-  </div><!-- row end -->
-
-
+    </ul>
+  </div>
+  <!-- sidebar -->
+  
+  <div class="facebook-plugin span4"> 
+    <!--img src="{{STATIC_URL}}images/face.jpg" alt=""-->
+    <div class="fb-like-box" data-href="http://www.facebook.com/sawty.me" data-width="300" data-height="420" data-show-faces="true" data-stream="false" data-header="false"></div>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=462028557155670";
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script> 
+  </div>
+  <!--span --> 
+</div>
+<!-- row end --> 
 
 {% endblock %}
