@@ -205,7 +205,7 @@ def login(request):
 
             url = 'https://graph.facebook.com/oauth/access_token?' + \
                     urllib.urlencode(args)
-            print request.build_absolute_uri
+            print request.build_absolute_uri(request.path)
             response = cgi.parse_qs(urllib.urlopen(url).read())
             access_token = response['access_token'][0]
             expires = response['expires'][0]
