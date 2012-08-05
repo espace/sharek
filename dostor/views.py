@@ -192,7 +192,7 @@ def login(request):
         if 'code' in request.GET:
             args = {
                 'client_id': settings.FACEBOOK_APP_ID,
-                'redirect_uri': settings.FACEBOOK_REDIRECT_URI,
+                'redirect_uri': request.build_absolute_uri,
                 'client_secret': settings.FACEBOOK_API_SECRET,
                 'code': request.GET['code'],
             }
