@@ -29,11 +29,11 @@
         <div class="span4 pull-left facebook_log_in">
           <div class="">
             {% if user %}
-              <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
               <div class="attrs">
                 <p href="#" class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
                 <a href="/facebook/logout" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
               </div>
+              <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
             {% else %}  
               {% if error %}
                 {% if error == 'AUTH_FAILED' %}
