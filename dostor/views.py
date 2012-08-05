@@ -200,11 +200,11 @@ def login(request):
                 'client_secret': settings.FACEBOOK_API_SECRET,
                 'code': request.GET['code'],
             }
+            print request.GET['code']
 
             url = 'https://graph.facebook.com/oauth/access_token?' + \
                     urllib.urlencode(args)
             response = cgi.parse_qs(urllib.urlopen(url).read())
-            print response
             access_token = response['access_token'][0]
             expires = response['expires'][0]
 
