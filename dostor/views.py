@@ -38,6 +38,8 @@ def index(request):
     
 def tag_detail(request, tag_slug):
     user = None
+
+    login(request)
     if request.user.is_authenticated():
       user = request.user
     tags = Tag.objects.all
@@ -49,6 +51,8 @@ def tag_detail(request, tag_slug):
 
 def topic_detail(request, topic_slug=None):
     user = None
+
+    login(request)
     if request.user.is_authenticated():
       user = request.user
     if topic_slug:
