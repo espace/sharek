@@ -61,6 +61,9 @@ def topic_detail(request, topic_slug=None):
 
 def article_detail(request, classified_by, class_slug, article_slug, order_by="latest"):
     user = None
+
+    login(request)
+
     if request.user.is_authenticated():
       user = request.user
 
@@ -173,3 +176,44 @@ def vote(request):
           
 def facebook_comment(request):
     return render_to_response('facebook_comment.html', {},RequestContext(request))
+
+
+def login(request):
+    error = None
+
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('/')
+
+    if request.GET:
+        if 'code' in request.GET:
+            args = {
+                'client_id': settings.FACEBOOK_APP_ID,
+                'redirect_uri': settings.FACEBOOK_REDIRECT_URI,
+                'client_secret': settings.FACEBOOK_API_SECRET,
+                'code': request.GET['code'],
+            }
+
+            url = 'https://graph.facebook.com/oauth/access_token?' + \
+                    urllib.urlencode(args)
+            response = cgi.parse_qs(urllib.urlopen(url).read())
+            access_token = response['access_token'][0]
+            expires = response['expires'][0]
+
+            facebook_session = FacebookSession.objects.get_or_create(
+                access_token=access_token,
+            )[0]
+
+            facebook_session.expires = expires
+            facebook_session.save()
+
+            user = auth.authenticate(token=access_token)
+            if user:
+                if user.is_active:
+                    auth.login(request, user)
+                    return HttpResponseRedirect(request.path)
+                else:
+                    error = 'AUTH_DISABLED'
+            else:
+                error = 'AUTH_FAILED'
+        elif 'error_reason' in request.GET:
+            error = 'AUTH_DENIED'
