@@ -4,6 +4,8 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.utils import simplejson
 from datetime import datetime
 
+from django.contrib import auth
+
 from dostor.models import Tag, Article, Feedback, Rating, Topic
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
