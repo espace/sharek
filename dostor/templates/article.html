@@ -65,6 +65,21 @@
       </p>
     </div><!-- comment end -->
     {% endif %}
+
+    {% for feedback in top_ranked %}
+    <div class="comment-block ">
+      <div class="facebook_user_img">
+        <img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/>
+      </div>
+        <h3><p class="name"><a href="#">{{feedback.name}}</a></p></h3> 
+        <div class="like-group">
+           <a href="javascript:;" class="like vote" id="{{feedback.id}}" vote="1"><i class="icon-thumbs-up"></i><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
+           <a href="javascript:;" class="dislike vote" id="{{feedback.id}}" vote="0"><i class="icon-thumbs-down"></i><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
+        </div>
+        <p>{{feedback.suggestion}}</p>
+        <span class="date">{{feedback.date}}</span>
+    </div><!-- comment end -->
+    {% endfor %}
     <div class="comment-block well top">
       <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | 
       <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>

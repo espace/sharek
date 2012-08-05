@@ -74,7 +74,7 @@ def topic_detail(request, topic_slug=None):
     template_context = {'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('topic.html',template_context ,RequestContext(request))
 
-def article_detail(request, classified_by, class_slug, article_slug, order_by="latest"):
+def article_detail(request, classified_by, class_slug, article_slug, order_by="def"):
     user = None
 
     login(request)
@@ -93,10 +93,14 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="l
 
     article = get_object_or_404( Article, slug=article_slug )
     related_tags = article.tags.all
+    top_ranked = None
     if order_by == "latest":
         feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
-    else:
+    elif order_by == "order":
         feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-order')
+    elif order_by == "def":
+        feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
+        top_ranked = Feedback.objects.filter(article_id = article.id).order_by('-order')[:3]
 
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
@@ -127,9 +131,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="l
           n_votes[vote.feedback_id] = 1
 
     if classified_by == "tags":  
-        template_context = {'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+        template_context = {'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
     elif classified_by == "topic":
-        template_context = {'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+        template_context = {'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
