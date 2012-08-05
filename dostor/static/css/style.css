@@ -732,8 +732,9 @@ span.divider{
     margin:20px;
 }
 .footer .copyrights{
-    margin: 20px;
+    margin: 27px;
     color: #7a7672;
+	font: 12px GESSTwoMediumRegular;
 }
 .content {
     margin-top:80px; 
