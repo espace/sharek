@@ -12,6 +12,10 @@ from dostor.facebook.models import FacebookSession
 from dostor.facebook import facebook_sdk
 from dostor_masr import settings
 
+import cgi
+import simplejson
+import urllib
+
 
 def index(request):
     user = None
