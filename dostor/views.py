@@ -3,9 +3,11 @@ import os, sys
 
 from django.template import Context, loader, RequestContext
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.utils import simplejson
 from datetime import datetime
+
+from django.contrib import auth
 
 from dostor.models import Tag, Article, Feedback, Rating, Topic
 
@@ -15,9 +17,15 @@ from dostor.facebook.models import FacebookSession
 from dostor.facebook import facebook_sdk
 from dostor_masr import settings
 
+import cgi
+import simplejson
+import urllib
+
 
 def index(request):
     user = None
+
+    login(request)
     home = True
     if request.user.is_authenticated():
       user = request.user
@@ -64,6 +72,9 @@ def topic_detail(request, topic_slug=None):
 
 def article_detail(request, classified_by, class_slug, article_slug, order_by="latest"):
     user = None
+
+    login(request)
+
     if request.user.is_authenticated():
       user = request.user
 
@@ -130,7 +141,7 @@ def modify(request):
         attachment = {}
         attachment['link'] = settings.domain+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")
         attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook-thumb.jpg"
-        message = 'لقد شاركت في كتابة دستور مصر وقمت بالتعليق على'+get_object_or_404(Article, id=request.POST.get("article")).name
+        message = 'لقد شاركت في كتابة دستور مصر وقمت بالتعليق على '+get_object_or_404(Article, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
         graph.put_wall_post(message, attachment)
 
         return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
@@ -175,3 +186,45 @@ def vote(request):
           
 def facebook_comment(request):
     return render_to_response('facebook_comment.html', {},RequestContext(request))
+
+
+def login(request):
+    error = None
+
+    if request.user.is_authenticated():
+        return HttpResponseRedirect('/')
+
+    if request.GET:
+        if 'code' in request.GET:
+            args = {
+                'client_id': settings.FACEBOOK_APP_ID,
+                'redirect_uri': settings.FACEBOOK_REDIRECT_URI,
+                'client_secret': settings.FACEBOOK_API_SECRET,
+                'code': request.GET['code'],
+            }
+
+            url = 'https://graph.facebook.com/oauth/access_token?' + \
+                    urllib.urlencode(args)
+            print request.build_absolute_uri
+            response = cgi.parse_qs(urllib.urlopen(url).read())
+            access_token = response['access_token'][0]
+            expires = response['expires'][0]
+
+            facebook_session = FacebookSession.objects.get_or_create(
+                access_token=access_token,
+            )[0]
+
+            facebook_session.expires = expires
+            facebook_session.save()
+
+            user = auth.authenticate(token=access_token)
+            if user:
+                if user.is_active:
+                    auth.login(request, user)
+                    return HttpResponseRedirect(request.path)
+                else:
+                    error = 'AUTH_DISABLED'
+            else:
+                error = 'AUTH_FAILED'
+        elif 'error_reason' in request.GET:
+            error = 'AUTH_DENIED'

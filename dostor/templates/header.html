@@ -48,7 +48,7 @@
                   {% endif %}
                 {% endif %}
               {% else %}
-              <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ request.build_absolute_uri }}&scope=publish_stream,email&display=popup">
+              <a href="https://graph.facebook.com/oauth/authorize?redirect_uri={{ settings.FACEBOOK_REDIRECT_URI }}&client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup">
                 <img style="float: left; padding-top: 25px;" src="http://developers.facebook.com/images/devsite/login-button.png"/>
               </a>
               {% endif %}
