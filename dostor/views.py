@@ -2,7 +2,7 @@ import os, sys
 
 from django.template import Context, loader, RequestContext
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.utils import simplejson
 from datetime import datetime
 
