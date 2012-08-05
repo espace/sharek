@@ -1,3 +1,4 @@
+# This Python file uses the following encoding: utf-8
 import os, sys
 
 from django.template import Context, loader, RequestContext
@@ -144,9 +145,8 @@ def modify(request):
         attachment = {}
         attachment['link'] = settings.domain+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")
         attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook-thumb.jpg"
-        message = request.POST.get("suggestion").encode('utf8') 
+        message = 'لقد شاركت في كتابة دستور مصر وقمت بالتعليق على '+get_object_or_404(Article, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
         graph.put_wall_post(message, attachment)
-
 
         return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
