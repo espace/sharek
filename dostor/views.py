@@ -198,14 +198,13 @@ def login(request):
         if 'code' in request.GET:
             args = {
                 'client_id': settings.FACEBOOK_APP_ID,
-                'redirect_uri': settings.FACEBOOK_REDIRECT_URI,
+                'redirect_uri': request.build_absolute_uri(request.path),
                 'client_secret': settings.FACEBOOK_API_SECRET,
                 'code': request.GET['code'],
             }
 
             url = 'https://graph.facebook.com/oauth/access_token?' + \
                     urllib.urlencode(args)
-            print request.build_absolute_uri(request.path)
             response = cgi.parse_qs(urllib.urlopen(url).read())
             access_token = response['access_token'][0]
             expires = response['expires'][0]
