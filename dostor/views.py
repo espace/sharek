@@ -44,11 +44,17 @@ def topic_detail(request, topic_slug=None):
     if topic_slug:
         topics = Topic.objects.all
         topic = get_object_or_404( Topic, slug=topic_slug )
+        articles = topic.article_set.all()
     else:
         topics = Topic.objects.filter()
-        topic = topics[0]
+        if len(topics) > 0:
+            topic = topics[0]
+            articles = topic.article_set.all()
+        else:
+            topic = None
+            articles = None
 
-    articles = topic.article_set.all()
+    #articles = topic.article_set.all()
 
     template_context = {'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('topic.html',template_context ,RequestContext(request))
