@@ -129,11 +129,21 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
           n_votes[vote.feedback_id] += 1
         else:
           n_votes[vote.feedback_id] = 1
-
+    '''
+    for feedback in feedbacks:
+        if feedback.date:
+            diff = datetime.now() - feedback.date
+            if diff.days < 3 and diff.days > 1:
+                feedback.date = diff.days + "days ago"
+            elif diff.days < 1 and diff.seconds/3600 > 1:
+                feedback.date = diff.seconds/3600 + "hours ago"
+            elif diff.seconds/3600 < 1:
+                feedback.date = timeDiff.seconds%3600/60 + "minutes ago"
+    '''
     if classified_by == "tags":  
-        template_context = {'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+        template_context = {'now':datetime.now() ,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
     elif classified_by == "topic":
-        template_context = {'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+        template_context = {'now':datetime.now() ,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
