@@ -85,7 +85,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if classified_by == "tags":  
         tags = Tag.objects.all
         tag = get_object_or_404( Tag, slug=class_slug )
-    elif classified_by == "topic":
+    elif classified_by == "topics":
         topics = Topic.objects.all
         topic = get_object_or_404( Topic, slug=class_slug )
     else:
@@ -142,7 +142,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     '''
     if classified_by == "tags":  
         template_context = {'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
-    elif classified_by == "topic":
+    elif classified_by == "topics":
         template_context = {'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
