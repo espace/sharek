@@ -2,6 +2,7 @@
 
 {% load replace %}
 {% load hash %} 
+{% load date_format %} 
 {% block title %}{{article.name}}{% endblock %}
 
 {% block content %}
@@ -96,7 +97,7 @@
            <a href="javascript:;" class="dislike vote" id="{{feedback.id}}" vote="0"><i class="icon-thumbs-down"></i><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
         </div>
         <p>{{feedback.suggestion}}</p>
-        <span class="date">{{feedback.date}}</span>
+        <span class="date">{{feedback.date|format}}</span>
     </div><!-- comment end -->
     {% endfor %}
     <ul class=" pager">
