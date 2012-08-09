@@ -78,7 +78,7 @@
              <a href="javascript:;" class="dislike vote" id="{{top_feedback.id}}" vote="0"><i class="icon-thumbs-down"></i><small class="dislike {{top_feedback.id}}">{{n_votes|key:top_feedback.id }}</small></a>
           </div>
           <p>{{top_feedback.suggestion}}</p>
-          <span class="date">{{top_feedback.date}}</span>
+          <span class="date">{{top_feedback.date|format}}</span>
       </div><!-- comment end -->
       {% endfor %}
     {% endif %}
@@ -157,7 +157,7 @@
                 $("#suggestion").val("");
                 $("#count").attr("value",parseInt($("#count").attr("value"))+1);
                 $("#feedback_counter").text($("#count").attr("value")+" تعليق");
-                $(".comment-block.well.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "Just now", "suggestion": data.suggestion}));
+                $(".comment-block.well.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
                 $("#load-img").remove();
                 },
             });
