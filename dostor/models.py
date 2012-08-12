@@ -49,9 +49,8 @@ class Topic(models.Model):
        ordering = ["order"]
        
 class Article(models.Model):
-    #search = SphinxSearch()
     tags = models.ManyToManyField(Tag)
-    topic = models.ForeignKey(Topic,blank=True,null=True)
+    topic = models.ForeignKey(Topic,null = True)
     name = models.CharField(max_length=40)
     slug 	 = models.SlugField(max_length=40, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')

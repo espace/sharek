@@ -166,7 +166,6 @@ def vote(request):
             record = Rating.objects.filter(feedback_id = feedback, user = user )
 
             vote = False
-            print request.POST.get("type")
             if request.POST.get("type") == "1" :
               vote = True
             
@@ -177,13 +176,14 @@ def vote(request):
                 Rating(user = user, vote = vote, feedback_id = feedback,article_id = request.POST.get("article")).save()
             
             mod = Feedback.objects.get(id=feedback)
+            '''
             if request.POST.get("type") == "1" :
                 temp = 1
             else:
                 temp = -1
             mod.order = mod.order + temp
             mod.save()
-
+            '''
             votes = Rating.objects.filter(feedback_id = feedback)
             p = 0
             n = 0
@@ -191,7 +191,10 @@ def vote(request):
               if v.vote == True:
                 p += 1
               else:
-                n += 1            
+                n += 1
+
+            mod.order = p - n
+            mod.save()
             return HttpResponse(simplejson.dumps({'modification':request.POST.get("modification"),'p':p,'n':n}))
           
 def facebook_comment(request):
