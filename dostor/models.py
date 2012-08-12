@@ -90,3 +90,19 @@ class Rating(models.Model):
     feedback = models.ForeignKey(Feedback)
     user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()
+
+class Info(models.Model):
+    name = models.CharField(max_length=40)
+    slug     = models.SlugField(max_length=40, unique=True, help_text="created from name")
+    summary = MarkupField(blank=True, default='')
+
+    def clean(self):
+        if len(self.name) >= 40:
+            raise exceptions.ValidationError('Too many characters ...')
+        return self.name
+    
+    def __unicode__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return "/%s/" % (self.slug)

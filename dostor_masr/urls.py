@@ -21,7 +21,7 @@ urlpatterns = patterns('',
     url(r'^modify/', 'dostor.views.modify'),
     url(r'^facebook/', 'dostor.views.facebook_comment'),
 
-
+    url(r'^info/(?P<info_slug>[-\w]+)/$', 'dostor.views.info_detail'),
 
     #url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'dostor.views.article_detail'), 
 

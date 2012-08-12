@@ -9,7 +9,7 @@ from datetime import datetime
 
 from django.contrib import auth
 
-from dostor.models import Tag, Article, Feedback, Rating, Topic
+from dostor.models import Tag, Article, Feedback, Rating, Topic, Info
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -245,3 +245,15 @@ def search(request):
     query = request.GET.get("q")
     articles = Article.objects.filter(Q(summary__contains=query) | Q(name__contains=query))#(summary__contains=query | name__contains=query)
     return render_to_response('search.html',{"articles":articles},RequestContext(request))
+
+def info_detail(request, info_slug):
+    user = None
+
+    login(request)
+    if request.user.is_authenticated():
+      user = request.user
+    
+    info = get_object_or_404( Info, slug=info_slug )
+    
+    template_context = {'request':request, 'info':info,'settings': settings,'user':user,}
+    return render_to_response('info.html',template_context ,RequestContext(request))
