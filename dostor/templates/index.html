@@ -45,12 +45,12 @@
 	<h1 class="headtitle pushed-up"> <span> مواضيع الدستور </span> </h1>
     <ul class="nav nav-pills  divider-vert">
       {% for tag_list in tags %}
-      <li class="span4"> <a href="tags{{tag_list.get_absolute_url}}"> <span class="home-sections-icon {{tag_list.slug}}"></span> {{tag_list.name}}
-        {% ifequal tag_list.summary '' %}
-        <p>{{tag_list.summary}}</p>
-        {% else %}
-        <p>ناقش سلطات القضاء واأجهزة الدولة وسلطاته على الشرطة والقوات المسلحة.</p>
-        {% endifequal %} </a> </li>
+      <li class="span4"> 
+        <a href="tags{{tag_list.get_absolute_url}}">
+          <span class="home-sections-icon {{tag_list.slug}}"></span> {{tag_list.name}}
+          <p>{{tag_list.summary}}</p>
+        </a>
+      </li>
       {% endfor %}
     </ul>
   </div>
