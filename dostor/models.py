@@ -5,6 +5,8 @@ from markitup.fields import MarkupField
 from django.core import exceptions
 from django.contrib.auth.models import User
 
+#from djangosphinx.models import SphinxSearch
+
 class Tag(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
@@ -47,6 +49,7 @@ class Topic(models.Model):
        ordering = ["order"]
        
 class Article(models.Model):
+    #search = SphinxSearch()
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,blank=True,null=True)
     name = models.CharField(max_length=40)

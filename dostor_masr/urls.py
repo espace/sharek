@@ -16,6 +16,7 @@ urlpatterns = patterns('',
     
     url(r'^admin/', include(admin.site.urls)),
 
+    url(r'^search/', 'dostor.views.search'),
     url(r'^vote/', 'dostor.views.vote'),
     url(r'^modify/', 'dostor.views.modify'),
     url(r'^facebook/', 'dostor.views.facebook_comment'),

@@ -17,6 +17,8 @@ from dostor.facebook.models import FacebookSession
 from dostor.facebook import facebook_sdk
 from dostor_masr import settings
 
+from django.db.models import Q
+
 import cgi
 import simplejson
 import urllib
@@ -235,3 +237,8 @@ def login(request):
                 error = 'AUTH_FAILED'
         elif 'error_reason' in request.GET:
             error = 'AUTH_DENIED'
+
+def search(request):
+    query = request.GET.get("q")
+    articles = Article.objects.filter(Q(summary__contains=query) | Q(name__contains=query))#(summary__contains=query | name__contains=query)
+    return render_to_response('search.html',{"articles":articles},RequestContext(request))

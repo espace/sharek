@@ -177,3 +177,6 @@ LOGGING = {
 # Markitup settings
 MARKITUP_FILTER = ('markdown.markdown', {'safe_mode': True})
 MARKITUP_SET = 'markitup/sets/markdown'
+
+# Sphinx 0.9.9
+SPHINX_API_VERSION = 0x116
