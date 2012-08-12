@@ -4,6 +4,7 @@
 
 {% block content %}
 
+<h2>نتيجة البحث عن " {{query}} "</h2>
 
 {%if articles%}
   {% for article in articles %}
@@ -16,6 +17,23 @@
       <p>{{article.summary|safe|truncatewords_html:35}}</p>
   </div><!-- topic end -->
   {% endfor %}
+    <ul class=" pager">
+      <li class="next">
+      {% if articles.has_next %}
+      <a href="?page={{ articles.next_page_number }}">التالى &larr; </a>
+      {% endif %}
+      </li>
+      <li>
+        <span class="current">
+              صفحه {{ articles.number }} من {{ articles.paginator.num_pages }}.
+        </span>
+      </li>
+      <li class="previous">
+      {% if articles.has_previous %}
+      <a href="?page={{ articles.previous_page_number }}"> &rarr; السابق</a>
+      {% endif %}
+      </li>
+    </ul>
 {%else%}
   <div class="topic">
       <h3>
