@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h2>نتيجة البحث عن " {{query}} " - عدد النتائج {{articles|length}}</h2>
+<h2>نتيجة البحث عن " {{query}} " - عدد النتائج {{count}}</h2>
 
 {%if articles%}
   {% for article in articles %}

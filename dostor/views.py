@@ -244,7 +244,7 @@ def login(request):
 def search(request):
     query = request.GET.get("q")
     articles = Article.objects.filter(Q(summary__contains=query) | Q(name__contains=query))
-    
+    count = len(articles)
     paginator = Paginator(articles, settings.paginator) 
     page = request.GET.get('page')
 
@@ -257,7 +257,7 @@ def search(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         articles = paginator.page(paginator.num_pages)
 
-    return render_to_response('search.html',{"articles":articles,"query":query},RequestContext(request))
+    return render_to_response('search.html',{"articles":articles,"query":query,"count":count},RequestContext(request))
 
 def info_detail(request, info_slug):
     user = None
