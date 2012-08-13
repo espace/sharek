@@ -2942,6 +2942,43 @@ button.close {
   *background-color: #8fc836;
 }
 
+/* Added By Amin custom Button Green */
+
+.btn-green {
+  text-shadow:0 -1px 0px rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font: 18px GESSTwoMediumRegular !important;
+  background-color: #5bb75b;
+  *background-color: #51a351;
+  background-image: -ms-linear-gradient(top, #87c000, #598602);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#87c000), to(#598602));
+  background-image: -webkit-linear-gradient(top, #87c000, #598602);
+  background-image: -o-linear-gradient(top, #87c000, #598602);
+  background-image: -moz-linear-gradient(top, #87c000, #598602);
+  background-image: linear-gradient(top, #87c000, #598602);
+  background-repeat: repeat-x;
+  border-color: #8bb042 #618521 #3a5e03;
+  border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  filter: progid:dximagetransform.microsoft.gradient(startColorstr='#87c000', endColorstr='#598602', GradientType=0);
+  filter: progid:dximagetransform.microsoft.gradient(enabled=false);
+}
+
+.btn-green:hover,
+.btn-green:active,
+.btn-green.active,
+.btn-green.disabled,
+.btn-green[disabled] {
+  background-color: #598602;
+  *background-color: #598602;
+  color: #fff;
+}
+
+.btn-green:active,
+.btn-green.active {
+  background-color: #598602 \9;
+}
+
+
 button.btn,
 input[type="submit"].btn {
   *padding-top: 2px;
