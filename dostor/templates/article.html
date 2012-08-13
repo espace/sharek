@@ -88,7 +88,7 @@
       <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
     </div>
     {% for feedback in feedbacks %}
-    <div class="comment-block ">
+    <div class="comment-block {% if forloop.counter|divisibleby:2 %}top-comment{%endif%}">
       <div class="facebook_user_img">
         <img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/>
       </div>
