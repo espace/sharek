@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<h3>نتيجة البحث عن " {{query}} " - عدد النتائج {{count}}</h3>
+<h3>نتيجة البحث عن " <span  STYLE="font-size: x-large; color: #FF0000"> {{query}} </span> " - عدد النتائج {{count}}</h3>
 </br>
 {%if articles%}
   {% for article in articles %}
