@@ -65,7 +65,7 @@ body {
 .header-wrapper{
     width: 100%;
     background: rgba(120,103,93,0.3);
-    height: 75px;
+    height: 90px;
 }
 
 .logo{
@@ -73,7 +73,7 @@ body {
 
 }
 .facebook_log_in {
-	margin-top:10px ;
+	margin-bottom:10px ;
 }
 .user_img{
     border: solid 2px rgba(75,1,0,0.2);
@@ -103,7 +103,7 @@ body {
 }
 /*-------------- top-nav ---------------------*/
 .top-nav {
-    margin-top: 20px;
+    margin-top: 30px;
 }
 .top-nav a{
     color: #97635e;
@@ -740,3 +740,7 @@ span.divider{
 .content {
     margin-top:80px; 
 }
+
+
+
+.top-comment{ background:#fdfeef;}

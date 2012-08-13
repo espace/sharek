@@ -1,5 +1,8 @@
 <div class="header-wrapper">  
  <div class="container header">
+    
+    
+    
     <div class="row">
         <div class="top-nav span4">
               <ul class="nav nav-pills">
@@ -18,12 +21,7 @@
               </ul>
         </div><!-- top-nav -->
 
-        <div class="top-nav span4">
-          <form action="/search/"  method="get" >
-          <input type="text" name = "q">
-          <input type="submit"value="بحث"/>
-          </form>
-        </div>
+        
 
 
         <div class="span4">
@@ -32,8 +30,11 @@
           </div>
         </div><!-- logo end -->
         
-        <div class="span4 pull-left facebook_log_in">
-          <div class="">
+        
+        
+        
+      <div class="span4 pull-left facebook_log_in">
+        <div class="">
             {% if user %}
               <div class="attrs">
                 <p href="#" class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
@@ -59,11 +60,18 @@
               </a>
               {% endif %}
             {% endif %}         
-          </div>
         </div>
-        </div><!-- search -->     
-
-    </div><!-- row end -->
-  </div><!-- header -->
+      </div>
+      
+      <div class="pull-left form-search">
+          <form method="get" action="/search/">
+            <input type="text" name="q">
+            <input type="submit" value="بحث" class="btn">
+          </form>
+        </div>
+      
+    </div><!-- search -->     
+  </div><!-- row end -->
+</div><!-- header -->
   
 </div> <!-- header-wrapper  -->
