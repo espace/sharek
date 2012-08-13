@@ -67,6 +67,7 @@
     </div><!-- comment end -->
     {% endif %}
     {% if feedbacks|length > 3 %}
+    {%if top_ranked %}<h3>أفضل التعليقات</h3>{%endif%}
       {% for top_feedback in top_ranked %}
       <div class="comment-block top-comment ">
         <div class="facebook_user_img">
