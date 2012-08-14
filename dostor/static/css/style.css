@@ -78,7 +78,7 @@ body {
     margin-top:10px ;
 }
 .user_img{
-    border: solid 2px rgba(75,1,0,0.2);
+    border: solid 2px #333;
     border-radius: 10px;
     vertical-align: middle;
     float: left;
