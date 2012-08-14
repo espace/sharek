@@ -94,41 +94,41 @@
       {% endfor %}
     {% endif %}
     {% if feedbacks %}
-    <div class="comment-block well top">
-      <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | 
-      <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
-    </div>
-    {% for feedback in feedbacks %}
-    <div class="comment-block ">
-      <div class="facebook_user_img">
-        <img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/>
+      <div class="comment-block well top">
+        <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | 
+        <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
       </div>
-        <h3><p class="name"><a href="#">{{feedback.name}}</a></p></h3> 
-        <div class="like-group">
-           <a href="javascript:;" class="like vote" id="{{feedback.id}}" vote="1"><i class="icon-thumbs-up"></i><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
-           <a href="javascript:;" class="dislike vote" id="{{feedback.id}}" vote="0"><i class="icon-thumbs-down"></i><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
+      {% for feedback in feedbacks %}
+      <div class="comment-block ">
+        <div class="facebook_user_img">
+          <img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/>
         </div>
-        <p>{{feedback.suggestion}}</p>
-        <span class="date">{{feedback.date|format}}</span>
-    </div><!-- comment end -->
-    {% endfor %}
-    <ul class=" pager">
-      <li class="next">
-      {% if feedbacks.has_next %}
-      <a href="?page={{ feedbacks.next_page_number }}">التالى &larr; </a>
-      {% endif %}
-      </li>
-      <li>
-        <span class="current">
-              صفحه {{ feedbacks.number }} من {{ feedbacks.paginator.num_pages }}.
-        </span>
-      </li>
-      <li class="previous">
-      {% if feedbacks.has_previous %}
-      <a href="?page={{ feedbacks.previous_page_number }}"> &rarr; السابق</a>
-      {% endif %}
-      </li>
-    </ul>
+          <h3><p class="name"><a href="#">{{feedback.name}}</a></p></h3> 
+          <div class="like-group">
+             <a href="javascript:;" class="like vote" id="{{feedback.id}}" vote="1"><i class="icon-thumbs-up"></i><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
+             <a href="javascript:;" class="dislike vote" id="{{feedback.id}}" vote="0"><i class="icon-thumbs-down"></i><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
+          </div>
+          <p>{{feedback.suggestion}}</p>
+          <span class="date">{{feedback.date|format}}</span>
+      </div><!-- comment end -->
+      {% endfor %}
+      <ul class=" pager">
+        <li class="next">
+        {% if feedbacks.has_next %}
+        <a href="?page={{ feedbacks.next_page_number }}">التالى &larr; </a>
+        {% endif %}
+        </li>
+        <li>
+          <span class="current">
+                صفحه {{ feedbacks.number }} من {{ feedbacks.paginator.num_pages }}.
+          </span>
+        </li>
+        <li class="previous">
+        {% if feedbacks.has_previous %}
+        <a href="?page={{ feedbacks.previous_page_number }}"> &rarr; السابق</a>
+        {% endif %}
+        </li>
+      </ul>
     {% endif %}
 
 
