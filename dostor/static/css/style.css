@@ -825,7 +825,7 @@ span.divider{
     margin-top: 20px;
     border-top:solid 1px rgba(255,255,255,1);
     box-shadow:0 -1px 0 rgba(0,0,0,0.1);
-    padding: 20px 0;
+    padding: 0px 0 10px 0;
 
 }
 .footer .logo{
