@@ -81,10 +81,10 @@ body {
     border: solid 2px rgba(75,1,0,0.2);
     border-radius: 10px;
     vertical-align: middle;
-    float: right;
+    float: left;
 }
 .attrs{
-    float: right;
+    float: left;
 }
 .attrs a{
     margin-right: 10px;
