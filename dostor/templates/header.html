@@ -1,10 +1,8 @@
-<div class="header-wrapper">  
- <div class="container header">
+
     
     
-    
-    <div class="row">
-        <div class="top-nav span4">
+   
+        <!-- <div class="top-nav span4">
               <ul class="nav nav-pills">
                 <li class="">
                   <a href="/">الرئيسية</a>
@@ -19,59 +17,84 @@
                   <a href="/info/contact-us">اتصل بنا</a>
                 </li>
               </ul>
-        </div><!-- top-nav -->
+        </div> top-nav --> -->
 
         
 
+<div class="container header">
+  <div class="row">
 
-        <div class="span4">
-          <div class="pull-right logo">
+      <div class="span3">
+        <div class="pull-right logo">
             <a href="/"><img src="{{STATIC_URL}}images/logo.png" alt="دستور مصر"></a>
-          </div>
-        </div><!-- logo end -->
-        
-        
-        
-        
-      <div class="span4 pull-left facebook_log_in">
-        <div class="">
-            {% if user %}
-              <div class="attrs">
-                <p href="#" class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
-                <a href="/facebook/logout" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
-              </div>
-              <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
-            {% else %}  
-              {% if error %}
-                {% if error == 'AUTH_FAILED' %}
-                    <p>Authentication failed</p>
-                {% else %}
-                  {% if error == 'AUTH_DISABLED' %}
-                    <p>Your account is disabled</p>
-                  {% else %}
-                    {% if error == 'AUTH_DENIED' %}
-                    <p>You did not allow access</p>
+        </div>
+      </div><!-- logo end -->
+      
+      <div class="pull-left search">
+          <div class="span4 pull-left facebook_log_in">
+            <div class="">
+                {% if user %}
+                  <div class="attrs">
+                    <p href="#" class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
+                    <a href="/facebook/logout" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                  </div>
+                  <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
+                {% else %}  
+                  {% if error %}
+                    {% if error == 'AUTH_FAILED' %}
+                        <p>Authentication failed</p>
+                    {% else %}
+                      {% if error == 'AUTH_DISABLED' %}
+                        <p>Your account is disabled</p>
+                      {% else %}
+                        {% if error == 'AUTH_DENIED' %}
+                        <p>You did not allow access</p>
+                        {% endif %}
+                      {% endif %}
                     {% endif %}
+                  {% else %}
+                  <a href="https://graph.facebook.com/oauth/authorize?redirect_uri={{ request.build_absolute_uri }}&client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup">
+                    <img style="float: left; padding-top: 25px;" src="http://developers.facebook.com/images/devsite/login-button.png"/>
+                  </a>
                   {% endif %}
-                {% endif %}
-              {% else %}
-              <a href="https://graph.facebook.com/oauth/authorize?redirect_uri={{ request.build_absolute_uri }}&client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup">
-                <img style="float: left; padding-top: 25px;" src="http://developers.facebook.com/images/devsite/login-button.png"/>
-              </a>
-              {% endif %}
-            {% endif %}         
-        </div>
-      </div>
-      
-      <div class="pull-left form-search">
-          <form method="get" action="/search/">
-            <input type="text" name="q">
-            <input type="submit" value="بحث" class="btn">
-          </form>
-        </div>
-      
-    </div><!-- search -->     
+                {% endif %}         
+            </div>
+          </div>
+      </div> <!-- search -->
   </div><!-- row end -->
 </div><!-- header -->
-  
-</div> <!-- header-wrapper  -->
+
+<div class="container navigation">
+  <div class="row">
+      <div class="span12">
+
+        <div class="navbar-inner top-nav ">
+            <ul class="nav nav-pills">
+                <li class="">
+                  <a href="/">الرئيسية</a>
+                </li>
+                <li class="">
+                  <a href="/topics">أبواب الدستور</a>
+                </li>
+                <li class="">
+                  <a href="/info/about">من نحن</a>
+                </li>
+                <li class="">
+                  <a href="/info/contact-us">اتصل بنا</a>
+                </li>
+
+              </ul>
+
+            <form class="navbar-search pull-left" action="/search/">
+                     <input type="text" class="search-query span2" placeholder="أدخل كلمات البحث">
+                </form>
+        </div><!-- nav -end -->
+
+      </div>
+      
+
+  </div><!-- row end -->
+</div><!-- content -->        
+        
+        
+ 

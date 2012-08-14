@@ -6,8 +6,23 @@
 {% block title %}{{article.name}}{% endblock %}
 
 {% block content %}
-
-
+<div class="row">
+    <div class="span12 inner-article">
+        
+    </div>
+</div>
+<div class="row">
+    <div class="span12 ">
+        <div id="headtitle" class=" innerpage offset3">
+            <div class="tags ">
+              <p>تتعلق هذه المواد  :</p>
+                  {% for related in related_tags %}
+                    <a href="/tags{{related.get_absolute_url}}">"{{related.name}}"</a>
+                  {% endfor %}
+            </div>
+       </div>
+    </div>
+</div><!-- row -end -->
 <div class="row">
 
   <div class="span3">
@@ -15,11 +30,7 @@
   </div><!-- span3 -->
 
   <div id="ajax-container" class="span9">
-    <div class="tags"><p>تتعلق هذه المواد  :</p>
-      {% for related in related_tags %}
-        <a href="/tags{{related.get_absolute_url}}">"{{related.name}}"</a>
-      {% endfor %}
-    </div>
+    
     <div class="topic">
         <h3><p class="mada-title"><a>{{article.name}}</a> <a href="#" class="comments-number pull-left">
           <i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i><span id="feedback_counter">
@@ -30,76 +41,7 @@
         <p>{{article.summary}}</p>
     </div><!-- topic end -->
 
-    <span class="divider"></span>
-    {% if user %}
-    <div class="comment-block comment-entry">
-      <div class="facebook_user_img">
-        <img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/>
-      </div>
-      <h3><p class="name"><a href="#">"{{user.first_name}} {{user.last_name}}"</a></p></h3> 
-      <p >
-         <textarea rows="3" class="input-xlarge span8" id="suggestion"></textarea>
-         <br />
-         <button class="btn btn-inverse offset0" type="submit" id="modify" >أضف الآن !</button>
-      </p>
-    </div>
-    {% else %}
-    <div class="comment-block comment-entry not-logged">  
-      <p style=" color:#960d0d;">للمشاركة فى التعليقات رجاءا قم بتسجيل الدخول
-        {% if error %}
-          {% if error == 'AUTH_FAILED' %}
-              <p>Authentication failed</p>
-          {% else %}
-            {% if error == 'AUTH_DISABLED' %}
-              <p>Your account is disabled</p>
-            {% else %}
-              {% if error == 'AUTH_DENIED' %}
-              <p>You did not allow access</p>
-              {% endif %}
-            {% endif %}
-          {% endif %}
-        {% else %}
-        <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ request.build_absolute_uri }}&scope=publish_stream,email&display=popup">
-          <img width="150" src="http://egynda.com/resource/images/fb_sign.png">
-        </a>
-        {% endif %}
-      </p>
-    </div><!-- comment end -->
-    {% endif %}
-    {% if feedbacks|length > 3 %}
-      {% for top_feedback in top_ranked %}
-      <div class="comment-block top-comment ">
-        <div class="facebook_user_img">
-          <img src="http://graph.facebook.com/{{ top_feedback.user }}/picture" class="loader"/>
-        </div>
-          <h3><p class="name"><a href="#">{{top_feedback.name}}</a></p></h3> 
-          <div class="like-group">
-             <a href="javascript:;" class="like vote" id="{{top_feedback.id}}" vote="1"><i class="icon-thumbs-up"></i><small class="like {{top_feedback.id}}">{{p_votes|key:top_feedback.id }}</small></a>
-             <a href="javascript:;" class="dislike vote" id="{{top_feedback.id}}" vote="0"><i class="icon-thumbs-down"></i><small class="dislike {{top_feedback.id}}">{{n_votes|key:top_feedback.id }}</small></a>
-          </div>
-          <p>{{top_feedback.suggestion}}</p>
-          <span class="date">{{top_feedback.date|format}}</span>
-      </div><!-- comment end -->
-      {% endfor %}
-    {% endif %}
-    <div class="comment-block well top">
-      <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | 
-      <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
-    </div>
-    {% for feedback in feedbacks %}
-    <div class="comment-block ">
-      <div class="facebook_user_img">
-        <img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/>
-      </div>
-        <h3><p class="name"><a href="#">{{feedback.name}}</a></p></h3> 
-        <div class="like-group">
-           <a href="javascript:;" class="like vote" id="{{feedback.id}}" vote="1"><i class="icon-thumbs-up"></i><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
-           <a href="javascript:;" class="dislike vote" id="{{feedback.id}}" vote="0"><i class="icon-thumbs-down"></i><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
-        </div>
-        <p>{{feedback.suggestion}}</p>
-        <span class="date">{{feedback.date|format}}</span>
-    </div><!-- comment end -->
-    {% endfor %}
+    
     <ul class=" pager">
       <li class="next">
       {% if feedbacks.has_next %}

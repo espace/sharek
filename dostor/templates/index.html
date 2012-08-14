@@ -11,18 +11,26 @@
 </style>
 {% endif %}
 
-<div class="row promo">
-  <div class="">
-    <div class="span7 progress-promo">
-      <p> مبادرة <strong>نصف مليون </strong> مشاركة على مسودة دستور مصر 
-        نحو حوار مجتمعى هادف و مشاركة فاعلة على مسودة دستور مصر القادم بقدر واسع من التفاعلية والشفافية و إعلاء لقيم المشاركة المجتمعية التى تصيغ الوعى والشكل والمضمون . </p>
-      <a href="#" class="btn btn-primary-green"> شارك الآن فى كتابة الدستور!</a> </div>
-    <div class="span5 map"> <a href="/info/map"> <img src="{{STATIC_URL}}images/map.png"> </a> </div>
-  </div>
-  <!-- below header --> 
+  <div class="row promo">
+    <div class="">
+      <div class="span5 progress-promo">
+        <p>
+ إيمانا منا بقيمة التواصل مع جميع فئات الشعب المصرى العظيم فإننا قمنا بتأسيس هذا الموقع ليكون نافذة للتواصل الفعال بن اللجنة التأسيسة لوضع الدستور المصرى وبين كل من يرغب فى الإسهام الحقيقى فى صناعة دستور مصر القادم 
+          
+        </p>
+        <a href="#" class="btn btn-green"> شارك الآن فى كتابة فى الدستور!</a>
+
+        
+      </div>
+      <div class="span7 map">
+          <a href="#">
+            <iframe width="540" height="304" src="http://www.youtube.com/embed/2ddxz5o_e18" frameborder="0" allowfullscreen></iframe>
+          </a>
+      </div>
+    </div><!-- below header -->
+  </div><!-- row -->
   
-</div>
-<!-- row -->
+
 
 <div class="row">
   <!--div class="span12 progress-promo">
@@ -36,19 +44,19 @@
 <!-- row -end -->
 
 <div class="row">
-  <div class="span12 "> <span class="divider pushed-up"></span> </div>
+  <div class="span12 "> <span class="divider"></span> </div>
 </div>
 <!-- row -end -->
 
 <div class="row">
   <div class="home-sections span8">
-	<h1 class="headtitle pushed-up"> <span> مواضيع الدستور </span> </h1>
+	<h1 class="headtitle"> <span> مواضيع الدستور </span> </h1>
     <ul class="nav nav-pills  divider-vert">
       {% for tag_list in tags %}
       <li class="span4"> 
         <a href="tags{{tag_list.get_absolute_url}}">
           <span class="home-sections-icon {{tag_list.slug}}"></span> {{tag_list.name}}
-          <p>{{tag_list.summary}}</p>
+          {{tag_list.summary}}
         </a>
       </li>
       {% endfor %}
