@@ -40,7 +40,8 @@
           <input type="hidden" id="count" name="Language" value="{{article.feedback_count}}">
         <p>{{article.summary}}</p>
     </div><!-- topic end -->
-
+	
+    {% if false %}
     <span class="divider"></span>
     {% if user %}
       <div class="comment-block comment-entry">
@@ -130,7 +131,7 @@
         </li>
       </ul>
     {% endif %}
-
+	{% endif %}
 
     <script type="text/javascript">
       $(document).ready(function() {
