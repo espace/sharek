@@ -30,9 +30,13 @@
                       {% endif %}
                     {% endif %}
                   {% else %}
+                  
+                  {% if false %}
                   <a href="https://graph.facebook.com/oauth/authorize?redirect_uri={{ request.build_absolute_uri }}&client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup">
                     <img style="float: left; padding-top: 25px;" src="http://developers.facebook.com/images/devsite/login-button.png"/>
                   </a>
+                  {% endif %}
+                  
                   {% endif %}
                 {% endif %}         
             </div>
@@ -63,8 +67,8 @@
               </ul>
 
             <form class="navbar-search pull-left" action="/search/">
-                     <input type="text" class="search-query span2" placeholder="أدخل كلمات البحث">
-                </form>
+                 <input type="text" class="search-query span2" placeholder="أدخل كلمات البحث">
+            </form>
         </div><!-- nav -end -->
 
       </div>
