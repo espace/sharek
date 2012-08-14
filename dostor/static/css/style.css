@@ -163,7 +163,7 @@ body {
 }
 /*-------------- top-nav ---------------------*/
 .top-nav {
-    margin-top: 20px;
+    margin-top: 12px;
 }
 
 /*------------------------  promo -----------------------*/
@@ -835,7 +835,8 @@ span.divider{
 }
 .footer .copyrights{
     margin: 20px 0;
-    color: #7a7672;
+    color: #bbb;
+	font: 12px GESSTwoMediumRegular;
 }
 
 .footer .socials{
