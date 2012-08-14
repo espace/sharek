@@ -93,6 +93,7 @@
       </div><!-- comment end -->
       {% endfor %}
     {% endif %}
+    {% if feedbacks %}
     <div class="comment-block well top">
       <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | 
       <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
@@ -128,6 +129,7 @@
       {% endif %}
       </li>
     </ul>
+    {% endif %}
 
 
     <script type="text/javascript">
