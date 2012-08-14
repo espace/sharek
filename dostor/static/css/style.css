@@ -831,7 +831,7 @@ span.divider{
 .top-comments .comment-block {
     width: 89% !important;
 }
-.searchPage h1 span{
+.searchPage.headtitle.innerpage span{
     margin-right: 0 !important;
 }
 /*-------------- pager -------------------- */
