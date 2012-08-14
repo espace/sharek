@@ -828,8 +828,11 @@ span.divider{
     font-size: 14px;
     text-indent: -9999px;
 }
-.top-comments .comments-block{
-    width: 89%;
+.top-comments .comment-block {
+    width: 89% !important;
+}
+.searchPage h1 span{
+    margin-right: 0 !important;
 }
 /*-------------- pager -------------------- */
 .pagging{
