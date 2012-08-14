@@ -126,7 +126,8 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-order')
     elif order_by == "def":
         feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
-        top_ranked = Feedback.objects.filter(article_id = article.id).order_by('-order')[:3]
+    
+    top_ranked = Feedback.objects.filter(article_id = article.id).order_by('-order')[:3]
 
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
