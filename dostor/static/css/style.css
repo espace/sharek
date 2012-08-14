@@ -818,7 +818,7 @@ span.divider{
 .top-comments .comments-number {
     position: absolute;
     top: -5px;
-    right: 5px;
+    left: 5px;
     z-index: 1000;
     background: url("../images/starred-ribbon.png") no-repeat left center;
     height: 127px;
@@ -827,6 +827,9 @@ span.divider{
     padding-right: 10px;
     font-size: 14px;
     text-indent: -9999px;
+}
+.top-comments .comments-block{
+    width: 89%;
 }
 /*-------------- pager -------------------- */
 .pagging{
