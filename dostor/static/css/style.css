@@ -734,7 +734,7 @@ span.divider{
 }
 .top{
     width: auto !important;
-    background: rgba(0,0,0,1) !important;
+    background: rgba(0,0,0,0.1) !important;
 }
 .comment-entry.not-logged{
     font-family: GESSTwoMediumRegular;
