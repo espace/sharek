@@ -4,8 +4,16 @@
 
 {% block content %}
 
-<h3>نتيجة البحث عن " <span  STYLE="font-size: x-large; color: #B66B5E"> {{query}} </span> " - عدد النتائج {{count}}</h3>
-</br>
+<div class="row">
+    <div class="span12 ">
+        <h1 id="headtitle" class="headtitle innerpage offset3"><span>نتيجة البحث عن " <span  STYLE="font-size: x-large; color: #B66B5E"> {{query}} </span> " - عدد النتائج {{count}}</span></h1>
+    </div>
+</div><!-- row -end -->
+
+<div class="row">
+
+    <div class="span12">
+    
 {%if articles%}
   {% for article in articles %}
   <div class="topic">
@@ -44,4 +52,7 @@
 
   </div><!-- topic end -->
 {% endif %}
+
+</div></div>
+
 {% endblock %}

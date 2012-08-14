@@ -570,8 +570,6 @@ left: 1px;
     padding: 5px 10px;
     border-radius: 5px;
 }
-.headtitle.pushed-up{
-    margin-top: -40px;
 }
 .divider.pushed-up{
     margin-top: 50px;
@@ -672,6 +670,8 @@ left: 1px;
     position: relative;
     border: solid 1px #faf9f7;
     border-bottom: none;
+    width: 100%;
+    clear: both;
 }
 .comment-block .name{
     display: inline;
@@ -729,8 +729,11 @@ span.divider{
 }
 .comment-entry{
     width:97%;
-    background: rgba(197,188,178,0.7);
+    background:url("../images/pattern.png") repeat rgba(0,0,0,0.1);
 
+}
+.top{
+    width: auto !important;
 }
 .comment-entry.not-logged{
     font-family: GESSTwoMediumRegular;
