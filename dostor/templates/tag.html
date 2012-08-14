@@ -18,8 +18,9 @@
         {% include "sidebar.html" %}
     </div><!-- span3 -->
 
-    <div id="ajax-container" class="span9">
+    <div id="ajax-container" class="span9">\
 			{% if articles %}
+
                 {% for article in articles %}
                 <div class="topic">
                     <h3>
@@ -31,7 +32,13 @@
                 </div><!-- topic end -->
                 {% endfor %}
             {% else %}
-            	<div class="empty">لا يوجد أبواب</div>
+                <div class="topic">
+                    <h3>
+                        <p class="mada-title">
+                            لا توجد مواد متعلقة ب {{tag.name}}
+                        </p>
+                    </h3>  
+                </div><!-- topic end -->
             {% endif %}
             
 			{% if ajaxify %}
