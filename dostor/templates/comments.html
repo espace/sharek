@@ -41,20 +41,23 @@
 
 
 {% if feedbacks|length > 3 %}
+    <div class="top-comments">
+      <a href="#" class="comments-number pull-left">أفضل التعليقات</a>
   {% for top_feedback in top_ranked %}
-  <div class="comment-block top-comment ">
-    <div class="facebook_user_img">
-      <img src="http://graph.facebook.com/{{ top_feedback.user }}/picture" class="loader"/>
-    </div>
-      <h3><p class="name"><a href="#">{{top_feedback.name}}</a></p></h3> 
-      <div class="like-group">
-         <a href="javascript:;" class="like vote" id="{{top_feedback.id}}" vote="1"><i class="icon-thumbs-up"></i><small class="like {{top_feedback.id}}">{{p_votes|key:top_feedback.id }}</small></a>
-         <a href="javascript:;" class="dislike vote" id="{{top_feedback.id}}" vote="0"><i class="icon-thumbs-down"></i><small class="dislike {{top_feedback.id}}">{{n_votes|key:top_feedback.id }}</small></a>
-      </div>
-      <p>{{top_feedback.suggestion}}</p>
-      <span class="date">{{top_feedback.date|format}}</span>
-  </div><!-- comment end -->
+      <div class="comment-block ">
+          <div class="facebook_user_img">
+            <img src="http://graph.facebook.com/{{ top_feedback.user }}/picture" alt="" class="loader">
+          </div>
+          <h3><p class="name"><a href="#">{{top_feedback.name}}</a></p></h3> 
+          <div class="like-group">
+             <a href="javascript:;" class="like vote" id="{{top_feedback.id}}" vote="1"><i class="icon-thumbs-up"></i><small class="like {{top_feedback.id}}">{{p_votes|key:top_feedback.id }}</small></a>
+             <a href="javascript:;" class="dislike vote" id="{{top_feedback.id}}" vote="0"><i class="icon-thumbs-down"></i><small class="dislike {{top_feedback.id}}">{{n_votes|key:top_feedback.id }}</small></a>
+            </div>
+          <p>{{top_feedback.suggestion}}</p>
+          <span class="date">{{top_feedback.date|format}}</span>
+      </div><!-- comment end -->
   {% endfor %}
+  </div><!-- "top-comments -->
 {% endif %}
   
 
@@ -64,64 +67,7 @@
     <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | 
     <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
   </div>
-  <div class="top-comments">
-          <a href="#" class="comments-number pull-left">أفضل التعليقات</a>
-          <div class="comment-block ">
-
-              <div class="facebook_user_img">
-
-                <img src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/157138_740307964_155478155_q.jpg" alt="" class="loader">
-              </div>
-              <h3><p class="name"><a href="#"> محمد محمود محمد أمين</a></p></h3> 
-
-              <div class="like-group">
-                 <a href="#" class="like"><i class="icon-thumbs-up"></i> <small>25</small></a>
-                 <a href="#" class="dislike"><i class="icon-thumbs-down"></i> <small>12</small> </a>
-                </div>
-              <p >
-      وأوضح أن اللقاء عمل لأول مرة على تقريب شخصيات مثلي ومثل د. عبدالجليل مصطفى، د. حسن نافعة ، د. سيف عبدالفتاح، د.علاء الأسواني ، ا. سكينة فؤاد، د.
-              </p>
-              <span class="date">20-10-2011</span>
-
-          </div><!-- comment end -->
-          <div class="comment-block ">
-
-              <div class="facebook_user_img">
-
-                <img src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/157138_740307964_155478155_q.jpg" alt="" class="loader">
-              </div>
-              <h3><p class="name"><a href="#"> محمد محمود محمد أمين</a></p></h3> 
-
-              <div class="like-group">
-                 <a href="#" class="like"><i class="icon-thumbs-up"></i> <small>25</small></a>
-                 <a href="#" class="dislike"><i class="icon-thumbs-down"></i> <small>12</small> </a>
-                </div>
-              <p >
-      وأوضح أن اللقاء عمل لأول مرة على تقريب شخصيات مثلي ومثل د. عبدالجليل مصطفى، د. حسن نافعة ، د. سيف عبدالفتاح، د.علاء الأسواني ، ا. سكينة فؤاد، د.
-              </p>
-              <span class="date">20-10-2011</span>
-
-          </div><!-- comment end -->
-          <div class="comment-block ">
-
-              <div class="facebook_user_img">
-
-                <img src="http://profile.ak.fbcdn.net/hprofile-ak-snc4/157138_740307964_155478155_q.jpg" alt="" class="loader">
-              </div>
-              <h3><p class="name"><a href="#"> محمد محمود محمد أمين</a></p></h3> 
-
-              <div class="like-group">
-                 <a href="#" class="like"><i class="icon-thumbs-up"></i> <small>25</small></a>
-                 <a href="#" class="dislike"><i class="icon-thumbs-down"></i> <small>12</small> </a>
-                </div>
-              <p >
-      وأوضح أن اللقاء عمل لأول مرة على تقريب شخصيات مثلي ومثل د. عبدالجليل مصطفى، د. حسن نافعة ، د. سيف عبدالفتاح، د.علاء الأسواني ، ا. سكينة فؤاد، د.
-              </p>
-              <span class="date">20-10-2011</span>
-
-          </div><!-- comment end -->
-              
-      </div><!-- "top-comments -->
+      
   {% for feedback in feedbacks %}
   <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %}">
     <div class="facebook_user_img">
