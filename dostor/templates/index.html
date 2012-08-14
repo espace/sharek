@@ -42,9 +42,13 @@
 <!-- row -end -->
 
 <div class="row">
+  <div class="span12 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
+</div>
+<!-- row -end -->
+
+<div class="row">
   <div class="home-sections span8">
-	<h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1>
-    <ul class="nav nav-pills  divider-vert">
+	<ul class="nav nav-pills  divider-vert">
       {% for tag_list in tags %}
       <li class="span4"> 
         <a href="tags{{tag_list.get_absolute_url}}">
