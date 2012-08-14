@@ -49,6 +49,19 @@ def tag_detail(request, tag_slug):
     tag = get_object_or_404( Tag, slug=tag_slug )
     articles = tag.article_set.all()
 
+    paginator = Paginator(articles, settings.paginator) 
+    page = request.GET.get('page')
+
+
+    try:
+        articles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        articles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        articles = paginator.page(paginator.num_pages)
+
     template_context = {'request':request, 'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('tag.html',template_context ,RequestContext(request))
 
@@ -71,7 +84,18 @@ def topic_detail(request, topic_slug=None):
             topic = None
             articles = None
 
-    #articles = topic.article_set.all()
+    paginator = Paginator(articles, settings.paginator) 
+    page = request.GET.get('page')
+
+
+    try:
+        articles = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        articles = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        articles = paginator.page(paginator.num_pages)
 
     template_context = {'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('topic.html',template_context ,RequestContext(request))
