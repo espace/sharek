@@ -662,9 +662,9 @@ left: 1px;
 /*-----------   comment-block    ------ */
 
 .comment-block{   
-    background: rgba(242,242,242,0.9);  url("../images/comments-bg.jpg") repeat right top ;
-    margin: 3px 0;
-    box-shadow: 0px 1px 0px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.2);
+    background: rgba(0,0,0,0.02)  ;
+    margin: 5px 0;
+    box-shadow: 0px 2px 1px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.3);
     float: right;
     padding: 5px 10px;
     position: relative;
@@ -704,6 +704,8 @@ left: 1px;
     left:130px;
     top: 11px;
     color:#9d9d9d;
+    font:12px GESSTwoMediumRegular;
+
 }
 span.divider{  
     *width: 100%;
@@ -809,23 +811,30 @@ span.divider{
     border: solid 3px #9e1010;
     float: right;
     border-radius:5px;
-    margin: 30px 0 10px 0;
+    margin: 10px 0 10px 0;
     box-shadow:0 1px 1px rgba(0,0,0,0.2);
     position: relative;
 }
 .top-comments .comments-number {
     position: absolute;
-    top: -35px;
-    left:-15px;
+    top: -5px;
+    right: 5px;
     z-index: 1000;
-    background: url("../images/starred-ribbon.png") no-repeat left;
-    height: 35px;
-    width: 187px;
+    background: url("../images/starred-ribbon.png") no-repeat left center;
+    height: 127px;
+    width: 47px;
     padding-top: 30px;
     padding-right: 10px;
     font-size: 14px;
-    font-family: FrutigerBold
+    text-indent: -9999px;
 }
+/*-------------- pager -------------------- */
+.pagging{
+    float: right;
+    width: 100%;
+    margin-top: 20px;
+}
+
 /*--------------------footer-----------------  */
 .footer{
     margin-top: 20px;
