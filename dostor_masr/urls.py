@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     
     url(r'^admin/', include(admin.site.urls)),
     
-    #url(r'^search/(?P<def_query>[-\w]+)/$', 'dostor.views.search'),
+    url(r'^slider/$', 'dostor.views.slider'),
     url(r'^search/$', 'dostor.views.search'),
     
     url(r'^vote/', 'dostor.views.vote'),

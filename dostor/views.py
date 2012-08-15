@@ -310,3 +310,7 @@ def info_detail(request, info_slug):
     
     template_context = {'request':request, 'info':info,'settings': settings,'user':user,}
     return render_to_response('info.html',template_context ,RequestContext(request))
+
+def slider(request):
+    news = Article.objects.order_by('?')[:5]
+    return render_to_response('slider.html',{'news':news} ,RequestContext(request))

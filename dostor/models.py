@@ -62,6 +62,13 @@ class Article(models.Model):
     def get_votes(self):
         return Rating.objects.filter(article_id= self.id)
 
+    def get_top_feedback(self):
+        feedback = Feedback.objects.filter(article_id= self.id).order_by('-order')[:1]
+        if len(feedback) == 1:
+            return feedback[0]
+        else:
+            return None
+
     def clean(self):
         if len(self.name) >= 40:
             raise exceptions.ValidationError('Too many characters ...')

@@ -1,0 +1,38 @@
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+  <script src="http://bxslider.com/sites/default/files/jquery.bxSlider.min.js" type="text/javascript"></script>
+  <script src="{{STATIC_URL}}js/jquery.cycle.all.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#slider1').bxSlider();
+      $('#s3').cycle({ 
+        fx:     'fade', 
+        speed:   300, 
+        timeout: 3000, 
+        next:   '#s3', 
+        pause:   1 
+      });
+    });
+  </script>
+</head>
+
+{% load date_format %}
+
+<div id="s3" class="da-slider">
+  
+    {% for new in news %}
+    <div class="da-slide">
+      {{new.topic}}-
+      {{new.name}} - 
+      <div class="comment-block ">
+          <div class="facebook_user_img">
+            <img src="http://graph.facebook.com/{{ new.get_top_feedback.user }}/picture" alt="" class="loader">
+          </div>
+          <h3><p class="name"><a href="#">{{new.get_top_feedback.name}}</a></p></h3> 
+          <p>{{new.get_top_feedback.suggestion}}</p>
+          <span class="date">{{new.get_top_feedback.date|format}}</span>
+      </div><!-- comment end -->
+    </div>
+    {% endfor %}
+     
+</div>
