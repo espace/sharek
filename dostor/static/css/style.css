@@ -670,6 +670,7 @@ left: 1px;
     position: relative;
     border: solid 1px #faf9f7;
     border-bottom: none;
+	border-radius: 5px;
     width: 97%;
     clear: both;
 }
@@ -680,6 +681,9 @@ left: 1px;
 .facebook_user_img{
     float: right;
     margin-left: 5px;
+}
+.facebook_user_img img{
+	border-radius: 5px;
 }
 .comment-block .name a{
     font-size:12px;
