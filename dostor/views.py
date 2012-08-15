@@ -287,7 +287,7 @@ def search(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         articles = paginator.page(paginator.num_pages)
 
-    return render_to_response('search.html',{'user':user,"articles":articles,"query":query,"count":count},RequestContext(request))
+    return render_to_response('search.html',{'user':user,"articles":articles,'settings': settings,"query":query,"count":count},RequestContext(request))
 
 def info_detail(request, info_slug):
     user = None
