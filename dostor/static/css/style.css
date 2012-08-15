@@ -731,7 +731,7 @@ span.divider{
 }
 .comment-entry{
     width:97%;
-    background:url("../images/pattern.png") repeat rgba(0,0,0,0.1);
+    background:url("../images/pattern.png") repeat rgba(255,255,255,1);
 
 }
 .top{
@@ -774,6 +774,7 @@ span.divider{
 }
 .like-group a.like{
     color: #4aad2b;
+    background: url(../images/thumb-up.png) no-repeat right 0;
 }
 .like-group a.dislike{
     color: #ad2b2b;
