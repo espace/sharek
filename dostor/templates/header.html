@@ -32,7 +32,7 @@
                     {% endif %}
                   {% else %}
                   
-                  <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup&redirect_uri={{ request.build_absolute_uri }}{{query}}">
+                  <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup&redirect_uri={{ request.build_absolute_uri }}{{query|urlencode}}">
                     <img style="float: left; padding-top: 25px;" src="http://egynda.com/resource/images/fb_sign.png"/>
                   </a>
                   

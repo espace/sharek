@@ -273,10 +273,12 @@ def search(request, def_query=None):
     login(request)
     if request.user.is_authenticated():
       user = request.user
-    if def_query:
-        query = def_query
+    
+    if def_query == None:
+        query = request.POST.get("q")        
     else:
-        query = request.POST.get("q")
+        query = def_query
+
     articles = Article.objects.filter(Q(summary__contains=query) | Q(name__contains=query))
     count = len(articles)
     paginator = Paginator(articles, settings.paginator) 
