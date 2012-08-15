@@ -773,19 +773,44 @@ span.divider{
     border-top: solid 1px #cacaca;
 }
 .like-group a{
-    padding:2px 8px;
+    padding:2px 25px 0 5px;
     float: left;
     font-weight: bold;
 }
 .like-group a.like{
     color: #4aad2b;
-    background: url(../images/thumb-up.png) no-repeat right 0;
+    background: url(../images/thumb-up.png) no-repeat right 2px;
 }
 .like-group a.dislike{
     color: #ad2b2b;
+    background: url(../images/thumb-down.png) no-repeat right 3px;
+
 }
 .like-group a:hover{
-    background: #e7e7e7;
+    padding:2px 25px 0 5px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+}
+.like-group a.like:hover{
+    padding:2px 25px 0 5px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    margin-top: -1px;
+    background:url(../images/thumb-up.png) no-repeat right 2px, -ms-linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-up.png) no-repeat right 2px, -webkit-gradient(linear, 0 0, 0 100%, from(#F7F7F7), to(#ECECEC));
+    background:url(../images/thumb-up.png) no-repeat right 2px, -webkit-linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-up.png) no-repeat right 2px, -o-linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-up.png) no-repeat right 2px, linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-up.png) no-repeat right 2px, -moz-linear-gradient(top, #F7F7F7, #ECECEC);
+}
+.like-group a.dislike:hover{
+    padding:2px 25px 0 5px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    margin-top: -1px;
+    background:url(../images/thumb-down.png) no-repeat right 3px, -ms-linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-down.png) no-repeat right 3px, -webkit-gradient(linear, 0 0, 0 100%, from(#F7F7F7), to(#ECECEC));
+    background:url(../images/thumb-down.png) no-repeat right 3px, -webkit-linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-down.png) no-repeat right 3px, -o-linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-down.png) no-repeat right 3px, linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-down.png) no-repeat right 3px, -moz-linear-gradient(top, #F7F7F7, #ECECEC);
 }
 /*------------  chapters    ------ */
 .chapters{margin-top: 20px;}
