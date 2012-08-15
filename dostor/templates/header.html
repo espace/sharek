@@ -15,13 +15,13 @@
                   
                   {% if user.username != 'admin' %}
                       <div class="attrs">
-                        <p href="#" class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
+                        <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
                         <a href="/facebook/logout" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
                       </div>
 	                  <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
                   {% else %}
                       <div class="attrs">
-                        <p href="#" class="user_name">{{ user.username }}</p>
+                        <p class="user_name">إدارة الموقع</p>
                         <a href="/facebook/logout" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
                       </div>
                   {% endif %}
