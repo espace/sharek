@@ -78,6 +78,8 @@
          <a href="javascript:;" class="like vote" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
          <a href="javascript:;" class="dislike vote" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
       </div>
+        <span class="date">{{feedback.date|format}}</span>
+
       <p>{{feedback.suggestion}}</p>
   </div><!-- comment end -->
   {% endfor %}
