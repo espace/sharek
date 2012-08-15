@@ -267,19 +267,23 @@ def login(request):
         elif 'error_reason' in request.GET:
             error = 'AUTH_DENIED'
 
-def search(request, def_query=None):
+def search(request):
     user = None
-
+    search = True
     login(request)
     if request.user.is_authenticated():
       user = request.user
     
-    if def_query == None:
+    '''if def_query == None:
         query = request.POST.get("q")        
-    else:
-        query = def_query
+    else:'''
+    query = request.POST.get("q")
+    if query == None: 
+        return HttpResponseRedirect('/')
+    if len(query.strip()) == 0:
+        return HttpResponseRedirect('/')
 
-    articles = Article.objects.filter(Q(summary__contains=query) | Q(name__contains=query))
+    articles = Article.objects.filter(Q(summary__contains=query.strip()) | Q(name__contains=query.strip()))
     count = len(articles)
     paginator = Paginator(articles, settings.paginator) 
     page = request.GET.get('page')
@@ -293,7 +297,7 @@ def search(request, def_query=None):
         # If page is out of range (e.g. 9999), deliver last page of results.
         articles = paginator.page(paginator.num_pages)
 
-    return render_to_response('search.html',{'request':request,'user':user,"articles":articles,'settings': settings,"query":query,"count":count},RequestContext(request))
+    return render_to_response('search.html',{'search':search,'request':request,'user':user,"articles":articles,'settings': settings,"query":query.strip(),"count":count},RequestContext(request))
 
 def info_detail(request, info_slug):
     user = None
