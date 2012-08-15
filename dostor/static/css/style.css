@@ -701,10 +701,10 @@ left: 1px;
 .comment-block .date{
     float:left;
     position: absolute;
-    left:130px;
-    top: 11px;
+    left:100px;
+    top: 10px;
     color:#9d9d9d;
-    font:12px GESSTwoMediumRegular;
+    font: 10px GESSTwoMediumRegular;
 
 }
 span.divider{  
@@ -736,7 +736,8 @@ span.divider{
 }
 .top{
     width: auto !important;
-    background: rgba(0,0,0,0.1) !important;
+    /*background: rgba(0,0,0,0.1) !important;*/
+	float: left;
 }
 .comment-entry.not-logged{
     font-family: GESSTwoMediumRegular;
