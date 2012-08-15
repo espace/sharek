@@ -267,13 +267,16 @@ def login(request):
         elif 'error_reason' in request.GET:
             error = 'AUTH_DENIED'
 
-def search(request):
+def search(request, def_query=None):
     user = None
 
     login(request)
     if request.user.is_authenticated():
       user = request.user
-    query = request.GET.get("q")
+    if def_query:
+        query = def_query
+    else:
+        query = request.POST.get("q")
     articles = Article.objects.filter(Q(summary__contains=query) | Q(name__contains=query))
     count = len(articles)
     paginator = Paginator(articles, settings.paginator) 

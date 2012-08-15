@@ -32,7 +32,7 @@
                     {% endif %}
                   {% else %}
                   
-                  <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup&  redirect_uri={{ request.build_absolute_uri|urlencode }}">
+                  <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup&redirect_uri={{ request.build_absolute_uri }}{{query}}">
                     <img style="float: left; padding-top: 25px;" src="http://egynda.com/resource/images/fb_sign.png"/>
                   </a>
                   
@@ -65,7 +65,8 @@
 
               </ul>
 
-            <form class="navbar-search pull-left" action="/search/" method="GET">
+            <form class="navbar-search pull-left" action="/search/" method="POST">
+                {% csrf_token %}
                  <input type="text" name="q" id="q" style="font: 11px tahoma;" class="search-query span2" placeholder="أدخل كلمات البحث">
             </form>
         </div><!-- nav -end -->
