@@ -17,13 +17,88 @@
 </head>
 
 {% load date_format %}
+  <style type="text/css">
+        .da-slide{
+          direction: rtl; 
+            background:-ms-linear-gradient(top, #fff, #f8f8f8);
+            background:-webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#f8f8f8));
+            background:-webkit-linear-gradient(top, #fff, #f8f8f8);
+            background:-o-linear-gradient(top, #fff, #f8f8f8);
+            background:linear-gradient(top, #fff, #ECECEC);
+            background:-moz-linear-gradient(top, #fff, #f8f8f8);
+            width: 665px;
+            padding: 20px;
+            box-shadow:0 2px 2px rgba(0,0,0,0.2);
+   
+        }
 
+
+        h1{
+          color: #df1b1c;
+          font-size: 18px;
+          margin-top: 0;
+        }
+
+
+        .comment-block{   
+            float: right;
+            padding: 5px 10px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+            border:solid 1px #e7e7e7;
+            width: 97%;
+            font: 12px tahoma,geneva;
+
+        }
+        .comment-block .name{
+            display: inline;
+            float: right;
+        }
+        .facebook_user_img{
+            float: right;
+            margin-left: 5px;
+        }
+        .facebook_user_img img{
+          border-radius: 5px;
+        }
+        h3{
+          margin:0;
+        }
+        .comment-block .name a{
+            font-size:12px;
+            color:#333 !important;
+        }
+        .comment-block p{
+            float: right;
+            width: 90%;
+            margin:2px 0 5px;
+            line-height: 14px;
+        }
+        .comment-block .on-subject{
+            display: inline;
+            margin-right: 10px;
+        }
+        .comment-block .on-subject a{
+            font-size:12px;
+        }
+        .comment-block .date{
+            float:left;
+            position: absolute;
+            left:20px;
+            top: 20px;
+            color:#9d9d9d;
+            font: 12px tahoma,geneva;
+
+        }
+      </style>
 <div id="s3" class="da-slider">
   
     {% for new in news %}
     <div class="da-slide">
-      {{new.topic}}-
-      {{new.name}} - 
+     <h1> {{new.topic}}-
+      {{new.name}} - </h1>
+
+    
       <div class="comment-block ">
           <div class="facebook_user_img">
             <img src="http://graph.facebook.com/{{ new.get_top_feedback.user }}/picture" alt="" class="loader">
