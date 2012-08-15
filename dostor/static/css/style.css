@@ -705,7 +705,7 @@ left: 1px;
 .comment-block .date{
     float:left;
     position: absolute;
-    left:100px;
+    left:130px;
     top: 10px;
     color:#9d9d9d;
     font: 10px GESSTwoMediumRegular;
@@ -787,11 +787,11 @@ span.divider{
 
 }
 .like-group a:hover{
-    padding:2px 25px 0 5px;
+    padding:2px 25px 0 10px;
     box-shadow: 0 1px 1px rgba(0,0,0,0.3);
 }
 .like-group a.like:hover{
-    padding:2px 25px 0 5px;
+    padding:2px 25px 0 10px;
     box-shadow: 0 1px 1px rgba(0,0,0,0.3);
     margin-top: -1px;
     background:url(../images/thumb-up.png) no-repeat right 2px, -ms-linear-gradient(top, #F7F7F7, #ECECEC);
