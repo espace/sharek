@@ -3,10 +3,10 @@
 FACEBOOK_APP_ID = '462028557155670'
 FACEBOOK_API_KEY = ''
 FACEBOOK_API_SECRET = 'be12f929d5bb8c51129b798f88548cfa'
-FACEBOOK_REDIRECT_URI = 'http://dostor-masr.espace-technologies.com/facebook/login'
+FACEBOOK_REDIRECT_URI = 'http://dostour2012.org/sharek/facebook/login'
 
 paginator = 10
-domain = "http://dostor-masr.espace-technologies.com:9090/"
+domain = "http://dostour2012.org/sharek/"
 
 
 AUTHENTICATION_BACKENDS = (
@@ -79,7 +79,7 @@ STATIC_ROOT = ''
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
-STATIC_URL = '/static/'
+STATIC_URL = '/sharek/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (

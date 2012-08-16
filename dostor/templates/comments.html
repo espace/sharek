@@ -64,8 +64,8 @@
 
 {% if feedbacks|length >= 1 %}
   <div class="comment-block well top">
-    <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | 
-    <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
+    <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | 
+    <a href="{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
   </div>
       
   {% for feedback in feedbacks %}
