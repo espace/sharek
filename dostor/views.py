@@ -177,7 +177,7 @@ def modify(request):
         graph = facebook_sdk.GraphAPI(fb_user.access_token)
         attachment = {}
         attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")
-        attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook-thumb.jpg"
+        attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
         message = 'لقد شاركت في كتابة دستور مصر وقمت بالتعليق على '+get_object_or_404(Article, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
         graph.put_wall_post(message, attachment)
 
