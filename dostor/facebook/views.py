@@ -13,6 +13,8 @@ from dostor.facebook.models import FacebookSession
 
 from dostor_masr import settings
 
+from django.core.urlresolvers import reverse
+
 def welcome(request):
     print request.user
     fb_user = FacebookSession.objects.get(user = request.user)
@@ -78,4 +80,4 @@ def login(request):
 def logout(request):
     template_context = {}
     auth.logout(request)
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect(reverse('index'))
