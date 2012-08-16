@@ -20,7 +20,7 @@ class Tag(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return "/%s" % (self.slug)
+        return self.slug
     
     def get_articles(self):
         return Article.objects.filter(tag_id= self.id)
@@ -40,7 +40,7 @@ class Topic(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return "/%s" % (self.slug)
+        return self.slug
     
     def get_articles(self):
         return Article.objects.filter(topic_id= self.id)
@@ -78,7 +78,7 @@ class Article(models.Model):
         return self.name
     
     def get_absolute_url(self):
-        return "/%s/" % (self.slug)
+        return "%s/" % (self.slug)
 
     class Meta:
        ordering = ["order"] 

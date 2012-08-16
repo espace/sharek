@@ -7,37 +7,35 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     #Facebook
-    url(r'facebook/login', 'dostor.facebook.views.login'),
-    url(r'facebook/logout', 'dostor.facebook.views.logout'),
-    url(r'facebook/welcome/', 'dostor.facebook.views.welcome'),
+    url(r'facebook/login', 'dostor.facebook.views.login', name='facebook_login'),
+    url(r'facebook/logout', 'dostor.facebook.views.logout', name='facebook_logout'),
+    url(r'facebook/welcome/', 'dostor.facebook.views.welcome', name='facebook_welcome'),
     
     #Home  Tags List
-    url(r'^$', 'dostor.views.index'),
+    url(r'^$', 'dostor.views.index', name='index'),
     
     url(r'^admin/', include(admin.site.urls)),
     
-    url(r'^slider/$', 'dostor.views.slider'),
-    url(r'^search/$', 'dostor.views.search'),
+    url(r'^slider/$', 'dostor.views.slider', name='slider'),
+    url(r'^search/$', 'dostor.views.search', name='search'),
     
-    url(r'^vote/', 'dostor.views.vote'),
-    url(r'^modify/', 'dostor.views.modify'),
-    url(r'^facebook/', 'dostor.views.facebook_comment'),
+    url(r'^vote/', 'dostor.views.vote', name='vote'),
+    url(r'^modify/', 'dostor.views.modify', name='modify'),
+    url(r'^facebook/', 'dostor.views.facebook_comment', name='facebook_comment'),
 
-    url(r'^info/(?P<info_slug>[-\w]+)/$', 'dostor.views.info_detail'),
-
-    #url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'dostor.views.article_detail'), 
+    url(r'^info/(?P<info_slug>[-\w]+)/$', 'dostor.views.info_detail', name='info'),
 
     #Article detail URL
     
     url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'dostor.views.article_detail'),
-    url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/$', 'dostor.views.article_detail'),
+    url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/$', 'dostor.views.article_detail', name='article_detail'),
 
     #Tag detail URL
-    url(r'^tags/(?P<tag_slug>[-\w]+)/$', 'dostor.views.tag_detail'),
+    url(r'^tags/(?P<tag_slug>[-\w]+)/$', 'dostor.views.tag_detail', name='tag'),
     #Topc detail URL
     
-    url(r'^topics/$', 'dostor.views.topic_detail'),
-    url(r'^topic/(?P<topic_slug>[-\w]+)/$', 'dostor.views.topic_detail'),
+    url(r'^topics/$', 'dostor.views.topic_detail', name='topics'),
+    url(r'^topic/(?P<topic_slug>[-\w]+)/$', 'dostor.views.topic_detail', name='topic'),
 	
        
 )

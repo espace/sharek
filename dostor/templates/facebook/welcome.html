@@ -1,4 +1,4 @@
 <img src="http://graph.facebook.com/{{ user }}/picture" /><br />
 {{ user.first_name }} {{ user.last_name }}<br />
 {{ user.email }}<br />
-<a id="logout" href="/facebook/logout" >Logout</a>
+<a id="logout" href="{% url facebook_logout %}" >Logout</a>

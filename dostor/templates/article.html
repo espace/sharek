@@ -17,7 +17,7 @@
           <div class="tags ">
             <p>تتعلق هذه المواد  :</p>
                 {% for related in related_tags %}
-                  <a href="/tags{{related.get_absolute_url}}">"{{related.name}}"</a>
+                  <a href="{% url tag tag_slug=related.get_absolute_url %}">"{{related.name}}"</a>
                 {% endfor %}
        </div>
        </div>

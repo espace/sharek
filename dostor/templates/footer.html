@@ -5,16 +5,16 @@
                 <div class="top-nav span5 footer-nav">
                     <ul class="nav nav-pills">
                         <li class="">
-                            <a href="/">الرئيسية</a>
+                            <a href="{% url index %}">الرئيسية</a>
                         </li>
                         <li class="">
-                            <a href="/topics">أبواب الدستور</a>
+                            <a href="{% url topics %}">أبواب الدستور</a>
                         </li>
                         <li class="">
-                            <a href="/info/about">من نحن</a>
+                            <a href="{% url info info_slug='about' %}">من نحن</a>
                         </li>
                         <li class="">
-                            <a href="/info/contact-us">اتصل بنا</a>
+                            <a href="{% url info info_slug='contact-us' %}">اتصل بنا</a>
                         </li>
                     </ul>
             </div><!-- top-nav -->
