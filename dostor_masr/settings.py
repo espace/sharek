@@ -1,4 +1,4 @@
-# Django settings for dostor_masr project.
+# Django settings for dostor_masr project.....
 
 FACEBOOK_APP_ID = '462028557155670'
 FACEBOOK_API_KEY = ''
