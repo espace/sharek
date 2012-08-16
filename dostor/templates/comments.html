@@ -125,7 +125,7 @@
         });
 
     $("#modify").click(function(){
-      if $.trim($("#suggestion").val()).length > 0
+      if ($.trim($("#suggestion").val()).length > 0)
       {
         $("#modify").after($("#loading_temp").tmpl());
         $.ajax({
