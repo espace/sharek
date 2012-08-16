@@ -42,7 +42,7 @@
 
 {% if feedbacks|length > 3 %}
     <div class="top-comments">
-      <a href="#" class="comments-number pull-left">أفضل التعليقات</a>
+      <span class="comments-number pull-left">أفضل التعليقات</span>
   {% for top_feedback in top_ranked %}
       <div class="comment-block ">
           <div class="facebook_user_img">
@@ -113,7 +113,7 @@
    $(".vote").live("click",function(){
     $.ajax({
             type:"POST",
-            url :"/vote/",
+            url :"/sharek/vote/",
             data:{'article':{{article.id}},'modification': this.id ,'type': $(this).attr('vote') ,'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
             dataType:"json",
             error:function(data){},
@@ -128,7 +128,7 @@
       $("#modify").after($("#loading_temp").tmpl());
       $.ajax({
             type:"POST",
-            url :"/modify/",
+            url :"/sharek/modify/",
             data:{
                 'link': document.URL,
                 'article_slug': "{{article.slug}}",
