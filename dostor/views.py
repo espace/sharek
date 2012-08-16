@@ -19,6 +19,8 @@ from dostor_masr import settings
 
 from django.db.models import Q
 
+from django.core.urlresolvers import reverse
+
 import cgi
 import simplejson
 import urllib
@@ -230,7 +232,7 @@ def login(request):
     error = None
 
     if request.user.is_authenticated():
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('index'))
 
     if request.GET:
         if 'code' in request.GET:
@@ -282,9 +284,9 @@ def search(request):
         if request.POST.get("state"):
             query = request.POST.get("state")
         else:
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(reverse('index'))
     if len(query.strip()) == 0:
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('index'))
 
     articles = Article.objects.filter(Q(summary__contains=query.strip()) | Q(name__contains=query.strip()))
     count = len(articles)
