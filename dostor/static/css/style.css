@@ -901,7 +901,7 @@ span.divider{
     margin-top:24px;
 }
 .sawty{
-    background: url(../images/sawty.png) no-repeat red;
+    background: url(../images/sawty.png) no-repeat;
     width: 100px;
     height: 46px;
     display: inline-block;
