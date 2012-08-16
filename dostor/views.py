@@ -319,3 +319,6 @@ def info_detail(request, info_slug):
 def slider(request):
     news = Article.objects.order_by('?')[:5]
     return render_to_response('slider.html',{'news':news} ,RequestContext(request))
+
+def login_please(request):
+    return render_to_response('login_please.html',{'settings': settings,'request':request} ,RequestContext(request))
