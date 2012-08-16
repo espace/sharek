@@ -281,8 +281,8 @@ def search(request):
     else:'''
     query = request.POST.get("q")
     if query == None:
-        if request.POST.get("state"):
-            query = request.POST.get("state")
+        if request.GET.get("state"):
+            query = request.GET.get("state")
         else:
             return HttpResponseRedirect(reverse('index'))
     if len(query.strip()) == 0:

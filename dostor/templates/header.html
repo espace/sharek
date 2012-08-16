@@ -41,7 +41,7 @@
                     {% endif %}
                   {% else %}
                   
-                  <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup&{%if search%}redirect_uri={{settings.domain}}sharek/&state={{query}}{%else%}redirect_uri={{ request.build_absolute_uri }}{%endif%}">
+                  <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup&{%if search%}redirect_uri={{ request.build_absolute_uri }}&state={{query}}{%else%}redirect_uri={{ request.build_absolute_uri }}{%endif%}">
                     <img style="float: left; padding-top: 25px;" src="http://egynda.com/resource/images/fb_sign.png"/>
                   </a>
                   
