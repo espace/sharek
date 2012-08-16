@@ -51,7 +51,7 @@
 	<ul class="nav nav-pills  divider-vert">
       {% for tag_list in tags %}
       <li class="span4"> 
-        <a href="tags{{tag_list.get_absolute_url}}">
+        <a href="{% url tag tag_slug=tag_list.get_absolute_url %}">
           <span class="home-sections-icon {{tag_list.slug}}"></span> {{tag_list.name}}
           {{tag_list.summary}}
         </a>
