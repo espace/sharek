@@ -1,4 +1,7 @@
 {% load settings %}
+
+
+
 <div class="container header">
   <div class="row">
 
@@ -86,5 +89,11 @@
   </div><!-- row end -->
 </div><!-- content -->        
         
-        
+   <div id="not-logged" style="display:none;">  
+    <p style=" color:#960d0d;">للمشاركة فى التعليقات رجاءا قم بتسجيل الدخول
+      <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ request.build_absolute_uri }}&scope=publish_stream,email&display=popup">
+        <img width="150" src="http://egynda.com/resource/images/fb_sign.png">
+      </a>
+    </p>
+  </div><!-- comment end -->       
  
