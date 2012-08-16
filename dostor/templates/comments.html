@@ -62,12 +62,14 @@
   
 
 
-{% if feedbacks|length >= 1 %}
+
   <div class="comment-block well top">
+    {% if feedbacks|length >= 1 %} 
     <a href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}latest" id="time">حسب الوقت</a> | 
     <a href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}order" id="rank">حسب الترتيب</a>
+    {% endif %}
   </div>
-      
+{% if feedbacks|length >= 1 %}   
   {% for feedback in feedbacks %}
   <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %}">
     <div class="facebook_user_img">
