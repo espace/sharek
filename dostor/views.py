@@ -279,8 +279,8 @@ def search(request):
     else:'''
     query = request.POST.get("q")
     if query == None:
-        if request.GET.get("state"):
-            query = request.GET.get("state")
+        if request.POST.get("state"):
+            query = request.POST.get("state")
         else:
             return HttpResponseRedirect('/')
     if len(query.strip()) == 0:
