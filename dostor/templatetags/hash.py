@@ -10,7 +10,10 @@ def key(d, key_name):
 def vote(voted, key_name):
   for comment_vote in voted:
     if comment_vote.feedback_id == key_name:
-      return comment_vote.vote
+      if comment_vote.vote == True:
+        return 1
+      else:
+        return -1
 
   return 0
 
