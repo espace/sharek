@@ -53,7 +53,7 @@
              <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote" id="{{top_feedback.id}}" vote="1"><small class="like {{top_feedback.id}}">{{p_votes|key:top_feedback.id }}</small></a>
              <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote" id="{{top_feedback.id}}" vote="0"><small class="dislike {{top_feedback.id}}">{{n_votes|key:top_feedback.id }}</small></a>
             </div>
-          <p>{{top_feedback.suggestion}}</p>
+          {{top_feedback.suggestion}}
           <span class="date">{{top_feedback.date|format}}</span>
       </div><!-- comment end -->
   {% endfor %}
@@ -80,9 +80,8 @@
          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
       </div>
-        <span class="date">{{feedback.date|format}}</span>
-
-      <p>{{feedback.suggestion}}</p>
+      <span class="date">{{feedback.date|format}}</span>
+      {{feedback.suggestion}}
   </div><!-- comment end -->
   {% endfor %}
   
