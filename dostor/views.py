@@ -51,6 +51,8 @@ def tag_detail(request, tag_slug):
     tag = get_object_or_404( Tag, slug=tag_slug )
     articles = tag.article_set.all()
 
+    voted_articles = ArticleRating.objects.filter(user = user)
+
     paginator = Paginator(articles, settings.paginator) 
     page = request.GET.get('page')
 
@@ -64,7 +66,7 @@ def tag_detail(request, tag_slug):
         # If page is out of range (e.g. 9999), deliver last page of results.
         articles = paginator.page(paginator.num_pages)
 
-    template_context = {'request':request, 'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
+    template_context = {'voted_articles':voted_articles,'request':request, 'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('tag.html',template_context ,RequestContext(request))
 
 def topic_detail(request, topic_slug=None):
