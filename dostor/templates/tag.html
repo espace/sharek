@@ -62,33 +62,28 @@
                     </h3>  
                 </div><!-- topic end -->
             {% endif %}
-            
-
-            <script type="text/javascript">
-             $(document).ready(function() {
-
-
-                $('a[rel*=facebox]').facebox()
-                $(".rate").live("click",function(){
-                  {% if user %}
-                  $.ajax({
-                          type:"POST",
-                          url :"/sharek/article_vote/",
-                          data:{'article':$(this).attr('id'),'type': $(this).attr('vote') ,'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
-                          dataType:"json",
-                          error:function(data){},
-                          success:function(data){
-                          $(".like.article"+"."+{{data.article.id}}).text(data.p);  
-                          $(".dislike.article"+"."+{{data.article.id}}).text(data.n);  
-                          },
-                        });
-                  {% endif %}
-                });
-             });
-            </script>
-
     </div>
 </div><!-- row end -->
 
+<script type="text/javascript">
+ $(document).ready(function() {
+    $('a[rel*=facebox]').facebox()
+    $(".rate").live("click",function(){
+      {% if user %}
+      $.ajax({
+              type:"POST",
+              url :"/sharek/article_vote/",
+              data:{'article':$(this).attr('id'),'type': $(this).attr('vote') ,'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+              dataType:"json",
+              error:function(data){},
+              success:function(data){
+              $(".like.article"+"."+data.article.id).text(data.p);  
+              $(".dislike.article"+"."+data.article.id).text(data.n);  
+              },
+            });
+      {% endif %}
+    });
+ });
+</script>
 {% endblock %}
 
