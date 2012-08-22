@@ -32,8 +32,8 @@
                     </h3>
                     
                     <div class="like-group">
-                     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {% if voted_articles|vote_art:article.id == -1 %} active {% endif %}" id="{{article.id}}" vote="0"><small class="dislike article {{article.id}}">{{article.dislikes}}</small></a>
-                     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {% if voted_articles|vote_art:article.id == 1 %} active {% endif %}" id="{{article.id}}" vote="1" ><small class="like article {{article.id}}">{{article.likes}}</small></a>
+                     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {% if voted_articles|vote_art:article.id == -1 %} active {% endif %}{{article.id}}" id="{{article.id}}" vote="0"><small class="dislike article {{article.id}}">{{article.dislikes}}</small></a>
+                     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {% if voted_articles|vote_art:article.id == 1 %} active {% endif %}{{article.id}}" id="{{article.id}}" vote="1" ><small class="like article {{article.id}}">{{article.likes}}</small></a>
                     </div> 
                     
                     <p>{{article.summary|safe|truncatewords_html:35}}</p>
@@ -86,15 +86,13 @@
                 $(".dislike.article"+"."+data.article).text(data.n);
                 if (data.vote == 1)
                 {
-                  alert(data.article)
-                  $(".like.rate"+"#"+data.article).addClass("active")
-                  $(".dislike.rate"+"#"+data.article).removeClass("active")
+                  $(".like.rate"+"."+data.article).addClass("active")
+                  $(".dislike.rate"+"."+data.article).removeClass("active")
                 }
                 else
                 {
-                  alert(data.article)
-                  $(".dislike.rate"+"#"+data.article).addClass("active")
-                  $(".like.rate"+"#"+data.article).removeClass("active")
+                  $(".dislike.rate"+"."+data.article).addClass("active")
+                  $(".like.rate"+"."+data.article).removeClass("active")
                 }
               },
             });
