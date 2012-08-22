@@ -138,8 +138,8 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     voted_article = ArticleRating.objects.filter(article_id = article.id, user = user)
 
     article_rate = None
-    for article in voted_article:
-        if article.vote == True:
+    for art in voted_article:
+        if art.vote == True:
             article_rate = 1
         else:
             article_rate = -1
