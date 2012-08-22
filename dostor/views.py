@@ -134,7 +134,8 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
 
-    voted_fb = Feedback.objects.filter(article_id = article.id, user = user)
+    voted_fb = Rating.objects.filter(article_id = article.id, user = user)
+    print voted_fb
 
     try:
         feedbacks = paginator.page(page)
