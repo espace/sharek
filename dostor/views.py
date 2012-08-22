@@ -203,14 +203,7 @@ def vote(request):
                 Rating(user = user, vote = vote, feedback_id = feedback,article_id = request.POST.get("article")).save()
             
             mod = Feedback.objects.get(id=feedback)
-            '''
-            if request.POST.get("type") == "1" :
-                temp = 1
-            else:
-                temp = -1
-            mod.order = mod.order + temp
-            mod.save()
-            '''
+
             votes = Rating.objects.filter(feedback_id = feedback)
             p = 0
             n = 0
@@ -223,6 +216,41 @@ def vote(request):
             mod.order = p - n
             mod.save()
             return HttpResponse(simplejson.dumps({'modification':request.POST.get("modification"),'p':p,'n':n}))
+
+def article_vote(request):
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            article =  request.POST.get("article")
+            user =  request.user
+
+            record = ArticleRating.objects.filter(article_id = article, user = user )
+
+            vote = False
+            if request.POST.get("type") == "1" :
+              vote = True
+            
+            if record:
+                record[0].vote = vote
+                record[0].save()
+            else:
+                ArticleRating(user = user, vote = vote,article_id = article).save()
+            
+            votes = ArticleRating.objects.filter(article_id = article)
+            p = 0
+            n = 0
+            for v in votes:
+              if v.vote == True:
+                p += 1
+              else:
+                n += 1
+                
+            art = Article.objects.get(article_id = article)
+            art.likes = p
+            art.dislikes = n
+            art.save()
+
+            return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n}))
+
           
 def facebook_comment(request):
     return render_to_response('facebook_comment.html', {},RequestContext(request))
