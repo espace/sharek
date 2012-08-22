@@ -244,7 +244,7 @@ def article_vote(request):
               else:
                 n += 1
 
-            art = Article.objects.get(article_id = article)
+            art = Article.objects.get(id = article)
             art.likes = p
             art.dislikes = n
             art.save()
