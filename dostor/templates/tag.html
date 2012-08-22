@@ -63,15 +63,10 @@
                 </div><!-- topic end -->
             {% endif %}
             
-			{% if ajaxify %}
+
             <script type="text/javascript">
              $(document).ready(function() {
-                $('.mada-title a').ajaxify({
-                    target:'#ajax-container',
-                    tagToload: '#ajax-container',
-					loading_img:"{{ STATIC_URL }}images/loading.gif",
-                    loadHash:'attr:rel'
-                });
+
 
                 $('a[rel*=facebox]').facebox()
                 $(".rate").live("click",function(){
@@ -91,7 +86,7 @@
                 });
              });
             </script>
-            {% endif %}
+
     </div>
 </div><!-- row end -->
 
