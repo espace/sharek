@@ -9,6 +9,8 @@ def key(d, key_name):
 
 def vote(voted, key_name):
   for comment_vote in voted:
+    print "ana hnaaaaaaaaaaaaaaaa"
+    print comment_vote.feedback_id+"," +key_name
     if comment_vote.feedback_id == key_name:
       return comment_vote.vote
 
