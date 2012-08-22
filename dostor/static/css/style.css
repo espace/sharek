@@ -120,6 +120,23 @@ body {
     text-align: center;
     width: 100%;
 }*/
+
+.navbar-search .search-query{
+    background: #b1b1b1;
+    color: #000 !important;
+}
+
+.navbar-search .search-query:-moz-placeholder {
+  color: #545454;
+}
+
+.navbar-search .search-query:-ms-input-placeholder {
+  color: #545454;
+}
+
+.navbar-search .search-query::-webkit-input-placeholder {
+  color: #545454;
+}
 .top-nav ul{ margin:0;}
 
 .top-nav ul.nav{
@@ -728,8 +745,8 @@ span.divider{
     float: right;
 }
 .divider-vert{  
-    box-shadow:-1px 0px 0px #ebdfd8;
-    border-left: 1px solid #f8f3ed;
+    box-shadow:-1px 0px 0px rgba(0,0,0,0.1);
+    border-left:solid 1px rgba(255,255,255,1);
 }
 .comment-info{
     float:right;
