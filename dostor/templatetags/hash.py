@@ -14,6 +14,8 @@ def vote(voted, key_name):
     print key_name
     print "5alasssssssssssssssssss"
     if comment_vote.feedback_id == key_name:
+      print "ana h3ml return ya gma3aaaaaaaaaaaaaaaaaaaaaa"
+      print "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&"
       return comment_vote.vote
 
   return 0
