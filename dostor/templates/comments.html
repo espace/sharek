@@ -66,7 +66,8 @@
 
 <div class="comment-block well top">
     {% if feedbacks|length >= 1 %} 
-        <a href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}latest" id="time">{%if order_by = 'def' or order_by = 'latest' %}<strong>حسب الوقت</strong>{%else%}حسب الوقت{%endif%}</a> | 
+        <a href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}latest" id="time">{%if order_by = 'def' or order_by = 'latest' %}<strong>حسب الوقت</strong>{%else%}حسب الوقت{%endif%}</a>
+        <a> | </a>
         <a href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}order" id="rank">{%if order_by = 'order' %}<strong>حسب التصويت</strong>{%else%}حسب التصويت{%endif%}</a>
     {% endif %}
 </div>
