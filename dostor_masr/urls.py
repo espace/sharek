@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     url(r'sharek/facebook/welcome/', 'dostor.facebook.views.welcome', name='facebook_welcome'),
     
     #Home  Tags List
-    url(r'^sharek/$', 'dostor.views.index', name='index'),
+    url(r'^sharek', 'dostor.views.index', name='index'),
     
     url(r'^sharek/admin/', include(admin.site.urls)),
     
