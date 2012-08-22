@@ -55,6 +55,8 @@ class Article(models.Model):
     slug 	 = models.SlugField(max_length=40, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
     order = models.IntegerField(blank = True, null = True)
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
 
     def feedback_count(self):
         return len(Feedback.objects.filter(article_id = self.id))
@@ -95,6 +97,12 @@ class Feedback(models.Model):
 class Rating(models.Model):
     article = models.ForeignKey(Article)
     feedback = models.ForeignKey(Feedback)
+    user = models.CharField(max_length=200,default='')
+    vote = models.BooleanField()
+
+
+class ArticleRating(models.Model):
+    article = models.ForeignKey(Article)
     user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()
 

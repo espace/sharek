@@ -37,11 +37,12 @@
           {% if article.feedback_count > 0 %}{{article.feedback_count}}  تعليق{% else %}لا توجد تعليقات{% endif %}
           </span>
           </a></p></h3>
-           <div class="like-group">
-             <a  href="#not-logged" class="dislike vote"><small class="dislike">13323</small></a>
-             <a  href="#not-logged" class="like vote active" ><small class="like">12312</small></a>
 
-            </div>  
+           <div class="like-group">
+             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate" id="{{article.id}}" vote="0"><small class="dislike article">{{article.dislikes}}</small></a>
+             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate" id="{{article.id}}" vote="1" ><small class="like article">{{article.likes}}</small></a>
+           </div>  
+            
           <input type="hidden" id="count" name="Language" value="{{article.feedback_count}}">
         <p>{{article.summary}}</p>
     </div><!-- topic end -->
@@ -51,5 +52,27 @@
   </div><!-- span 8 -->
 
 </div><!-- row end -->
+
+<script type="text/javascript">
+  $(document).ready(function() {
+   $('a[rel*=facebox]').facebox()
+   $(".rate").live("click",function(){
+      {% if user %}
+      $.ajax({
+              type:"POST",
+              url :"/sharek/article_vote/",
+              data:{'article':{{article.id}},'type': $(this).attr('vote') ,'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+              dataType:"json",
+              error:function(data){},
+              success:function(data){
+              $(".like.article").text(data.p);  
+              $(".dislike.article").text(data.n);  
+              },
+            });
+      {% endif %}
+    });
+
+     });
+</script>
   
 {% endblock %}
