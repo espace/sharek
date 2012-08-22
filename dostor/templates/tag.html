@@ -79,8 +79,8 @@
               dataType:"json",
               error:function(data){},
               success:function(data){
-              $(".like.article"+"."+data.article.id).text(data.p);  
-              $(".dislike.article"+"."+data.article.id).text(data.n);  
+              $(".like.article"+"."+data.article).text(data.p);  
+              $(".dislike.article"+"."+data.article).text(data.n);  
               },
             });
       {% endif %}
