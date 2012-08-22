@@ -9,7 +9,7 @@ from datetime import datetime
 
 from django.contrib import auth
 
-from dostor.models import Tag, Article, Feedback, Rating, Topic, Info
+from dostor.models import Tag, Article, Feedback, Rating, Topic, Info, ArticleRating
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -243,7 +243,7 @@ def article_vote(request):
                 p += 1
               else:
                 n += 1
-                
+
             art = Article.objects.get(article_id = article)
             art.likes = p
             art.dislikes = n
