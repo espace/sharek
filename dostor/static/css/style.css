@@ -155,6 +155,9 @@ body {
        background:transparent !important;
        color: #fff;
 }
+.footer-nav ul li{
+    padding: 5px !important;
+}
 .footer-nav a{
     color: #7A7672 !important;
 }
