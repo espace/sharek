@@ -258,7 +258,7 @@ def article_vote(request):
             art.dislikes = n
             art.save()
 
-            return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n}))
+            return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n,'vote':request.POST.get("type")}))
 
           
 def facebook_comment(request):

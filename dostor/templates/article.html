@@ -66,7 +66,17 @@
               error:function(data){},
               success:function(data){
               $(".like.article").text(data.p);  
-              $(".dislike.article").text(data.n);  
+              $(".dislike.article").text(data.n);
+              if (data.vote == 1)
+              {
+                $(".like.article").addClass("active")
+                $(".dislike.article").removeClass("active")
+              }
+              else
+              {
+                $(".dislike.article").addClass("active")
+                $(".like.article").removeClass("active")
+              }
               },
             });
       {% endif %}
