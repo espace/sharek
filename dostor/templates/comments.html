@@ -4,36 +4,29 @@
 
 {% if user %}
   <div class="comment-block comment-entry">
+    <a href="#not-logged" rel="facebox" class="overlay-notlogged"></a>
     <div class="facebook_user_img">
       <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
     </div>
-    <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{user.first_name}} {{user.last_name}}</a></p></h3> 
+    <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">محمد أمين</a></p></h3> 
     <p >
        <textarea rows="3" class="input-xlarge span8" id="suggestion"></textarea>
        <br />
-       <button class="btn btn-inverse offset0" type="submit" id="modify" >أضف الآن !</button>
+       <button class="btn btn-danger offset0" type="submit" id="modify" >أضف الآن !</button>
     </p>
   </div>
 {% else %}
   <div class="comment-block comment-entry not-logged">  
-    <p style=" color:#960d0d;">للمشاركة فى التعليقات رجاءا قم بتسجيل الدخول
-      {% if error %}
-        {% if error == 'AUTH_FAILED' %}
-            <p>Authentication failed</p>
-        {% else %}
-          {% if error == 'AUTH_DISABLED' %}
-            <p>Your account is disabled</p>
-          {% else %}
-            {% if error == 'AUTH_DENIED' %}
-            <p>You did not allow access</p>
-            {% endif %}
-          {% endif %}
-        {% endif %}
-      {% else %}
-      <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ request.build_absolute_uri }}&scope=publish_stream,email&display=popup">
-        <img width="150" src="http://egynda.com/resource/images/fb_sign.png">
-      </a>
-      {% endif %}
+    <p style=" color:#960d0d;">
+    
+مرحبـــا!
+<br />
+لكى تتمكن من تسجيل مقترحاتك لابد من تسجيل دخولك أولا
+<br />
+<a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ request.build_absolute_uri }}&scope=publish_stream,email&display=popup">
+	<img width="150" src="http://egynda.com/resource/images/fb_sign.png">
+</a>
+
     </p>
   </div><!-- comment end -->
 {% endif %}
