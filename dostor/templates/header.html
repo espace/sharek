@@ -93,8 +93,9 @@
 </div><!-- content -->        
         
    <div id="not-logged" style="display:none;">  
-    <p style=" color:#960d0d;">للمشاركة فى التعليقات رجاءا قم بتسجيل الدخول
-      <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ request.build_absolute_uri }}&scope=publish_stream,email&display=popup">
+    <p style=" color:#960d0d; text-align:center ;   font: 14px GESSTwoMediumRegular;
+">للمشاركة فى التعليقات رجاءا قم بتسجيل الدخول
+      <a style=" margin-top:40px; display:block;" href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&redirect_uri={{ request.build_absolute_uri }}&scope=publish_stream,email&display=popup">
         <img width="150" src="http://egynda.com/resource/images/fb_sign.png">
       </a>
     </p>
