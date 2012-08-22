@@ -26,17 +26,15 @@ urlpatterns = patterns('',
 
     url(r'^sharek/info/(?P<info_slug>[-\w]+)/$', 'dostor.views.info_detail', name='info'),
 
-    #Article detail URL
-    
+    #Article detail URL    
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'dostor.views.article_detail'),
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/$', 'dostor.views.article_detail', name='article_detail'),
 
     #Tag detail URL
     url(r'^sharek/tags/(?P<tag_slug>[-\w]+)/$', 'dostor.views.tag_detail', name='tag'),
-    #Topc detail URL
-    
+	
+    #Topic detail URL    
     url(r'^sharek/topics/$', 'dostor.views.topic_detail', name='topics'),
     url(r'^sharek/topic/(?P<topic_slug>[-\w]+)/$', 'dostor.views.topic_detail', name='topic'),
-	
-       
+      
 )
