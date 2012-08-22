@@ -10,7 +10,9 @@ def key(d, key_name):
 def vote(voted, key_name):
   for comment_vote in voted:
     print "ana hnaaaaaaaaaaaaaaaa"
-    print comment_vote.feedback_id+"," +key_name
+    print comment_vote.feedback_id
+    print key_name
+    print "5alasssssssssssssssssss"
     if comment_vote.feedback_id == key_name:
       return comment_vote.vote
 
