@@ -17,5 +17,16 @@ def vote(voted, key_name):
 
   return 0
 
+def vote_art(voted, key_name):
+  for article_vote in voted:
+    if article_vote.article_id == key_name:
+      if article_vote.vote == True:
+        return 1
+      else:
+        return -1
+
+  return 0  
+
 key = register.filter('key', key)
 vote = register.filter('vote', vote)
+vote_art = register.filter('vote_art', vote_art)

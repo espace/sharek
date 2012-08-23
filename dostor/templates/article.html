@@ -39,8 +39,8 @@
           </a></p></h3>
 
            <div class="like-group">
-             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate" id="{{article.id}}" vote="0"><small class="dislike article">{{article.dislikes}}</small></a>
-             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate" id="{{article.id}}" vote="1" ><small class="like article">{{article.likes}}</small></a>
+             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {% if article_rate == -1 %} active {% endif %}" id="{{article.id}}" vote="0"><small class="dislike article">{{article.dislikes}}</small></a>
+             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {% if article_rate == 1 %} active {% endif %}" id="{{article.id}}" vote="1" ><small class="like article">{{article.likes}}</small></a>
            </div>  
             
           <input type="hidden" id="count" name="Language" value="{{article.feedback_count}}">
@@ -66,7 +66,17 @@
               error:function(data){},
               success:function(data){
               $(".like.article").text(data.p);  
-              $(".dislike.article").text(data.n);  
+              $(".dislike.article").text(data.n);
+              if (data.vote == 1)
+              {
+                $(".like.rate").addClass("active")
+                $(".dislike.rate").removeClass("active")
+              }
+              else
+              {
+                $(".dislike.rate").addClass("active")
+                $(".like.rate").removeClass("active")
+              }
               },
             });
       {% endif %}

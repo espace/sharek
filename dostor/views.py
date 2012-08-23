@@ -51,6 +51,8 @@ def tag_detail(request, tag_slug):
     tag = get_object_or_404( Tag, slug=tag_slug )
     articles = tag.article_set.all()
 
+    voted_articles = ArticleRating.objects.filter(user = user)
+
     paginator = Paginator(articles, settings.paginator) 
     page = request.GET.get('page')
 
@@ -64,7 +66,7 @@ def tag_detail(request, tag_slug):
         # If page is out of range (e.g. 9999), deliver last page of results.
         articles = paginator.page(paginator.num_pages)
 
-    template_context = {'request':request, 'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
+    template_context = {'voted_articles':voted_articles,'request':request, 'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('tag.html',template_context ,RequestContext(request))
 
 def topic_detail(request, topic_slug=None):
@@ -135,7 +137,14 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     page = request.GET.get('page')
 
     voted_fb = Rating.objects.filter(article_id = article.id, user = user)
-    print voted_fb
+    voted_article = ArticleRating.objects.filter(article_id = article.id, user = user)
+
+    article_rate = None
+    for art in voted_article:
+        if art.vote == True:
+            article_rate = 1
+        else:
+            article_rate = -1
 
     try:
         feedbacks = paginator.page(page)
@@ -162,9 +171,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
           n_votes[vote.feedback_id] = 1
           
     if classified_by == "tags":  
-        template_context = {'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+        template_context = {'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
     elif classified_by == "topics":
-        template_context = {'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+        template_context = {'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
@@ -251,7 +260,7 @@ def article_vote(request):
             art.dislikes = n
             art.save()
 
-            return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n}))
+            return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n,'vote':request.POST.get("type")}))
 
           
 def facebook_comment(request):
