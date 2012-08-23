@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load settings %}
-
+{% load hash %} 
 {% block title %}{{topic.name}}{% endblock %}
 
 {% block content %}
@@ -84,7 +84,17 @@
               error:function(data){},
               success:function(data){
               $(".like.article"+"."+data.article).text(data.p);  
-              $(".dislike.article"+"."+data.article).text(data.n);  
+              $(".dislike.article"+"."+data.article).text(data.n);
+              if (data.vote == 1)
+                {
+                  $(".like.rate"+"."+data.article).addClass("active")
+                  $(".dislike.rate"+"."+data.article).removeClass("active")
+                }
+                else
+                {
+                  $(".dislike.rate"+"."+data.article).addClass("active")
+                  $(".like.rate"+"."+data.article).removeClass("active")
+                }
               },
             });
       {% endif %}
