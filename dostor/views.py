@@ -182,7 +182,7 @@ def remove_feedback(request):
             feedback_id = request.POST.get("feedback")
             feedback = Feedback.objects.get(id=feedback_id)
             #the user has to be the feedback owner to be able to remove it
-            if feedback.user == request.user.username:
+            if feedback.user == request.user.username or request.user.username == "admin":
                 feedback.delete()
                 return HttpResponse(simplejson.dumps({'feedback_id':request.POST.get("feedback")}))
 
