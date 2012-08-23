@@ -282,9 +282,9 @@ def article_vote(request):
             fb_user = FacebookSession.objects.get(user = request.user)
             graph = facebook_sdk.GraphAPI(fb_user.access_token)
             attachment = {}
-            attachment['link'] = settings.domain+"sharek/"+article.topic.slug+"/"+article.slug
+            attachment['link'] = settings.domain+"sharek/"+art.topic.slug+"/"+art.slug
             attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-            #message = 'لقد شاركت في كتابة دستور مصر وقمت بالتصويت على '+get_object_or_404(Article, id=article.name.encode('utf-8')+" من الدستور"
+            message = 'لقد شاركت في كتابة دستور مصر وقمت بالتصويت على ' + art.name.encode('utf-8') + " من الدستور"
             graph.put_wall_post(message, attachment)
 
             return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n,'vote':request.POST.get("type")}))
