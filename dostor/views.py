@@ -234,7 +234,7 @@ def vote(request):
 
             mod.order = p - n
             mod.save()
-            return HttpResponse(simplejson.dumps({'modification':request.POST.get("modification"),'p':p,'n':n}))
+            return HttpResponse(simplejson.dumps({'modification':request.POST.get("modification"),'p':p,'n':n,'vote':request.POST.get("type")}))
 
 def article_vote(request):
     if request.user.is_authenticated():
