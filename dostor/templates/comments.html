@@ -79,7 +79,7 @@
          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == 1 %} active {% endif %}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
          {% if user %}
            {% if user.username = feedback.user %}
-            <a href="javascript:;" class="L_remove" feedback_id="{{feedback.id}}">حذف</a>
+            <a href="javascript:;" onclick="return confirm('هل أنت متأكد');" class="L_remove" feedback_id="{{feedback.id}}">حذف</a>
            {% endif %}
          {% endif %}
       </div>
@@ -193,7 +193,7 @@
 
 
 <script id="modification_temp" type="text/x-jquery-tmpl">
-  <div class="comment-block " id="L_${id}">
+  <div class="comment-block L_${id}">
     <div class="facebook_user_img">
       <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
     </div>
