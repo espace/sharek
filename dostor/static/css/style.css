@@ -1068,7 +1068,25 @@ span.divider{
     background:url(../images/thumb-down.png) no-repeat right 9px, -moz-linear-gradient(top, #F7F7F7, #ECECEC) !important;
 }
 
+.topic .like-group a.dislike.disabled{
+    color: #ccc;
+    background:url(../images/thumb-down.png) no-repeat right -62px, -ms-linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-down.png) no-repeat right -62px, -webkit-gradient(linear, 0 0, 0 100%, from(#e9e9e9), to(#f1f1f1));
+    background:url(../images/thumb-down.png) no-repeat right -62px, -webkit-linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-down.png) no-repeat right -62px, -o-linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-down.png) no-repeat right -62px, linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-down.png) no-repeat right -62px, -moz-linear-gradient(top, #e9e9e9, #f1f1f1);
+}
 
+.topic .like-group a.like.disabled{
+    color: #ccc;
+    background:url(../images/thumb-up.png) no-repeat right -62px, -ms-linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-up.png) no-repeat right -62px, -webkit-gradient(linear, 0 0, 0 100%, from(#e9e9e9), to(#f1f1f1));
+    background:url(../images/thumb-up.png) no-repeat right -62px, -webkit-linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-up.png) no-repeat right -62px, -o-linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-up.png) no-repeat right -62px, linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-up.png) no-repeat right -62px, -moz-linear-gradient(top, #e9e9e9, #f1f1f1);
+}
  .like-group a.like:hover{
     color: #4aad2b !important;
     background:url(../images/thumb-up.png) no-repeat right 5px, -ms-linear-gradient(top, #F7F7F7, #ECECEC) !important;
