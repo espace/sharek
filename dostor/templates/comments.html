@@ -44,7 +44,7 @@
           <div class="delete-group">
                 {% if user %}
                   {% if user.username = top_feedback.user or user.username = "admin" %}
-                    <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="{{top_feedback.id}}" data-toggle="dropdown"><span>x</span></a>
+                    <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="{{top_feedback.id}}"><span>x</span></a>
                  {% endif %}
                {% endif %}
           </div>
@@ -79,16 +79,9 @@
                 <div class="delete-group">
                 {% if user %}
                   {% if user.username = feedback.user or user.username = "admin" %}
-                    <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="{{feedback.id}}" data-toggle="dropdown"><span>x</span></a>
+                    <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="{{feedback.id}}"><span>x</span></a>
                  {% endif %}
                {% endif %}
-                 <!--  <ul class="dropdown-menu">
-                      <li><a href="#"><i class="icon-pencil"></i> Edit</a></li>
-                      <li><a href="#"><i class="icon-trash"></i> Delete</a></li>
-                      <li><a href="#"><i class="icon-ban-circle"></i> Ban</a></li>
-                      <li class="divider"></li>
-                      <li><a href="#"><i class="i"></i> Make admin</a></li>
-                    </ul> -->
                 </div>
       <div class="like-group">
          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {% if voted_fb|vote:feedback.id == -1 %} active {% endif %}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
@@ -213,11 +206,9 @@
     </div>
     <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{user.first_name}} {{ user.last_name }}</a></p></h3> 
     <div class="delete-group">
-      {% if user %}
-        {% if user.username = top_feedback.user or user.username = "admin" %}
-          <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="${id}" data-toggle="dropdown"><span>x</span></a>
-       {% endif %}
-     {% endif %}
+
+          <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="${id}" ><span>x</span></a>
+
     </div>
     <div class="like-group">
        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="like vote L_vote" id="${id}" vote="1"><small class="like ${id}">0</small></a>
