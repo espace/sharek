@@ -1158,7 +1158,9 @@ span.divider{
 
 }
 .delete span{
-    margin-top: -1px;
+    margin-top: -2px;
+    float: left;
+    margin-left: 5px;
 }
 .delete:hover{
     color: #ad2b2b;

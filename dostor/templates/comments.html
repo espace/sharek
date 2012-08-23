@@ -41,17 +41,13 @@
             <a href="http://www.facebook.com/{{ top_feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ top_feedback.user }}/picture" alt="" class="loader"></a>
           </div>
           <h3><p class="name"><a href="http://www.facebook.com/{{ top_feedback.user }}" target="_blank">{{top_feedback.name}}</a></p></h3> 
+
           <a href="#" class="delete">حذف لتعليق</a>
-
-          <div class="like-group"> 
-             
-             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {% if voted_fb|vote:feedback.id == 1 %} active {% endif %}" id="{{top_feedback.id}}" vote="1"><small class="like {{top_feedback.id}}">{{p_votes|key:top_feedback.id }}</small></a>
-
-             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {% if voted_fb|vote:feedback.id == -1 %} active {% endif %}" id="{{top_feedback.id}}" vote="0"><small class="dislike {{top_feedback.id}}">{{n_votes|key:top_feedback.id }}</small></a>
-
-
+          <div class="like-group">
+             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {{top_feedback.id}} {% if voted_fb|vote:top_feedback.id == -1 %} active {% endif %}" id="{{top_feedback.id}}" vote="0"><small class="dislike {{top_feedback.id}}">{{n_votes|key:top_feedback.id }}</small></a>
+             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{top_feedback.id}} {% if voted_fb|vote:top_feedback.id == 1 %} active {% endif %}" id="{{top_feedback.id}}" vote="1"><small class="like {{top_feedback.id}}">{{p_votes|key:top_feedback.id }}</small></a>
              {% if user %}
-               {% if user.username = top_feedback.user %}
+               {% if user.username = top_feedback.user or user.username = "admin" %}
                 <a href="javascript:;" class="L_remove" feedback_id="{{top_feedback.id}}">حذف</a>
                {% endif %}
              {% endif %}
@@ -94,7 +90,7 @@
          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {% if voted_fb|vote:feedback.id == -1 %} active {% endif %}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {% if voted_fb|vote:feedback.id == 1 %} active {% endif %}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
          {% if user %}
-           {% if user.username = feedback.user %}
+           {% if user.username = feedback.user or user.username = "admin" %}
             <a href="javascript:;" class="L_remove" feedback_id="{{feedback.id}}">حذف</a>
            {% endif %}
          {% endif %}
@@ -142,8 +138,23 @@
               dataType:"json",
               error:function(data){},
               success:function(data){
+<<<<<<< HEAD
               $(".like"+"."+data.modification).text(data.p);  
               $(".dislike"+"."+data.modification).text(data.n);  
+=======
+                $(".like"+"."+data.modification).text(data.p);  
+                $(".dislike"+"."+data.modification).text(data.n);
+                if (data.vote == 1)
+                {
+                  $(".like.vote.L_vote"+"."+data.modification).addClass("active")
+                  $(".dislike.vote.L_vote"+"."+data.modification).removeClass("active")
+                }
+                else
+                {
+                  $(".dislike.vote.L_vote"+"."+data.modification).addClass("active")
+                  $(".like.vote.L_vote"+"."+data.modification).removeClass("active")
+                }
+>>>>>>> cf0d09eab2c306165170402b9bb590f236dd6763
               },
             });
     {% endif %}
@@ -151,17 +162,20 @@
 
    $(".L_remove").live("click",function(){
     {% if user %}
-      $.ajax({
-              type:"POST",
-              url :"/sharek/remove_feedback/",
-              data:{'feedback':$(this).attr('feedback_id'),
-                    'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
-              dataType:"json",
-              error:function(data){},
-              success:function(data){
-              $(".L_"+data.feedback_id).remove();  
-              },
-            });
+      if (confirm('هل أنت متأكد من أنك تريد حذف تعليقك'))
+      {
+        $.ajax({
+                type:"POST",
+                url :"/sharek/remove_feedback/",
+                data:{'feedback':$(this).attr('feedback_id'),
+                      'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+                dataType:"json",
+                error:function(data){},
+                success:function(data){
+                $(".L_"+data.feedback_id).remove();  
+                },
+              });
+      }
     {% endif %}
         });
 
@@ -199,7 +213,7 @@
 
 
 <script id="modification_temp" type="text/x-jquery-tmpl">
-  <div class="comment-block " id="L_${id}">
+  <div class="comment-block L_${id}">
     <div class="facebook_user_img">
       <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
     </div>

@@ -182,7 +182,7 @@ def remove_feedback(request):
             feedback_id = request.POST.get("feedback")
             feedback = Feedback.objects.get(id=feedback_id)
             #the user has to be the feedback owner to be able to remove it
-            if feedback.user == request.user.username:
+            if feedback.user == request.user.username or request.user.username == "admin":
                 feedback.delete()
                 return HttpResponse(simplejson.dumps({'feedback_id':request.POST.get("feedback")}))
 
@@ -234,7 +234,7 @@ def vote(request):
 
             mod.order = p - n
             mod.save()
-            return HttpResponse(simplejson.dumps({'modification':request.POST.get("modification"),'p':p,'n':n}))
+            return HttpResponse(simplejson.dumps({'modification':request.POST.get("modification"),'p':p,'n':n,'vote':request.POST.get("type")}))
 
 def article_vote(request):
     if request.user.is_authenticated():
