@@ -1041,10 +1041,10 @@ span.divider{
     /*border-right:solid 1px  rgba(255,255,255,0.3); */
     box-shadow:inset 1px 0px 2px rgba(0,0,0,0.2);
     border-radius:  2px 0 0 2px !important;
-        background: url(../images/thumb-down.png) no-repeat right 20px;
+        background: url(../images/thumb-down.png) no-repeat right -20px;
     background:url(../images/thumb-down.png) no-repeat right 20px, -ms-linear-gradient(top, #e9e9e9, #f1f1f1);
-    background:url(../images/thumb-down.png) no-repeat right 20px, -webkit-gradient(linear, 0 0, 0 100%, from(#e9e9e9), to(#f1f1f1));
-    background:url(../images/thumb-down.png) no-repeat right 20px, -webkit-linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-down.png) no-repeat right -20px, -webkit-gradient(linear, 0 0, 0 100%, from(#e9e9e9), to(#f1f1f1));
+    background:url(../images/thumb-down.png) no-repeat right -25px, -webkit-linear-gradient(top, #e9e9e9, #f1f1f1);
     background:url(../images/thumb-down.png) no-repeat right 20px, -o-linear-gradient(top, #e9e9e9, #f1f1f1);
     background:url(../images/thumb-down.png) no-repeat right 20px, linear-gradient(top, #e9e9e9, #f1f1f1);
     background:url(../images/thumb-down.png) no-repeat right 20px, -moz-linear-gradient(top, #e9e9e9, #f1f1f1);
