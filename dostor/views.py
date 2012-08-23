@@ -128,12 +128,18 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if order_by == "latest":
         if size > 3:
             feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+        else:
+            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
     elif order_by == "order":
         if size > 3:
             feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+        else:
+            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-order')
     elif order_by == "def":
         if size > 3:
             feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+        else:
+            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
     
     
 
