@@ -25,7 +25,6 @@
     font-family: 'GESSTwoBoldRegular';
     src: url('../fonts/gess-bold.eot');
     src: url('../fonts/gess-bold.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/gess-bold.woff') format('woff'),
          url('../fonts/gess-bold.ttf') format('truetype'),
          url('../fonts/gess-bold.svg#GESSTwoBoldRegular') format('svg');
     font-weight: normal;
@@ -38,7 +37,6 @@
     font-family: 'GESSTwoMediumRegular';
     src: url('../fonts/gess-med.eot');
     src: url('../fonts/gess-med.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/gess-med.woff') format('woff'),
          url('../fonts/gess-med.ttf') format('truetype'),
          url('../fonts/gess-med.svg#GESSTwoMediumRegular') format('svg');
     font-weight: normal;
