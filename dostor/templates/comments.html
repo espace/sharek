@@ -136,11 +136,17 @@
                 {
                   $(".like.vote.L_vote"+"."+data.modification).addClass("active")
                   $(".dislike.vote.L_vote"+"."+data.modification).removeClass("active")
+				  
+                  $(".like.vote.L_vote"+"."+data.modification).removeClass("disabled")
+                  $(".dislike.vote.L_vote"+"."+data.modification).addClass("disabled")
                 }
                 else
                 {
                   $(".dislike.vote.L_vote"+"."+data.modification).addClass("active")
                   $(".like.vote.L_vote"+"."+data.modification).removeClass("active")
+				  
+                  $(".dislike.vote.L_vote"+"."+data.modification).removeClass("disabled")
+                  $(".like.vote.L_vote"+"."+data.modification).addClass("disabled")
                 }
               },
             });
