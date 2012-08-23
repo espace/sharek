@@ -1049,7 +1049,7 @@ span.divider{
     background:url(../images/thumb-down.png) no-repeat right 5px, linear-gradient(top, #e9e9e9, #f1f1f1);
     background:url(../images/thumb-down.png) no-repeat right 5px, -moz-linear-gradient(top, #e9e9e9, #f1f1f1);
 }
-.article  .like-group a.like:hover{
+.topic  .like-group a.like:hover{
     color: #4aad2b !important;
     background:url(../images/thumb-up.png) no-repeat right 9px, -ms-linear-gradient(top, #F7F7F7, #ECECEC) !important;
     background:url(../images/thumb-up.png) no-repeat right 9px, -webkit-gradient(linear, 0 0, 0 100%, from(#F7F7F7), to(#ECECEC)) !important;
@@ -1058,7 +1058,7 @@ span.divider{
     background:url(../images/thumb-up.png) no-repeat right 9px, linear-gradient(top, #F7F7F7, #ECECEC) !important;
     background:url(../images/thumb-up.png) no-repeat right 9px, -moz-linear-gradient(top, #F7F7F7, #ECECEC) !important;
 }
-.article .like-group a.dislike:hover{
+.topic .like-group a.dislike:hover{
     color: #ad2b2b !important;
     background:url(../images/thumb-down.png) no-repeat right 9px, -ms-linear-gradient(top, #F7F7F7, #ECECEC) !important;
     background:url(../images/thumb-down.png) no-repeat right 9px, -webkit-gradient(linear, 0 0, 0 100%, from(#F7F7F7), to(#ECECEC))  !important;
