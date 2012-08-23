@@ -145,17 +145,20 @@
 
    $(".L_remove").live("click",function(){
     {% if user %}
-      $.ajax({
-              type:"POST",
-              url :"/sharek/remove_feedback/",
-              data:{'feedback':$(this).attr('feedback_id'),
-                    'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
-              dataType:"json",
-              error:function(data){},
-              success:function(data){
-              $(".L_"+data.feedback_id).remove();  
-              },
-            });
+      if (confirm('شمنيتا شم'))
+      {
+        $.ajax({
+                type:"POST",
+                url :"/sharek/remove_feedback/",
+                data:{'feedback':$(this).attr('feedback_id'),
+                      'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+                dataType:"json",
+                error:function(data){},
+                success:function(data){
+                $(".L_"+data.feedback_id).remove();  
+                },
+              });
+      }
     {% endif %}
         });
 
