@@ -278,7 +278,7 @@ def article_vote(request):
             art.likes = p
             art.dislikes = n
             art.save()
-			
+
             fb_user = FacebookSession.objects.get(user = request.user)
             # GraphAPI is the main class from facebook_sdp.py
             graph = facebook_sdk.GraphAPI(fb_user.access_token)
