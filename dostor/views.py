@@ -279,7 +279,7 @@ def article_vote(request):
             art.dislikes = n
             art.save()
 			
-			fb_user = FacebookSession.objects.get(user = request.user)
+            fb_user = FacebookSession.objects.get(user = request.user)
             # GraphAPI is the main class from facebook_sdp.py
             graph = facebook_sdk.GraphAPI(fb_user.access_token)
             attachment = {}
