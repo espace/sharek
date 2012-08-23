@@ -1044,7 +1044,7 @@ span.divider{
         background: url(../images/thumb-down.png) no-repeat right -20px;
     background:url(../images/thumb-down.png) no-repeat right 20px, -ms-linear-gradient(top, #e9e9e9, #f1f1f1);
     background:url(../images/thumb-down.png) no-repeat right -20px, -webkit-gradient(linear, 0 0, 0 100%, from(#e9e9e9), to(#f1f1f1));
-    background:url(../images/thumb-down.png) no-repeat right -25px, -webkit-linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-down.png) no-repeat right -60px, -webkit-linear-gradient(top, #e9e9e9, #f1f1f1);
     background:url(../images/thumb-down.png) no-repeat right 20px, -o-linear-gradient(top, #e9e9e9, #f1f1f1);
     background:url(../images/thumb-down.png) no-repeat right 20px, linear-gradient(top, #e9e9e9, #f1f1f1);
     background:url(../images/thumb-down.png) no-repeat right 20px, -moz-linear-gradient(top, #e9e9e9, #f1f1f1);
