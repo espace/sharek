@@ -178,7 +178,7 @@
 
 
 <script id="modification_temp" type="text/x-jquery-tmpl">
-  <div class="comment-block ">
+  <div class="comment-block " id="L_${id}">
     <div class="facebook_user_img">
       <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
     </div>
@@ -186,6 +186,7 @@
     <div class="like-group">
        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="like vote L_vote" id="${id}" vote="1"><small class="like ${id}">0</small></a>
        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="dislike vote L_vote" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
+       <a href="javascript:;" class="L_remove" feedback_id="${id}">حذف</a>
     </div>
     <p>${suggestion}</p>
     <span class="date">${date}</span>
