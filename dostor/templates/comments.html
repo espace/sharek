@@ -46,7 +46,7 @@
              <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {% if voted_fb|vote:top_feedback.id == 1 %} active {% endif %}" id="{{top_feedback.id}}" vote="1"><small class="like {{top_feedback.id}}">{{p_votes|key:top_feedback.id }}</small></a>
              {% if user %}
                {% if user.username = top_feedback.user %}
-                <a href="javascript:;" onclick="return confirm('هل أنت متأكد');" class="L_remove" feedback_id="{{top_feedback.id}}">حذف</a>
+                <a href="javascript:;" class="L_remove" feedback_id="{{top_feedback.id}}">حذف</a>
                {% endif %}
              {% endif %}
             </div>
@@ -79,7 +79,7 @@
          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == 1 %} active {% endif %}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
          {% if user %}
            {% if user.username = feedback.user %}
-            <a href="javascript:;" onclick="return confirm('هل أنت متأكد');" class="L_remove" feedback_id="{{feedback.id}}">حذف</a>
+            <a href="javascript:;" class="L_remove" feedback_id="{{feedback.id}}">حذف</a>
            {% endif %}
          {% endif %}
       </div>
@@ -145,7 +145,7 @@
 
    $(".L_remove").live("click",function(){
     {% if user %}
-      if (confirm('شمنيتا شم'))
+      if (confirm('هل أنت متأكد من أنك تريد حذف تعليقك'))
       {
         $.ajax({
                 type:"POST",
@@ -204,7 +204,7 @@
     <div class="like-group">
        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="like vote L_vote" id="${id}" vote="1"><small class="like ${id}">0</small></a>
        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="dislike vote L_vote" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
-       <a href="javascript:;" onclick="return confirm('هل أنت متأكد');" class="L_remove" feedback_id="${id}">حذف</a>
+       <a href="javascript:;" class="L_remove" feedback_id="${id}">حذف</a>
     </div>
     <p>${suggestion}</p>
     <span class="date">${date}</span>
