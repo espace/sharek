@@ -29,9 +29,8 @@
                         </h3>
                     
                         <div class="like-group">
-                         
-                         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate" id="{{article.id}}" vote="0"><small class="dislike article {{article.id}}">{{article.dislikes}}</small></a>
-                        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate" id="{{article.id}}" vote="1" ><small class="like article {{article.id}}">{{article.likes}}</small></a>
+                         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{article.id}}" id="{{article.id}}" vote="0"><small class="dislike article {{article.id}}">{{article.dislikes}}</small></a>
+                         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{article.id}}" id="{{article.id}}" vote="1" ><small class="like article {{article.id}}">{{article.likes}}</small></a>
                         </div> 
                         
                         <p>{{article.summary|safe|truncatewords_html:35}}</p>
