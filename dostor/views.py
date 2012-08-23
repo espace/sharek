@@ -87,6 +87,8 @@ def topic_detail(request, topic_slug=None):
             topic = None
             articles = None
 
+    voted_articles = ArticleRating.objects.filter(user = user)
+
     paginator = Paginator(articles, settings.paginator) 
     page = request.GET.get('page')
 
@@ -100,7 +102,7 @@ def topic_detail(request, topic_slug=None):
         # If page is out of range (e.g. 9999), deliver last page of results.
         articles = paginator.page(paginator.num_pages)
 
-    template_context = {'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,}
+    template_context = {'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
     return render_to_response('topic.html',template_context ,RequestContext(request))
 
 def article_detail(request, classified_by, class_slug, article_slug, order_by="def"):
