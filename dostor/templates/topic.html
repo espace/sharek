@@ -89,11 +89,17 @@
                 {
                   $(".like.rate"+"."+data.article).addClass("active")
                   $(".dislike.rate"+"."+data.article).removeClass("active")
+				  
+                  $(".like.rate"+"."+data.article).removeClass("disabled")
+                  $(".dislike.rate"+"."+data.article).addClass("disabled")
                 }
                 else
                 {
                   $(".dislike.rate"+"."+data.article).addClass("active")
                   $(".like.rate"+"."+data.article).removeClass("active")
+				  
+                  $(".dislike.rate"+"."+data.article).removeClass("disabled")
+                  $(".like.rate"+"."+data.article).addClass("disabled")
                 }
               },
             });
