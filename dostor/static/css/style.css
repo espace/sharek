@@ -2,7 +2,6 @@
     font-family: 'FrutigerBold';
     src: url('../fonts/FrutigerLTArabic-65Bold.ttf');
     src: url('../fonts/FrutigerLTArabic-65Bold.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/FrutigerLTArabic-65Bold.woff') format('woff'),
          url('../fonts/FrutigerLTArabic-65Bold.ttf') format('truetype'),
          url('../fonts/FrutigerLTArabic-65Bold.svg#FrutigerLTArabic-65Bold.ttf') format('svg');
     font-weight: normal;
@@ -15,7 +14,6 @@
     font-family: 'FrutigerLight';
     src: url('../fonts/frutigerltarabic-45light.eot');
     src: url('../fonts/frutigerltarabic-45light.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/frutigerltarabic-45light.woff') format('woff'),
          url('../fonts/frutigerltarabic-45light.ttf') format('truetype'),
          url('../fonts/frutigerltarabic-45light.svg#frutigerltarabic-45light') format('svg');
     font-weight: normal;
