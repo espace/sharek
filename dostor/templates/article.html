@@ -71,11 +71,17 @@
               {
                 $(".like.rate").addClass("active")
                 $(".dislike.rate").removeClass("active")
+				
+                $(".like.rate").removeClass("disabled")
+                $(".dislike.rate").addClass("disabled")
               }
               else
               {
                 $(".dislike.rate").addClass("active")
                 $(".like.rate").removeClass("active")
+				
+                $(".dislike.rate").removeClass("disabled")
+                $(".like.rate").addClass("disabled")
               }
               },
             });
