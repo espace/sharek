@@ -36,7 +36,7 @@
     <div class="top-comments">
       <span class="comments-number pull-left">أفضل التعليقات</span>
   {% for top_feedback in top_ranked %}
-      <div class="comment-block ">
+      <div class="comment-block L_{{top_feedback.id}}">
           <div class="facebook_user_img">
             <a href="http://www.facebook.com/{{ top_feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ top_feedback.user }}/picture" alt="" class="loader"></a>
           </div>
@@ -44,6 +44,11 @@
           <div class="like-group">
              <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote{% if voted_fb|vote:feedback.id == 1 %} active {% endif %}" id="{{top_feedback.id}}" vote="1"><small class="like {{top_feedback.id}}">{{p_votes|key:top_feedback.id }}</small></a>
              <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote{% if voted_fb|vote:feedback.id == -1 %} active {% endif %}" id="{{top_feedback.id}}" vote="0"><small class="dislike {{top_feedback.id}}">{{n_votes|key:top_feedback.id }}</small></a>
+             {% if user %}
+               {% if user.username = top_feedback.user %}
+                <a href="javascript:;" class="L_remove" feedback_id="{{top_feedback.id}}">حذف</a>
+               {% endif %}
+             {% endif %}
             </div>
           {{top_feedback.suggestion}}
           <span class="date">{{top_feedback.date|format}}</span>
@@ -64,7 +69,7 @@
   </div>
 {% if feedbacks|length >= 1 %}   
   {% for feedback in feedbacks %}
-  <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %}" id="L_{{feedback.id}}">
+  <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{feedback.id}}">
     <div class="facebook_user_img">
       <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/></a>
     </div>
@@ -138,7 +143,7 @@
               dataType:"json",
               error:function(data){},
               success:function(data){
-              $("#L_"+data.feedback_id).remove();  
+              $(".L_"+data.feedback_id).remove();  
               },
             });
     {% endif %}
