@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^sharek/vote/', 'dostor.views.vote', name='vote'),
     url(r'^sharek/article_vote/', 'dostor.views.article_vote', name='article_vote'),
     url(r'^sharek/modify/', 'dostor.views.modify', name='modify'),
+    url(r'^sharek/remove_feedback/', 'dostor.views.remove_feedback', name='remove_feedback'),
     url(r'^sharek/facebook/', 'dostor.views.facebook_comment', name='facebook_comment'),
 
     url(r'^sharek/info/(?P<info_slug>[-\w]+)/$', 'dostor.views.info_detail', name='info'),

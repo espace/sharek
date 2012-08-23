@@ -39,8 +39,7 @@ def index(request):
     percent = int((float(feedback_count)/target)*100)
     template_context = {'request':request, 'home':home,'tags':tags,'target':target,'settings': settings,'user':user,'count':feedback_count,'percent':percent}
     return render_to_response('index.html', template_context ,RequestContext(request))
-    
-    
+        
 def tag_detail(request, tag_slug):
     user = None
 
@@ -177,23 +176,32 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
+def remove_feedback(request):
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            feedback_id = request.POST.get("feedback")
+            feedback = Feedback.objects.get(id=feedback_id)
+            #the user has to be the feedback owner to be able to remove it
+            if feedback.user == request.user.username:
+                feedback.delete()
+                return HttpResponse(simplejson.dumps({'feedback_id':request.POST.get("feedback")}))
 
 def modify(request):
-    if request.method == 'POST':
-        Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name).save()
-        feedback = Feedback.objects.filter(article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name)
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name).save()
+            feedback = Feedback.objects.filter(article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name)
 
-        fb_user = FacebookSession.objects.get(user = request.user)
-        # GraphAPI is the main class from facebook_sdp.py
-        graph = facebook_sdk.GraphAPI(fb_user.access_token)
-        attachment = {}
-        attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")
-        attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-        message = 'لقد شاركت في كتابة دستور مصر وقمت بالتعليق على '+get_object_or_404(Article, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
-        graph.put_wall_post(message, attachment)
+            fb_user = FacebookSession.objects.get(user = request.user)
+            # GraphAPI is the main class from facebook_sdp.py
+            graph = facebook_sdk.GraphAPI(fb_user.access_token)
+            attachment = {}
+            attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")
+            attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
+            message = 'لقد شاركت في كتابة دستور مصر وقمت بالتعليق على '+get_object_or_404(Article, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
+            graph.put_wall_post(message, attachment)
 
-        return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
-
+            return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
 def vote(request):
     if request.user.is_authenticated():
@@ -261,11 +269,9 @@ def article_vote(request):
             art.save()
 
             return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n,'vote':request.POST.get("type")}))
-
           
 def facebook_comment(request):
     return render_to_response('facebook_comment.html', {},RequestContext(request))
-
 
 def login(request):
     error = None

@@ -7,7 +7,7 @@
     <div class="facebook_user_img">
       <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
     </div>
-    <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">محمد أمين</a></p></h3> 
+    <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
     <p >
        <textarea rows="3" class="input-xlarge span7" id="suggestion"></textarea>
        <br />
@@ -36,7 +36,7 @@
     <div class="top-comments">
       <span class="comments-number pull-left">أفضل التعليقات</span>
   {% for top_feedback in top_ranked %}
-      <div class="comment-block ">
+      <div class="comment-block L_{{top_feedback.id}}">
           <div class="facebook_user_img">
             <a href="http://www.facebook.com/{{ top_feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ top_feedback.user }}/picture" alt="" class="loader"></a>
           </div>
@@ -44,6 +44,11 @@
           <div class="like-group">
              <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote{% if voted_fb|vote:feedback.id == 1 %} active {% endif %}" id="{{top_feedback.id}}" vote="1"><small class="like {{top_feedback.id}}">{{p_votes|key:top_feedback.id }}</small></a>
              <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote{% if voted_fb|vote:feedback.id == -1 %} active {% endif %}" id="{{top_feedback.id}}" vote="0"><small class="dislike {{top_feedback.id}}">{{n_votes|key:top_feedback.id }}</small></a>
+             {% if user %}
+               {% if user.username = top_feedback.user %}
+                <a href="javascript:;" class="L_remove" feedback_id="{{top_feedback.id}}">حذف</a>
+               {% endif %}
+             {% endif %}
             </div>
           {{top_feedback.suggestion}}
           <span class="date">{{top_feedback.date|format}}</span>
@@ -64,7 +69,7 @@
   </div>
 {% if feedbacks|length >= 1 %}   
   {% for feedback in feedbacks %}
-  <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %}">
+  <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{feedback.id}}">
     <div class="facebook_user_img">
       <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/></a>
     </div>
@@ -72,8 +77,18 @@
       <div class="like-group">
           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote{% if voted_fb|vote:feedback.id == -1 %}active{% endif %}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote{% if voted_fb|vote:feedback.id == 1 %} active {% endif %}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
+<<<<<<< HEAD
        
       </div> 
+=======
+         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote{% if voted_fb|vote:feedback.id == -1 %}active{% endif %}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
+         {% if user %}
+           {% if user.username = feedback.user %}
+            <a href="javascript:;" class="L_remove" feedback_id="{{feedback.id}}">حذف</a>
+           {% endif %}
+         {% endif %}
+      </div>
+>>>>>>> 5c7466c6ec28fda44b3a5f18583aa65fc368630e
       <span class="date">{{feedback.date|format}}</span>
       {{feedback.suggestion}}
   </div><!-- comment end -->
@@ -123,6 +138,23 @@
             });
     {% endif %}
         });
+
+   $(".L_remove").live("click",function(){
+    {% if user %}
+      $.ajax({
+              type:"POST",
+              url :"/sharek/remove_feedback/",
+              data:{'feedback':$(this).attr('feedback_id'),
+                    'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+              dataType:"json",
+              error:function(data){},
+              success:function(data){
+              $(".L_"+data.feedback_id).remove();  
+              },
+            });
+    {% endif %}
+        });
+
     $("#modify").click(function(){
       if ($.trim($("#suggestion").val()).length > 0)
       {
@@ -157,7 +189,7 @@
 
 
 <script id="modification_temp" type="text/x-jquery-tmpl">
-  <div class="comment-block ">
+  <div class="comment-block " id="L_${id}">
     <div class="facebook_user_img">
       <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
     </div>
@@ -165,6 +197,7 @@
     <div class="like-group">
        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="like vote L_vote" id="${id}" vote="1"><small class="like ${id}">0</small></a>
        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="dislike vote L_vote" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
+       <a href="javascript:;" class="L_remove" feedback_id="${id}">حذف</a>
     </div>
     <p>${suggestion}</p>
     <span class="date">${date}</span>
