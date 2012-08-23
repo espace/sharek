@@ -49,8 +49,8 @@
                {% endif %}
           </div>
           <div class="like-group">
-             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {{top_feedback.id}} {% if voted_fb|vote:top_feedback.id == -1 %} active {% endif %}" id="{{top_feedback.id}}" vote="0"><small class="dislike {{top_feedback.id}}">{{n_votes|key:top_feedback.id }}</small></a>
-             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{top_feedback.id}} {% if voted_fb|vote:top_feedback.id == 1 %} active {% endif %}" id="{{top_feedback.id}}" vote="1"><small class="like {{top_feedback.id}}">{{p_votes|key:top_feedback.id }}</small></a>
+             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {{top_feedback.id}} {% if voted_fb|vote:top_feedback.id == -1 %} active {% elif voted_fb|vote:top_feedback.id == 1 %} disabled {% endif %}" id="{{top_feedback.id}}" vote="0"><small class="dislike {{top_feedback.id}}">{{n_votes|key:top_feedback.id }}</small></a>
+             <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{top_feedback.id}} {% if voted_fb|vote:top_feedback.id == 1 %} active {% elif voted_fb|vote:top_feedback.id == -1 %} disabled {% endif %}" id="{{top_feedback.id}}" vote="1"><small class="like {{top_feedback.id}}">{{p_votes|key:top_feedback.id }}</small></a>
             </div>
           {{top_feedback.suggestion}}
           <span class="date">{{top_feedback.date|format}}</span>
@@ -84,8 +84,8 @@
                {% endif %}
                 </div>
       <div class="like-group">
-         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {% if voted_fb|vote:feedback.id == -1 %} active {% endif %} {{feedback.id}}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
-         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {% if voted_fb|vote:feedback.id == 1 %} active {% endif %} {{feedback.id}}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
+         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {% if voted_fb|vote:feedback.id == -1 %} active {% elif voted_fb|vote:feedback.id == 1 %} disabled {% endif %} {{feedback.id}}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
+         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {% if voted_fb|vote:feedback.id == 1 %} active {% elif voted_fb|vote:feedback.id == -1 %} disabled {% endif %} {{feedback.id}}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
       </div>
       <span class="date">{{feedback.date|format}}</span>
       {{feedback.suggestion}}
@@ -211,8 +211,8 @@
 
     </div>
     <div class="like-group">
-       <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="like vote L_vote ${id}" id="${id}" vote="1"><small class="like ${id}">0</small></a>
-       <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="dislike vote L_vote ${id}" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
+         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="dislike vote L_vote ${id}" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
+         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="like vote L_vote ${id}" id="${id}" vote="1"><small class="like ${id}">0</small></a>
     </div>
     <p>${suggestion}</p>
     <span class="date">${date}</span>
