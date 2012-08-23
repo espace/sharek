@@ -1041,13 +1041,13 @@ span.divider{
     /*border-right:solid 1px  rgba(255,255,255,0.3); */
     box-shadow:inset 1px 0px 2px rgba(0,0,0,0.2);
     border-radius:  2px 0 0 2px !important;
-        background: url(../images/thumb-down.png) no-repeat right 5px;
-    background:url(../images/thumb-down.png) no-repeat right 5px, -ms-linear-gradient(top, #e9e9e9, #f1f1f1);
-    background:url(../images/thumb-down.png) no-repeat right 5px, -webkit-gradient(linear, 0 0, 0 100%, from(#e9e9e9), to(#f1f1f1));
-    background:url(../images/thumb-down.png) no-repeat right 5px, -webkit-linear-gradient(top, #e9e9e9, #f1f1f1);
-    background:url(../images/thumb-down.png) no-repeat right 5px, -o-linear-gradient(top, #e9e9e9, #f1f1f1);
-    background:url(../images/thumb-down.png) no-repeat right 5px, linear-gradient(top, #e9e9e9, #f1f1f1);
-    background:url(../images/thumb-down.png) no-repeat right 5px, -moz-linear-gradient(top, #e9e9e9, #f1f1f1);
+        background: url(../images/thumb-down.png) no-repeat right 20px;
+    background:url(../images/thumb-down.png) no-repeat right 20px, -ms-linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-down.png) no-repeat right 20px, -webkit-gradient(linear, 0 0, 0 100%, from(#e9e9e9), to(#f1f1f1));
+    background:url(../images/thumb-down.png) no-repeat right 20px, -webkit-linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-down.png) no-repeat right 20px, -o-linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-down.png) no-repeat right 20px, linear-gradient(top, #e9e9e9, #f1f1f1);
+    background:url(../images/thumb-down.png) no-repeat right 20px, -moz-linear-gradient(top, #e9e9e9, #f1f1f1);
 }
  .like-group a.like:hover{
     background:url(../images/thumb-up.png) no-repeat right 5px, -ms-linear-gradient(top, #F7F7F7, #ECECEC);
@@ -1058,12 +1058,12 @@ span.divider{
     background:url(../images/thumb-up.png) no-repeat right 5px, -moz-linear-gradient(top, #F7F7F7, #ECECEC);
 }
  .like-group a.dislike:hover{
-    background:url(../images/thumb-down.png) no-repeat right 5px, -ms-linear-gradient(top, #F7F7F7, #ECECEC);
-    background:url(../images/thumb-down.png) no-repeat right 5px, -webkit-gradient(linear, 0 0, 0 100%, from(#F7F7F7), to(#ECECEC));
-    background:url(../images/thumb-down.png) no-repeat right 5px, -webkit-linear-gradient(top, #F7F7F7, #ECECEC);
-    background:url(../images/thumb-down.png) no-repeat right 5px, -o-linear-gradient(top, #F7F7F7, #ECECEC);
-    background:url(../images/thumb-down.png) no-repeat right 5px, linear-gradient(top, #F7F7F7, #ECECEC);
-    background:url(../images/thumb-down.png) no-repeat right 5px, -moz-linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-down.png) no-repeat right 20px, -ms-linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-down.png) no-repeat right 20px, -webkit-gradient(linear, 0 0, 0 100%, from(#F7F7F7), to(#ECECEC));
+    background:url(../images/thumb-down.png) no-repeat right 20px, -webkit-linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-down.png) no-repeat right 20px, -o-linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-down.png) no-repeat right 20px, linear-gradient(top, #F7F7F7, #ECECEC);
+    background:url(../images/thumb-down.png) no-repeat right 20px, -moz-linear-gradient(top, #F7F7F7, #ECECEC);
 }
 /* .like-group a:active{
     border-radius: 0 2px 2px 0!important;
