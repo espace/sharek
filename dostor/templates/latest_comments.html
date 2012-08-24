@@ -6,7 +6,7 @@
 <div class="facebook_user_img">
   <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/></a>
 </div>
-  <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a>{{page}}</p></h3> 
+  <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a>{{page}}</p></h3>
             <div class="delete-group">
             {% if user %}
               {% if user.username = feedback.user or user.username = "admin" %}
