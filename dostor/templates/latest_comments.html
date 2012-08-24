@@ -1,15 +1,21 @@
-<div class="comment-block alt">
-	{{ article }} - {{ page }}<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
+{% for feedback in feedbacks %}
+<div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{feedback.id}}">
+<div class="facebook_user_img">
+  <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/></a>
 </div>
-<div class="comment-block alt">
-	{{ page }}<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
-</div>
-<div class="comment-block alt">
-	{{ page }}<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
-</div>
-<div class="comment-block alt">
-	{{ page }}<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
-</div>
-<div class="comment-block alt">
-	{{ page }}<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />test<br />
-</div>
+  <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3> 
+            <div class="delete-group">
+            {% if user %}
+              {% if user.username = feedback.user or user.username = "admin" %}
+                <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="{{feedback.id}}"><span>x</span></a>
+             {% endif %}
+           {% endif %}
+            </div>
+  <div class="like-group">
+     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {% if voted_fb|vote:feedback.id == -1 %} active {% elif voted_fb|vote:feedback.id == 1 %} disabled {% endif %} {{feedback.id}}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
+     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {% if voted_fb|vote:feedback.id == 1 %} active {% elif voted_fb|vote:feedback.id == -1 %} disabled {% endif %} {{feedback.id}}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
+  </div>
+  <span class="date">{{feedback.date|format}}</span>
+  {{feedback.suggestion}}
+</div><!-- comment end -->
+{% endfor %}

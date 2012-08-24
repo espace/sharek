@@ -124,6 +124,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
 
     article = get_object_or_404( Article, slug=article_slug )
     related_tags = article.tags.all
+
     top_ranked = None
     size = len(Feedback.objects.filter(article_id = article.id).order_by('-id'))
     if size > 3:
@@ -397,7 +398,8 @@ def latest_comments(request):
     if request.method == 'POST':
         page =  request.POST.get("page")
         article =  request.POST.get("article")
-        return render_to_response('latest_comments.html',{'article':article,'page':page} ,RequestContext(request))
+        feedbacks = Feedback.objects.filter(article_id = article).order_by('-id')[5:10]
+        return render_to_response('latest_comments.html',{'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
 
 
 
