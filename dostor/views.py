@@ -421,7 +421,7 @@ def latest_comments(request):
             else:
               n_votes[vote.feedback_id] = 1
 
-        feedbacks = Feedback.objects.filter(article_id = article).order_by('-id')[5:10]
+        feedbacks = Feedback.objects.filter(article_id = article).order_by('-id')[5:5]
         voted_fb = Rating.objects.filter(article_id = article, user = user)
         return render_to_response('latest_comments.html',{'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
 
