@@ -7,7 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     
-    url(r'sharek/latest-comments/$', 'dostor.facebook.views.latest_comments', name='latest_comments'),
+    url(r'sharek/latest-comments/$', 'dostor.views.latest_comments', name='latest_comments'),
 
 
     #Facebook
