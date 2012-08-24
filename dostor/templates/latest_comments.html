@@ -1,4 +1,6 @@
 {% load hash %} 
+{% load date_format %}
+
 {% for feedback in feedbacks %}
 <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{feedback.id}}">
 <div class="facebook_user_img">
