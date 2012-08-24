@@ -215,7 +215,7 @@ def modify(request):
             attachment = {}
             attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")
             attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-            message = 'لقد شاركت في كتابة دستور مصر وقمت بالتعليق على '+get_object_or_404(Article, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
+            message = 'لقد شاركت في كتابة #دستور #مصر وقمت بالتعليق على '+get_object_or_404(Article, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
             graph.put_wall_post(message, attachment)
 
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
@@ -293,7 +293,7 @@ def article_vote(request):
             attachment = {}
             attachment['link'] = settings.domain+"sharek/topics/"+art.topic.slug+"/"+art.slug
             attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-            message = 'لقد شاركت في كتابة دستور مصر وقمت ' + action + art.name.encode('utf-8') + " من الدستور"
+            message = 'لقد شاركت في كتابة #دستور #مصر وقمت ' + action + art.name.encode('utf-8') + " من الدستور"
             graph.put_wall_post(message, attachment)
 
             return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n,'vote':request.POST.get("type")}))
