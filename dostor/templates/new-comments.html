@@ -116,8 +116,7 @@ $(document).ready(function(){
 		  type:"POST",
 		  url :"/sharek/latest-comments/",
 		  data:{
-			  'page': page,
-			  'article': {{article.id}}
+			  'page': page, 'article': {{article.id}},
 			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
 		  dataType:"html",
 		  error:function(data){},
