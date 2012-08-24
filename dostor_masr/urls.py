@@ -6,6 +6,10 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
+    
+    url(r'sharek/latest-comments/$', 'dostor.facebook.views.latest_comments', name='latest_comments'),
+
+
     #Facebook
     url(r'sharek/facebook/login', 'dostor.facebook.views.login', name='facebook_login'),
     url(r'sharek/facebook/logout', 'dostor.facebook.views.logout', name='facebook_logout'),

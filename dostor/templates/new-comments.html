@@ -96,6 +96,36 @@
   
 {% endif %}
 
+<div id="lastPostsLoader"></div>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	function lastAddedLiveFunc() 
+	{ 
+		$('div#lastPostsLoader').html('<img src="{{STATIC_URL}}images/loading.gif">');
+		$.post("{% url latest_comments %}",
+
+		function(data){
+			if (data != "") {
+			$(".comment-block:last").after(data);			
+			}
+			$('div#lastPostsLoader').empty();
+		});
+
+	};  
+	
+	$(window).scroll(function(){
+		if  ($(window).scrollTop() == $(document).height() - $(window).height()){
+		   lastAddedLiveFunc();
+		}
+	}); 
+	
+)};
+
+</script>
+
 
 
 

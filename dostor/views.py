@@ -392,3 +392,6 @@ def info_detail(request, info_slug):
 def slider(request):
     news = Article.objects.order_by('?')[:5]
     return render_to_response('slider.html',{'news':news} ,RequestContext(request))
+
+def latest_comments(request):
+    return render_to_response('latest_comments.html',{} ,RequestContext(request))
