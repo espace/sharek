@@ -395,8 +395,8 @@ def slider(request):
 
 def latest_comments(request):
     if request.method == 'POST':
-	    page =  request.POST.get("page")
-	    article =  request.POST.get("article")
+        page =  request.POST.get("page")
+        article =  request.POST.get("article")
         return render_to_response('latest_comments.html',{'article':article,'page':page} ,RequestContext(request))
 
 
