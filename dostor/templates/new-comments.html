@@ -114,11 +114,8 @@ $(document).ready(function(){
 		  dataType:"json",
 		  error:function(data){},
 		  success:function(data){
-			alert(data)
-			if (data != "") {
-				$(".comment-block:last").after(data);			
-			}
-			//$('div#lastPostsLoader').empty();
+			$(".comment-block:last").after(data);
+			$('div#lastPostsLoader').empty();
 		  },
 	  	});
 
