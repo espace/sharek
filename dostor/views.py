@@ -403,9 +403,27 @@ def latest_comments(request):
     if request.method == 'POST':
         page =  request.POST.get("page")
         article =  request.POST.get("article")
+
+        obj_article = get_object_or_404( Article, id=article )
+
+        votes = obj_article.get_votes()
+        p_votes = {}
+        n_votes = {}
+        for vote in votes:
+          if vote.vote == True:
+            if p_votes.__contains__(vote.feedback_id):
+              p_votes[vote.feedback_id] += 1
+            else:
+              p_votes[vote.feedback_id] = 1
+          else:
+            if n_votes.__contains__(vote.feedback_id):
+              n_votes[vote.feedback_id] += 1
+            else:
+              n_votes[vote.feedback_id] = 1
+
         feedbacks = Feedback.objects.filter(article_id = article).order_by('-id')[5:10]
         voted_fb = Rating.objects.filter(article_id = article, user = user)
-        return render_to_response('latest_comments.html',{'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
+        return render_to_response('latest_comments.html',{'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
 
 
 
