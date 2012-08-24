@@ -15,7 +15,7 @@
     <div class="span12 ">
         <div id="headtitle" class=" innerpage offset3">
           <div class="tags ">
-            <p>تتعلق هذه المواد  :</p>
+            <p>تتعلق هذه المواد بـ :</p>
                 {% for related in related_tags %}
                   <a href="{% url tag tag_slug=related.get_absolute_url %}">"{{related.name}}"</a>
                 {% endfor %}
@@ -34,7 +34,14 @@
     <div class="topic">
         <h3><p class="mada-title"><a>{{article.name}}</a> <a href="#" class="comments-number pull-left">
           <i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i><span id="feedback_counter">
-          {% if article.feedback_count > 0 %}{{article.feedback_count}}  تعليق{% else %}لا توجد تعليقات{% endif %}
+          {% if article.feedback_count > 0 %}
+                {{article.feedback_count}}
+                {% if article.feedback_count > 2 and article.feedback_count <= 10 %}
+                     تعليقات 
+                {% else %}
+                     تعليق
+                {% endif %}
+            {% else %}لا توجد تعليقات{% endif %}
           </span>
           </a></p></h3>
 
