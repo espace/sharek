@@ -262,11 +262,11 @@ def article_vote(request):
             record = ArticleRating.objects.filter(article_id = article, user = user )
 
             vote = False
-            action = ' برفض'
+            action = 'برفض '
 			
             if request.POST.get("type") == "1" :
               vote = True
-              action = ' بالموافقة على'
+              action = 'بالموافقة على '
             
             if record:
                 record[0].vote = vote
