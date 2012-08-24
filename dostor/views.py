@@ -404,7 +404,7 @@ def latest_comments(request):
         page =  request.POST.get("page")
         article =  request.POST.get("article")
 
-        offset = 5 * page
+        offset = 5
         limit = 5
 
         obj_article = get_object_or_404( Article, id=article )
