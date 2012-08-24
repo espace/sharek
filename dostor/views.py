@@ -395,10 +395,16 @@ def slider(request):
     return render_to_response('slider.html',{'news':news} ,RequestContext(request))
 
 def latest_comments(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
     if request.method == 'POST':
         page =  request.POST.get("page")
         article =  request.POST.get("article")
         feedbacks = Feedback.objects.filter(article_id = article).order_by('-id')[5:10]
+        voted_fb = Rating.objects.filter(article_id = article, user = user)
         return render_to_response('latest_comments.html',{'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
 
 
