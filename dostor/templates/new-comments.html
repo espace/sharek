@@ -111,7 +111,7 @@ $(document).ready(function(){
 		  url :"/sharek/latest-comments/",
 		  data:{
 			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
-		  dataType:"json",
+		  dataType:"html",
 		  error:function(data){},
 		  success:function(data){
 			$(".comment-block:last").after(data);
