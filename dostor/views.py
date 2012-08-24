@@ -395,9 +395,9 @@ def slider(request):
     return render_to_response('slider.html',{'news':news} ,RequestContext(request))
 
 def latest_comments(request):
-    if request.method == 'GET':
-        page =  request.GET.get("page")
-        article =  request.GET.get("article")
+    if request.method == 'POST':
+        page =  request.POST.get("page")
+        article =  request.POST.get("article")
         feedbacks = Feedback.objects.filter(article_id = article).order_by('-id')[5:10]
         return render_to_response('latest_comments.html',{'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
 
