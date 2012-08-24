@@ -102,8 +102,12 @@
 
 $(document).ready(function(){
 	
+	var fetching = false;
+	
 	function lastAddedLiveFunc() 
 	{ 
+		fetching = true;
+		
 		$('div#lastPostsLoader').html('<img src="{{STATIC_URL}}images/loading.gif">');
 		
 		$.ajax({
@@ -114,18 +118,24 @@ $(document).ready(function(){
 		  dataType:"html",
 		  error:function(data){},
 		  success:function(data){
-			$(".comment-block:last").after(data);
-			$('div#lastPostsLoader').empty();
+			if (data != "") {
+				$(".comment-block:last").after(data);
+				setTimeout(function(){ fetching = false; },300);
+				$('div#lastPostsLoader').empty();
+			} else{
+				$('div#lastPostsLoader').html('No more posts to show.');
+			}
+			
 		  },
 	  	});
 
 	}
 	
 	/*$(window).scroll(function(){
-		if  ($(window).scrollTop() - 20 == $(document).height() - $(window).height()){
+		if  ($(window).scrollTop() == $(document).height() - $(window).height()){
 		   lastAddedLiveFunc();
 		}
-	}); */
+	});*/
 	
 	$(window).scroll(function(){
 		var bufferzone = $(window).scrollTop() * 0.20;
