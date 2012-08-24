@@ -394,4 +394,10 @@ def slider(request):
     return render_to_response('slider.html',{'news':news} ,RequestContext(request))
 
 def latest_comments(request):
-    return render_to_response('latest_comments.html',{} ,RequestContext(request))
+    if request.method == 'POST':
+	    page =  request.POST.get("page")
+	    article =  request.POST.get("article")
+        return render_to_response('latest_comments.html',{'article':article,'page':page} ,RequestContext(request))
+
+
+

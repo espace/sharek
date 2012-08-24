@@ -102,10 +102,12 @@
 
 $(document).ready(function(){
 	
+	var page = 0;
 	var fetching = false;
 	
-	function lastAddedLiveFunc() 
+	function get_latest_comments() 
 	{ 
+		page++;
 		fetching = true;
 		
 		$('div#lastPostsLoader').html('<img src="{{STATIC_URL}}images/loading.gif">');
@@ -114,6 +116,7 @@ $(document).ready(function(){
 		  type:"POST",
 		  url :"/sharek/latest-comments/",
 		  data:{
+			  'page': page,
 			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
 		  dataType:"html",
 		  error:function(data){},
@@ -123,7 +126,7 @@ $(document).ready(function(){
 				setTimeout(function(){ fetching = false; },300);
 				$('div#lastPostsLoader').empty();
 			} else{
-				$('div#lastPostsLoader').html('No more posts to show.');
+				$('div#lastPostsLoader').html('لا توجد تعليقات أخرى للعرض.');
 			}
 			
 		  },
@@ -131,16 +134,10 @@ $(document).ready(function(){
 
 	}
 	
-	/*$(window).scroll(function(){
-		if  ($(window).scrollTop() == $(document).height() - $(window).height()){
-		   lastAddedLiveFunc();
-		}
-	});*/
-	
 	$(window).scroll(function(){
 		var bufferzone = $(window).scrollTop() * 0.20;
 		if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
-			lastAddedLiveFunc();
+			get_latest_comments();
 		}
 	});
 	
