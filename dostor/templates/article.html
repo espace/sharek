@@ -15,7 +15,7 @@
     <div class="span12 ">
         <div id="headtitle" class=" innerpage offset3">
           <div class="tags ">
-            <p>تتعلق هذه المواد  :</p>
+            <p>تتعلق هذه المواد بـ :</p>
                 {% for related in related_tags %}
                   <a href="{% url tag tag_slug=related.get_absolute_url %}">"{{related.name}}"</a>
                 {% endfor %}
