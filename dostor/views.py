@@ -262,8 +262,11 @@ def article_vote(request):
             record = ArticleRating.objects.filter(article_id = article, user = user )
 
             vote = False
+            action = ' برفض'
+			
             if request.POST.get("type") == "1" :
               vote = True
+              action = ' بالموافقة على'
             
             if record:
                 record[0].vote = vote
@@ -290,7 +293,7 @@ def article_vote(request):
             attachment = {}
             attachment['link'] = settings.domain+"sharek/topics/"+art.topic.slug+"/"+art.slug
             attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-            message = 'لقد شاركت في كتابة دستور مصر وقمت بالتصويت على ' + art.name.encode('utf-8') + " من الدستور"
+            message = 'لقد شاركت في كتابة دستور مصر وقمت ' + action + art.name.encode('utf-8') + " من الدستور"
             graph.put_wall_post(message, attachment)
 
             return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n,'vote':request.POST.get("type")}))
