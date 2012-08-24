@@ -110,7 +110,7 @@ $(document).ready(function(){
 		  type:"POST",
 		  url :"/sharek/latest_comments/",
 		  data:{
-			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
+			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
 		  dataType:"json",
 		  error:function(data){},
 		  success:function(data){
@@ -119,9 +119,9 @@ $(document).ready(function(){
 			}
 			$('div#lastPostsLoader').empty();
 		  },
-	  });
+	  	});
 
-	};  
+	}
 	
 	$(window).scroll(function(){
 		if  ($(window).scrollTop() == $(document).height() - $(window).height()){
