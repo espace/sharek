@@ -404,6 +404,9 @@ def latest_comments(request):
         page =  request.POST.get("page")
         article =  request.POST.get("article")
 
+        offset = 5
+        limit = settings.paginator
+
         obj_article = get_object_or_404( Article, id=article )
 
         votes = obj_article.get_votes()
@@ -421,7 +424,7 @@ def latest_comments(request):
             else:
               n_votes[vote.feedback_id] = 1
 
-        feedbacks = Feedback.objects.filter(article_id = article).order_by('-id')[5:10]
+        feedbacks = Feedback.objects.filter(article_id = article).order_by('-id')[offset:offset + limit]
         voted_fb = Rating.objects.filter(article_id = article, user = user)
         return render_to_response('latest_comments.html',{'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
 
