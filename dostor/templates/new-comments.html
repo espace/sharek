@@ -116,12 +116,12 @@ $(document).ready(function(){
 		  type:"POST",
 		  url :"/sharek/latest-comments/",
 		  data:{
-			  'page': page, 'article': {{article.id}},
-			  'order_by': '{{order_by}}',
+			  'page': page, 'article': {{article.id}}, 'order_by': '{{order_by}}',
 			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
 		  dataType:"html",
 		  error:function(data){},
 		  success:function(data){
+			  alert(data);
 			if (data != "") {
 				$(".comment-block:last").after(data);
 				setTimeout(function(){ fetching = false; },300);
