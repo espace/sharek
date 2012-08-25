@@ -407,6 +407,8 @@ def latest_comments(request):
         offset = page * 10
         limit = 5
 
+        print(offset)
+
         obj_article = get_object_or_404( Article, id=article )
 
         votes = obj_article.get_votes()
