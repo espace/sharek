@@ -121,13 +121,12 @@ $(document).ready(function(){
 		  dataType:"html",
 		  error:function(data){},
 		  success:function(data){
-			  alert(data);
 			if (data != "") {
 				$(".comment-block:last").after(data);
 				setTimeout(function(){ fetching = false; },300);
 				$('div#lastPostsLoader').empty();
 			} else{
-				$('div#lastPostsLoader').html('لا توجد تعليقات أخرى للعرض.');
+				$('div#lastPostsLoader').html('');
 			}
 			
 		  },
