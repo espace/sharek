@@ -404,10 +404,8 @@ def latest_comments(request):
         page =  request.POST.get("page")
         article =  request.POST.get("article")
 
-        offset = page * 10
-        limit = 5
-
-        print(offset)
+        offset = settings.paginator * int(page)
+        limit = settings.paginator
 
         obj_article = get_object_or_404( Article, id=article )
 
