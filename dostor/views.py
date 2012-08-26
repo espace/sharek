@@ -221,6 +221,13 @@ def modify(request):
 
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
+def reply_feedback(request):
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            reply = Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name, parent_id= request.POST.get("feedback")).save()
+
+            return HttpResponse(simplejson.dumps({'reply':reply}))
+
 def vote(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
