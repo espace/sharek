@@ -200,7 +200,7 @@
                   'name':"{{user.first_name}} {{ user.last_name }}",
                   'article':"{{article.id}}",
                   'email': "{{user.email}}",
-                  'parent': this.parent
+                  'parent': this.parent ,
                   'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
                   'suggestion': $(".L_reply."+this.parent").val()},
               dataType:"json",
