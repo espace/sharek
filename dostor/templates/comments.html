@@ -209,7 +209,7 @@
               error:function(data){},
               success:function(data){
               $(".L_reply."+$(this).attr('parent')).val("");
-              $("child-reply."+data.parent).before($("#modification_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
+              $(".child-reply."+data.parent).before($("#modification_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
               },
           });
       }
