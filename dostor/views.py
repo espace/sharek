@@ -126,27 +126,27 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     related_tags = article.tags.all
 
     top_ranked = None
-    size = len(Feedback.objects.filter(article_id = article.id).order_by('-id'))
+    size = len(Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id'))
     if size > 3:
-        top_ranked = Feedback.objects.filter(article_id = article.id).order_by('-order')[:3]
+        top_ranked = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order')[:3]
     else:
         top_ranked = None
 
     if order_by == "latest":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id')
     elif order_by == "order":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-order')
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order')
     elif order_by == "def":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id')
     
     
 
