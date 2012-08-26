@@ -202,7 +202,8 @@
                   'email': "{{user.email}}",
                   'parent': this.parent ,
                   'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
-                  'suggestion': $(".L_reply."+this.parent").val()},
+                  'suggestion': $(".L_reply."+this.parent).val()
+                },
               dataType:"json",
               error:function(data){},
               success:function(data){
