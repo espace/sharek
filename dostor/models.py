@@ -96,7 +96,7 @@ class Feedback(models.Model):
     user = models.CharField(max_length=200,default='')
 
     def get_children(self):
-        return Feedback.objects.filter(parent_id = self.id).order_by('-id')
+        return Feedback.objects.filter(parent_id = self.id).order_by('id')
 
 class Rating(models.Model):
     article = models.ForeignKey(Article)

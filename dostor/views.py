@@ -226,7 +226,7 @@ def reply_feedback(request):
         if request.method == 'POST':
             Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name, parent_id= request.POST.get("parent")).save()
             reply = Feedback.objects.filter(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name, parent_id= request.POST.get("parent"))
-            return HttpResponse(simplejson.dumps({'reply':reply[0],'parent':request.POST.get("parent")}))
+            return HttpResponse(simplejson.dumps({'date':str(reply[0].date),'id':reply[0].id ,'suggestion':request.POST.get("suggestion"),'parent':request.POST.get("parent")}))
 
 def vote(request):
     if request.user.is_authenticated():
