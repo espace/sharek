@@ -207,7 +207,7 @@
               dataType:"json",
               error:function(data){},
               success:function(data){
-              $(".L_reply."+this.parent").val("");
+              $(".L_reply."+this.parent).val("");
               $(".comment-block.L_"+data.reply.parent_id).after($("#modification_temp").tmpl({"id":data.reply.id ,"date": "منذ قليل", "suggestion": data.reply.suggestion}));
               },
           });
