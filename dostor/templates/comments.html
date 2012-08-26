@@ -118,7 +118,7 @@
     <p >
        <textarea rows="3" class="input-xlarge span7 L_reply {{feedback.id}}" id="suggestion"></textarea>
        <br />
-       <button class="btn btn-danger offset0" type="submit" id="reply" parent="{{feedback.id}}">أضف ردك الآن !</button>
+       <button class="btn btn-danger offset0 L_reply_bt" type="submit" id="reply" parent="{{feedback.id}}">أضف ردك الآن !</button>
     </p>
   </div>
   {% endfor %}
@@ -188,7 +188,7 @@
     $('.child-reply.'+this.id).show()
    });
 
-   $("#reply").live("click",function(){
+   $(".L_reply_bt").live("click",function(){
       if ($.trim($(".L_reply."+this.parent).val()).length > 0)
       {
         $.ajax({
