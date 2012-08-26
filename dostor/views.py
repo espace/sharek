@@ -224,9 +224,9 @@ def modify(request):
 def reply_feedback(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
-            reply = Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name, parent_id= request.POST.get("parent")).save()
-
-            return HttpResponse(simplejson.dumps({'reply':reply}))
+            Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name, parent_id= request.POST.get("parent")).save()
+            reply = Feedback.objects.filter(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name, parent_id= request.POST.get("parent"))
+            return HttpResponse(simplejson.dumps({'reply':reply[0],'parent':request.POST.get("parent")}))
 
 def vote(request):
     if request.user.is_authenticated():
