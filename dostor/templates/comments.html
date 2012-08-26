@@ -91,7 +91,7 @@
       {{feedback.suggestion}}
       <a href="javascript:;" class="L_reply" id="{{feedback.id}}"><small>رد</small></a>
   </div><!-- comment end -->
-  {{feedback.get_children|length}}
+
   {% if feedback.get_children|length > 0 %}
     {% for reply in feedback.get_children %}
     <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{reply.id}}">
