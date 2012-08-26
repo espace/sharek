@@ -189,7 +189,7 @@
    });
 
    $(".L_reply_bt").live("click",function(){
-      if ($.trim($(".L_reply."+this.parent).val()).length > 0)
+      if ($.trim($(".L_reply."+$(this).attr('parent')).val()).length > 0)
       {
         $.ajax({
               type:"POST",
@@ -200,14 +200,14 @@
                   'name':"{{user.first_name}} {{ user.last_name }}",
                   'article':"{{article.id}}",
                   'email': "{{user.email}}",
-                  'parent': this.parent ,
+                  'parent': $(this).attr('parent') ,
                   'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
-                  'suggestion': $(".L_reply."+this.parent).val()
+                  'suggestion': $(".L_reply."+$(this).attr('parent')).val()
                 },
               dataType:"json",
               error:function(data){},
               success:function(data){
-              $(".L_reply."+this.parent).val("");
+              $(".L_reply."+$(this).attr('parent')).val("");
               $(".comment-block.L_"+data.reply.parent_id).after($("#modification_temp").tmpl({"id":data.reply.id ,"date": "منذ قليل", "suggestion": data.reply.suggestion}));
               },
           });
