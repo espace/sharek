@@ -38,8 +38,8 @@ def welcome(request):
 def login(request):
     error = None
 
-    #if request.user.is_authenticated():
-        #return HttpResponseRedirect('/')
+    if request.user.is_authenticated():
+        HttpResponse("<script> alert('sdf'); window.close(); window.opener.location.reload(); </script>");
 
     if request.GET:
         if 'session' in request.GET:
