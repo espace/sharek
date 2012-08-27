@@ -66,7 +66,8 @@ def login(request):
             if user:
                 if user.is_active:
                     auth.login(request, user)
-                    return HttpResponseRedirect(request.path)
+                    #return HttpResponseRedirect(request.path)
+                    HttpResponse("<script> window.close(); window.opener.location.reload(); </script>");
                 else:
                     error = 'AUTH_DISABLED'
             else:
