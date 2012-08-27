@@ -69,8 +69,8 @@ def login(request):
             user = auth.authenticate(token=user_obj['access_token'])
             if user and request.GET['loginsucc']:
 			
-                print 'ewtewrt';
                 auth.login(request, user)
+                print 'ewtewrt2';
                 #return HttpResponseRedirect(request.path)
                 HttpResponse("<script> alert('sdf'); window.close(); window.opener.location.reload(); </script>");
 
