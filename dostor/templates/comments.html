@@ -95,7 +95,7 @@
 
   {% if feedback.get_children|length > 0 %}
     {% for reply in feedback.get_children %}
-    <div class="comment-block child-reply {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{reply.id}}">
+    <div class="comment-block child-reply L_{{reply.id}}">
       <div class="facebook_user_img">
         <a href="http://www.facebook.com/{{ reply.user }}" target="_blank"><img src="http://graph.facebook.com/{{ reply.user }}/picture" class="loader"/></a>
       </div>
@@ -121,6 +121,7 @@
       <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
     </div>
     <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+    <a href="javascript:;" class="L_hide delete  dropdown-toggle" feedback_id="${id}" ><span>x</span></a>
     <p >
        <textarea rows="3" class="input-xlarge span7 L_reply {{feedback.id}}" id="suggestion"></textarea>
        <br />
@@ -194,6 +195,10 @@
     $('.child-reply.'+this.id).show()
    });
 
+   $(".L_hide").live("click",function(){
+    $(".comment-entry.child-reply."+$(this).attr('feedback_id')).hide();
+   });
+
    $(".L_reply_bt").live("click",function(){
       if ($.trim($(".L_reply."+$(this).attr('parent')).val()).length > 0)
       {
@@ -213,8 +218,9 @@
               dataType:"json",
               error:function(data){},
               success:function(data){
-              $(".L_reply."+$(this).attr('parent')).val("");
+              $(".L_reply."+data.parent).val("");
               $(".child-reply."+data.parent).before($("#reply_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
+              $(".comment-entry.child-reply."+data.parent).hide();
               },
           });
       }
