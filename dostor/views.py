@@ -202,7 +202,12 @@ def remove_feedback(request):
             #the user has to be the feedback owner to be able to remove it
             if feedback.user == request.user.username or request.user.username == "admin":
                 feedback.delete()
-                return HttpResponse(simplejson.dumps({'feedback_id':request.POST.get("feedback")}))
+                replys = Feedback.objects.filter(parent_id = feedback_id)
+                reply_ids = {}
+                for reply in replys:
+                    reply_ids =+ reply.id
+                    reply.delete()
+                return HttpResponse(simplejson.dumps({'feedback_id':request.POST.get("feedback"),'reply_ids':reply_ids}))
 
 def modify(request):
     if request.user.is_authenticated():

@@ -238,7 +238,11 @@
                 dataType:"json",
                 error:function(data){},
                 success:function(data){
-                $(".L_"+data.feedback_id).remove();  
+                  for (var i=0; i<data.reply_ids.length; i++) 
+                  {
+                    $(".L_"+data.reply_ids[i]).remove();  
+                  }
+                  $(".L_"+data.feedback_id).remove();  
                 },
               });
       }
