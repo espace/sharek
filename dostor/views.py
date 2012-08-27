@@ -124,28 +124,29 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
 
     article = get_object_or_404( Article, slug=article_slug )
     related_tags = article.tags.all
+
     top_ranked = None
-    size = len(Feedback.objects.filter(article_id = article.id).order_by('-id'))
+    size = len(Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id'))
     if size > 3:
-        top_ranked = Feedback.objects.filter(article_id = article.id).order_by('-order')[:3]
+        top_ranked = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order')[:3]
     else:
         top_ranked = None
 
     if order_by == "latest":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id')
     elif order_by == "order":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-order')
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order')
     elif order_by == "def":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id).order_by('-id')
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id')
     
     
 
@@ -215,10 +216,17 @@ def modify(request):
             attachment = {}
             attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")
             attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-            message = 'لقد شاركت في كتابة دستور مصر وقمت بالتعليق على '+get_object_or_404(Article, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
+            message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(Article, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
             graph.put_wall_post(message, attachment)
 
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
+
+def reply_feedback(request):
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name, parent_id= request.POST.get("parent")).save()
+            reply = Feedback.objects.filter(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.user.email, name = request.user.first_name + " " + request.user.last_name, parent_id= request.POST.get("parent"))
+            return HttpResponse(simplejson.dumps({'date':str(reply[0].date),'id':reply[0].id ,'suggestion':request.POST.get("suggestion"),'parent':request.POST.get("parent")}))
 
 def vote(request):
     if request.user.is_authenticated():
@@ -262,8 +270,11 @@ def article_vote(request):
             record = ArticleRating.objects.filter(article_id = article, user = user )
 
             vote = False
+            action = 'برفض '
+			
             if request.POST.get("type") == "1" :
               vote = True
+              action = 'بالموافقة على '
             
             if record:
                 record[0].vote = vote
@@ -290,7 +301,7 @@ def article_vote(request):
             attachment = {}
             attachment['link'] = settings.domain+"sharek/topics/"+art.topic.slug+"/"+art.slug
             attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-            message = 'لقد شاركت في كتابة دستور مصر وقمت بالتصويت على ' + art.name.encode('utf-8') + " من الدستور"
+            message = 'لقد شاركت في كتابة #دستور_مصر وقمت ' + action + art.name.encode('utf-8') + " من الدستور"
             graph.put_wall_post(message, attachment)
 
             return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n,'vote':request.POST.get("type")}))
@@ -389,3 +400,44 @@ def info_detail(request, info_slug):
 def slider(request):
     news = Article.objects.order_by('?')[:5]
     return render_to_response('slider.html',{'news':news} ,RequestContext(request))
+
+def latest_comments(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
+    if request.method == 'POST':
+        page =  request.POST.get("page")
+        article =  request.POST.get("article")
+
+        offset = settings.paginator * int(page)
+        limit = settings.paginator
+
+        obj_article = get_object_or_404( Article, id=article )
+
+        votes = obj_article.get_votes()
+        p_votes = {}
+        n_votes = {}
+        for vote in votes:
+          if vote.vote == True:
+            if p_votes.__contains__(vote.feedback_id):
+              p_votes[vote.feedback_id] += 1
+            else:
+              p_votes[vote.feedback_id] = 1
+          else:
+            if n_votes.__contains__(vote.feedback_id):
+              n_votes[vote.feedback_id] += 1
+            else:
+              n_votes[vote.feedback_id] = 1
+
+        feedbacks = Feedback.objects.filter(article_id = article).order_by('-id')[offset:offset + limit]
+        voted_fb = Rating.objects.filter(article_id = article, user = user)
+        
+        if(len(feedbacks) > 0):
+             return render_to_response('latest_comments.html',{'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
+        else: 
+             return HttpResponse('')
+
+
+

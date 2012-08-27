@@ -87,12 +87,16 @@ class Article(models.Model):
 
 class Feedback(models.Model):
     article = models.ForeignKey(Article)
+    parent = models.ForeignKey("self",blank=True,null=True)
     name = models.CharField(max_length=200)
     email = models.SlugField(default='')
     suggestion = MarkupField(default='')
     date = models.DateTimeField( auto_now_add=True, default=datetime.now() ,blank=True,null=True)
     order = models.IntegerField(default=0)
     user = models.CharField(max_length=200,default='')
+
+    def get_children(self):
+        return Feedback.objects.filter(parent_id = self.id).order_by('id')
 
 class Rating(models.Model):
     article = models.ForeignKey(Article)

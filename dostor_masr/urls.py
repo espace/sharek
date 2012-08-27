@@ -6,6 +6,10 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
+    
+    url(r'sharek/latest-comments/$', 'dostor.views.latest_comments', name='latest_comments'),
+
+
     #Facebook
     url(r'sharek/facebook/login', 'dostor.facebook.views.login', name='facebook_login'),
     url(r'sharek/facebook/logout', 'dostor.facebook.views.logout', name='facebook_logout'),
@@ -22,6 +26,7 @@ urlpatterns = patterns('',
     url(r'^sharek/vote/', 'dostor.views.vote', name='vote'),
     url(r'^sharek/article_vote/', 'dostor.views.article_vote', name='article_vote'),
     url(r'^sharek/modify/', 'dostor.views.modify', name='modify'),
+    url(r'^sharek/reply_feedback/', 'dostor.views.reply_feedback', name='reply_feedback'),
     url(r'^sharek/remove_feedback/', 'dostor.views.remove_feedback', name='remove_feedback'),
     url(r'^sharek/facebook/', 'dostor.views.facebook_comment', name='facebook_comment'),
 

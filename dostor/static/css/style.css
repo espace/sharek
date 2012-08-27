@@ -681,6 +681,15 @@ left: 1px;
 }
 /*-----------   comment-block    ------ */
 
+#lastPostsLoader{   
+    margin: 5px 0;
+    float: right;
+    padding: 10px;
+    position: relative;
+    width: 95%;
+    clear: both;
+}
+
 .comment-block{   
     background: rgba(0,0,0,0.02)  ;
     margin: 5px 0;

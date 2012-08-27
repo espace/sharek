@@ -81,7 +81,7 @@
                   {% if user.username = feedback.user or user.username = "admin" %}
                     <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="{{feedback.id}}"><span>x</span></a>
                  {% endif %}
-               {% endif %}
+                {% endif %}
                 </div>
       <div class="like-group">
          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {% if voted_fb|vote:feedback.id == -1 %} active {% elif voted_fb|vote:feedback.id == 1 %} disabled {% endif %} {{feedback.id}}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
@@ -89,13 +89,44 @@
       </div>
       <span class="date">{{feedback.date|format}}</span>
       {{feedback.suggestion}}
+
         <div class="delete-group">
-               
-                    <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="{{feedback.id}}"><span class="icon-trash"></span> مسح التعليق</a>
-                    <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="{{feedback.id}}"><span class="icon-comment"></span> أضف رد </a>
-               
-                </div>
+            <a href="javascript:;" class="L_remove delete dropdown-toggle" feedback_id="{{feedback.id}}"><span class="icon-trash"></span>مسح التعليق</a>
+            <a href="javascript:;" class="L_reply delete dropdown-toggle" id="{{feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
+        </div>
+        
   </div><!-- comment end -->
+
+  {% if feedback.get_children|length > 0 %}
+    {% for reply in feedback.get_children %}
+    <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{reply.id}}">
+      <div class="facebook_user_img">
+        <a href="http://www.facebook.com/{{ reply.user }}" target="_blank"><img src="http://graph.facebook.com/{{ reply.user }}/picture" class="loader"/></a>
+      </div>
+        <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3> 
+                  <div class="delete-group">
+                  {% if user %}
+                    {% if user.username = reply.user or user.username = "admin" %}
+                      <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="{{reply.id}}"><span>x</span></a>
+                   {% endif %}
+                  {% endif %}
+                  </div>
+        <span class="date">{{reply.date|format}}</span>
+        {{reply.suggestion}}
+    </div><!-- comment end -->
+    {% endfor %}
+  {% endif %}
+  <div class="comment-block comment-entry child-reply {{feedback.id}}" style="display:none;">
+    <div class="facebook_user_img">
+      <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
+    </div>
+    <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+    <p >
+       <textarea rows="3" class="input-xlarge span7 L_reply {{feedback.id}}" id="suggestion"></textarea>
+       <br />
+       <button class="btn btn-danger offset0 L_reply_bt" type="submit" id="reply" parent="{{feedback.id}}">أضف ردك الآن !</button>
+    </p>
+  </div>
   {% endfor %}
   
   
@@ -158,6 +189,36 @@
             });
     {% endif %}
         });
+   
+   $(".L_reply").live("click",function(){
+    $('.child-reply.'+this.id).show()
+   });
+
+   $(".L_reply_bt").live("click",function(){
+      if ($.trim($(".L_reply."+$(this).attr('parent')).val()).length > 0)
+      {
+        $.ajax({
+              type:"POST",
+              url :"/sharek/reply_feedback/",
+              data:{
+                  'link': document.URL,
+                  'user_id':"{{user}}",
+                  'name':"{{user.first_name}} {{ user.last_name }}",
+                  'article':"{{article.id}}",
+                  'email': "{{user.email}}",
+                  'parent': $(this).attr('parent') ,
+                  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
+                  'suggestion': $(".L_reply."+$(this).attr('parent')).val()
+                },
+              dataType:"json",
+              error:function(data){},
+              success:function(data){
+              $(".L_reply."+$(this).attr('parent')).val("");
+              $(".child-reply."+data.parent).before($("#modification_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
+              },
+          });
+      }
+   });   
 
    $(".L_remove").live("click",function(){
     {% if user %}
@@ -218,13 +279,7 @@
     </div>
     <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{user.first_name}} {{ user.last_name }}</a></p></h3> 
     <div class="delete-group">
-
           <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="${id}" ><span>x</span></a>
-
-    </div>
-    <div class="like-group">
-         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="dislike vote L_vote ${id}" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
-         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %}  class="like vote L_vote ${id}" id="${id}" vote="1"><small class="like ${id}">0</small></a>
     </div>
     <p>${suggestion}</p>
     <span class="date">${date}</span>
