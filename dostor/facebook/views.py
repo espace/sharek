@@ -66,20 +66,13 @@ def login(request):
             facebook_session.expires = user_obj['expires']
             facebook_session.save()
 			
-            HttpResponse(user_obj['expires']);
+            print user_obj['expires'];
 
             user = auth.authenticate(token=user_obj['access_token'])
             if user and request.GET['loginsucc']:
-                if user.is_active:
-                    auth.login(request, user)
-                    #return HttpResponseRedirect(request.path)
-                    HttpResponse("<script> alert('sdf'); window.close(); window.opener.location.reload(); </script>");
-                else:
-                    HttpResponse('AUTH_DISABLED')
-            else:
-                HttpResponse('AUTH_FAILED')
-        elif 'error_reason' in request.GET:
-            HttpResponse('AUTH_DENIED')
+				auth.login(request, user)
+				#return HttpResponseRedirect(request.path)
+				HttpResponse("<script> alert('sdf'); window.close(); window.opener.location.reload(); </script>");
 
     template_context = {'settings': settings, 'error': error}
     return render_to_response('facebook/login.html', template_context, context_instance=RequestContext(request))
