@@ -203,9 +203,9 @@ def remove_feedback(request):
             if feedback.user == request.user.username or request.user.username == "admin":
                 feedback.delete()
                 replys = Feedback.objects.filter(parent_id = feedback_id)
-                reply_ids = {}
+                reply_ids = []
                 for reply in replys:
-                    reply_ids += reply.id
+                    reply_ids.append(reply.id)
                     reply.delete()
                 return HttpResponse(simplejson.dumps({'feedback_id':request.POST.get("feedback"),'reply_ids':reply_ids}))
 
