@@ -70,9 +70,8 @@ def login(request):
             if user and request.GET['loginsucc']:
 			
                 auth.login(request, user)
-                print 'ewtewrt2';
                 #return HttpResponseRedirect(request.path)
-                HttpResponse("<script> alert('sdf'); window.close(); window.opener.location.reload(); </script>");
+                HttpResponse("<script type='text/javascript'> alert('sdf'); window.close(); window.opener.location.reload(); </script>");
 
     template_context = {'settings': settings, 'error': error}
     return render_to_response('facebook/login.html', template_context, context_instance=RequestContext(request))
