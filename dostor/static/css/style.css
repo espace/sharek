@@ -755,11 +755,11 @@ left: 1px;
     font: 10px GESSTwoMediumRegular;
 
 }
-.comment-block.comment-child{
+.comment-block.child-reply{
     width: 89%;
     margin-right: 40px;
 }
-.comment-block.comment-child:before{
+.comment-block.child-reply:before{
     content: " ";
     width: 29px;
     height: 77px;
