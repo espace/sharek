@@ -71,7 +71,7 @@ def login(request):
 			
                 auth.login(request, user)
                 #return HttpResponseRedirect(request.path)
-                HttpResponse("nmgdfsadfgh");
+                return HttpResponse("<script type='text/javascript'> alert('sdf'); window.close(); window.opener.location.reload(); </script>");
 
     template_context = {'settings': settings, 'error': error}
     return render_to_response('facebook/login.html', template_context, context_instance=RequestContext(request))
