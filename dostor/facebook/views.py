@@ -41,8 +41,9 @@ def login(request):
         return HttpResponseRedirect('/')
 
     if request.GET:
-        if 'code' in request.GET:
-            args = {
+        if 'session' in request.GET:
+
+            '''args = {
                 'client_id': settings.FACEBOOK_APP_ID,
                 'redirect_uri': settings.FACEBOOK_REDIRECT_URI,
                 'client_secret': settings.FACEBOOK_API_SECRET,
@@ -53,8 +54,11 @@ def login(request):
                     urllib.urlencode(args)
             response = cgi.parse_qs(urllib.urlopen(url).read())
             access_token = response['access_token'][0]
-            expires = response['expires'][0]
+            expires = response['expires'][0]'''
 
+            print request.GET['session']['expires']
+
+####################################
             facebook_session = FacebookSession.objects.get_or_create(
                 access_token=access_token,
             )[0]
