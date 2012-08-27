@@ -56,14 +56,15 @@ def login(request):
             access_token = response['access_token'][0]
             expires = response['expires'][0]'''
 
-            print request.GET['session']
+            user_obj = json.loads(request.GET['session'])
+            print user_obj['expires']
 
 ####################################
             facebook_session = FacebookSession.objects.get_or_create(
-                access_token=access_token,
+                access_token = user_obj['access_token'],
             )[0]
 
-            facebook_session.expires = expires
+            facebook_session.expires = user_obj['expires']
             facebook_session.save()
 
             user = auth.authenticate(token=access_token)
