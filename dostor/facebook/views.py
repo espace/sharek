@@ -56,7 +56,7 @@ def login(request):
             access_token = response['access_token'][0]
             expires = response['expires'][0]'''
 
-            print request.GET['session']['expires']
+            print request.GET['session'][1]
 
 ####################################
             facebook_session = FacebookSession.objects.get_or_create(
