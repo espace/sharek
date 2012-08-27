@@ -7,8 +7,8 @@ from django.contrib import admin
 
 class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
-    list_display = ('name','order')
-    list_filter = ('tags',)
+    list_display = ('name','topic','order')
+    list_filter = ('topic',)
     list_editable = ['order']
 
     class Media:
@@ -25,7 +25,7 @@ class TagAdmin(admin.ModelAdmin):
 
 class TopicAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
-    list_display = ('short_name','name','order')
+    list_display = ('name','short_name','order')
     list_editable = ['order']
 
     class Media:
