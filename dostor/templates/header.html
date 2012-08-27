@@ -42,7 +42,31 @@
                     {% endif %}
                   {% else %}
                   
-                  <a href="https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup&{%if search%}redirect_uri={{ request.build_absolute_uri }}&state={{query}}{%else%}redirect_uri={{ request.build_absolute_uri }}{%endif%}">
+                  <script type="text/javascript">
+					var newwindow;
+					var intId;
+					function login(){
+						var  screenX    = typeof window.screenX != 'undefined' ? window.screenX : window.screenLeft,
+							 screenY    = typeof window.screenY != 'undefined' ? window.screenY : window.screenTop,
+							 outerWidth = typeof window.outerWidth != 'undefined' ? window.outerWidth : document.body.clientWidth,
+							 outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22),
+							 width    = 500,
+							 height   = 270,
+							 left     = parseInt(screenX + ((outerWidth - width) / 2), 10),
+							 top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
+							 features = (
+								'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top
+							  );
+				  
+						newwindow=window.open('https://graph.facebook.com/oauth/authorize?client_id={{ settings.FACEBOOK_APP_ID }}&scope=publish_stream,email&display=popup&{%if search%}redirect_uri={{ request.build_absolute_uri }}&state={{query}}{%else%}redirect_uri={{ request.build_absolute_uri }}{%endif%}','Login_by_facebook',features);
+						
+						 if (window.focus) {newwindow.focus()}
+						return false;
+					}
+			
+				</script>
+                  
+                  <a href="#" onclick="login();return false;">
                     <img style="float: left; padding-top: 25px;" src="http://egynda.com/resource/images/fb_sign.png"/>
                   </a>
                   
