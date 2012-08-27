@@ -1,10 +1,11 @@
 from django.contrib import auth
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from datetime import datetime
 
 import cgi
+import json
 import simplejson
 import urllib
 from dostor.facebook import facebook_sdk
@@ -38,11 +39,12 @@ def login(request):
     error = None
 
     if request.user.is_authenticated():
-        return HttpResponseRedirect('/')
+        HttpResponse("<script> alert('sdf'); window.close(); window.opener.location.reload(); </script>");
 
     if request.GET:
-        if 'code' in request.GET:
-            args = {
+        if 'session' in request.GET:
+
+            '''args = {
                 'client_id': settings.FACEBOOK_APP_ID,
                 'redirect_uri': settings.FACEBOOK_REDIRECT_URI,
                 'client_secret': settings.FACEBOOK_API_SECRET,
@@ -53,27 +55,23 @@ def login(request):
                     urllib.urlencode(args)
             response = cgi.parse_qs(urllib.urlopen(url).read())
             access_token = response['access_token'][0]
-            expires = response['expires'][0]
+            expires = response['expires'][0]'''
+
+            user_obj = json.loads(request.GET['session'])
 
             facebook_session = FacebookSession.objects.get_or_create(
-                access_token=access_token,
+                access_token = user_obj['access_token'],
             )[0]
 
-            facebook_session.expires = expires
+            facebook_session.expires = user_obj['expires']
             facebook_session.save()
 
-            user = auth.authenticate(token=access_token)
-            if user:
-                if user.is_active:
-                    auth.login(request, user)
-                    #return HttpResponseRedirect(request.path)
-                    HttpResponse("<script> window.close(); window.opener.location.reload(); </script>");
-                else:
-                    error = 'AUTH_DISABLED'
-            else:
-                error = 'AUTH_FAILED'
-        elif 'error_reason' in request.GET:
-            error = 'AUTH_DENIED'
+            user = auth.authenticate(token=user_obj['access_token'])
+            if user and request.GET['loginsucc']:
+			
+                auth.login(request, user)
+                #return HttpResponseRedirect(request.path)
+                return HttpResponse("<script type='text/javascript'> window.close(); window.opener.location.reload(); </script>");
 
     template_context = {'settings': settings, 'error': error}
     return render_to_response('facebook/login.html', template_context, context_instance=RequestContext(request))
