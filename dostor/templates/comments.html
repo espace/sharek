@@ -55,12 +55,12 @@
             {% endif %}
               <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete dropdown-toggle" id="{{top_feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
               {% if top_feedback.get_children|length > 0 %}
-              <a href="javascript:;" class="L_show_more " appear="false" id="{{top_feedback.id}}">أظهر باقي التعليقات</a>
+              <a href="javascript:;" class="L_show_more " id="{{top_feedback.id}}">أظهر باقي التعليقات</a>
               {% endif %}
           </div>
       </div><!-- comment end -->
+      <div class="L_replies_block {{top_feedback.id}}" style="display:none;">
       {% if top_feedback.get_children|length > 0 %}
-        <div class="L_replies_block {{top_feedback.id}}" style="display:none;">
           {% for reply in top_feedback.get_children %}
           <div class="comment-block child-reply L_{{reply.id}}">
             <div class="facebook_user_img">
@@ -82,20 +82,20 @@
               </div>
           </div><!-- comment end -->
           {% endfor %}
-          <div class="comment-block comment-entry child-reply {{top_feedback.id}}" style="display:none;">
-            <div class="facebook_user_img">
-              <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
-            </div>
-            <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
-            <a href="javascript:;" class="L_hide delete  dropdown-toggle" feedback_id="{{top_feedback.id}}" ><span>x</span></a>
-            <p >
-               <textarea rows="3" class="input-xlarge span7 L_reply {{top_feedback.id}}" id="suggestion"></textarea>
-               <br />
-               <button class="btn btn-danger offset0 L_reply_bt" type="submit" id="reply" parent="{{top_feedback.id}}">أضف ردك الآن !</button>
-            </p>
-          </div>
-        </div>
       {% endif %}
+        <div class="comment-block comment-entry child-reply {{top_feedback.id}}" style="display:none;">
+          <div class="facebook_user_img">
+            <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
+          </div>
+          <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+          <a href="javascript:;" class="L_hide delete  dropdown-toggle" feedback_id="{{top_feedback.id}}" ><span>x</span></a>
+          <p >
+             <textarea rows="3" class="input-xlarge span7 L_reply {{top_feedback.id}}" id="suggestion"></textarea>
+             <br />
+             <button class="btn btn-danger offset0 L_reply_bt" type="submit" id="reply" parent="{{top_feedback.id}}">أضف ردك الآن !</button>
+          </p>
+        </div>
+      </div>
   {% endfor %}
   </div><!-- "top-comments -->
 {% endif %}
@@ -233,6 +233,7 @@
         });
    
    $(".L_reply").live("click",function(){
+    $(".L_replies_block."+this.id).show();
     $('.child-reply.'+this.id).show()
    });
 
