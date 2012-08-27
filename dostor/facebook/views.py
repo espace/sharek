@@ -66,7 +66,7 @@ def login(request):
             facebook_session.expires = user_obj['expires']
             facebook_session.save()
 			
-			HttpResponse(user_obj['expires']);
+            HttpResponse(user_obj['expires']);
 
             user = auth.authenticate(token=user_obj['access_token'])
             if user and request.GET['loginsucc']:
