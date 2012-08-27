@@ -195,7 +195,7 @@ body {
     font: 16px GESSTwoMediumRegular;
     color: #474747;
     line-height: 36px;
-    text-shadow:0 0px 1px rgba(0,0,0,0.5);
+    text-shadow:0 0px 1px rgba(0,0,0,0.4);
 }
 .progress-promo a.btn{
     font: 20px GESSTwoMediumRegular;
