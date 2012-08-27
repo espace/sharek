@@ -199,11 +199,11 @@ def remove_feedback(request):
         if request.method == 'POST':
             feedback_id = request.POST.get("feedback")
             feedback = Feedback.objects.get(id=feedback_id)
+            replys = Feedback.objects.filter(parent_id = request.POST.get("feedback"))
+            reply_ids = []
             #the user has to be the feedback owner to be able to remove it
             if feedback.user == request.user.username or request.user.username == "admin":
                 feedback.delete()
-                replys = Feedback.objects.filter(parent_id = feedback_id)
-                reply_ids = []
                 for reply in replys:
                     reply_ids.append(reply.id)
                     reply.delete()
