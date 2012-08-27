@@ -95,7 +95,7 @@
 
   {% if feedback.get_children|length > 0 %}
     {% for reply in feedback.get_children %}
-    <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{reply.id}}">
+    <div class="comment-block child-reply {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{reply.id}}">
       <div class="facebook_user_img">
         <a href="http://www.facebook.com/{{ reply.user }}" target="_blank"><img src="http://graph.facebook.com/{{ reply.user }}/picture" class="loader"/></a>
       </div>
@@ -282,11 +282,11 @@
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote  ${id}" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote  ${id}" id="${id}" vote="1"><small class="like ${id}">0</small></a>
     </div>
-    <div class="delete-group">
-          <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="${id}" ><span>x</span></a>
-    </div>
-    <p>${suggestion}</p>
     <span class="date">${date}</span>
+    <p>${suggestion}</p>
+    <div class="delete-group">
+      <a href="javascript:;" class="L_remove delete dropdown-toggle" feedback_id="${id}"><span class="icon-trash"></span>مسح التعليق</a>
+    </div>
   </div><!-- comment end -->
 </script>
 
@@ -300,11 +300,11 @@
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote  ${id}" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote  ${id}" id="${id}" vote="1"><small class="like ${id}">0</small></a>
     </div>
-    <div class="delete-group">
-          <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="${id}" ><span>x</span></a>
-    </div>
-    <p>${suggestion}</p>
     <span class="date">${date}</span>
+    <p>${suggestion}</p>
+    <div class="delete-group">
+        <a href="javascript:;" class="L_remove delete dropdown-toggle" feedback_id="${id}"><span class="icon-trash"></span>مسح التعليق</a>
+    </div>
   </div><!-- comment end -->
 </script>
 
