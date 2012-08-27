@@ -5,6 +5,7 @@ from django.template import RequestContext
 from datetime import datetime
 
 import cgi
+import json
 import simplejson
 import urllib
 from dostor.facebook import facebook_sdk
