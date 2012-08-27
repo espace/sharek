@@ -205,7 +205,7 @@ def remove_feedback(request):
                 replys = Feedback.objects.filter(parent_id = feedback_id)
                 reply_ids = {}
                 for reply in replys:
-                    reply_ids =+ reply.id
+                    reply_ids += reply.id
                     reply.delete()
                 return HttpResponse(simplejson.dumps({'feedback_id':request.POST.get("feedback"),'reply_ids':reply_ids}))
 
