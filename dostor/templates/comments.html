@@ -89,7 +89,7 @@
       </div>
       <span class="date">{{feedback.date|format}}</span>
       {{feedback.suggestion}}
-      <a href="javascript:;" class="L_reply" id="{{feedback.id}}"><small>رد</small></a>
+      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply" id="{{feedback.id}}"><small>رد</small></a>
   </div><!-- comment end -->
 
   {% if feedback.get_children|length > 0 %}
