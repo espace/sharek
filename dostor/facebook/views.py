@@ -58,9 +58,7 @@ def login(request):
             expires = response['expires'][0]'''
 
             user_obj = json.loads(request.GET['session'])
-            print user_obj['expires']
 
-####################################
             facebook_session = FacebookSession.objects.get_or_create(
                 access_token = user_obj['access_token'],
             )[0]
@@ -68,7 +66,7 @@ def login(request):
             facebook_session.expires = user_obj['expires']
             facebook_session.save()
 
-            user = auth.authenticate(token=access_token)
+            user = auth.authenticate(token=user_obj['access_token'])
             if user:
                 if user.is_active:
                     auth.login(request, user)
