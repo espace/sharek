@@ -89,6 +89,12 @@
       </div>
       <span class="date">{{feedback.date|format}}</span>
       {{feedback.suggestion}}
+        <div class="delete-group">
+               
+                    <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="{{feedback.id}}"><span class="icon-trash"></span> مسح التعليق</a>
+                    <a href="javascript:;" class="L_remove delete  dropdown-toggle" feedback_id="{{feedback.id}}"><span class="icon-comment"></span> أضف رد </a>
+               
+                </div>
   </div><!-- comment end -->
   {% endfor %}
   
