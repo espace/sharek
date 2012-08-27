@@ -1,5 +1,5 @@
 from django.contrib import auth
-from django.http import HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from datetime import datetime
