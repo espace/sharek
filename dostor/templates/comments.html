@@ -237,7 +237,6 @@
    
    $(".L_reply").live("click",function(){
     visible = $(".L_replies_block."+$(this).attr('id')).is(":visible")
-    alert(visible)
     if (visible)
     {
       $('.child-reply.'+this.id).show()
@@ -340,7 +339,6 @@
     jQuery.fn.expand_effect = function() 
     {
       visible = $(".L_replies_block."+$(this[0]).attr('id')).is(":visible")
-      alert(visible)
       $(".L_replies_block").hide();
       $(".L_show_more_icon").removeClass("icon-minus")
       $(".L_show_more_icon").addClass("icon-plus")
