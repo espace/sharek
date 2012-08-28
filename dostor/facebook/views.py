@@ -46,7 +46,7 @@ def login(request):
        if 'cancel' in request.GET:
             return HttpResponse("<script type='text/javascript'> window.close(); </script>");
 
-        if 'session' in request.GET:
+       if 'session' in request.GET:
 
             user_obj = json.loads(request.GET['session'])
 
