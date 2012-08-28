@@ -87,7 +87,7 @@
             <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
             <a href="javascript:;" class="L_hide close  " feedback_id="{{top_feedback.id}}" ><span>x</span></a>
             <p >
-               <textarea rows="3" class="input-xlarge span7 L_reply {{top_feedback.id}}" id="suggestion"></textarea>
+               <textarea rows="3" class="input-xlarge span7 L_reply_txt {{top_feedback.id}}" id="suggestion"></textarea>
                <br />
                <button class="btn btn-danger offset0 L_reply_bt" type="submit" id="reply" parent="{{top_feedback.id}}">أضف ردك الآن !</button>
             </p>
@@ -162,7 +162,7 @@
           <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
           <a href="javascript:;" class="L_hide close  " feedback_id="{{feedback.id}}" ><span>x</span></a>
           <p >
-           <textarea rows="3" class="input-xlarge span7 L_reply {{feedback.id}}" id="suggestion"></textarea>
+           <textarea rows="3" class="input-xlarge span7 L_reply_txt {{feedback.id}}" id="suggestion"></textarea>
            <br />
            <button class="btn btn-danger offset0 L_reply_bt" type="submit" id="reply" parent="{{feedback.id}}">أضف ردك الآن !</button>
           </p>
@@ -254,7 +254,7 @@
    });
 
    $(".L_reply_bt").live("click",function(){
-      if ($.trim($(".L_reply."+$(this).attr('parent')).val()).length > 0)
+      if ($.trim($(".L_reply_txt."+$(this).attr('parent')).val()).length > 0)
       {
         $.ajax({
               type:"POST",
