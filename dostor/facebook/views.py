@@ -39,23 +39,14 @@ def login(request):
     error = None
 
     if request.user.is_authenticated():
-        HttpResponse("<script> alert('sdf'); window.close(); window.opener.location.reload(); </script>");
+        return HttpResponse("<script> window.close(); window.opener.location.reload(); </script>");
 
     if request.GET:
+
+       if 'cancel' in request.GET:
+            return HttpResponse("<script type='text/javascript'> window.close(); </script>");
+
         if 'session' in request.GET:
-
-            '''args = {
-                'client_id': settings.FACEBOOK_APP_ID,
-                'redirect_uri': settings.FACEBOOK_REDIRECT_URI,
-                'client_secret': settings.FACEBOOK_API_SECRET,
-                'code': request.GET['code'],
-            }
-
-            url = 'https://graph.facebook.com/oauth/access_token?' + \
-                    urllib.urlencode(args)
-            response = cgi.parse_qs(urllib.urlopen(url).read())
-            access_token = response['access_token'][0]
-            expires = response['expires'][0]'''
 
             user_obj = json.loads(request.GET['session'])
 
