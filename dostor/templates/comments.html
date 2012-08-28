@@ -53,7 +53,7 @@
           {% endif %}
           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete dropdown-toggle" id="{{top_feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
           {% if top_feedback.get_children|length > 0 %}
-            <a href="javascript:;" class="L_show_more " id="{{top_feedback.id}}"><span class="L_show_more_icon icon-plus"></span><span class="L_show_more_txt">أظهر باقي التعليقات</span></a>
+            <a href="javascript:;" class="L_show_more " id="{{top_feedback.id}}"><span class="L_show_more_icon {{top_feedback.id}} icon-plus"></span><span class="L_show_more_txt {{top_feedback.id}}">أظهر باقي التعليقات</span></a>
           {% endif %}
         </div>
         <div class="L_replies_block child-wrapper {{top_feedback.id}}" style="display:none;">
@@ -128,7 +128,7 @@
         {% endif %}
         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete dropdown-toggle" id="{{feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
         {% if feedback.get_children|length > 0 %}
-          <a href="javascript:;" class="L_show_more " id="{{feedback.id}}"><span class="L_show_more_icon icon-plus"></span><span class="L_show_more_txt">أظهر باقي التعليقات</span></a>
+          <a href="javascript:;" class="L_show_more " id="{{feedback.id}}"><span class="L_show_more_icon icon-plus {{feedback.id}}"></span><span class="L_show_more_txt {{feedback.id}}">أظهر باقي التعليقات</span></a>
         {% endif %}
       </div>
       <div class="L_replies_block child-wrapper {{feedback.id}}" style="display:none;">
@@ -236,7 +236,7 @@
         });
    
    $(".L_reply").live("click",function(){
-    $(".L_replies_block."+this.id).show();
+    $(this).expand_effect()
     $('.child-reply.'+this.id).show()
    });
 
@@ -325,23 +325,28 @@
     });
 
     $(".L_show_more").live("click",function(){
-      visible = $(".L_replies_block."+this.id).is(":visible")
+      $(this).expand_effect()
+    });
+
+    jQuery.fn.expand_effect = function() 
+    {
+      visible = $(".L_replies_block."+$(this[0]).attr('id')).is(":visible")
       $(".L_replies_block").hide();
       $(".L_show_more_icon").removeClass("icon-minus")
       $(".L_show_more_icon").addClass("icon-plus")
       $(".L_show_more_txt").text("أظهر باقي التعليقات")
       if (visible)
       {
-        $(".L_replies_block."+this.id).hide();
+        $(".L_replies_block."+$(this[0]).attr('id')).hide();
       }
       else
       {
-        $(this).children(".L_show_more_icon").removeClass("icon-plus")
-        $(this).children(".L_show_more_icon").addClass("icon-minus")
-        $(this).children(".L_show_more_txt").text("إخفاء باقي التعليقات")
-        $(".L_replies_block."+this.id).show();
+        $(".L_show_more_icon."+$(this[0]).attr('id')).removeClass("icon-plus")
+        $(".L_show_more_icon."+$(this[0]).attr('id')).addClass("icon-minus")
+        $(".L_show_more_txt."+$(this[0]).attr('id')).text("إخفاء باقي التعليقات")
+        $(".L_replies_block."+$(this[0]).attr('id')).show();
       }
-    });
+    };
 
   });
 </script>
