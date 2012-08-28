@@ -170,7 +170,7 @@ body {
 }
 .footer-nav ul li{
     margin: 5px !important;
-	font: 12px GESSTwoMediumRegular;
+    font: 12px GESSTwoMediumRegular;
 }
 .footer-nav a{
     color: #7A7672 !important;
@@ -312,7 +312,7 @@ left: 1px;
     padding: 10px 0 0 0 ;
     margin-bottom: 40px;
     font-size: 16px;
-	font-weight: 400;
+    font-weight: 400;
     color: #333 !important;
     font-family: GESSTwoMediumRegular;
     line-height: 30px;
@@ -343,6 +343,7 @@ left: 1px;
     margin: 0 0;
     background: url("../images/sprite-big.png") no-repeat;
 }
+
 .home-sections .state-components{
     background-position: -270px -40px ;
 }
@@ -616,7 +617,7 @@ left: 1px;
     position: relative;
     border: solid 2px #BA4242;
     /*border-top: solid 1px #f2f2f2;*/
-	margin-left: 15px;
+    margin-left: 15px;
     border-radius: 5px;
 }
 
@@ -687,7 +688,7 @@ left: 1px;
     position: relative;
     border: solid 1px #faf9f7;
     border-bottom: none;
-	border-radius: 5px;
+    border-radius: 5px;
     width: 95%;
     clear: both;
     z-index: 5;
@@ -715,7 +716,7 @@ left: 1px;
     z-index: 1000;
 }
 .facebook_user_img img{
-	border-radius: 5px;
+    border-radius: 5px;
 }
 .comment-block .name a{
     font-size:12px;
@@ -816,7 +817,7 @@ span.divider{
 .top{
     width: auto !important;
     /*background: rgba(0,0,0,0.1) !important;*/
-	float: left;
+    float: left;
     margin-left: 14px;
 }
 .top a{
@@ -1369,7 +1370,7 @@ span.divider{
 .footer .copyrights{
     margin: 20px 0;
     color: #bbb;
-	font: 12px GESSTwoMediumRegular;
+    font: 12px GESSTwoMediumRegular;
 }
 
 .footer .socials{
