@@ -25,6 +25,8 @@ import cgi
 import simplejson
 import urllib
 
+def tmp(request):
+    return HttpResponseRedirect(reverse('index'))
 
 def index(request):
     user = None
