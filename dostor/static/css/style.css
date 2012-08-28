@@ -343,29 +343,30 @@ left: 1px;
     margin: 0 0;
     background: url("../images/sprite-big.png") no-repeat;
 }
-.home-sections .state{
+
+.home-sections .state-components{
     background-position: -270px -40px ;
 }
-        .home-sections .nav li:hover .state{
+        .home-sections .nav li:hover .state-components{
             background-position: -19px -40px; 
         }
-.home-sections .people-rights{
+.home-sections .rights-duties{
     background-position: -270px -251px ;
 }
-        .home-sections .nav li:hover .people-rights{
+        .home-sections .nav li:hover .rights-duties{
             background-position: -19px -251px; 
         }
 
-.home-sections .authorities{
+.home-sections .regime-authorities{
     background-position: -270px -485px ;
 }
-        .home-sections .nav li:hover .authorities{
+        .home-sections .nav li:hover .regime-authorities{
             background-position: -19px -485px ;
         }
-.home-sections .monitoring{
+.home-sections .regulatory-bodies{
     background-position: -270px -715px ;
 }
-        .home-sections .nav li:hover .monitoring{
+        .home-sections .nav li:hover .regulatory-bodies{
             background-position: -19px -715px ;
         }
 
