@@ -236,8 +236,17 @@
         });
    
    $(".L_reply").live("click",function(){
-    $(this).expand_effect()
-    $('.child-reply.'+this.id).show()
+    visible = $(".L_replies_block."+$(this).attr('id')).is(":visible")
+    alert(visible)
+    if (visible)
+    {
+      $('.child-reply.'+this.id).show()
+    }
+    else{
+      $(this).expand_effect()
+      $('.child-reply.'+this.id).show()
+    }
+    
    });
 
    $(".L_hide").live("click",function(){
@@ -331,6 +340,7 @@
     jQuery.fn.expand_effect = function() 
     {
       visible = $(".L_replies_block."+$(this[0]).attr('id')).is(":visible")
+      alert(visible)
       $(".L_replies_block").hide();
       $(".L_show_more_icon").removeClass("icon-minus")
       $(".L_show_more_icon").addClass("icon-plus")
