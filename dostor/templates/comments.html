@@ -48,10 +48,10 @@
         <div class="delete-group">
           {% if user %}
             {% if user.username = top_feedback.user or user.username = "admin" %}
-            <a href="javascript:;" class="L_remove delete dropdown-toggle" feedback_id="{{top_feedback.id}}"><span class="icon-trash"></span>مسح التعليق</a>
+            <a href="javascript:;" class="L_remove delete " feedback_id="{{top_feedback.id}}"><span class="icon-trash"></span>مسح التعليق</a>
             {% endif %}
           {% endif %}
-          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete dropdown-toggle" id="{{top_feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
+          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete " id="{{top_feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
           {% if top_feedback.get_children|length > 0 %}
             <a href="javascript:;" class="L_show_more " id="{{top_feedback.id}}"><span class="L_show_more_icon {{top_feedback.id}} icon-plus"></span><span class="L_show_more_txt {{top_feedback.id}}">أظهر باقي التعليقات</span></a>
           {% endif %}
@@ -73,7 +73,7 @@
               <div class="delete-group">
                 {% if user %}
                   {% if user.username = reply.user or user.username = "admin" %}
-                  <a href="javascript:;" class="L_remove delete dropdown-toggle" feedback_id="{{reply.id}}"><span class="icon-trash"></span>مسح التعليق</a>
+                  <a href="javascript:;" class="L_remove delete " feedback_id="{{reply.id}}"><span class="icon-trash"></span>مسح التعليق</a>
                   {% endif %}
                 {% endif %}
               </div>
@@ -85,7 +85,7 @@
               <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
             </div>
             <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
-            <a href="javascript:;" class="L_hide delete  dropdown-toggle" feedback_id="{{top_feedback.id}}" ><span>x</span></a>
+            <a href="javascript:;" class="L_hide close  " feedback_id="{{top_feedback.id}}" ><span>x</span></a>
             <p >
                <textarea rows="3" class="input-xlarge span7 L_reply {{top_feedback.id}}" id="suggestion"></textarea>
                <br />
@@ -123,10 +123,10 @@
       <div class="delete-group">
         {% if user %}
           {% if user.username = feedback.user or user.username = "admin" %}
-            <a href="javascript:;" class="L_remove delete dropdown-toggle" feedback_id="{{feedback.id}}"><span class="icon-trash"></span>مسح التعليق</a>
+            <a href="javascript:;" class="L_remove delete " feedback_id="{{feedback.id}}"><span class="icon-trash"></span>مسح التعليق</a>
           {% endif %}
         {% endif %}
-        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete dropdown-toggle" id="{{feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
+        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete " id="{{feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
         {% if feedback.get_children|length > 0 %}
           <a href="javascript:;" class="L_show_more " id="{{feedback.id}}"><span class="L_show_more_icon icon-plus {{feedback.id}}"></span><span class="L_show_more_txt {{feedback.id}}">أظهر باقي التعليقات</span></a>
         {% endif %}
@@ -148,7 +148,7 @@
               <div class="delete-group">
                 {% if user %}
                   {% if user.username = reply.user or user.username = "admin" %}
-                    <a href="javascript:;" class="L_remove delete dropdown-toggle" feedback_id="{{reply.id}}"><span class="icon-trash"></span>مسح التعليق</a>
+                    <a href="javascript:;" class="L_remove delete " feedback_id="{{reply.id}}"><span class="icon-trash"></span>مسح التعليق</a>
                   {% endif %}
                 {% endif %}
               </div>
@@ -160,7 +160,7 @@
             <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
           </div>
           <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
-          <a href="javascript:;" class="L_hide delete  dropdown-toggle" feedback_id="{{feedback.id}}" ><span>x</span></a>
+          <a href="javascript:;" class="L_hide close  " feedback_id="{{feedback.id}}" ><span>x</span></a>
           <p >
            <textarea rows="3" class="input-xlarge span7 L_reply {{feedback.id}}" id="suggestion"></textarea>
            <br />
@@ -241,11 +241,12 @@
     {
       $('.child-reply.'+this.id).show()
     }
-    else{
+    else
+    {
       $(this).expand_effect()
       $('.child-reply.'+this.id).show()
     }
-    
+    $('html,body').animate({ scrollTop: $('.child-reply.'+this.id).offset().top -100 },800);
    });
 
    $(".L_hide").live("click",function(){
@@ -373,7 +374,7 @@
     <span class="date">${date}</span>
     <p>${suggestion}</p>
     <div class="delete-group">
-      <a href="javascript:;" class="L_remove delete dropdown-toggle" feedback_id="${id}"><span class="icon-trash"></span>مسح التعليق</a>
+      <a href="javascript:;" class="L_remove delete" feedback_id="${id}"><span class="icon-trash"></span>مسح التعليق</a>
     </div>
   </div>
 </script>
@@ -391,7 +392,7 @@
     <span class="date">${date}</span>
     <p>${suggestion}</p>
     <div class="delete-group">
-        <a href="javascript:;" class="L_remove delete dropdown-toggle" feedback_id="${id}"><span class="icon-trash"></span>مسح التعليق</a>
+        <a href="javascript:;" class="L_remove delete " feedback_id="${id}"><span class="icon-trash"></span>مسح التعليق</a>
     </div>
   </div>
 </script>
