@@ -304,7 +304,25 @@ left: 1px;
     margin: 0 !important;
 }
 .home-sections .nav li{
-    margin-right: 0 !important;
+    margin-right: 0 !important;	
+	position: relative;
+}
+
+.home-sections .nav li .articles-count,
+.home-sections .nav li .articles-count-new {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background: #999;
+	border-radius: 3px;
+	padding: 0px 4px;
+	color: #FFF;
+	font-size: 9px;
+}
+
+.home-sections .nav li .articles-count-new {
+	background: #9D0D0B;
+	color: #FFF;
 }
 .home-sections .nav li a{
     min-height: 60px;
