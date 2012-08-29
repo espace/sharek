@@ -445,5 +445,14 @@ def latest_comments(request):
         else: 
              return HttpResponse('')
 
+def total_contribution(request):
+    feedback = Feedback.objects.all().count()
+    feedback_ratings = Rating.objects.all().count()
+    article_ratings = ArticleRating.objects.all().count()
+
+    total = feedback + feedback_ratings + article_ratings
+
+    return render_to_response('contribution.html',{'total':total,'feedback':feedback,'feedback_ratings':feedback_ratings,'article_ratings':article_ratings} ,RequestContext(request))
+
 
 
