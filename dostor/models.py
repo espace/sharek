@@ -44,6 +44,9 @@ class Topic(models.Model):
     
     def get_articles(self):
         return Article.objects.filter(topic_id= self.id)
+
+    def articles_count(self):
+        return len(Article.objects.filter(topic_id= self.id))
     
     class Meta:
        ordering = ["order"]

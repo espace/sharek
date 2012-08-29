@@ -304,7 +304,25 @@ left: 1px;
     margin: 0 !important;
 }
 .home-sections .nav li{
-    margin-right: 0 !important;
+    margin-right: 0 !important;	
+	position: relative;
+}
+
+.home-sections .nav li .articles-count,
+.home-sections .nav li .articles-count-new {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background: #999;
+	border-radius: 3px;
+	padding: 0px 4px;
+	color: #FFF;
+	font-size: 9px;
+}
+
+.home-sections .nav li .articles-count-new {
+	background: #9D0D0B;
+	color: #FFF;
 }
 .home-sections .nav li a{
     min-height: 60px;
@@ -343,29 +361,29 @@ left: 1px;
     margin: 0 0;
     background: url("../images/sprite-big.png") no-repeat;
 }
-.home-sections .state{
+.home-sections .state-components{
     background-position: -270px -40px ;
 }
-        .home-sections .nav li:hover .state{
+        .home-sections .nav li:hover .state-components{
             background-position: -19px -40px; 
         }
-.home-sections .people-rights{
+.home-sections .rights-duties{
     background-position: -270px -251px ;
 }
-        .home-sections .nav li:hover .people-rights{
+        .home-sections .nav li:hover .rights-duties{
             background-position: -19px -251px; 
         }
 
-.home-sections .authorities{
+.home-sections .regime-authorities{
     background-position: -270px -485px ;
 }
-        .home-sections .nav li:hover .authorities{
+        .home-sections .nav li:hover .regime-authorities{
             background-position: -19px -485px ;
         }
-.home-sections .monitoring{
+.home-sections .regulatory-bodies{
     background-position: -270px -715px ;
 }
-        .home-sections .nav li:hover .monitoring{
+        .home-sections .nav li:hover .regulatory-bodies{
             background-position: -19px -715px ;
         }
 
@@ -1419,4 +1437,20 @@ span.divider{
     display: inline-block;
     margin-bottom: -17px;
     margin-right: 10px;
+}
+
+#toTop {
+	width:120px;
+	border:1px solid #ccc;
+	background:#f7f7f7;
+	text-align:center;
+	padding:5px;
+	position:fixed; /* this is the magic */
+	bottom:10px; /* together with this to put the div at the bottom*/
+	right:10px;
+	cursor:pointer;
+	display:none;
+	color:#777;
+	border-radius: 7px;
+	font: 12px GESSTwoMediumRegular;
 }
