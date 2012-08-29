@@ -215,7 +215,7 @@ def modify(request):
         if request.method == 'POST':
             Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name")).save()
             feedback = Feedback.objects.filter(article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
-            '''
+            
             fb_user = FacebookSession.objects.get(user = request.user)
             # GraphAPI is the main class from facebook_sdp.py
             graph = facebook_sdk.GraphAPI(fb_user.access_token)
@@ -224,7 +224,7 @@ def modify(request):
             attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
             message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(Article, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
             graph.put_wall_post(message, attachment)
-            '''
+            
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
 def reply_feedback(request):
