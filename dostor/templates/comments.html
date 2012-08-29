@@ -207,7 +207,7 @@
     {% if user %}
       $.ajax({
               type:"POST",
-              url :"/sharek/vote/",
+              url :"{% url vote %}",
               data:{'article':{{article.id}},'modification': this.id ,'type': $(this).attr('vote') ,'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
               dataType:"json",
               error:function(data){},
@@ -258,7 +258,7 @@
       {
         $.ajax({
               type:"POST",
-              url :"/sharek/reply_feedback/",
+              url :"{% url reply_feedback %}",
               data:{
                   'link': document.URL,
                   'user_id':"{{user}}",
@@ -267,8 +267,7 @@
                   'email': "{{user.email}}",
                   'parent': $(this).attr('parent') ,
                   'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
-                  'suggestion': $(".L_reply."+$(this).attr('parent')).val()
-                },
+                  'suggestion': $(".L_reply_txt."+$(this).attr('parent')).val()},
               dataType:"json",
               error:function(data){},
               success:function(data){
@@ -286,7 +285,7 @@
         {
           $.ajax({
                   type:"POST",
-                  url :"/sharek/remove_feedback/",
+                  url :"{% url remove_feedback %}",
                   data:{'feedback':$(this).attr('feedback_id'),
                         'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
                   dataType:"json",
@@ -309,7 +308,7 @@
         $("#modify").after($("#loading_temp").tmpl());
         $.ajax({
               type:"POST",
-              url :"/sharek/modify/",
+              url :"{% url modify %}",
               data:{
                   'link': document.URL,
                   'article_slug': "{{article.slug}}",
