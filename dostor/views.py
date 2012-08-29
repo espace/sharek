@@ -213,8 +213,14 @@ def remove_feedback(request):
 def modify(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
-            Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name")).save()
-            feedback = Feedback.objects.filter(article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
+            sug = str(request.POST.get("suggestion"))
+            feedbacks = Feedback.objects.filter(article_id = request.POST.get("article"), email= request.POST.get("email"), name = request.POST.get("name"))
+            for feedback in feedbacks:
+                if feedback.suggestion.raw in sug:
+                    return HttpResponse(simplejson.dumps({'duplicate':True,'name':request.POST.get("name")}))
+            else:
+                Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name")).save()
+                feedback = Feedback.objects.filter(article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
             
             fb_user = FacebookSession.objects.get(user = request.user)
             # GraphAPI is the main class from facebook_sdp.py

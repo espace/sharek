@@ -319,15 +319,25 @@
                   'article':"{{article.id}}",
                   'email': "{{user.email}}",
                   'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
-                  'suggestion': $("#suggestion").val()},
+                  'suggestion': $.trim($("#suggestion").val())},
               dataType:"json",
               error:function(data){},
               success:function(data){
-              $("#suggestion").val("");
-              $("#count").attr("value",parseInt($("#count").attr("value"))+1);
-              $("#feedback_counter").text($("#count").attr("value")+" تعليق");
-              $(".comment-block.well.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
-              $("#load-img").remove();
+                if (data.duplicate == true)
+                {
+                  alert ("أ/"+data.name+" يرجى مراعاة تغيير محتوي تعليقك للوصول لأقصى إستفاده من مشاركاتك");
+                  $("#suggestion").val("");
+                  $("#load-img").remove();
+                }
+                else
+                {
+                  $("#suggestion").val("");
+                  $("#count").attr("value",parseInt($("#count").attr("value"))+1);
+                  $("#feedback_counter").text($("#count").attr("value")+" تعليق");
+                  $(".comment-block.well.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
+                  $("#load-img").remove();
+                }
+
               },
           });
       }
