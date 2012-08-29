@@ -53,7 +53,7 @@
           {% endif %}
           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete " id="{{top_feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
           {% if top_feedback.get_children|length > 0 %}
-            <a href="javascript:;" class="L_show_more " id="{{top_feedback.id}}"><span class="L_show_more_icon {{top_feedback.id}} icon-plus"></span><span class="L_show_more_txt {{top_feedback.id}}">أظهر باقي التعليقات</span></a>
+            <a href="javascript:;" class="L_show_more " id="{{top_feedback.id}}"><span class="L_show_more_icon {{top_feedback.id}} icon-plus"></span><span class="L_show_more_txt {{top_feedback.id}}">إظهار باقي الردود</span></a>
           {% endif %}
         </div>
         <div class="L_replies_block child-wrapper {{top_feedback.id}}" style="display:none;">
@@ -128,10 +128,10 @@
         {% endif %}
         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete " id="{{feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
         {% if feedback.get_children|length > 0 %}
-          <a href="javascript:;" class="L_show_more " id="{{feedback.id}}"><span class="L_show_more_icon icon-plus {{feedback.id}}"></span><span class="L_show_more_txt {{feedback.id}}">أظهر باقي التعليقات</span></a>
+          <a href="javascript:;" class="L_show_more " id="{{feedback.id}}"><span class="L_show_more_icon icon-minus {{feedback.id}}"></span><span class="L_show_more_txt {{feedback.id}}">إخفاء باقي الردود</span></a>
         {% endif %}
       </div>
-      <div class="L_replies_block child-wrapper {{feedback.id}}" style="display:none;">
+      <div class="L_replies_block child-wrapper {{feedback.id}}" >
         {% if feedback.get_children|length > 0 %}
           {% for reply in feedback.get_children %}
             <div class="comment-block child-reply L_{{reply.id}}">
@@ -250,6 +250,7 @@
    });
 
    $(".L_hide").live("click",function(){
+    $(".L_reply_txt."+$(this).attr('feedback_id')).val("");
     $(".comment-entry.child-reply."+$(this).attr('feedback_id')).hide();
    });
 
@@ -271,8 +272,8 @@
               dataType:"json",
               error:function(data){},
               success:function(data){
-              $(".L_reply."+data.parent).val("");
               $(".child-reply."+data.parent).before($("#reply_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
+              $(".L_reply_txt."+data.parent).val("")
               $(".comment-entry.child-reply."+data.parent).hide();
               },
           });
@@ -339,19 +340,18 @@
     jQuery.fn.expand_effect = function() 
     {
       visible = $(".L_replies_block."+$(this[0]).attr('id')).is(":visible")
-      $(".L_replies_block").hide();
-      $(".L_show_more_icon").removeClass("icon-minus")
-      $(".L_show_more_icon").addClass("icon-plus")
-      $(".L_show_more_txt").text("أظهر باقي التعليقات")
       if (visible)
       {
+        $(".L_show_more_icon."+$(this[0]).attr('id')).addClass("icon-plus")
+        $(".L_show_more_icon."+$(this[0]).attr('id')).removeClass("icon-minus")
+        $(".L_show_more_txt."+$(this[0]).attr('id')).text("إظهار باقي الردود")
         $(".L_replies_block."+$(this[0]).attr('id')).hide();
       }
       else
       {
         $(".L_show_more_icon."+$(this[0]).attr('id')).removeClass("icon-plus")
         $(".L_show_more_icon."+$(this[0]).attr('id')).addClass("icon-minus")
-        $(".L_show_more_txt."+$(this[0]).attr('id')).text("إخفاء باقي التعليقات")
+        $(".L_show_more_txt."+$(this[0]).attr('id')).text("إخفاء باقي الردود")
         $(".L_replies_block."+$(this[0]).attr('id')).show();
       }
     };
