@@ -170,7 +170,7 @@ body {
 }
 .footer-nav ul li{
     margin: 5px !important;
-	font: 12px GESSTwoMediumRegular;
+    font: 12px GESSTwoMediumRegular;
 }
 .footer-nav a{
     color: #7A7672 !important;
@@ -202,7 +202,7 @@ body {
 
 }
 .progress-promo p strong{
-    font: 34px GESSTwoBoldRegular;
+    font: 12px GESSTwoBoldRegular;
     color: #a11212;
 }
 .progress-promo .progress{
@@ -219,10 +219,10 @@ font: 14px GESSTwoMediumRegular;
 color: #fff;
 top: 15px;
 right: 20%;
-margin-right: -96px;
+margin-right: -7px;
 display: block;
 position: absolute;
-width: 200px;
+width: 80px;
 height: 20px;
 line-height: 20px;
 padding: 5px;
@@ -245,19 +245,19 @@ border-width: 10px;
 border-style: solid;
 border-color: #9b0a0a transparent transparent transparent;
 top: 34px;
-left: 99px;
+left: 70px;
 }
 
 
 .progress-promo .comments-will-be{
-font: 14px GESSTwoMediumRegular;
+font: 12px GESSTwoMediumRegular;
 color: #fff;
 top: 15px;
 left: 10px;
 margin-right: -96px;
 display: block;
 position: absolute;
-width: 140px;
+width: 60px;
 height: 20px;
 line-height: 20px;
 padding: 5px;
@@ -284,7 +284,7 @@ top: 34px;
 left: 1px;
 }
 .progress-promo .comments-will-be strong{
-    font-size: 32px;
+    font-size: 14px;
 }
 
 .bar{
@@ -295,7 +295,7 @@ left: 1px;
 }
 
 .progress-promo .well{
-    background: url("../images/pattern.png") repeat #cabcac;
+    background: url("../images/pattern.png") repeat #eee;
     padding: 0 10px !important;
 }
 /*------------   home-sections    ------ */
@@ -304,7 +304,25 @@ left: 1px;
     margin: 0 !important;
 }
 .home-sections .nav li{
-    margin-right: 0 !important;
+    margin-right: 0 !important;	
+	position: relative;
+}
+
+.home-sections .nav li .articles-count,
+.home-sections .nav li .articles-count-new {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	background: #999;
+	border-radius: 3px;
+	padding: 0px 4px;
+	color: #FFF;
+	font-size: 9px;
+}
+
+.home-sections .nav li .articles-count-new {
+	background: #9D0D0B;
+	color: #FFF;
 }
 .home-sections .nav li a{
     min-height: 60px;
@@ -312,7 +330,7 @@ left: 1px;
     padding: 10px 0 0 0 ;
     margin-bottom: 40px;
     font-size: 16px;
-	font-weight: 400;
+    font-weight: 400;
     color: #333 !important;
     font-family: GESSTwoMediumRegular;
     line-height: 30px;
@@ -540,7 +558,7 @@ left: 1px;
     /*display: block;*/
     font: bold 26px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
 /*  margin-top: 30px;
-*/    margin-bottom: 20px;
+*/    margin-bottom: 0px;
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
 }
 
@@ -616,7 +634,7 @@ left: 1px;
     position: relative;
     border: solid 2px #BA4242;
     /*border-top: solid 1px #f2f2f2;*/
-	margin-left: 15px;
+    margin-left: 15px;
     border-radius: 5px;
 }
 
@@ -687,7 +705,7 @@ left: 1px;
     position: relative;
     border: solid 1px #faf9f7;
     border-bottom: none;
-	border-radius: 5px;
+    border-radius: 5px;
     width: 95%;
     clear: both;
     z-index: 5;
@@ -715,7 +733,7 @@ left: 1px;
     z-index: 1000;
 }
 .facebook_user_img img{
-	border-radius: 5px;
+    border-radius: 5px;
 }
 .comment-block .name a{
     font-size:12px;
@@ -723,7 +741,7 @@ left: 1px;
 }
 .comment-block p{
     float: right;
-    width: 90%;
+    width: 88%;
     margin:2px 0 5px;
     line-height: 14px;
 }
@@ -752,8 +770,37 @@ left: 1px;
 .comment-block.child-reply:before{
     content: " ";
     width: 29px;
-    height: 77px;
+    min-height: 77px;
+    height: 106%;
+    position: absolute;
+    right: -30px;
+    top: -21px;
+    border-radius: 0;
+    border: dashed 1px #CCC;
+    border-width: 0 1px 0px 0;
+    z-index: 1;
 
+}
+.comment-block.child-reply:after{
+    content: " ";
+    width: 29px;
+    height: 5px;
+    position: absolute;
+    right: -30px;
+    bottom:50% ;
+    border-radius: 5px;
+    border: dashed 1px #CCC;
+    border-width: 0 1px 1px 0;
+    z-index: 1;
+
+}
+
+
+/*.comment-block.child-reply:before{
+    content: " ";
+    width: 29px;
+    min-height: 77px;
+    height: 107%;
     position: absolute;
     right: -30px;
     top: -44px;
@@ -762,7 +809,7 @@ left: 1px;
     border-width: 0 1px 1px 0;
     z-index: 1;
 
-}
+}*/
 span.divider{  
     *width: 100%;
     width:100%;
@@ -816,7 +863,7 @@ span.divider{
 .top{
     width: auto !important;
     /*background: rgba(0,0,0,0.1) !important;*/
-	float: left;
+    float: left;
     margin-left: 14px;
 }
 .top a{
@@ -1369,7 +1416,7 @@ span.divider{
 .footer .copyrights{
     margin: 20px 0;
     color: #bbb;
-	font: 12px GESSTwoMediumRegular;
+    font: 12px GESSTwoMediumRegular;
 }
 
 .footer .socials{
@@ -1390,4 +1437,20 @@ span.divider{
     display: inline-block;
     margin-bottom: -17px;
     margin-right: 10px;
+}
+
+#toTop {
+	width:120px;
+	border:1px solid #ccc;
+	background:#f7f7f7;
+	text-align:center;
+	padding:5px;
+	position:fixed; /* this is the magic */
+	bottom:10px; /* together with this to put the div at the bottom*/
+	right:10px;
+	cursor:pointer;
+	display:none;
+	color:#777;
+	border-radius: 7px;
+	font: 12px GESSTwoMediumRegular;
 }

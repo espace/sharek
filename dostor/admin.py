@@ -1,7 +1,7 @@
 from dostor.models import Tag
 from dostor.models import Article
 from dostor.models import Topic
-from dostor.models import Info
+from dostor.models import Info, Feedback
 
 from django.contrib import admin
 
@@ -13,6 +13,12 @@ class ArticleAdmin(admin.ModelAdmin):
 
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
+    
+
+class FeedbackAdmin(admin.ModelAdmin):
+    #prepopulated_fields = {"user": ["username"]}
+    list_filter = ('article',)
+    list_display = ('name', 'article','user', 'email', 'suggestion')
     
 
 class TagAdmin(admin.ModelAdmin):
@@ -42,3 +48,4 @@ admin.site.register(Article, ArticleAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(Info, InfoAdmin)
+admin.site.register(Feedback, FeedbackAdmin)

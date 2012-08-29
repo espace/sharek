@@ -7,6 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     
+	
     url(r'sharek/latest-comments/$', 'dostor.views.latest_comments', name='latest_comments'),
 
 
@@ -42,5 +43,10 @@ urlpatterns = patterns('',
     #Topic detail URL    
     url(r'^sharek/topics/$', 'dostor.views.topic_detail', name='topics'),
     url(r'^sharek/topic/(?P<topic_slug>[-\w]+)/$', 'dostor.views.topic_detail', name='topic'),
+	
+	url(r'^sharek/total_contributions/', 'dostor.views.total_contribution', name='total_contributions'),
+	
+	
+    url(r'$', 'dostor.views.tmp'),
       
 )
