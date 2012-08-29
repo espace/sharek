@@ -213,10 +213,10 @@ def remove_feedback(request):
 def modify(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
-            sug = str(request.POST.get("suggestion"))
+            sug = str(request.POST.get("suggestion").encode('utf-8'))
             feedbacks = Feedback.objects.filter(article_id = request.POST.get("article"), email= request.POST.get("email"), name = request.POST.get("name"))
             for feedback in feedbacks:
-                if feedback.suggestion.raw in sug:
+                if feedback.suggestion.raw.encode('utf-8') in sug:
                     return HttpResponse(simplejson.dumps({'duplicate':True,'name':request.POST.get("name")}))
             else:
                 Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name")).save()
@@ -236,10 +236,10 @@ def modify(request):
 def reply_feedback(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
-            sug = str(request.POST.get("suggestion"))
+            sug = str(request.POST.get("suggestion").encode('utf-8'))
             feedbacks = Feedback.objects.filter(article_id = request.POST.get("article"), email= request.POST.get("email"), name = request.POST.get("name"))
             for feedback in feedbacks:
-                if feedback.suggestion.raw in sug:
+                if feedback.suggestion.raw.encode('utf-8') in sug:
                     return HttpResponse(simplejson.dumps({'duplicate':True,'name':request.POST.get("name")}))
             Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name"), parent_id = request.POST.get("parent")).save()
             reply = Feedback.objects.filter(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"), parent_id= request.POST.get("parent"))
