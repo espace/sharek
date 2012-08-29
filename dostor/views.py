@@ -236,6 +236,11 @@ def modify(request):
 def reply_feedback(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
+            sug = str(request.POST.get("suggestion"))
+            feedbacks = Feedback.objects.filter(article_id = request.POST.get("article"), email= request.POST.get("email"), name = request.POST.get("name"))
+            for feedback in feedbacks:
+                if feedback.suggestion.raw in sug:
+                    return HttpResponse(simplejson.dumps({'duplicate':True,'name':request.POST.get("name")}))
             Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name"), parent_id = request.POST.get("parent")).save()
             reply = Feedback.objects.filter(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"), parent_id= request.POST.get("parent"))
             return HttpResponse(simplejson.dumps({'date':str(reply[0].date),'id':reply[0].id ,'suggestion':request.POST.get("suggestion"),'parent':request.POST.get("parent")}))
