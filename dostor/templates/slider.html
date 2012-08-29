@@ -121,9 +121,8 @@
      <h1> {{new.topic}}-
       {{new.name}} - </h1>
 
-    <p class="mada">
-      {{new.summary}}
-    </p>
+      {{new.summary|safe|truncatewords_html:35}}
+      
       <div class="comment-block ">
           <div class="facebook_user_img">
             <img src="http://graph.facebook.com/{{ new.get_top_feedback.user }}/picture" alt="" class="loader">
@@ -135,5 +134,7 @@
       <a href="#" class="seemore"> لمشاهدة بقية المود والتعليقات</a>
     </div>
     {% endfor %}
-     
+    
+    {% load feeds %}
+    {% include_feed "http://dostour.eg/%D8%A7%D9%84%D8%A3%D8%AE%D8%A8%D8%A7%D8%B1?format=feed&type=rss" 3 news_item.html %}
 </div>
