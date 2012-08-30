@@ -27,19 +27,6 @@
     </div><!-- below header -->
   </div><!-- row -->
   
-
-
-<div class="row">
-  <!--div class="span12 progress-promo">
-    <div class="well"> <span class="comments-will-be">هدفنا <strong>{{ target }} !</strong></span> <span style="right: {{ percent }}%;" class="comments-till-now">عدد التعليقات حتى الآن {{ count }}</span>
-      <div class="progress progress-success progress-striped">
-        <div class="bar" style="width: {{ percent }}%;"> {{ percent }}% </div>
-      </div>
-    </div>
-  </div-->
-</div>
-<!-- row -end -->
-
 <div class="row">
   <div class="span12 "> <span class="divider"></span> </div>
 </div>
@@ -111,7 +98,7 @@
                 <dl>
                     <dt>
                       <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">{{article.name}}</a> 
-                      <span class="icon-update">{{article.feedback_count}}</span>
+                      <span class="icon-update"><i class="icon-comment"></i>{{article.feedback_count}}</span>
                     </dt> 
                     <dd>{{article.summary|safe|truncatewords_html:5}}<a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">  ←</a></dd>
                 </dl>
@@ -128,7 +115,7 @@
     <div id="canvas"></div>
     <input type="hidden" id="prgress_indicator" value="{{ percent_draw }}"><!-- The circle Progress Indicator -->
     <input type="hidden" id="prgress_Number" value="{{ total|intcomma }}"><!-- The circle Progress Indicator -->
-    <input type="hidden" id="prgress_Percentage_Number" value="{{ percent }}%"><!-- The circle Progress Indicator -->
+    <input type="hidden" id="prgress_Percentage_Number" value="{{ percent }} %"><!-- The circle Progress Indicator -->
 
     <div class="circleText">
       <p class="fir" >
@@ -141,8 +128,8 @@
   
        <div class="tags">     
           <p> روابط دلالية:</p>
-          {% for topic_item in topics %}
-            <a href="{% url topic topic_slug=topic_item.get_absolute_url %}">{{topic_item.name}}</a>
+          {% for tag in tags %}
+            <a href="{% url tag tag_slug=tag.get_absolute_url %}">{{tag.name}}</a>
           {% endfor %}
        </div>   
   </div>
