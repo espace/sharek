@@ -73,44 +73,45 @@
     
     <div class="updates span8 divider-vert">
             <div class="span2 most-liked">
-                 <h1 class="headtitle small"><span>أكثر المواد قبولا</span></h1> 
+              <h1 class="headtitle small"><span>أكثر المواد قبولا</span></h1> 
 
-                      <dl>
-                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
-                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
-                      </dl>
-                       <dl>
-                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
-                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
-                      </dl>
-
+              {% for article in top_liked %}
+                <dl>
+                    <dt>
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">{{article.name}}</a>
+                      <span class="icon-update">{{article.likes}}</span>
+                    </dt> 
+                    <dd>{{article.summary|safe|truncatewords_html:5}}<a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">  ←</a></dd>
+                </dl>
+              {% endfor %}
     
            </div> <!--  Most liked -->
 
             <div class="span2 most-disliked">
-                 <h1 class="headtitle small"><span>أكثر المواد رفضا</span></h1> 
+                <h1 class="headtitle small"><span>أكثر المواد رفضا</span></h1> 
 
-                      <dl>
-                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
-                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
-                      </dl>
-                       <dl>
-                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
-                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
-                      </dl>
+                {% for article in top_disliked %}
+                  <dl>
+                      <dt>
+                        <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">{{article.name}}</a> 
+                        <span class="icon-update">{{article.dislikes}}</span>
+                      </dt> 
+                      <dd>{{article.summary|safe|truncatewords_html:5}}<a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">  ←</a></dd>
+                  </dl>
+                {% endfor %}
            </div> <!--  Most liked -->
 
            <div class="span2 most-argued">
-                 <h1 class="headtitle small"><span><i class="icon-fire"></i>أكثر المواد مناقشة</span></h1> 
-
-                      <dl>
-                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
-                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
-                      </dl>
-                       <dl>
-                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
-                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
-                      </dl>
+                <h1 class="headtitle small"><span><i class="icon-fire"></i>أكثر المواد مناقشة</span></h1> 
+                {% for article in top_commented %}
+                <dl>
+                    <dt>
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">{{article.name}}</a> 
+                      <span class="icon-update">{{article.feedback_count}}</span>
+                    </dt> 
+                    <dd>{{article.summary|safe|truncatewords_html:5}}<a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">  ←</a></dd>
+                </dl>
+              {% endfor %}
            </div> <!--  Most liked -->
 
         </div>
@@ -135,11 +136,9 @@
   
        <div class="tags">     
           <p> روابط دلالية:</p>
-          <a href="/sharek/tags/authorities/">"الحقوق والواجبات"</a> 
-          <a href="/sharek/tags/authorities/">" الواجبات"</a> 
-          <a href="/sharek/tags/authorities/">"الحقوق"</a> 
-          <a href="/sharek/tags/authorities/">"الإعلام"</a> 
-          <a href="/sharek/tags/authorities/">"الحقوق والواجبات"</a> 
+          {% for topic_item in topics %}
+            <a href="{% url topic topic_slug=topic_item.get_absolute_url %}">{{topic_item.name}}</a>
+          {% endfor %}
        </div>
    
   </div>
