@@ -49,7 +49,8 @@ class Topic(models.Model):
         return Article.objects.filter(topic_id= self.id)
 
     def articles_count(self):
-        return len(Article.objects.filter(topic_id= self.id))
+       arts = Article.objects.filter(topic_id= self.id).values('original').annotate(max_id=Max('id')).order_by()
+       return len(arts)
     
     class Meta:
        ordering = ["order"]
