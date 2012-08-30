@@ -43,6 +43,9 @@ urlpatterns = patterns('',
     url(r'^sharek/topics/$', 'dostor.views.topic_detail', name='topics'),
     url(r'^sharek/topic/(?P<topic_slug>[-\w]+)/$', 'dostor.views.topic_detail', name='topic'),
 	
+    
+    url(r'^sharek/article_versions/(?P<article_slug>[-\w]+)/$', 'dostor.views.article_diff', name='article_diff'),
+
 	url(r'^sharek/total_contributions/', 'dostor.views.total_contribution', name='total_contributions'),
 	
     url(r'^sharek/$', 'dostor.views.index', name='index'),

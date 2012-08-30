@@ -134,6 +134,21 @@ def topic_detail(request, topic_slug=None):
     template_context = {'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
     return render_to_response('topic.html',template_context ,RequestContext(request))
 
+def article_diff(request, article_slug):
+    
+    user = None
+    login(request)
+
+    if request.user.is_authenticated():
+      user = request.user
+
+    article = get_object_or_404( Article, slug=article_slug )
+    versions = Article.objects.filter(original = article.original.id).order_by('id')
+
+    template_context = {'article': article,'versions': versions, 'request':request}
+    return render_to_response('article_diff.html',template_context ,RequestContext(request))
+
+
 def article_detail(request, classified_by, class_slug, article_slug, order_by="def"):
     user = None
 
@@ -226,6 +241,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         template_context = {'arts':arts,'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
+
 
 def remove_feedback(request):
     if request.user.is_authenticated():
