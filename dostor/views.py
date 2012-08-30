@@ -370,7 +370,7 @@ def article_vote(request):
             attachment['link'] = settings.domain+"sharek/topics/"+art.topic.slug+"/"+art.slug
             attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
             message = 'لقد شاركت في كتابة #دستور_مصر وقمت ' + action + art.name.encode('utf-8') + " من الدستور"
-            graph.put_wall_post(message, attachment)
+            #graph.put_wall_post(message, attachment)
 
             return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n,'vote':request.POST.get("type")}))
           
