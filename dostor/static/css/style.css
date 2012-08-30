@@ -686,6 +686,12 @@ left: 1px;
 .mada-title a{
     color:#000;
 }
+.mada-title span{
+    color:#BA4242;
+    font-size: 14px;
+    font-family: FrutigerBold;
+	margin-right: 10px;
+}
 .comments-number {
     background: url("../images/small-ribbon.png") no-repeat  right top transparent;
     color:#fff !important;
