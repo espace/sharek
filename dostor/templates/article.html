@@ -54,17 +54,7 @@
         <p>{{article.summary}}</p>
     </div><!-- topic end -->
     
-    {% if arts|length > 0%}
-      <div class="topic L_versions">
-        {% for art in arts %}
-          <div class="L_text">
-            {% if art.summary %}
-              {{art.summary}}
-            {% endif%}
-          </div>
-        {% endfor %}
-      </div>
-    {% endif %}
+
 
     {% include "comments.html" %}
 

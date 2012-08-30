@@ -64,7 +64,7 @@ def tag_detail(request, tag_slug):
     tags = Tag.objects.all
     tag = get_object_or_404( Tag, slug=tag_slug )
     #articles = tag.article_set.all()
-    arts = tag.article_set.all().values('original').annotate(max_id=Max('id'))
+    arts = tag.article_set.all().raw('select max(id) , original_id  from dostor_article group by original_id')#values('original').annotate(max_id=Max('id'))
     articles = []
     for art in arts:
         print art
@@ -97,7 +97,7 @@ def topic_detail(request, topic_slug=None):
     if topic_slug:
         topics = Topic.objects.all
         topic = get_object_or_404( Topic, slug=topic_slug )
-        arts = topic.article_set.all().values('original').annotate(max_id=Max('id'))
+        arts = Article.objects.raw('select max(id) , original_id  from dostor_article group by original_id')#values('original').annotate(max_id=Max('id'))
         articles = []
         for art in arts:
             print art
