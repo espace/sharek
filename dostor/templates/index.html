@@ -120,27 +120,28 @@
   
   <div class="facebook-plugin span4"> 
   
-  	<script type="text/javascript">
-	// function swapTitleAttr  () {
-	  var title = '<strong class="sec">%{{ percent }}</strong>';
-	  var text  = 'عدد المشاركات <br /><strong>{{ total }}</strong>'; 
-    </script>
-  
     <div id="canvas"></div>
+    <input type="hidden" id="prgress_indicator" value="{{ percent }}"><!-- The circle Progress Indicator -->
+    <input type="hidden" id="prgress_Number" value="{{ total }}"><!-- The circle Progress Indicator -->
+    <input type="hidden" id="prgress_Percentage_Number" value="{{ percent }}%"><!-- The circle Progress Indicator -->
+
     <div class="circleText">
-       <p class="fir" title="{{ percent }}">
-            عدد المشاركات <br /><strong>{{ total }}</strong>
-       </p>
+      <p class="fir" >
+        عدد المشاركات <br />
+      <strong>{{ total }}</strong>
+      </p>
+    
+     
     </div>
   
-       <div class="tags">     
-          <p> روابط دلالية:</p>
-          <a href="/sharek/tags/authorities/">"الحقوق والواجبات"</a> 
-          <a href="/sharek/tags/authorities/">" الواجبات"</a> 
-          <a href="/sharek/tags/authorities/">"الحقوق"</a> 
-          <a href="/sharek/tags/authorities/">"الإعلام"</a> 
-          <a href="/sharek/tags/authorities/">"الحقوق والواجبات"</a> 
-       </div>
+    <div class="tags">     
+      <p> روابط دلالية:</p>
+      <a href="/sharek/tags/authorities/">"الحقوق والواجبات"</a> 
+      <a href="/sharek/tags/authorities/">" الواجبات"</a> 
+      <a href="/sharek/tags/authorities/">"الحقوق"</a> 
+      <a href="/sharek/tags/authorities/">"الإعلام"</a> 
+      <a href="/sharek/tags/authorities/">"الحقوق والواجبات"</a> 
+   </div>
    
   </div>
   <!--span --> 
