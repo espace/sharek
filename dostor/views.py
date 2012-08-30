@@ -437,7 +437,16 @@ def search(request):
     if len(query.strip()) == 0:
         return HttpResponseRedirect(reverse('index'))
 
-    articles = Article.objects.filter(Q(summary__contains=query.strip()) | Q(name__contains=query.strip()))
+    arts = Article.objects.filter(Q(summary__contains=query.strip()) | Q(name__contains=query.strip())).values('original').annotate(max_id=Max('id')).order_by()
+    
+    articles = []
+    for art in arts:
+        print art
+        articles.append(get_object_or_404( Article, id= art['max_id'] ))
+        print get_object_or_404( Article, id= art['max_id'] ).order
+    
+    articles = sorted(articles, key=lambda article: article.order)
+
     count = len(articles)
     paginator = Paginator(articles, settings.paginator) 
     page = request.GET.get('page')
