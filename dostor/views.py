@@ -44,8 +44,13 @@ def index(request):
 
     total = feedback + feedback_ratings + article_ratings
 	
+    top_liked = Article.get_top_liked(2)
+    top_disliked = Article.get_top_disliked(2)
+    top_commented = Article.get_top_commented(2)
+    
     percent = int((float(total)/target)*100)
-    template_context = {'request':request, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent':percent}
+    template_context = {'request':request, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented}
+
     return render_to_response('index.html', template_context ,RequestContext(request))
         
 def tag_detail(request, tag_slug):

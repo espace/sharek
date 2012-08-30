@@ -4,6 +4,7 @@ from datetime import datetime
 from markitup.fields import MarkupField
 from django.core import exceptions
 from django.contrib.auth.models import User
+from django.db.models import Count
 
 #from djangosphinx.models import SphinxSearch
 
@@ -84,6 +85,18 @@ class Article(models.Model):
     
     def get_absolute_url(self):
         return "%s/" % (self.slug)
+    
+    @classmethod
+    def get_top_liked(self, limit):
+      return Article.objects.order_by('-likes')[:limit]
+    
+    @classmethod
+    def get_top_disliked(self, limit):
+      return Article.objects.order_by('-dislikes')[:limit]
+    
+    @classmethod
+    def get_top_commented(self, limit):
+      return Article.objects.annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')[:limit]
 
     class Meta:
        ordering = ["order"] 
