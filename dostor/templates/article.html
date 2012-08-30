@@ -32,7 +32,7 @@
   <div id="ajax-container" class="span9">
     
     <div class="topic">
-        <h3><p class="mada-title"><a>{{article.name}}</a><span>{% if article.id != article.original.id %}نسخة معدلة <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.original.slug %}" > - النسخه القديمة</a>{% endif %}</span> <span class="comments-number pull-left">
+        <h3><p class="mada-title"><a>{{article.name}}</a><span class="new">{% if article.id != article.original.id %}نسخة معدلة <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.original.slug %}" > - النسخه القديمة</a>{% endif %}</span> <span class="comments-number pull-left">
           <i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i><span id="feedback_counter">
           {% if article.feedback_count > 0 %}
                 {{article.feedback_count}}
