@@ -734,6 +734,9 @@ left: 1px;
 .updates{
     margin-right: 0 !important;
 }
+.updates  .span2 dl{
+    width: 190px;
+}
 .updates  .span2 dd{
     margin-right: 10px;
 }
