@@ -10,13 +10,13 @@ class ArticleInlineAdmin(admin.TabularInline):
     model      = Article
     extra      = 0
     can_delete = True
-    fields     = [ 'slug','summary']
+    fields     = [ 'tags','topic' ,'name','slug','summary']
 
 class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
     inlines = [ArticleInlineAdmin,]
     list_display = ('name','topic','original','order')
-    list_filter = ('topic')
+    list_filter = ('topic',)
     list_editable = ['order']
 
     class Media:
