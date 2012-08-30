@@ -6,6 +6,8 @@ from django.core import exceptions
 from django.contrib.auth.models import User
 from django.db.models import Count
 
+from django.db.models.aggregates import Max
+
 #from djangosphinx.models import SphinxSearch
 
 class Tag(models.Model):
@@ -61,6 +63,7 @@ class Article(models.Model):
     order = models.IntegerField(blank = True, null = True)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
+    original = models.ForeignKey("self",null = True, blank = True)
 
     def feedback_count(self):
         return len(Feedback.objects.filter(article_id = self.id))
@@ -85,6 +88,12 @@ class Article(models.Model):
     
     def get_absolute_url(self):
         return "%s/" % (self.slug)
+
+    def save(self):
+        super(Article, self).save()
+        if self.original == None:
+            self.original = self
+            self.save()
     
     @classmethod
     def get_top_liked(self, limit):
