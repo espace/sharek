@@ -49,7 +49,8 @@ def index(request):
     top_commented = Article.get_top_commented(2)
     
     percent = int((float(total)/target)*100)
-    template_context = {'request':request, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented}
+    percent_draw = (float(total)/target)*10
+    template_context = {'request':request, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
         

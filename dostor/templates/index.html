@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
+
 {% block title %}الصفحة الرئيسية{% endblock %}
 
 {% block content %}
@@ -121,17 +123,18 @@
   
   <div class="facebook-plugin span4"> 
   
-  	<script type="text/javascript">
-	// function swapTitleAttr  () {
-	  var title = '<strong class="sec">%{{ percent }}</strong>';
-	  var text  = 'عدد المشاركات <br /><strong>{{ total }}</strong>'; 
-    </script>
-  
     <div id="canvas"></div>
+    <input type="hidden" id="prgress_indicator" value="{{ percent_draw }}"><!-- The circle Progress Indicator -->
+    <input type="hidden" id="prgress_Number" value="{{ total|intcomma }}"><!-- The circle Progress Indicator -->
+    <input type="hidden" id="prgress_Percentage_Number" value="{{ percent }}%"><!-- The circle Progress Indicator -->
+
     <div class="circleText">
-       <p class="fir" title="{{ percent }}">
-            عدد المشاركات <br /><strong>{{ total }}</strong>
-       </p>
+      <p class="fir" >
+        عدد المشاركات <br />
+      <strong>{{ total|intcomma }} </strong>
+      </p>
+    
+     
     </div>
   
        <div class="tags">     
@@ -139,8 +142,7 @@
           {% for topic_item in topics %}
             <a href="{% url topic topic_slug=topic_item.get_absolute_url %}">{{topic_item.name}}</a>
           {% endfor %}
-       </div>
-   
+       </div>   
   </div>
   <!--span --> 
 </div>
