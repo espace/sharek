@@ -42,12 +42,14 @@
 <!-- row -end -->
 
 <div class="row">
-  <div class="span12 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
+  <div class="span8 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
+  <div class="span4 "> <h1 class="headtitle"><span>الهدف <strong>500,000</strong> مشاركة</span></h1> </div>
 </div>
 <!-- row -end -->
 
 <div class="row">
   <div class="home-sections span8">
+  
 	<ul class="nav nav-pills divider-vert">
       {% for topic_item in topics %}
       <li class="span4"> 
@@ -66,20 +68,80 @@
       </li>
       {% endfor %}
     </ul>
+    
+    <div class="span12 "> <span style="margin-right:-20px;" class="divider"></span> </div>
+    
+    <div class="updates span8 divider-vert">
+            <div class="span2 most-liked">
+                 <h1 class="headtitle small"><span>أكثر المواد قبولا</span></h1> 
+
+                      <dl>
+                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
+                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
+                      </dl>
+                       <dl>
+                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
+                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
+                      </dl>
+
+    
+           </div> <!--  Most liked -->
+
+            <div class="span2 most-disliked">
+                 <h1 class="headtitle small"><span>أكثر المواد رفضا</span></h1> 
+
+                      <dl>
+                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
+                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
+                      </dl>
+                       <dl>
+                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
+                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
+                      </dl>
+           </div> <!--  Most liked -->
+
+           <div class="span2 most-argued">
+                 <h1 class="headtitle small"><span><i class="icon-fire"></i>أكثر المواد مناقشة</span></h1> 
+
+                      <dl>
+                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
+                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
+                      </dl>
+                       <dl>
+                          <dt><a href="#">مادة 1</a> <span class="icon-update">112</span></dt> 
+                          <dd>الكرامة الإنسانية حق لكل إنسان ويكفل  ...<a href="#">  ←</a></dd>
+                      </dl>
+           </div> <!--  Most liked -->
+
+        </div>
+    
   </div>
   <!-- sidebar -->
   
   <div class="facebook-plugin span4"> 
-    <!--img src="{{STATIC_URL}}images/face.jpg" alt=""-->
-    <div class="fb-like-box" data-href="https://www.facebook.com/Dostour.eg" data-width="300" data-height="250" data-show-faces="true" data-stream="false" data-header="false"></div>
-    <div id="fb-root"></div>
-    <script>(function(d, s, id) {
-          var js, fjs = d.getElementsByTagName(s)[0];
-          if (d.getElementById(id)) return;
-          js = d.createElement(s); js.id = id;
-          js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=462028557155670";
-          fjs.parentNode.insertBefore(js, fjs);
-        }(document, 'script', 'facebook-jssdk'));</script> 
+  
+  	<script type="text/javascript">
+	// function swapTitleAttr  () {
+	  var title = '<strong class="sec">%{{ percent }}</strong>';
+	  var text  = 'عدد المشاركات <br /><strong>{{ total }}</strong>'; 
+    </script>
+  
+    <div id="canvas"></div>
+    <div class="circleText">
+       <p class="fir" title="{{ percent }}">
+            عدد المشاركات <br /><strong>{{ total }}</strong>
+       </p>
+    </div>
+  
+       <div class="tags">     
+          <p> روابط دلالية:</p>
+          <a href="/sharek/tags/authorities/">"الحقوق والواجبات"</a> 
+          <a href="/sharek/tags/authorities/">" الواجبات"</a> 
+          <a href="/sharek/tags/authorities/">"الحقوق"</a> 
+          <a href="/sharek/tags/authorities/">"الإعلام"</a> 
+          <a href="/sharek/tags/authorities/">"الحقوق والواجبات"</a> 
+       </div>
+   
   </div>
   <!--span --> 
 </div>

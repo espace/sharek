@@ -17,7 +17,6 @@ urlpatterns = patterns('',
     url(r'sharek/facebook/welcome/', 'dostor.facebook.views.welcome', name='facebook_welcome'),
     
     #Home  Tags List
-    url(r'^sharek/$', 'dostor.views.index', name='index'),
     
     url(r'^sharek/admin/', include(admin.site.urls)),
     
@@ -46,6 +45,7 @@ urlpatterns = patterns('',
 	
 	url(r'^sharek/total_contributions/', 'dostor.views.total_contribution', name='total_contributions'),
 	
+    url(r'^sharek/$', 'dostor.views.index', name='index'),
 	
     url(r'$', 'dostor.views.tmp'),
       

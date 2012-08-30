@@ -36,10 +36,16 @@ def index(request):
     if request.user.is_authenticated():
       user = request.user
     topics = Topic.objects.all
-    target = 150
-    feedback_count = len(Feedback.objects.all())
-    percent = int((float(feedback_count)/target)*100)
-    template_context = {'request':request, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'count':feedback_count,'percent':percent}
+    target = 500000
+	
+    feedback = Feedback.objects.all().count()
+    feedback_ratings = Rating.objects.all().count()
+    article_ratings = ArticleRating.objects.all().count()
+
+    total = feedback + feedback_ratings + article_ratings
+	
+    percent = int((float(total)/target)*100)
+    template_context = {'request':request, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent':percent}
     return render_to_response('index.html', template_context ,RequestContext(request))
         
 def tag_detail(request, tag_slug):
