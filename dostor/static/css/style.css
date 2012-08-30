@@ -686,10 +686,10 @@ left: 1px;
 .mada-title a{
     color:#000;
 }
-.mada-title span{
+.mada-title span.new{
     color:#BA4242;
-    font-size: 14px;
-    font-family: FrutigerBold;
+    font-size: 11px;
+    font-family: tahoma;
 	margin-right: 10px;
 }
 .comments-number {
