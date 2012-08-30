@@ -958,7 +958,20 @@ left: 1px;
     content: " ";
     width: 40px;
     min-height: 77px;
-    height: 107%;
+    height: 103%;
+    position: absolute;
+    right: -40px;
+    top: -49px;
+    border-radius: 0 0 5px 0;
+    border: dashed 1px #CCC;
+    border-width: 0 1px 1px 0;
+    z-index: 1;
+}
+.comment-entry .facebook_user_img:before{
+    content:none;
+    width: 0;
+    min-height: 77px;
+    height: 0%;
     position: absolute;
     right: -40px;
     top: -49px;
@@ -975,12 +988,30 @@ left: 1px;
     position: absolute;
     right: -30px;
     top: -65px;
+    -moz-top:-85px;
     border-radius: 0 0 5px 0;
     border: dashed 1px #CCC;
     border-width: 0 1px 1px 0;
     z-index: 1;
 
 }
+ @-moz-document url-prefix() {
+   .comment-block.child-reply:before{
+        content: " ";
+        width: 1px;
+        min-height: 77px;
+        height: 103%;
+        position: absolute;
+        right: -30px;
+        top:-85px;
+    border-radius: 0 0 5px 0;
+    border: dashed 1px #CCC;
+    border-width: 0 1px 1px 0;
+    z-index: 1;
+
+}
+}
+
 /*.comment-block.child-reply:after{
     content: " ";
     width: 1px;
