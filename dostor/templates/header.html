@@ -41,34 +41,9 @@
                       {% endif %}
                     {% endif %}
                   {% else %}
-					  <script type="text/javascript">
-                        var newwindow;
-                        var intId;
-                        function login(){
-                            var  screenY     = typeof window.screenY     != 'undefined' ? window.screenY     : window.screenTop,
-                                 screenX     = typeof window.screenX     != 'undefined' ? window.screenX     : window.screenLeft,
-                                 outerWidth  = typeof window.outerWidth  != 'undefined' ? window.outerWidth  : document.body.clientWidth,
-                                 outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22),
-                                 width    = 500,
-                                 height   = 270,
-                                 left     = parseInt(screenX + ((outerWidth - width) / 2), 10),
-                                 top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
-                                 features = (
-                                    'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top
-                                  );
-                      
-                            newwindow=window.open('https://www.facebook.com/login.php?api_key={{ settings.FACEBOOK_APP_ID }}&next={{settings.domain}}{% url facebook_login %}%3Floginsucc%3D1&cancel_url={{settings.domain}}{% url facebook_login %}%3Fcancel%3D1&display=popup&fbconnect=1&return_session=1&session_version=3&v=1.0&req_perms=publish_stream%2Cemail','Login_by_facebook',features);
-                            
-                             if (window.focus) {newwindow.focus()}
-                            return false;
-                        }
-                
-                    </script>
-                  
                   <a href="#" onclick="login();return false;">
                     <img style="float: left; padding-top: 25px;" src="http://egynda.com/resource/images/fb_sign.png"/>
                   </a>
-                  
                   {% endif %}
                 {% endif %}         
             </div>
