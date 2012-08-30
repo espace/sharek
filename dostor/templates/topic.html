@@ -23,7 +23,7 @@
                     <div class="topic">
                         <h3>
                             <p class="mada-title">
-                                <a href="{% url article_detail classified_by='topics' class_slug=topic.get_absolute_url article_slug=article.slug %}">{{article.name}}</a><span>{% if article.id != article.original.id %} - معدل{% endif %}</span>
+                                <a href="{% url article_detail classified_by='topics' class_slug=topic.get_absolute_url article_slug=article.slug %}">{{article.name}}</a><span>{% if article.id != article.original.id %}نسخة معدلة{% endif %}</span>
                                 <a href="{% url article_detail classified_by='topics' class_slug=topic.get_absolute_url article_slug=article.slug %}" class="comments-number pull-left">
                                 	<i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i>
                                     {% if article.feedback_count > 0 %}
