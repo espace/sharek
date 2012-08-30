@@ -734,7 +734,18 @@ left: 1px;
 .updates{
     margin-right: 0 !important;
 }
-
+.updates  .span2 dd{
+    margin-right: 10px;
+}
+.updates  .span2 dt{
+    margin-right: 10px;
+}
+.updates  .span2 dd p{
+    display: inline !important;
+}
+.updates .span2 dd a{
+    display: inline !important;
+}
 .most-liked{
     margin-right: 0px !important;
     margin-left:40px;
@@ -756,7 +767,7 @@ left: 1px;
 }
 .most-liked .icon-update{
     float: left; 
-    background:url(../images/thumb-up.png) no-repeat right -69px;
+    background:url(../images/thumb-up.png) no-repeat right -70px;
     padding-right: 25px;
     font-size: 12px;
     color: #999;
@@ -772,7 +783,7 @@ left: 1px;
 
 
 .most-disliked{
-    margin-left: 40px;
+    margin-left: 30px;
     margin-top: 10px;
 }
 
@@ -794,7 +805,7 @@ left: 1px;
 }
 .most-disliked .icon-update{
     float: left; 
-    background:url(../images/thumb-up.png) no-repeat right -69px;
+    background:url(../images/thumb-down.png) no-repeat right -71px;
     padding-right: 25px;
     font-size: 12px;
     color: #999;
@@ -835,13 +846,20 @@ left: 1px;
 }
 .most-argued .icon-update{
     float: left; 
-    background:url(../images/thumb-up.png) no-repeat right -69px;
+    /*background:url(../images/thumb-up.png) no-repeat right -69px;*/
     padding-right: 25px;
     font-size: 12px;
     color: #999;
     font-family: GESSTwoMediumRegular;
     text-align: left;
+    min-width: 30px;
+    width: auto;
 
+}
+.most-argued  .icon-update .icon-comment {
+    opacity: 0.3;
+    display: inline-block;
+    margin-left: 3px;
 }
 .most-argued dl{
     padding-bottom: 10px;

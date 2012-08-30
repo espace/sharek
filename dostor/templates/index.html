@@ -109,7 +109,7 @@
                 <dl>
                     <dt>
                       <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">{{article.name}}</a> 
-                      <span class="icon-update">{{article.feedback_count}}</span>
+                      <span class="icon-update"><i class="icon-comment"></i>{{article.feedback_count}}</span>
                     </dt> 
                     <dd>{{article.summary|safe|truncatewords_html:5}}<a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">  ←</a></dd>
                 </dl>
