@@ -5,10 +5,18 @@ from dostor.models import Info, Feedback
 
 from django.contrib import admin
 
+
+class ArticleInlineAdmin(admin.TabularInline):
+    model      = Article
+    extra      = 0
+    can_delete = True
+    fields     = [ 'tags','topic' ,'name','slug','summary']
+
 class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
-    list_display = ('name','topic','order')
-    list_filter = ('topic',)
+    inlines = [ArticleInlineAdmin,]
+    list_display = ('name','topic','original','order')
+    list_filter = ('topic','original')
     list_editable = ['order']
 
     class Media:
