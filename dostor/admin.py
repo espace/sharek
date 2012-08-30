@@ -16,7 +16,7 @@ class ArticleAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
     inlines = [ArticleInlineAdmin,]
     list_display = ('name','topic','original','order')
-    list_filter = ('topic','original')
+    list_filter = ('topic',)
     list_editable = ['order']
 
     class Media:
