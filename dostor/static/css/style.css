@@ -734,14 +734,13 @@ left: 1px;
 .updates{
     margin-right: 0 !important;
 }
-.updates  .span2 dl{
-    width: 190px;
-}
 .updates  .span2 dd{
     margin-right: 10px;
+    width: 117%;
 }
 .updates  .span2 dt{
     margin-right: 10px;
+    width: 117%;
 }
 .updates  .span2 dd p{
     display: inline !important;
@@ -751,7 +750,7 @@ left: 1px;
 }
 .most-liked{
     margin-right: 0px !important;
-    margin-left:40px;
+    margin-left:50px;
     margin-top: 10px;
 }
 .most-liked .headtitle{
@@ -761,11 +760,11 @@ left: 1px;
      color: #007939;
      text-shadow:0 0 1px #79af01;
      font-weight: normal;
-
 }
 .most-liked .headtitle span{
      padding-right: 30px;
-     padding-left: 20px;
+     padding-left: 70px;
+
 
 }
 .most-liked .icon-update{
@@ -786,7 +785,7 @@ left: 1px;
 
 
 .most-disliked{
-    margin-left: 30px;
+    margin-left: 40px;
     margin-top: 10px;
 }
 
@@ -803,7 +802,7 @@ left: 1px;
 
 .most-disliked .headtitle span{
      padding-right: 30px;
-     padding-left: 20px;
+     padding-left: 70px;
 
 }
 .most-disliked .icon-update{
@@ -844,7 +843,7 @@ left: 1px;
 }
 .most-argued .headtitle span{
      padding-right: 30px;
-     padding-left: 20px;
+     padding-left: 42px;
 
 }
 .most-argued .icon-update{
