@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
+
 {% block title %}الصفحة الرئيسية{% endblock %}
 
 {% block content %}
@@ -122,13 +124,13 @@
   
     <div id="canvas"></div>
     <input type="hidden" id="prgress_indicator" value="{{ percent_draw }}"><!-- The circle Progress Indicator -->
-    <input type="hidden" id="prgress_Number" value="{{ total }}"><!-- The circle Progress Indicator -->
+    <input type="hidden" id="prgress_Number" value="{{ total|intcomma }}"><!-- The circle Progress Indicator -->
     <input type="hidden" id="prgress_Percentage_Number" value="{{ percent }}%"><!-- The circle Progress Indicator -->
 
     <div class="circleText">
       <p class="fir" >
         عدد المشاركات <br />
-      <strong>{{ total }}</strong>
+      <strong>{{ total|intcomma }} </strong>
       </p>
     
      

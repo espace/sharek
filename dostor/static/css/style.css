@@ -291,7 +291,7 @@ left: 1px;
     text-align: center;
     font-weight: bold;
     color: #003300 !important;
-    font: 16px GESSTwoBoldRegular !important;
+    font: 16px GESSTwoMediumRegular !important;
 }
 
 .progress-promo .well{
@@ -308,7 +308,7 @@ left: 1px;
     left: -218px;
     width: 150px;
     text-align: center;
-    font: 20px GESSTwoBoldRegular !important;
+    font: 20px GESSTwoMediumRegular !important;
     color: #999;
 }
 .circleText p.sec {
@@ -326,7 +326,7 @@ left: 1px;
 }
 .circleText p strong{
     color: #a11212;
-    font: 40px GESSTwoBoldRegular !important;
+    font: 40px GESSTwoMediumRegular !important;
 
 }
  
