@@ -137,23 +137,23 @@
 </div>
 <!-- row end --> 
 
-<SCRIPT TYPE="text/javascript" LANGUAGE="JavaScript">
-var dmp = new diff_match_patch();
+<script type="text/javascript">
+  var dmp = new diff_match_patch();
+  launch()
+  function launch() {
+    var text1 = 'alaa اورور 435345 fgfgdf ';
+    var text2 = 'alaa اورور 44444 fgfgdf 77777';
 
-function launch() {
-  var text1 = 'alaa اورور 435345 fgfgdf ';
-  var text2 = 'alaa اورور 44444 fgfgdf 77777';
+    var ms_start = (new Date()).getTime();
+    var d = dmp.diff_main(text1, text2);
+    var ms_end = (new Date()).getTime();
 
-  var ms_start = (new Date()).getTime();
-  var d = dmp.diff_main(text1, text2);
-  var ms_end = (new Date()).getTime();
-
-  dmp.diff_cleanupSemantic(d);
-  //dmp.diff_cleanupEfficiency(d);
-  
-  var ds = dmp.diff_prettyHtml(d);
-  alert( ds + '<BR>Time: ' + (ms_end - ms_start) / 1000 + 's');
-}
-</SCRIPT>
+    dmp.diff_cleanupSemantic(d);
+    //dmp.diff_cleanupEfficiency(d);
+    
+    var ds = dmp.diff_prettyHtml(d);
+    alert( ds + '<BR>Time: ' + (ms_end - ms_start) / 1000 + 's');
+  }
+</script>
 
 {% endblock %}

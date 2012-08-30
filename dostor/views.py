@@ -67,6 +67,7 @@ def tag_detail(request, tag_slug):
     arts = tag.article_set.all().values('original').annotate(max_id=Max('id'))
     articles = []
     for art in arts:
+        print art
         articles.append(get_object_or_404( Article, id=art['max_id'] ))
 
     voted_articles = ArticleRating.objects.filter(user = user)
@@ -99,6 +100,7 @@ def topic_detail(request, topic_slug=None):
         arts = topic.article_set.all().values('original').annotate(max_id=Max('id'))
         articles = []
         for art in arts:
+            print art
             articles.append(get_object_or_404( Article, id=art['max_id'] ))
     else:
         topics = Topic.objects.filter()
@@ -107,6 +109,7 @@ def topic_detail(request, topic_slug=None):
             arts = topic.article_set.all().values('original').annotate(max_id=Max('id'))
             articles = []
             for art in arts:
+                print art
                 articles.append(get_object_or_404( Article, id=art['max_id'] ))
 
         else:
@@ -149,6 +152,10 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
     article = get_object_or_404( Article, slug=article_slug )
+
+    versions = []
+    arts = Article.objects.filter(original = article.original).order_by('-id')
+
     related_tags = article.tags.all
 
     top_ranked = None
@@ -214,9 +221,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
           n_votes[vote.feedback_id] = 1
           
     if classified_by == "tags":  
-        template_context = {'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+        template_context = {'arts':arts,'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
     elif classified_by == "topics":
-        template_context = {'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+        template_context = {'arts':arts,'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 

@@ -54,48 +54,26 @@
         <p>{{article.summary}}</p>
     </div><!-- topic end -->
     
+    {% if arts|length > 0%}
+      <div class="topic L_versions">
+        {% for art in arts %}
+          <div class="L_text">
+            {% if art.summary %}
+              {{art.summary}}
+            {% endif%}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
     {% include "comments.html" %}
 
   </div><!-- span 8 -->
 
 </div><!-- row end -->
 
-<script type="text/javascript">
-  $(document).ready(function() {
-   $('a[rel*=facebox]').facebox()
-   $(".rate").live("click",function(){
-      {% if user %}
-      $.ajax({
-              type:"POST",
-              url :"/sharek/article_vote/",
-              data:{'article':{{article.id}},'type': $(this).attr('vote') ,'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
-              dataType:"json",
-              error:function(data){},
-              success:function(data){
-              $(".like.article").text(data.p);  
-              $(".dislike.article").text(data.n);
-              if (data.vote == 1)
-              {
-                $(".like.rate").addClass("active")
-                $(".dislike.rate").removeClass("active")
-				
-                $(".like.rate").removeClass("disabled")
-                $(".dislike.rate").addClass("disabled")
-              }
-              else
-              {
-                $(".dislike.rate").addClass("active")
-                $(".like.rate").removeClass("active")
-				
-                $(".dislike.rate").removeClass("disabled")
-                $(".like.rate").addClass("disabled")
-              }
-              },
-            });
-      {% endif %}
-    });
 
-     });
-</script>
+
+
   
 {% endblock %}
