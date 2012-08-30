@@ -27,6 +27,10 @@ def vote_art(voted, key_name):
 
   return 0  
 
+def linebreak(summary, replace_text):
+    return summary.replace('\n', replace_text)
+
 key = register.filter('key', key)
+linebreak = register.filter('linebreak', linebreak)
 vote = register.filter('vote', vote)
 vote_art = register.filter('vote_art', vote_art)
