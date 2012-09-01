@@ -66,11 +66,7 @@ class Article(forms.ModelForm):
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
     original = models.ForeignKey("self",null = True, blank = True)
-    default = forms.TypedChoiceField(
-                coerce=lambda x: True if x == 'True' else False,
-                choices=((False, 'False'), (True, 'True')),
-                widget=forms.RadioSelect
-              )
+    default = models.BooleanField(default=False)
 
     def feedback_count(self):
         return len(Feedback.objects.filter(article_id = self.id))
@@ -116,7 +112,6 @@ class Article(forms.ModelForm):
 
     class Meta:
        ordering = ["order"]
-       model = Article
 
 class Feedback(models.Model):
     article = models.ForeignKey(Article)
