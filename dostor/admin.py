@@ -2,7 +2,7 @@ from dostor.models import Tag
 from dostor.models import Article
 from dostor.models import Topic
 from dostor.models import Info, Feedback
-from import ReadOnlyAdminFields
+import ReadOnlyAdminFields
 
 from django.contrib import admin
 
