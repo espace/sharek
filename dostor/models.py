@@ -106,7 +106,7 @@ class Article(models.Model):
                     temp.save()
             except Article.DoesNotExist:
                 pass
-         super(Article, self).save()
+        super(Article, self).save()
 
     @classmethod
     def get_top_liked(self, limit):
