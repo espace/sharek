@@ -93,11 +93,6 @@ class Article(models.Model):
         return "%s/" % (self.slug)
 
     def save(self):
-        super(Article, self).save()
-        if self.original == None:
-            self.original = self
-            self.save()
-
         if self.default:
             try:
                 temp = Article.objects.get(default=True)
@@ -107,6 +102,9 @@ class Article(models.Model):
             except Article.DoesNotExist:
                 pass
         super(Article, self).save()
+        if self.original == None:
+            self.original = self
+            self.save()
 
     @classmethod
     def get_top_liked(self, limit):
