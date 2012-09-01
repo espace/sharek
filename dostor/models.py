@@ -56,7 +56,7 @@ class Topic(models.Model):
     class Meta:
        ordering = ["order"]
        
-class Article(models.Model):
+class Article(forms.ModelForm):
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)
     name = models.CharField(max_length=40)
@@ -66,7 +66,11 @@ class Article(models.Model):
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
     original = models.ForeignKey("self",null = True, blank = True)
-    default = models.BooleanField(default=False)
+    default = forms.TypedChoiceField(
+                coerce=lambda x: True if x == 'True' else False,
+                choices=((False, 'False'), (True, 'True')),
+                widget=forms.RadioSelect
+              )
 
     def feedback_count(self):
         return len(Feedback.objects.filter(article_id = self.id))
@@ -112,27 +116,7 @@ class Article(models.Model):
 
     class Meta:
        ordering = ["order"]
-
-    def exclusive_boolean_handler(sender, instance, created, **kwargs):
-        eb_fields = getattr(sender, '_exclusive_boolean_fields', [])
-        with_fields = getattr(sender, '_exclusive_boolean_with_fields', [])
-        uargs = {}
-        for field in eb_fields:
-            ifield = getattr(instance, field)
-            if ifield == True:
-                uargs.update({field:False})
-        fargs = {}
-        for field in with_fields:
-            ifield = getattr(instance, field)
-            fargs.update({field:ifield})
-        sender.objects.filter(**fargs).exclude(pk=instance.pk).update(**uargs)
-
-    def exclusive_boolean_fields(model, eb_fields=[], with_fields=[]):
-        setattr(model, '_exclusive_boolean_fields', eb_fields)
-        setattr(model, '_exclusive_boolean_with_fields', with_fields)
-        post_save.connect(exclusive_boolean_handler, sender=model)
-
-    exclusive_boolean_fields(Article, ('default',), ('original',))
+       model = Article
 
 class Feedback(models.Model):
     article = models.ForeignKey(Article)
