@@ -56,7 +56,7 @@ class Topic(models.Model):
     class Meta:
        ordering = ["order"]
        
-class Article(forms.ModelForm):
+class Article(models.Model):
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)
     name = models.CharField(max_length=40)
