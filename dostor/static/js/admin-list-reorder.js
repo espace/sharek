@@ -6,7 +6,7 @@ $(document).ready(function() {
 	//alert($('#id_constitution').val());
 	list_topics($('#id_constitution').val());
 	$('#id_constitution').change(function(){
-		list_topics(this.value);
+		//list_topics(this.value);
 	});
 });
 
