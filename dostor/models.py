@@ -206,4 +206,4 @@ def exclusive_boolean_fields(model, eb_fields=[], with_fields=[]):
     setattr(model, '_exclusive_boolean_with_fields', with_fields)
     post_save.connect(exclusive_boolean_handler, sender=model)
 
-#exclusive_boolean_fields(Article, ('default',), ('original',))
+exclusive_boolean_fields(Article, ('default',), ('original',))
