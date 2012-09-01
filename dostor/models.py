@@ -97,25 +97,6 @@ class Article(models.Model):
         if self.original == None:
             self.original = self
             self.save()
-
-    def exclusive_boolean_handler(sender, instance, created, **kwargs):
-        eb_fields = getattr(sender, '_exclusive_boolean_fields', [])
-        with_fields = getattr(sender, '_exclusive_boolean_with_fields', [])
-        uargs = {}
-        for field in eb_fields:
-            ifield = getattr(instance, field)
-            if ifield == True:
-                uargs.update({field:False})
-        fargs = {}
-        for field in with_fields:
-            ifield = getattr(instance, field)
-            fargs.update({field:ifield})
-        sender.objects.filter(**fargs).exclude(pk=instance.pk).update(**uargs)
-
-    def exclusive_boolean_fields(model, eb_fields=[], with_fields=[]):
-        setattr(model, '_exclusive_boolean_fields', eb_fields)
-        setattr(model, '_exclusive_boolean_with_fields', with_fields)
-        post_save.connect(exclusive_boolean_handler, sender=model)
     
     @classmethod
     def get_top_liked(self, limit):
@@ -210,3 +191,24 @@ class ReadOnlyAdminFields(object):
                     form.base_fields[field_name].required = False
 
         return form
+
+def exclusive_boolean_handler(sender, instance, created, **kwargs):
+    eb_fields = getattr(sender, '_exclusive_boolean_fields', [])
+    with_fields = getattr(sender, '_exclusive_boolean_with_fields', [])
+    uargs = {}
+    for field in eb_fields:
+        ifield = getattr(instance, field)
+        if ifield == True:
+            uargs.update({field:False})
+    fargs = {}
+    for field in with_fields:
+        ifield = getattr(instance, field)
+        fargs.update({field:ifield})
+    sender.objects.filter(**fargs).exclude(pk=instance.pk).update(**uargs)
+
+def exclusive_boolean_fields(model, eb_fields=[], with_fields=[]):
+    setattr(model, '_exclusive_boolean_fields', eb_fields)
+    setattr(model, '_exclusive_boolean_with_fields', with_fields)
+    post_save.connect(exclusive_boolean_handler, sender=model)
+
+exclusive_boolean_fields(Article, ('default',), ('original',))
