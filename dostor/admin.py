@@ -13,7 +13,7 @@ class ArticleInlineAdmin(admin.TabularInline):
     can_delete = True
     fields     = [ 'tags','topic' ,'name','slug','summary']
 
-class ArticleAdmin(admin.ModelAdmin):
+class ArticleAdmin(ReadOnlyAdminFields, admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
     inlines = [ArticleInlineAdmin,]
     list_display = ('name','topic','original','order')
