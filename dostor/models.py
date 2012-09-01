@@ -1,3 +1,4 @@
+from django import forms
 from django.db import models
 from django.utils import timezone
 from datetime import datetime
@@ -6,10 +7,9 @@ from django.core import exceptions
 from django.contrib.auth.models import User
 from django.db.models import Count
 from django.db.models.signals import post_save
-
 from django.db.models.aggregates import Max
 
-#from djangosphinx.models import SphinxSearch
+
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
@@ -154,9 +154,6 @@ class Info(models.Model):
     def get_absolute_url(self):
         return "/%s/" % (self.slug)
 
-
-from django import forms
-
 class ReadOnlyWidget(forms.Widget):
     def __init__(self, original_value, display_value):
         self.original_value = original_value
@@ -189,3 +186,24 @@ class ReadOnlyAdminFields(object):
                     form.base_fields[field_name].required = False
 
         return form
+
+def exclusive_boolean_handler(sender, instance, created, **kwargs):
+    eb_fields = getattr(sender, '_exclusive_boolean_fields', [])
+    with_fields = getattr(sender, '_exclusive_boolean_with_fields', [])
+    uargs = {}
+    for field in eb_fields:
+        ifield = getattr(instance, field)
+        if ifield == True:
+            uargs.update({field:False})
+    fargs = {}
+    for field in with_fields:
+        ifield = getattr(instance, field)
+        fargs.update({field:ifield})
+    sender.objects.filter(**fargs).exclude(pk=instance.pk).update(**uargs)
+
+def exclusive_boolean_fields(model, eb_fields=[], with_fields=[]):
+    setattr(model, '_exclusive_boolean_fields', eb_fields)
+    setattr(model, '_exclusive_boolean_with_fields', with_fields)
+    post_save.connect(exclusive_boolean_handler, sender=model)
+
+exclusive_boolean_fields(Article, ('default',), ('original',))
