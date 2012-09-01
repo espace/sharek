@@ -108,7 +108,6 @@ class Article(models.Model):
                 pass
          super(Article, self).save()
 
-    
     @classmethod
     def get_top_liked(self, limit):
       return Article.objects.order_by('-likes')[:limit]
