@@ -65,6 +65,7 @@ class Article(models.Model):
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
     original = models.ForeignKey("self",null = True, blank = True)
+    default = models.BooleanField(default=False)
 
     def feedback_count(self):
         return len(Feedback.objects.filter(article_id = self.id))
@@ -109,7 +110,9 @@ class Article(models.Model):
       return Article.objects.annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')[:limit]
 
     class Meta:
-       ordering = ["order"] 
+       ordering = ["order"]
+
+exclusive_boolean_fields(Article, ('default',), ('original',))
 
 class Feedback(models.Model):
     article = models.ForeignKey(Article)
@@ -187,3 +190,22 @@ class ReadOnlyAdminFields(object):
                     form.base_fields[field_name].required = False
 
         return form
+
+def exclusive_boolean_handler(sender, instance, created, **kwargs):
+    eb_fields = getattr(sender, '_exclusive_boolean_fields', [])
+    with_fields = getattr(sender, '_exclusive_boolean_with_fields', [])
+    uargs = {}
+    for field in eb_fields:
+        ifield = getattr(instance, field)
+        if ifield == True:
+            uargs.update({field:False})
+    fargs = {}
+    for field in with_fields:
+        ifield = getattr(instance, field)
+        fargs.update({field:ifield})
+    sender.objects.filter(**fargs).exclude(pk=instance.pk).update(**uargs)
+
+def exclusive_boolean_fields(model, eb_fields=[], with_fields=[]):
+    setattr(model, '_exclusive_boolean_fields', eb_fields)
+    setattr(model, '_exclusive_boolean_with_fields', with_fields)
+    post_save.connect(exclusive_boolean_handler, sender=model)
