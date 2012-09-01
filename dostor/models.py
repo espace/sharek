@@ -5,6 +5,7 @@ from markitup.fields import MarkupField
 from django.core import exceptions
 from django.contrib.auth.models import User
 from django.db.models import Count
+from django.db.models.signals import post_save
 
 from django.db.models.aggregates import Max
 
