@@ -93,14 +93,6 @@ class Article(models.Model):
         return "%s/" % (self.slug)
 
     def save(self):
-        if self.default:
-            try:
-                temp = Article.objects.get(default=True)
-                if self != temp:
-                    temp.default = False
-                    temp.save()
-            except Article.DoesNotExist:
-                pass
         super(Article, self).save()
         if self.original == None:
             self.original = self
