@@ -57,7 +57,9 @@
             {% endif %}
         {% endif %}
         
+        {% if topic_item.get_mod_date and topic_item.get_mod_date.mod_date %}
         <p>آخر تحديث في {{topic_item.get_mod_date.mod_date|date:"d/m/Y"}} الساعة {{topic_item.get_mod_date.mod_date|time:"G:i"}} {% if topic_item.get_mod_date.mod_date|time:"A" == 'AM' %}{{"صباحا"}} {% else %}{{"مساء"}}{% endif %}</p>
+        {% endif %}
       </li>
       {% endfor %}
     </ul>
