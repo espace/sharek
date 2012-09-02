@@ -39,8 +39,8 @@ def index(request):
       user = request.user
     topics = Topic.objects.all
 
-    #top_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count')[:18]
-    top_users = User.objects.annotate(user_count=Count('feedback')).order_by('-user_count')[:18]
+    top_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count')[:18]
+    #top_users = User.objects.annotate(user_count=Count('feedback')).order_by('-user_count')[:18]
     print top_users
 
     target = 500000
