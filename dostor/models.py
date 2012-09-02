@@ -71,7 +71,7 @@ class Article(models.Model):
     dislikes = models.IntegerField(default=0)
     original = models.ForeignKey("self", null = True, blank = True)
     default = models.BooleanField(default=False)
-    mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc))
+    mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Last Modification Date')
 
     def feedback_count(self):
         return len(Feedback.objects.filter(article_id = self.id))
