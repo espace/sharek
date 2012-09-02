@@ -52,6 +52,10 @@ class Topic(models.Model):
     def articles_count(self):
        arts = Article.objects.filter(topic_id= self.id).values('original').annotate(max_id=Max('id')).order_by()
        return len(arts)
+   
+    def get_mod_date(self):
+        last_mod_article = Article.objects.filter(topic_id= self.id).order_by('-mod_date')[:1]
+        return last_mod_article[0]
     
     class Meta:
        ordering = ["order"]
@@ -67,6 +71,7 @@ class Article(models.Model):
     dislikes = models.IntegerField(default=0)
     original = models.ForeignKey("self",null = True, blank = True)
     default = models.BooleanField(default=False)
+    mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc))
 
     def feedback_count(self):
         return len(Feedback.objects.filter(article_id = self.id))
