@@ -37,7 +37,7 @@ def index(request):
       user = request.user
     topics = Topic.objects.all
 
-    top_users = Articles.objects.values('user').annotate(user_count=Count('user'))
+    top_users = Article.objects.values('user').annotate(user_count=Count('user'))
     print top_users
 
     target = 500000
