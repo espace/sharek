@@ -17,7 +17,7 @@ from dostor.facebook.models import FacebookSession
 from dostor.facebook import facebook_sdk
 from dostor_masr import settings
 
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Max
@@ -36,6 +36,10 @@ def index(request):
     if request.user.is_authenticated():
       user = request.user
     topics = Topic.objects.all
+
+    top_users = Articles.objects.values('user').annotate(user_count=Count('user'))
+    print top_users
+
     target = 500000
 	
     feedback = Feedback.objects.all().count()
@@ -51,6 +55,7 @@ def index(request):
     
     percent = int((float(total)/target)*100)
     percent_draw = (float(total)/target)*10
+
     template_context = {'request':request, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
