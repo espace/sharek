@@ -4,6 +4,8 @@ from dostor.models import Topic
 from dostor.models import Info, Feedback
 from dostor.models import ReadOnlyAdminFields
 
+from dostor.actions import export_as_csv_action
+
 from django.contrib import admin
 
 
@@ -29,6 +31,7 @@ class FeedbackAdmin(admin.ModelAdmin):
     #prepopulated_fields = {"user": ["username"]}
     list_filter = ('article',)
     list_display = ('name', 'article','user', 'email', 'suggestion')
+    actions = [export_as_csv_action("CSV Export", fields=['name', 'article','user', 'email', 'suggestion'])]
     
 
 class TagAdmin(admin.ModelAdmin):
