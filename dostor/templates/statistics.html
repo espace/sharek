@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load settings %}
+{% load hash %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+
+{% if articles %}
+    <div class="row">
+        <div class="span12 ">
+            <h1 id="headtitle" class="headtitle innerpage offset1"><span>{{title}}</span></h1>
+        </div>
+    </div><!-- row -end -->
+    <div class="row">
+
+        <div id="ajax-container" class="span12">
+          {% for article in articles %}
+          <div class="topic">
+              <h3>
+                  <p class="mada-title">
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">{{article.name}}</a><span class="new">{% if article.id != article.original.id %}نسخة معدلة <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.original.slug %}" > - النسخه القديمة</a>{% endif %}</span>
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}" class="comments-number pull-left">
+                        <i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i>
+                          {% if article.feedback_count > 0 %}
+                              {{article.feedback_count}}
+                              {% if article.feedback_count > 2 and article.feedback_count <= 10 %}
+                                   تعليقات 
+                              {% else %}
+                                   تعليق
+                              {% endif %}
+                          {% else %}لا توجد تعليقات{% endif %}
+                      </a>
+                  </p>
+              </h3>
+          
+              <div class="like-group">
+               <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{article.id}} {% if voted_articles|vote_art:article.id == -1 %} active {% elif voted_articles|vote_art:article.id == 1 %} disabled {% endif %}" id="{{article.id}} " vote="0"><small class="dislike article {{article.id}}">{{article.dislikes}}</small></a>
+               <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{article.id}} {% if voted_articles|vote_art:article.id == 1 %} active {% elif voted_articles|vote_art:article.id == -1 %} disabled {% endif %}" id="{{article.id}}" vote="1" ><small class="like article {{article.id}}">{{article.likes}}</small></a>
+              </div> 
+              {{article.topic}}
+              <p>{{article.summary|safe|truncatewords_html:35}}</p>
+              {% if article.mod_date %}
+              <p>آخر تحديث في {{article.mod_date|date:"d/m/Y"}} الساعة {{article.mod_date|time:"G:i"}} {% if article.mod_date|time:"A" == 'AM' %}{{"صباحا"}} {% else %}{{"مساء"}}{% endif %}</p>
+              {% endif %}
+          </div><!-- topic end -->
+          {% endfor %}
+        </div>
+    </div><!-- row end -->
+{% else %}
+<div class="topic">
+    <h3>
+        <p class="mada-title">لا يوجد مواد</p>
+    </h3>  
+</div>
+{% endif %}
+
+<link href="{{STATIC_URL}}css/facebox.css" media="screen" rel="stylesheet" type="text/css"/>
+<script src="{{STATIC_URL}}js/facebox.js" type="text/javascript"></script>
+<script type="text/javascript">
+ $(document).ready(function() {
+    $('a[rel*=facebox]').facebox()
+    $(".rate").live("click",function(){
+      {% if user %}
+      $.ajax({
+              type:"POST",
+              url :"/sharek/article_vote/",
+              data:{'article':$(this).attr('id'),'type': $(this).attr('vote') ,'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+              dataType:"json",
+              error:function(data){},
+              success:function(data){
+              $(".like.article"+"."+data.article).text(data.p);  
+              $(".dislike.article"+"."+data.article).text(data.n);
+              if (data.vote == 1)
+                {
+                  $(".like.rate"+"."+data.article).addClass("active")
+                  $(".dislike.rate"+"."+data.article).removeClass("active")
+          
+                  $(".like.rate"+"."+data.article).removeClass("disabled")
+                  $(".dislike.rate"+"."+data.article).addClass("disabled")
+                }
+                else
+                {
+                  $(".dislike.rate"+"."+data.article).addClass("active")
+                  $(".like.rate"+"."+data.article).removeClass("active")
+          
+                  $(".dislike.rate"+"."+data.article).removeClass("disabled")
+                  $(".like.rate"+"."+data.article).addClass("disabled")
+                }
+              },
+            });
+      {% endif %}
+    });
+ });
+</script>
+
+{% endblock %}
