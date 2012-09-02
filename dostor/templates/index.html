@@ -109,7 +109,7 @@
   <div class="facebook-plugin span4"> 
   
   <p class="mosharakat_number">
-    43.123
+    {{ total }}
     <br />
     <span>مشاركة على المسودة الأولى للدستور المصرى</span>
   </p>
@@ -117,8 +117,8 @@
    <div class="top-members ">
       <h4> <i class="icon-star"></i> أعلى المشاركين</h4>
       <ul>
-      	{% for user in top_users %}
-        <li><a href="#" class="user-image" title="{{ user }}"><img class="loader" src="http://graph.facebook.com/{{ user }}/picture"></a></li>
+      	{% for top in top_users %}
+        <li><a href="#" class="user-image" title="{{ top.user }}"><img class="loader" src="http://graph.facebook.com/{{ top.user }}/picture"></a></li>
         {% endfor %}
       </ul>
   </div>
