@@ -6,6 +6,8 @@ from django.shortcuts  import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.utils import simplejson
 from datetime import datetime
+from django.db import connection
+
 
 from django.contrib import auth
 
@@ -37,8 +39,9 @@ def index(request):
       user = request.user
     topics = Topic.objects.all
 
-    #top_users = Article.objects.values('name').annotate(user_count=Count('name')).order_by('-user_count')[:5]
-    #print top_users
+    connection._rollback()
+    top_users = Article.objects.values('name').annotate(user_count=Count('name')).order_by('-user_count')[:5]
+    print top_users
 
     target = 500000
 	
