@@ -19,7 +19,7 @@ class ArticleAdmin(ReadOnlyAdminFields, admin.ModelAdmin):
     list_display = ('name','topic','original','order')
     list_filter = ('topic',)
     list_editable = ['order']
-    readonly = ('likes', 'dislikes',)
+    #readonly = ('likes', 'dislikes',)
 
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
