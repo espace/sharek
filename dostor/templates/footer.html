@@ -10,6 +10,17 @@
                         <li class="">
                           <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
                         </li>
+                        {% if user.is_staff %}
+                          <li class="">
+                            <a href="{% url top_liked %}">الأكثر قبولا</a>
+                          </li>
+                          <li class="">
+                            <a href="{% url top_disliked %}">الأكثر رفضا</a>
+                          </li>
+                          <li class="">
+                            <a href="{% url top_commented %}">الأكثر مناقشة</a>
+                          </li>
+                        {% endif %}
                         <li class="">
                             <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
                         </li>
