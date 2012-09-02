@@ -118,7 +118,7 @@
       <h4> <i class="icon-star"></i> أعلى المشاركين</h4>
       <ul>
       	{% for top in top_users %}
-        <li><a href="#" class="user-image" title="{{ top.user }}"><img class="loader" src="http://graph.facebook.com/{{ top.user }}/picture"></a></li>
+        <li><a href="http://fb.com/{{ top.user }}" class="user-image" title="{{ top.user }}"><img class="loader" src="http://graph.facebook.com/{{ top.user }}/picture"></a></li>
         {% endfor %}
       </ul>
   </div>
