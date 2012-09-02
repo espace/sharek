@@ -34,7 +34,7 @@
 
 <div class="row">
   <div class="span8 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
-  <div class="span4 "> <h1 class="headtitle"><span>المشاركات على الدستور</span></h1> </div>
+  <div class="span4 "> <h1 class="headtitle"><span>مشاركات الزوار</span></h1> </div>
 </div>
 <!-- row -end -->
 
@@ -103,7 +103,7 @@
   <!-- sidebar -->
   <script type="text/javascript">
        $(function(){
-        $(".someClass").tipTip({maxWidth: "auto", edgeOffset: 10});
+        $(".user-image").tipTip({maxWidth: "auto", edgeOffset: 10});
         });
   </script>
   <div class="facebook-plugin span4"> 
@@ -115,27 +115,12 @@
   </p>
 
    <div class="top-members ">
-        <h4> <i class=" icon-star"></i> أعلى المشاركين</h4>
-
-      <ul >
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" src="http://graph.facebook.com/100001914080277/picture"></a> </li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" src="http://graph.facebook.com/611932718/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" src="http://graph.facebook.com/818249815/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" src="http://graph.facebook.com/543017760/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" src="http://graph.facebook.com/100002679041947/picture"></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" alt="" src="http://graph.facebook.com/520742357/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" alt="" src="http://graph.facebook.com/520742357/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" alt="" src="http://graph.facebook.com/520742357/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" src="http://graph.facebook.com/1221415560/picture"></a></li>
-        <li><a href="#" class="someClass" title="sss"><img class="loader" src="http://graph.facebook.com/100001914080277/picture"></a> </li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" src="http://graph.facebook.com/611932718/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" src="http://graph.facebook.com/818249815/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" src="http://graph.facebook.com/543017760/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" src="http://graph.facebook.com/100002679041947/picture"></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" alt="" src="http://graph.facebook.com/520742357/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" alt="" src="http://graph.facebook.com/520742357/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" alt="" src="http://graph.facebook.com/520742357/picture"></a></li>
-        <li><a href="#" class="someClass" title="محمد مين"><img class="loader" src="http://graph.facebook.com/1221415560/picture"></a></li>
+      <h4> <i class="icon-star"></i> أعلى المشاركين</h4>
+      <ul>
+      	{% for user in top_users %}
+        <li><a href="#" class="user-image" title="{{ user }}"><img class="loader" src="http://graph.facebook.com/{{ user }}/picture"></a></li>
+        {% endfor %}
+      </ul>
   </div>
 
     <!-- <div id="canvas"></div> -->
