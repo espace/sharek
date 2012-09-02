@@ -298,19 +298,46 @@ left: 1px;
     background: url("../images/pattern.png") repeat #eee;
     padding: 0 10px !important;
 }
-
 .top-members{
+    margin-bottom: 40px;
+    display: block;
+    overflow: hidden;
+}
+.top-members h4{
+    text-align: center;
+    font: 20px GESSTwoMediumRegular ;
+    margin-top: 20px;
+    color: #222;
+}
+.top-members h4 i{
+    margin-top: 5px;
+}
+.top-members ul{
     margin: 0;
 }
-.top-members li{
+.top-members ul li{
     margin: 0;
     float: right;
     list-style-type: none;
 }
-.top-members li span{
+.top-members ul li span{
    display: none;
 }
+.mosharakat_number{
+    text-align: center;
+    font: 60px/50px GESSTwoMediumRegular !important;
+    color: #a11212;
+    margin-bottom: 0px;
+    margin-top: 0px;
 
+}
+.mosharakat_number span{
+    text-align: center;
+    font: 12px GESSTwoMediumRegular !important;
+    color: #666 !important;
+    margin-top: 0px;
+    display: block;
+}
 /*
 .circleText {
     position: absolute;
@@ -736,9 +763,7 @@ left: 1px;
     margin-top: 20px;
 }
 .tags{
-    margin: 0;
     font-family: GESSTwoMediumRegular;
-    margin: 10px 0;
 
 }
 .tags p{
