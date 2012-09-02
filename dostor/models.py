@@ -65,8 +65,9 @@ class Article(models.Model):
     order = models.IntegerField(blank = True, null = True)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
-    original = models.ForeignKey("self",null = True, blank = True)
+    original = models.ForeignKey("self", null = True, blank = True)
     default = models.BooleanField(default=False)
+    date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc))
 
     def feedback_count(self):
         return len(Feedback.objects.filter(article_id = self.id))
