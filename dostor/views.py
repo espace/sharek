@@ -11,7 +11,7 @@ from django.db import connection
 
 from django.contrib import auth
 
-from dostor.models import Tag, Article, Feedback, Rating, Topic, Info, ArticleRating
+from dostor.models import Tag, Article, Feedback, Rating, Topic, Info, ArticleRating, User
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
