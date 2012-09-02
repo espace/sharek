@@ -2,30 +2,20 @@
 <html>
     <head>
         <title>My Title</title>
-        <style type="text/css">
-            @page {
-                size: {{ pagesize }};
-                margin: 1cm;
-                @frame footer {
-                    -pdf-frame-content: footerContent;
-                    bottom: 0cm;
-                    margin-left: 9cm;
-                    margin-right: 9cm;
-                    height: 1cm;
-                }
-            }
+        <style>
+			body { font: 11px tahoma; direction: rtl; }
         </style>
     </head>
     <body>
         <div>
-            {% for item in mylist %}
-                <strong>{{ item.article }}</strong><br />{{ item.suggestion }}<br /><br />
+            {% for item in articles %}
+                <strong><a href="{% url feedback_report article_slug=item.slug %}">{{ item.name }}</a></strong><br />
             {% endfor %}
         </div>
-        <div id="footerContent">
-            {%block page_foot%}
-                Page <pdf:pagenumber>
-            {%endblock%}
+        <div>
+            {% for item in feedback %}
+                <p><strong>{{ item.name }}</strong><br />{{ item.suggestion }}</p>
+            {% endfor %}
         </div>
     </body>
 </html>

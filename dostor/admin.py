@@ -31,7 +31,6 @@ class FeedbackAdmin(admin.ModelAdmin):
     #prepopulated_fields = {"user": ["username"]}
     list_filter = ('article',)
     list_display = ('name', 'article','user', 'email', 'suggestion')
-    actions = [export_as_csv_action("CSV Export", fields=['name', 'article','user', 'email', 'suggestion'])]
     
 
 class TagAdmin(admin.ModelAdmin):

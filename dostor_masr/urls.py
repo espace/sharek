@@ -18,7 +18,7 @@ urlpatterns = patterns('',
 
 
     #Reports
-    url(r'sharek/reports/feedback', 'dostor.reports.views.export_feedback', name='feedback_report'),
+    url(r'sharek/reports/feedback/(?P<article_slug>[-\w]+)/$', 'dostor.reports.views.export_feedback', name='feedback_report'),
     
     #Home  Tags List
     
