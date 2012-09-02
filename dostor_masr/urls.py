@@ -15,6 +15,10 @@ urlpatterns = patterns('',
     url(r'sharek/facebook/login', 'dostor.facebook.views.login', name='facebook_login'),
     url(r'sharek/facebook/logout', 'dostor.facebook.views.logout', name='facebook_logout'),
     url(r'sharek/facebook/welcome/', 'dostor.facebook.views.welcome', name='facebook_welcome'),
+
+
+    #Reports
+    url(r'sharek/reports/feedback', 'dostor.reports.views.export_feedback', name='feedback_report'),
     
     #Home  Tags List
     
