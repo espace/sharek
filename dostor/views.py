@@ -526,4 +526,23 @@ def total_contribution(request):
     return render_to_response('contribution.html',{'total':total,'feedback':feedback,'feedback_ratings':feedback_ratings,'article_ratings':article_ratings} ,RequestContext(request))
 
 
+def top_liked(request):
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('index'))
+    articles = Article.get_top_liked(20)
+    title = 'الأكثر قبولا'
+    return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
 
+def top_disliked(request):
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('index'))
+    articles = Article.get_top_disliked(20)
+    title = 'الأكثر رفضا'
+    return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
+
+def top_commented(request):
+    if not request.user.is_staff:
+        return HttpResponseRedirect(reverse('index'))
+    articles = Article.get_top_commented(20)
+    title = 'الأكثر مناقشة'
+    return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))

@@ -48,6 +48,11 @@ urlpatterns = patterns('',
 
 	url(r'^sharek/total_contributions/', 'dostor.views.total_contribution', name='total_contributions'),
 	
+    # statistics pages
+    url(r'^sharek/top_liked/', 'dostor.views.top_liked', name='top_liked'),
+    url(r'^sharek/top_disliked/', 'dostor.views.top_disliked', name='top_disliked'),
+    url(r'^sharek/top_commented/', 'dostor.views.top_commented', name='top_commented'),
+    
     url(r'^sharek/$', 'dostor.views.index', name='index'),
 	
     url(r'$', 'dostor.views.tmp'),
