@@ -39,8 +39,7 @@ def index(request):
       user = request.user
     topics = Topic.objects.all
 
-    top_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count')[:5]
-    print top_users
+    top_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count')[:10]
 
     target = 500000
 	
@@ -58,7 +57,7 @@ def index(request):
     percent = int((float(total)/target)*100)
     percent_draw = (float(total)/target)*10
 
-    template_context = {'request':request, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+    template_context = {'request':request, 'top_users':top_users, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
         
