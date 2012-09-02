@@ -82,21 +82,7 @@
                 </dl>
               {% endfor %}
     
-           </div> <!--  Most liked -->
-
-      <!--       <div class="span2 most-disliked">
-                <h1 class="headtitle small"><span>الأكثر رفضا</span></h1> 
-
-                {% for article in top_disliked %}
-                  <dl>
-                      <dt>
-                        <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">{{article.name}}</a> 
-                        <span class="icon-update">{{article.dislikes}}</span>
-                      </dt> 
-                      <dd>{{article.summary|safe|truncatewords_html:5}}<a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">  ←</a></dd>
-                  </dl>
-                {% endfor %}
-           </div> --> <!--  Most liked -->
+           </div>
 
            <div class="span4 most-argued">
                 <h1 class="headtitle small"><span><i class="icon-fire"></i>الأكثر مناقشة</span></h1> 

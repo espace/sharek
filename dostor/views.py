@@ -48,7 +48,7 @@ def index(request):
 
     total = feedback + feedback_ratings + article_ratings
 	
-    top_liked = Article.get_top_liked(2)
+    #top_liked = Article.get_top_liked(2)
     top_disliked = Article.get_top_disliked(2)
     top_commented = Article.get_top_commented(2)
     tags = Tag.objects.all
