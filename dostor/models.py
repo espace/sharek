@@ -9,7 +9,7 @@ from django.db.models import Count
 from django.db.models.signals import post_save
 from django.db.models.aggregates import Max
 
-
+from dostor.actions import exclusive_boolean_fields
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
@@ -117,6 +117,8 @@ class Article(models.Model):
 
     class Meta:
        ordering = ["order"]
+
+exclusive_boolean_fields(Article, ('default',), ('original',))
 
 class Feedback(models.Model):
     article = models.ForeignKey(Article)
