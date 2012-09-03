@@ -1,21 +1,80 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
-    <head>
-        <title>My Title</title>
-        <style>
-			body { font: 11px tahoma; direction: rtl; }
-        </style>
-    </head>
-    <body>
-        <div>
-            {% for item in articles %}
-                <strong><a href="{% url feedback_report article_slug=item.slug %}">{{ item.name }}</a></strong><br />
-            {% endfor %}
-        </div>
-        <div>
-            {% for item in feedback %}
-                <p><strong>{{ item.name }}</strong><br />{{ item.suggestion }}</p>
-            {% endfor %}
-        </div>
-    </body>
-</html>
+{% for item in articles %}
+    <!--strong><a href="{% url feedback_report article_slug=item.slug %}">{{ item.name }}</a></strong><br /-->
+{% endfor %}
+
+{% extends 'base.html' %}
+
+{% load replace %}
+{% load hash %} 
+<!-- {% load date_format %}  -->
+{% block title %}{{article.name}}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="span12 inner-article">
+        
+    </div>
+</div>
+<div class="row">
+    <div class="span12 ">
+        <div id="headtitle" class=" innerpage offset3">
+          <div class="tags ">
+            <p>تتعلق هذه المواد بـ :</p>
+                {% for related in related_tags %}
+                  <a href="{% url tag tag_slug=related.get_absolute_url %}">"{{related.name}}"</a>
+                {% endfor %}
+       </div>
+       </div>
+    </div>
+</div><!-- row -end -->
+<div class="row">
+
+  <div class="span3">
+      {% include "sidebar.html" %}
+  </div><!-- span3 -->
+
+  <div id="ajax-container" class="span9">
+    
+    <div class="topic">
+        <h3><p class="mada-title"><a>{{article.name}}</a></p></h3>
+        <p>{{article.summary}}</p>
+    </div><!-- topic end -->
+    
+
+	{% for feedback in feedbacks %}
+        <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %}">
+          <div class="facebook_user_img">
+            <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/></a>
+          </div>
+          <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3>
+          <span class="date">{{feedback.date|format}}</span>
+          <p>{{feedback.suggestion}}</p>
+          <div class="L_replies_block child-wrapper {{feedback.id}}" >
+            {% if feedback.get_children|length > 0 %}
+              {% for reply in feedback.get_children %}
+                <div class="comment-block child-reply L_{{reply.id}}">
+                  <div class="facebook_user_img">
+                    <a href="http://www.facebook.com/{{ reply.user }}" target="_blank"><img src="http://graph.facebook.com/{{ reply.user }}/picture" class="loader"/></a>
+                  </div>
+                  <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3>
+                  <span class="date">{{reply.date|format}}</span>
+                  <p>{{reply.suggestion}}</p>
+                </div><!-- comment end -->
+              {% endfor %}
+            {% endif %}
+        </div><!-- comment end -->
+        
+    {% endfor %}
+    
+
+  </div><!-- span 8 -->
+
+</div><!-- row end -->
+
+
+
+
+  
+{% endblock %}
+
+
