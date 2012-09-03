@@ -171,9 +171,8 @@ def article_diff(request, article_slug):
 
         article_info['name'] = temp.name
 
-        if previous = '':
-           article_info['text'] = temp.name
-           previous = temp.name
+        if previous == "":
+           article_info['text'] = previous = temp.name
 		else:
            lDiffs = lDiffClass.diff_main(previous, temp.name)
            lDiffClass.diff_cleanupSemantic(lDiffs)
