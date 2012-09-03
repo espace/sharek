@@ -164,17 +164,17 @@ def article_diff(request, article_slug):
     article = get_object_or_404( Article, slug=article_slug )
     tmp_versions = Article.objects.filter(original = article.original.id).order_by('id')
 
-    versions = []
     previous = ''
+    versions = []
     for temp in tmp_versions:
         article_info = {}
 
         article_info['name'] = temp.name
 
         if previous == "":
-           article_info['text'] = previous = temp.name
+           article_info['text'] = previous = temp.summary
         else:
-           lDiffs = lDiffClass.diff_main(previous, temp.name)
+           lDiffs = lDiffClass.diff_main(previous, temp.summary)
            lDiffClass.diff_cleanupSemantic(lDiffs)
            lDiffHtml = lDiffClass.diff_prettyHtml(lDiffs)
            article_info['text'] = lDiffHtml
