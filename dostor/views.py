@@ -168,7 +168,7 @@ def article_diff(request, article_slug):
     for temp in tmp_versions:
         article_info = {}
 
-        lDiffs = lDiffClass.diff_main("go to school every day", temp.summary)
+        lDiffs = lDiffClass.diff_main("go to school every day", temp.name)
         lDiffClass.diff_cleanupSemantic(lDiffs)
         lDiffHtml = lDiffClass.diff_prettyHtml(lDiffs)
 
