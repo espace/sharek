@@ -8,7 +8,7 @@ from django.utils import simplejson
 from datetime import datetime
 from django.db import connection
 
-
+from diff_match_patch import diff_match_patch
 from django.contrib import auth
 
 from dostor.models import Tag, Article, Feedback, Rating, Topic, Info, ArticleRating, User
@@ -162,7 +162,12 @@ def article_diff(request, article_slug):
     article = get_object_or_404( Article, slug=article_slug )
     versions = Article.objects.filter(original = article.original.id).order_by('id')
 
-    template_context = {'article': article,'versions': versions, 'request':request}
+    lDiffClass = diff_match_patch()
+    lDiffs = lDiffClass.diff_main("go to school every day", "go to club every month")
+    lDiffClass.cleanupSemantic(lDiffs)
+    lDiffHtml = lDiffClass.diff_prettyHtml(lDiffs)
+
+    template_context = {'lDiffHtml':lDiffHtml, 'article': article,'versions': versions, 'request':request}
     return render_to_response('article_diff.html',template_context ,RequestContext(request))
 
 

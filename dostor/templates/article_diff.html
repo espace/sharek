@@ -5,54 +5,7 @@
 
 {% block content %}
 
-<div class="row">
-
-  <div id="ajax-container" class="span12">
-  
-  <h3><p class="mada-title"><a>{{article.name}}</a></p></h3>
-  
-<script type="text/javascript">
-
-var original = '';
-
-function compare(text1, text2, output) {
-	
-	var dmp = new diff_match_patch();
-	
-	var ms_start = (new Date()).getTime();
-	var d = dmp.diff_main(text1, text2);
-	var ms_end = (new Date()).getTime();
-	
-	//dmp.diff_cleanupSemantic(d);
-	dmp.diff_cleanupEfficiency(d);
-	
-	var ds = dmp.diff_prettyHtml(d);
-	$(output).html(ds);
-
-}
-</script>
-
-{% for version in versions %}
-
-    {% if forloop.first %}
-		<div id="version-{{version.id}}">{{version.summary|striptags}}</div><br />
-    {% else %} 
-    
-    	<div id="version-{{version.id}}"></div><br />
-    	<div id="version-{{version.id}}"></div><br />
-    	<script type="text/javascript">
-			compare(original.replace(/\\n/g, ""), '{{version.summary|striptags}}', '#version-{{version.id}}');
-		</script>
-        
-    {% endif %}
-    
-    <script type="text/javascript">original = "{{version.summary|striptags|linebreak:''}}";</script>
-
-{% endfor %}
-
-</div><!-- span 8 -->
-
-</div><!-- row end -->
+{{ lDiffHtml }}
 
 
 {% endblock %}
