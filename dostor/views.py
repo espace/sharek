@@ -164,7 +164,7 @@ def article_diff(request, article_slug):
 
     lDiffClass = diff_match_patch()
     lDiffs = lDiffClass.diff_main("go to school every day", "go to club every month")
-    lDiffClass.cleanupSemantic(lDiffs)
+    lDiffClass.diff_cleanupSemantic(lDiffs)
     lDiffHtml = lDiffClass.diff_prettyHtml(lDiffs)
 
     template_context = {'lDiffHtml':lDiffHtml, 'article': article,'versions': versions, 'request':request}
