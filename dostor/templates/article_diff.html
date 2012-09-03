@@ -1,12 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}{{article.name}}{% endblock %}
 
-
 {% block content %}
 
 {% for article in versions %}
     {{ article.name }}<br />{{ article.text|safe }}<br /><br />
 {% endfor %}
-
 
 {% endblock %}

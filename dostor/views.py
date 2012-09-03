@@ -165,15 +165,19 @@ def article_diff(request, article_slug):
     tmp_versions = Article.objects.filter(original = article.original.id).order_by('id')
 
     versions = []
+    previous = ''
     for temp in tmp_versions:
         article_info = {}
 
-        lDiffs = lDiffClass.diff_main("go to school every day", temp.name)
-        lDiffClass.diff_cleanupSemantic(lDiffs)
-        lDiffHtml = lDiffClass.diff_prettyHtml(lDiffs)
-
         article_info['name'] = temp.name
-        article_info['text'] = lDiffHtml
+
+        if previous = '':
+           article_info['text'] = previous = temp.name
+		else:
+           lDiffs = lDiffClass.diff_main(previous, temp.name)
+           lDiffClass.diff_cleanupSemantic(lDiffs)
+           lDiffHtml = lDiffClass.diff_prettyHtml(lDiffs)
+           article_info['text'] = lDiffHtml
 
         versions.append(article_info)
 
