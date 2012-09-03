@@ -163,7 +163,6 @@ def article_diff(request, article_slug):
 
     article = get_object_or_404( Article, slug=article_slug )
     tmp_versions = Article.objects.filter(original = article.original.id).order_by('id')
-    print versions
 
     versions = []
     for temp in tmp_versions:
