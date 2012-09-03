@@ -58,7 +58,7 @@
         {% endif %}
         
         {% if topic_item.get_mod_date and topic_item.get_mod_date.mod_date %}
-        <span class="edit-date"><i class=" icon-time"></i>   آخر تحديث  <strong>{{topic_item.get_mod_date.mod_date|date:"d/m/Y"}} </strong> <strong>{{topic_item.get_mod_date.mod_date|time:"G:i"}} </strong>{% if topic_item.get_mod_date.mod_date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}</span>
+        <span class="edit-date"><i class=" icon-time"></i>   آخر تحديث  <strong>{{topic_item.get_mod_date.mod_date|date:"Y/m/d"}} </strong> <strong>{{topic_item.get_mod_date.mod_date|time:"G:i"}} </strong>{% if topic_item.get_mod_date.mod_date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}</span>
         {% else %}
         <span class="edit-date"><i class=" icon-time"></i> لم يتم التحديث من قبل</span>
         {% endif %}
