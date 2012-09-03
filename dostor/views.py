@@ -159,16 +159,26 @@ def article_diff(request, article_slug):
     if request.user.is_authenticated():
       user = request.user
 
+    lDiffClass = diff_match_patch()
+
     article = get_object_or_404( Article, slug=article_slug )
-    versions = Article.objects.filter(original = article.original.id).order_by('id')
+    tmp_versions = Article.objects.filter(original = article.original.id).order_by('id')
     print versions
 
-    lDiffClass = diff_match_patch()
-    lDiffs = lDiffClass.diff_main("go to school every day", "go to club every month")
-    lDiffClass.diff_cleanupSemantic(lDiffs)
-    lDiffHtml = lDiffClass.diff_prettyHtml(lDiffs)
+    versions = []
+    for temp in tmp_versions:
+        article_info = {}
 
-    template_context = {'lDiffHtml':lDiffHtml, 'article': article, 'versions': versions, 'request':request,'settings': settings}
+        lDiffs = lDiffClass.diff_main("go to school every day", temp.summary)
+        lDiffClass.diff_cleanupSemantic(lDiffs)
+        lDiffHtml = lDiffClass.diff_prettyHtml(lDiffs)
+
+        article_info['name'] = temp.name
+        article_info['text'] = lDiffHtml
+
+        versions.append(article_info)
+
+    template_context = {'article': article, 'versions': versions, 'request':request, 'settings': settings}
     return render_to_response('article_diff.html',template_context ,RequestContext(request))
 
 

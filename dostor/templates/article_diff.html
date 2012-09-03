@@ -4,6 +4,9 @@
 
 {% block content %}
 
-{{ lDiffHtml|safe }}
+{% for article in versions %}
+    {{ article.name }}<br />{{ article.text }}<br /><br />
+{% endfor %}
+
 
 {% endblock %}
