@@ -178,27 +178,29 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     related_tags = article.tags.all
 
     top_ranked = None
-    size = len(Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id'))
+    inactive_users = user.get_inactive
+    print inactive_users
+    size = len(Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
     if size > 3:
-        top_ranked = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order')[:3]
+        top_ranked = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order')[:3].exclude(user__in=inactive_users)
     else:
         top_ranked = None
 
     if order_by == "latest":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id')
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
     elif order_by == "order":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order')
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)
     elif order_by == "def":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id')
+            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
     
     
 

@@ -3,6 +3,7 @@ from dostor.models import Article
 from dostor.models import Topic
 from dostor.models import Info, Feedback
 from dostor.models import ReadOnlyAdminFields
+from django.contrib.auth.models import User
 
 from django.contrib import admin
 
@@ -54,10 +55,15 @@ class InfoAdmin(admin.ModelAdmin):
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
 
-
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username' ,'email', 'first_name', 'last_name', 'is_staff', 'is_active')
+    list_editable = ['is_staff', 'is_active']
+    list_filter = ('is_staff', 'is_active')
     
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(Info, InfoAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)

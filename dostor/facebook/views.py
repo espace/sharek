@@ -58,7 +58,7 @@ def login(request):
             facebook_session.save()
 
             user = auth.authenticate(token=user_obj['access_token'])
-            if user and request.GET['loginsucc']:
+            if user and user.is_active and request.GET['loginsucc']:
 			
                 auth.login(request, user)
                 #return HttpResponseRedirect(request.path)

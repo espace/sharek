@@ -9,7 +9,10 @@ from django.db.models import Count
 from django.db.models.signals import post_save
 from django.db.models.aggregates import Max
 
+def get_inactive(self):
+    return User.objects.filter(is_active=False).values('username')
 
+User.add_to_class('get_inactive', get_inactive)
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
