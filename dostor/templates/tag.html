@@ -48,6 +48,9 @@
                     </div> 
                     
                     <p>{{article.summary|safe|truncatewords_html:35}}</p>
+                    {% if article.mod_date %}
+                    <p class="edit-date-article">آخر تحديث في {{article.mod_date|date:"Y/m/d"}} {{article.mod_date|time:"G:i"}} {% if article.mod_date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}</p><br />
+                    {% endif %}
                 </div><!-- topic end -->
                 {% endfor %}
                 <ul class=" pager">
