@@ -5,7 +5,7 @@
 {% block content %}
 
 {% for article in versions %}
-    {{ article.name }}<br />{{ article.text }}<br /><br />
+    {{ article.name }}<br />{{ article.text|safe }}<br /><br />
 {% endfor %}
 
 
