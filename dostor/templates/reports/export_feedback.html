@@ -17,8 +17,10 @@
   <div class="span3">
   	  <div class="sidebar">
       	<ul class="nav nav-pills nav-stacked">
-          {% for article in articles %}
-            <li class="tag_item "><a href="{% url feedback_report article_slug=article.slug %}">{{ article.name }}</a></li>
+          {% for item in articles %}
+            <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %}">
+            	<a style="height: 20px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}">{{ item.name }}</a>
+            </li>
           {% endfor %}
        </ul>
       </div>
