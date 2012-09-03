@@ -1,11 +1,9 @@
 {% extends 'base.html' %}
-
-{% load hash %}
 {% block title %}{{article.name}}{% endblock %}
+
 
 {% block content %}
 
 {{ lDiffHtml|safe }}
-
 
 {% endblock %}

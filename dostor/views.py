@@ -161,6 +161,7 @@ def article_diff(request, article_slug):
 
     article = get_object_or_404( Article, slug=article_slug )
     versions = Article.objects.filter(original = article.original.id).order_by('id')
+    print versions
 
     lDiffClass = diff_match_patch()
     lDiffs = lDiffClass.diff_main("go to school every day", "go to club every month")
