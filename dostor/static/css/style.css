@@ -306,7 +306,7 @@ left: 1px;
 .top-members h4{
     text-align: center;
     font: 20px GESSTwoMediumRegular ;
-    margin-top: 20px;
+    margin-top: 30px;
     color: #222;
 }
 .top-members h4 i{
@@ -327,8 +327,8 @@ left: 1px;
     text-align: center;
     font: 60px/50px GESSTwoMediumRegular !important;
     color: #a11212;
+    margin-top: 15px;
     margin-bottom: 0px;
-    margin-top: 0px;
 
 }
 .mosharakat_number span{
