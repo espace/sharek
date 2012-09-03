@@ -1,4 +1,4 @@
-{% extends '../base.html' %}
+{% extends 'base.html' %}
 
 {% load replace %}
 {% load hash %} 
@@ -11,18 +11,6 @@
         
     </div>
 </div>
-<div class="row">
-    <div class="span12 ">
-        <div id="headtitle" class=" innerpage offset3">
-          <div class="tags ">
-            <p>تتعلق هذه المواد بـ :</p>
-                {% for related in related_tags %}
-                  <a href="{% url tag tag_slug=related.get_absolute_url %}">"{{related.name}}"</a>
-                {% endfor %}
-       </div>
-       </div>
-    </div>
-</div><!-- row -end -->
 <div class="row">
 
   <div class="span3">
