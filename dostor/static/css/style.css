@@ -461,13 +461,21 @@ left: 1px;
             background-position: -19px -715px ;
         }
 
-.edit-date {
+.edit-date,
+.edit-date-article {
     float: right;
     font-size: 10px;
     color: #999;
     width: 100%;
     margin-right: 87px;
 }
+
+.edit-date-article {
+	margin-right: 0px;
+	margin-bottom: 10px;
+	width: auto;
+}
+
 .edit-date strong{
     color: #444;
     font:11px GESSTwoMediumRegular;
