@@ -43,7 +43,7 @@
             <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/></a>
           </div>
           <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3>
-          <span class="date">{{feedback.date|format}}</span>
+          <span class="date" style="left: 20px;">{{feedback.date|format}}</span>
           <p>{{feedback.suggestion}}</p>
           <div class="L_replies_block child-wrapper {{feedback.id}}" >
             {% if feedback.get_children|length > 0 %}
@@ -53,7 +53,7 @@
                     <a href="http://www.facebook.com/{{ reply.user }}" target="_blank"><img src="http://graph.facebook.com/{{ reply.user }}/picture" class="loader"/></a>
                   </div>
                   <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3>
-                  <span class="date">{{reply.date|format}}</span>
+                  <span class="date" style="left: 20px;">{{reply.date|format}}</span>
                   <p>{{reply.suggestion}}</p>
                 </div><!-- comment end -->
               {% endfor %}
