@@ -15,5 +15,5 @@ def export_feedback(request, article_slug):
     article = get_object_or_404( Article, slug=article_slug )
     feedback = Feedback.objects.filter(article_id = article.id)
 
-    template_context = {'articles':articles, 'feedbacks':feedback}
+    template_context = {'article':article, 'articles':articles, 'feedbacks':feedback}
     return render_to_response('reports/export_feedback.html', template_context ,RequestContext(request))
