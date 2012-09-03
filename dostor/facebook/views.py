@@ -59,10 +59,11 @@ def login(request):
 
             user = auth.authenticate(token=user_obj['access_token'])
             if user and user.is_active and request.GET['loginsucc']:
-			
                 auth.login(request, user)
                 #return HttpResponseRedirect(request.path)
                 return HttpResponse("<script type='text/javascript'> window.close(); window.opener.location.reload(); </script>");
+            else:
+                error = 'sss'
 
     template_context = {'settings': settings, 'error': error}
     return render_to_response('facebook/login.html', template_context, context_instance=RequestContext(request))
