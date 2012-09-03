@@ -169,8 +169,9 @@ body {
        color: #fff;
 }
 .footer-nav ul li{
-    margin: 5px !important;
+    margin: 10px 2px 5px !important;
     font: 12px GESSTwoMediumRegular;
+	float: left;
 }
 .footer-nav a{
     color: #7A7672 !important;

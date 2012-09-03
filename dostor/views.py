@@ -41,13 +41,14 @@ def index(request):
 
     top_users = []
     temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count')[:12]
-    for temp_user in temp_users:
-        top_users.append(get_object_or_404( User, username=temp_user['user'] ))
-	
-    print top_users
+    print temp_users
+
+    for temp in temp_users:
+        top_users.append(User.objects.get(username=temp['user']))
+
 
     target = 500000
-	
+    
     feedback = Feedback.objects.all().count()
     feedback_ratings = Rating.objects.all().count()
     article_ratings = ArticleRating.objects.all().count()

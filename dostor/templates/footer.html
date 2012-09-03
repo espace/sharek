@@ -2,27 +2,27 @@
 <div class="row">
     <div class="span12">
         <div class="pull-left">
-                <div class="span6 footer-nav">
+                <div class="span8 footer-nav">
                     <ul class="nav nav-pills">
                         <li class="">
-                            <a href="http://dostour.eg">الرئيسية</a>
-                        </li>
-                        <li class="">
-                          <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
+                            <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
                         </li>
                         {% if user.is_staff %}
                           <li class="">
-                            <a href="{% url top_liked %}">الأكثر قبولا</a>
+                            <a href="{% url top_commented %}">الأكثر مناقشة</a>
                           </li>
                           <li class="">
                             <a href="{% url top_disliked %}">الأكثر رفضا</a>
                           </li>
                           <li class="">
-                            <a href="{% url top_commented %}">الأكثر مناقشة</a>
+                            <a href="{% url top_liked %}">الأكثر قبولا</a>
                           </li>
                         {% endif %}
                         <li class="">
-                            <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
+                          <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
+                        </li>
+                        <li class="">
+                            <a href="http://dostour.eg">الرئيسية</a>
                         </li>
                     </ul>
             </div><!-- top-nav -->
