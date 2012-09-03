@@ -58,7 +58,7 @@ class InfoAdmin(admin.ModelAdmin):
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username' ,'email', 'first_name', 'last_name', 'is_staff', 'is_active')
+    list_display = ('email', 'username' ,'first_name', 'last_name', 'is_staff', 'is_active')
     list_editable = ['is_staff', 'is_active']
     list_filter = ('is_staff', 'is_active')
     
