@@ -194,7 +194,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     print inactive_users
     size = len(Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
     if size > 3:
-        top_ranked = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order')[:3].exclude(user__in=inactive_users)
+        top_ranked = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[:3]
     else:
         top_ranked = None
 
