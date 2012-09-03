@@ -19,7 +19,7 @@
       	<ul class="nav nav-pills nav-stacked">
           {% for item in articles %}
             <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %}">
-            	<a style="height: 20px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}">{{ item.name }}</a>
+            	<a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}">تعليقات {{ item.name }}</a>
             </li>
           {% endfor %}
        </ul>
