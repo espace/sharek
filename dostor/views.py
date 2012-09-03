@@ -40,7 +40,7 @@ def index(request):
     topics = Topic.objects.all
 
     top_users = []
-    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count')[:18]
+    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count')[:12]
     for temp_user in temp_users:
         top_users.append(get_object_or_404( User, username=temp_user['user'] ))
 	
