@@ -5,7 +5,7 @@
 
 {% for article in versions %}
     {{ article.name }}<br />{{ article.text|safe }}<br />
-    آخر تحديث في {{article.mod_date|date:"Y/m/d"}} {{article.mod_date|time:"G:i"}} {% if article.mod_date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}<br /><br />
+    آخر تحديث في {{article.date|date:"Y/m/d"}} {{article.date|time:"G:i"}} {% if article.date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}<br /><br />
 {% endfor %}
 
 {% endblock %}
