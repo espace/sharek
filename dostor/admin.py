@@ -5,6 +5,8 @@ from dostor.models import Info, Feedback
 from dostor.models import ReadOnlyAdminFields
 from django.contrib.auth.models import User
 
+from dostor.actions import export_as_csv_action
+
 from django.contrib import admin
 
 
@@ -17,9 +19,9 @@ class ArticleInlineAdmin(admin.TabularInline):
 class ArticleAdmin(ReadOnlyAdminFields, admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
     inlines = [ArticleInlineAdmin,]
-    list_display = ('name','topic','original','order')
+    list_display = ('name','original','topic', 'default','order')
     list_filter = ('topic',)
-    list_editable = ['order']
+    list_editable = ['order', 'default']
     #readonly = ('likes', 'dislikes',)
 
     class Media:

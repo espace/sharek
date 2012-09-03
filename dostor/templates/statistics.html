@@ -37,11 +37,8 @@
                <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{article.id}} {% if voted_articles|vote_art:article.id == -1 %} active {% elif voted_articles|vote_art:article.id == 1 %} disabled {% endif %}" id="{{article.id}} " vote="0"><small class="dislike article {{article.id}}">{{article.dislikes}}</small></a>
                <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{article.id}} {% if voted_articles|vote_art:article.id == 1 %} active {% elif voted_articles|vote_art:article.id == -1 %} disabled {% endif %}" id="{{article.id}}" vote="1" ><small class="like article {{article.id}}">{{article.likes}}</small></a>
               </div> 
-              {{article.topic}}
+              <a href="#"><b>{{article.topic}}</b></a>
               <p>{{article.summary|safe|truncatewords_html:35}}</p>
-              {% if article.mod_date %}
-              <p>آخر تحديث في {{article.mod_date|date:"d/m/Y"}} الساعة {{article.mod_date|time:"G:i"}} {% if article.mod_date|time:"A" == 'AM' %}{{"صباحا"}} {% else %}{{"مساء"}}{% endif %}</p>
-              {% endif %}
           </div><!-- topic end -->
           {% endfor %}
         </div>

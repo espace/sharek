@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} 
 
 {% load humanize %}
 
@@ -6,8 +6,8 @@
 
 {% block content %}
 
-<script src="{{ STATIC_URL }}js/init.js" type="text/javascript"></script> 
-
+<!-- <script src="{{ STATIC_URL }}js/init.js" type="text/javascript"></script> 
+ -->
 {% if perecent > 50 %}
 <style>
 .progress-promo .comments-till-now { margin-right: -194px; }
@@ -34,7 +34,7 @@
 
 <div class="row">
   <div class="span8 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
-  <div class="span4 "> <h1 class="headtitle"><span>الهدف <strong>500,000</strong> مشاركة</span></h1> </div>
+  <div class="span4 "> <h1 class="headtitle"><span>عدد مشاركات الزوار</span></h1> </div>
 </div>
 <!-- row -end -->
 
@@ -58,7 +58,9 @@
         {% endif %}
         
         {% if topic_item.get_mod_date and topic_item.get_mod_date.mod_date %}
-        <p>آخر تحديث في {{topic_item.get_mod_date.mod_date|date:"d/m/Y"}} الساعة {{topic_item.get_mod_date.mod_date|time:"G:i"}} {% if topic_item.get_mod_date.mod_date|time:"A" == 'AM' %}{{"صباحا"}} {% else %}{{"مساء"}}{% endif %}</p>
+        <span class="edit-date"><i class=" icon-time"></i>   آخر تحديث  <strong>{{topic_item.get_mod_date.mod_date|date:"Y/m/d"}} </strong> <strong>{{topic_item.get_mod_date.mod_date|time:"G:i"}} </strong>{% if topic_item.get_mod_date.mod_date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}</span>
+        {% else %}
+        <span class="edit-date"><i class=" icon-time"></i> لم يتم التحديث من قبل</span>
         {% endif %}
       </li>
       {% endfor %}
@@ -66,8 +68,8 @@
     
     <div class="span12 "> <span style="margin-right:-20px;" class="divider"></span> </div>
     
-    <div class="updates span8 divider-vert">
-            <div class="span2 most-liked">
+    <div class="updates span8 divider-vert"> 
+            <div class="span4 most-liked">
               <h1 class="headtitle small"><span>الأكثر قبولا</span></h1> 
 
               {% for article in top_liked %}
@@ -80,23 +82,9 @@
                 </dl>
               {% endfor %}
     
-           </div> <!--  Most liked -->
+           </div>
 
-            <div class="span2 most-disliked">
-                <h1 class="headtitle small"><span>الأكثر رفضا</span></h1> 
-
-                {% for article in top_disliked %}
-                  <dl>
-                      <dt>
-                        <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">{{article.name}}</a> 
-                        <span class="icon-update">{{article.dislikes}}</span>
-                      </dt> 
-                      <dd>{{article.summary|safe|truncatewords_html:5}}<a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">  ←</a></dd>
-                  </dl>
-                {% endfor %}
-           </div> <!--  Most liked -->
-
-           <div class="span2 most-argued">
+           <div class="span4 most-argued">
                 <h1 class="headtitle small"><span><i class="icon-fire"></i>الأكثر مناقشة</span></h1> 
                 {% for article in top_commented %}
                 <dl>
@@ -113,24 +101,39 @@
     
   </div>
   <!-- sidebar -->
-  
+ 
   <div class="facebook-plugin span4"> 
   
-    <div id="canvas"></div>
-    <input type="hidden" id="prgress_indicator" value="{{ percent_draw }}"><!-- The circle Progress Indicator -->
-    <input type="hidden" id="prgress_Number" value="{{ total|intcomma }}"><!-- The circle Progress Indicator -->
-    <input type="hidden" id="prgress_Percentage_Number" value="{{ percent }}%"><!-- The circle Progress Indicator -->
+  <p class="mosharakat_number">
+    {{ total|intcomma }}
+    <br />
+    <span>مشاركة على مسودة الدستور المصرى</span>
+  </p>
 
-    <div class="circleText">
+   <div class="top-members ">
+      <h4> <i class="icon-star"></i> أعلى المشاركين</h4>
+      <ul>
+      	{% for top in top_users %}
+        <li><a href="http://fb.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
+        {% endfor %}
+      </ul>
+  </div>
+
+    <!-- <div id="canvas"></div> -->
+    <!-- <input type="hidden" id="prgress_indicator" value="{{ percent_draw }}"> --><!-- The circle Progress Indicator -->
+<!--     <input type="hidden" id="prgress_Number" value="{{ total|intcomma }}"> --><!-- The circle Progress Indicator -->
+  <!--   <input type="hidden" id="prgress_Percentage_Number" value="{{ percent }}%"> --><!-- The circle Progress Indicator -->
+
+   <!--  <div class="circleText">
       <p class="fir" >
         عدد المشاركات <br />
       <strong>{{ total|intcomma }} </strong>
       </p>
     
-     
+      -->
     </div>
   
-       <div class="tags">     
+       <div class="tags span4">     
           <p> روابط دلالية:</p>
           {% for tag in tags %}
             <a href="{% url tag tag_slug=tag.get_absolute_url %}">{{tag.name}}</a>

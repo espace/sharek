@@ -6,10 +6,12 @@ from django.shortcuts  import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.utils import simplejson
 from datetime import datetime
+from django.db import connection
+
 
 from django.contrib import auth
 
-from dostor.models import Tag, Article, Feedback, Rating, Topic, Info, ArticleRating
+from dostor.models import Tag, Article, Feedback, Rating, Topic, Info, ArticleRating, User
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -17,7 +19,7 @@ from dostor.facebook.models import FacebookSession
 from dostor.facebook import facebook_sdk
 from dostor_masr import settings
 
-from django.db.models import Q
+from django.db.models import Q, Count
 
 from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Max
@@ -36,8 +38,17 @@ def index(request):
     if request.user.is_authenticated():
       user = request.user
     topics = Topic.objects.all
+
+    top_users = []
+    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count')[:12]
+    print temp_users
+
+    for temp in temp_users:
+        top_users.append(User.objects.get(username=temp['user']))
+
+
     target = 500000
-	
+    
     feedback = Feedback.objects.all().count()
     feedback_ratings = Rating.objects.all().count()
     article_ratings = ArticleRating.objects.all().count()
@@ -51,7 +62,8 @@ def index(request):
     
     percent = int((float(total)/target)*100)
     percent_draw = (float(total)/target)*10
-    template_context = {'request':request, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+
+    template_context = {'request':request, 'top_users':top_users, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
         

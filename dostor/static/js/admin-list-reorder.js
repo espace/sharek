@@ -1,38 +1,6 @@
 //admin-list-reorder.js
 
 $(document).ready(function() {
-	
-	//$("select#id_topic").html('<option value="">----------</option>');	
-	//alert($('#id_constitution').val());
-	list_topics($('#id_constitution').val());
-	$('#id_constitution').change(function(){
-		//list_topics(this.value);
-	});
-});
-
-function list_topics(constitution) {
-		
-	var options = '<option value="">---------</option>';
-	
-	if(constitution != "")			
-	{
-		$.getJSON('/filter/topic_by_constitution/' + constitution, function(j){
-			
-			for (var i = 0; i < j.length; i++)
-			{
-				if($('#id_topic').val() != '' && j[i].pk == $('#id_topic').val())
-					selected = 'selected="selected"';
-				else selected = '';
-				
-			    options += '<option ' + selected + ' value="' + j[i].pk + '">' + j[i].fields.name + '</option>';
-			}
-			  
-			$("select#id_topic").html(options);
-		})			  
-	} else $("select#id_topic").html(options);
-}
-
-$(document).ready(function() {
     // Set this to the name of the column holding the position
     pos_field = 'order';
     

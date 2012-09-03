@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from django.db.models import Count
 from django.db.models.signals import post_save
 from django.db.models.aggregates import Max
+from dostor.actions import exclusive_boolean_fields
 
 def get_inactive(self):
     return User.objects.filter(is_active=False).values('username')
@@ -120,6 +121,8 @@ class Article(models.Model):
 
     class Meta:
        ordering = ["order"]
+
+exclusive_boolean_fields(Article, ('default',), ('original',))
 
 class Feedback(models.Model):
     article = models.ForeignKey(Article)
