@@ -170,6 +170,7 @@ def article_diff(request, article_slug):
         article_info = {}
 
         article_info['name'] = temp.name
+        article_info['slug'] = temp.slug
         article_info['date'] = temp.mod_date
 
         if previous == "":
