@@ -63,7 +63,7 @@ def login(request):
                 #return HttpResponseRedirect(request.path)
                 return HttpResponse("<script type='text/javascript'> window.close(); window.opener.location.reload(); </script>");
             else:
-                error = 'sss'
+                error = True
 
     template_context = {'settings': settings, 'error': error}
     return render_to_response('facebook/login.html', template_context, context_instance=RequestContext(request))
