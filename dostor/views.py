@@ -8,7 +8,7 @@ from django.utils import simplejson
 from datetime import datetime
 from django.db import connection
 
-
+from diff_match import diff_match_patch
 from django.contrib import auth
 
 from dostor.models import Tag, Article, Feedback, Rating, Topic, Info, ArticleRating, User
@@ -40,7 +40,8 @@ def index(request):
     topics = Topic.objects.all
 
     top_users = []
-    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count')[:12]
+    inactive_users = User.get_inactive
+    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users)[:12]
     print temp_users
 
     for temp in temp_users:
@@ -49,7 +50,7 @@ def index(request):
 
     target = 500000
     
-    feedback = Feedback.objects.all().count()
+    feedback = Feedback.objects.all().exclude(user__in=inactive_users).count()
     feedback_ratings = Rating.objects.all().count()
     article_ratings = ArticleRating.objects.all().count()
 
@@ -158,10 +159,31 @@ def article_diff(request, article_slug):
     if request.user.is_authenticated():
       user = request.user
 
-    article = get_object_or_404( Article, slug=article_slug )
-    versions = Article.objects.filter(original = article.original.id).order_by('id')
+    lDiffClass = diff_match_patch()
 
-    template_context = {'article': article,'versions': versions, 'request':request}
+    article = get_object_or_404( Article, slug=article_slug )
+    tmp_versions = Article.objects.filter(original = article.original.id).order_by('id')
+
+    previous = ''
+    versions = []
+    for temp in tmp_versions:
+        article_info = {}
+
+        article_info['name'] = temp.name
+        article_info['slug'] = temp.slug
+        article_info['date'] = temp.mod_date
+
+        if previous == "":
+           article_info['text'] = previous = temp.summary.raw
+        else:
+           lDiffs = lDiffClass.diff_main(previous, temp.summary.raw)
+           lDiffClass.diff_cleanupSemantic(lDiffs)
+           lDiffHtml = lDiffClass.diff_prettyHtml(lDiffs)
+           article_info['text'] = lDiffHtml
+
+        versions.append(article_info)
+
+    template_context = {'article': article, 'versions': versions, 'request':request, 'settings': settings}
     return render_to_response('article_diff.html',template_context ,RequestContext(request))
 
 
@@ -190,8 +212,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     related_tags = article.tags.all
 
     top_ranked = None
-    inactive_users = user.get_inactive
-    print inactive_users
+    inactive_users = User.get_inactive
     size = len(Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
     if size > 3:
         top_ranked = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[:3]

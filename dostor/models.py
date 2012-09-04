@@ -10,8 +10,14 @@ from django.db.models.signals import post_save
 from django.db.models.aggregates import Max
 from dostor.actions import exclusive_boolean_fields
 
+@classmethod
 def get_inactive(self):
-    return User.objects.filter(is_active=False).values('username')
+    all_result = User.objects.filter(is_active=False).values('username')
+    inactive = []
+    for result in all_result:
+        inactive.append(str(result['username']))
+    
+    return inactive
 
 User.add_to_class('get_inactive', get_inactive)
 
@@ -78,13 +84,15 @@ class Article(models.Model):
     mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Last Modification Date')
 
     def feedback_count(self):
-        return len(Feedback.objects.filter(article_id = self.id))
+        inactive_users = User.get_inactive
+        return len(Feedback.objects.filter(article_id = self.id).exclude(user__in=inactive_users))
 
     def get_votes(self):
         return Rating.objects.filter(article_id= self.id)
 
     def get_top_feedback(self):
-        feedback = Feedback.objects.filter(article_id= self.id).order_by('-order')[:1]
+        inactive_users = User.get_inactive
+        feedback = Feedback.objects.filter(article_id= self.id).order_by('-order').exclude(user__in=inactive_users)[:1]
         if len(feedback) == 1:
             return feedback[0]
         else:
@@ -135,7 +143,8 @@ class Feedback(models.Model):
     user = models.CharField(max_length=200,default='')
 
     def get_children(self):
-        return Feedback.objects.filter(parent_id = self.id).order_by('id')
+        inactive_users = User.get_inactive
+        return Feedback.objects.filter(parent_id = self.id).order_by('id').exclude(user__in=inactive_users)
 
 class Rating(models.Model):
     article = models.ForeignKey(Article)
