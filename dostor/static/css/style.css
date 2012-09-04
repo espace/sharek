@@ -755,9 +755,9 @@ left: 1px;
 }
 
 .editings-con {
-    position: absolute;
     top: 0px;
-    right: 20px;
+    right: 140px;
+    position: absolute;
 }
 .topic span.new{
     color: #fff;
