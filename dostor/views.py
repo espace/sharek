@@ -42,7 +42,6 @@ def index(request):
     top_users = []
     inactive_users = User.get_inactive
     temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users)[:12]
-    print temp_users
 
     for temp in temp_users:
         try:
@@ -86,7 +85,6 @@ def tag_detail(request, tag_slug):
     arts = tag.article_set.all().values('original').annotate(max_id=Max('id')).order_by()
     articles = []
     for art in arts:
-        print art
         articles.append(get_object_or_404( Article, id=art['max_id'] ))
     articles = sorted(articles, key=lambda article: article.order)
     
@@ -118,7 +116,7 @@ def topic_detail(request, topic_slug=None):
         topics = Topic.objects.all
         topic = get_object_or_404( Topic, slug=topic_slug )
         arts = topic.article_set.all().values('original').annotate(max_id=Max('id')).order_by()
-        print arts.query
+
         articles = []
         for art in arts:
             print art
@@ -282,9 +280,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
           n_votes[vote.feedback_id] = 1
           
     if classified_by == "tags":  
-        template_context = {'arts':arts,'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+        template_context = {'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
     elif classified_by == "topics":
-        template_context = {'arts':arts,'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+        template_context = {'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
@@ -406,13 +404,13 @@ def article_vote(request):
             art.dislikes = n
             art.save()
 
-            fb_user = FacebookSession.objects.get(user = request.user)
+            '''fb_user = FacebookSession.objects.get(user = request.user)
             graph = facebook_sdk.GraphAPI(fb_user.access_token)
             attachment = {}
             attachment['link'] = settings.domain+"sharek/topics/"+art.topic.slug+"/"+art.slug
             attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
             message = 'لقد شاركت في كتابة #دستور_مصر وقمت ' + action + art.name.encode('utf-8') + " من الدستور"
-            #graph.put_wall_post(message, attachment)
+            graph.put_wall_post(message, attachment)'''
 
             return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n,'vote':request.POST.get("type")}))
           
@@ -461,15 +459,14 @@ def login(request):
             error = 'AUTH_DENIED'
 
 def search(request):
+
     user = None
     search = True
     login(request)
+
     if request.user.is_authenticated():
       user = request.user
     
-    '''if def_query == None:
-        query = request.POST.get("q")        
-    else:'''
     query = request.POST.get("q")
     if query == None:
         if request.GET.get("state"):
@@ -483,11 +480,11 @@ def search(request):
     
     articles = []
     for art in arts:
-        print art
         articles.append(get_object_or_404( Article, id= art['max_id'] ))
-        print get_object_or_404( Article, id= art['max_id'] ).order
     
     articles = sorted(articles, key=lambda article: article.order)
+
+    voted_articles = ArticleRating.objects.filter(user = user)
 
     count = len(articles)
     paginator = Paginator(articles, settings.paginator) 
@@ -502,7 +499,7 @@ def search(request):
         # If page is out of range (e.g. 9999), deliver last page of results.
         articles = paginator.page(paginator.num_pages)
 
-    return render_to_response('search.html',{'search':search,'request':request,'user':user,"articles":articles,'settings': settings,"query":query.strip(),"count":count},RequestContext(request))
+    return render_to_response('search.html',{'voted_articles':voted_articles, 'search':search,'request':request,'user':user,"articles":articles,'settings': settings,"query":query.strip(),"count":count},RequestContext(request))
 
 def info_detail(request, info_slug):
     user = None

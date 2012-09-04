@@ -145,7 +145,7 @@ body {
     display: inline;
     float: right;
     height: 36px;
-    margin: 0 10px;
+    margin: 0 10px 0 0;
 }
 
 .top-nav li a{
@@ -761,7 +761,7 @@ left: 1px;
 }
 .topic span.new{
     color: #fff;
-    padding:0 5px;
+    padding:0 10px;
     background:#BA4242;
     font-size: 9px;
     font-family: tahoma;
@@ -773,8 +773,8 @@ left: 1px;
 
 .topic .old{
     color: #333;
-    padding:0 5px;
-    background:#ccc;
+    padding:0 10px;
+    background:#DDD;
     font-size: 9px;
     font-family: tahoma;
     margin-left: 3px;

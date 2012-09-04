@@ -1,0 +1,63 @@
+{% load replace %}
+{% load hash %} 
+{% load date_format %}
+<div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{feedback.id}}">
+  <div class="facebook_user_img">
+    <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/></a>
+  </div>
+  <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3> 
+  <div class="like-group">
+     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == -1 %} active {% elif voted_fb|vote:feedback.id == 1 %} disabled {% endif %}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
+     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == 1 %} active {% elif voted_fb|vote:feedback.id == -1 %} disabled {% endif %}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
+  </div>
+  <span class="date">{{feedback.date|format}}</span>
+  {{feedback.suggestion}}
+  <div class="delete-group">
+    {% if user %}
+      {% if user.username = feedback.user or user.username = "admin" %}
+        <a href="javascript:;" class="L_remove delete " feedback_id="{{feedback.id}}"><span class="icon-trash"></span>مسح التعليق</a>
+      {% endif %}
+    {% endif %}
+    <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete " id="{{feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
+    {% if feedback.get_children|length > 0 %}
+        <a href="javascript:;" class="L_show_more " id="{{feedback.id}}"><span class="L_show_more_icon {{feedback.id}} icon-plus"></span><span class="L_show_more_txt {{feedback.id}}">إظهار باقي الردود</span></a>
+    {% endif %}
+  </div>
+    <div class="L_replies_block child-wrapper {{feedback.id}}" style="display:none;">
+    {% if feedback.get_children|length > 0 %}
+      {% for reply in feedback.get_children %}
+        <div class="comment-block child-reply L_{{reply.id}}">
+          <div class="facebook_user_img">
+            <a href="http://www.facebook.com/{{ reply.user }}" target="_blank"><img src="http://graph.facebook.com/{{ reply.user }}/picture" class="loader"/></a>
+          </div>
+          <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3> 
+          <div class="like-group">
+           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {% if voted_fb|vote:reply.id == -1 %} active {% elif voted_fb|vote:reply.id == 1 %} disabled {% endif %} {{reply.id}}" id="{{reply.id}}" vote="0"><small class="dislike {{reply.id}}">{{n_votes|key:reply.id }}</small></a>
+           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {% if voted_fb|vote:reply.id == 1 %} active {% elif voted_fb|vote:reply.id == -1 %} disabled {% endif %} {{reply.id}}" id="{{reply.id}}" vote="1"><small class="like {{reply.id}}">{{p_votes|key:reply.id }}</small></a>
+          </div>
+          <span class="date">{{reply.date|format}}</span>
+          <p>{{reply.suggestion}}</p>
+          <div class="delete-group">
+            {% if user %}
+              {% if user.username = reply.user or user.username = "admin" %}
+                <a href="javascript:;" class="L_remove delete " feedback_id="{{reply.id}}"><span class="icon-trash"></span>مسح التعليق</a>
+              {% endif %}
+            {% endif %}
+          </div>
+        </div><!-- comment end -->
+      {% endfor %}
+    {% endif %}
+    <div class="comment-block comment-entry child-reply {{feedback.id}}" style="display:none;">
+      <div class="facebook_user_img">
+        <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
+      </div>
+      <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+      <a href="javascript:;" class="L_hide close  " feedback_id="{{feedback.id}}" ><span>x</span></a>
+      <p >
+       <textarea rows="3" class="input-xlarge span7 L_reply_txt {{feedback.id}}" id="suggestion"></textarea>
+       <br />
+       <button class="btn btn-danger offset0 L_reply_bt" type="submit" id="reply" parent="{{feedback.id}}">أضف ردك الآن !</button>
+      </p>
+    </div>
+  </div>
+</div><!-- comment end -->
