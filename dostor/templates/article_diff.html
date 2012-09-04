@@ -1,10 +1,7 @@
 {% extends 'base.html' %}
-
-{% load hash %}
 {% block title %}{{article.name}}{% endblock %}
 
 {% block content %}
-
 
 <div class="row">
 	<div class="span12">
@@ -14,10 +11,16 @@
 
 <div class="row">
   <div class="span12 history-records ">
-    {% for version in versions %}
+    {% for article in versions %}
       <div class="well {% if forloop.first %}recent{% endif %}">
-        <h3><p class="mada-title"><a>{{version.name}}</a></p> <span class="edit-date"> <strong>نسخة قديمة بتاريخ </strong> 29 أغسطس الثامنة صباحا</span></h3>
-        <div id="version-67">{{version.summary|striptags}}</div><br>
+        <h3>
+        	<p class="mada-title"><a>{{article.name}}</a></p>
+        	<span class="edit-date">
+            	<strong>نسخة بتاريخ </strong> 
+                {{article.date|date:"Y/m/d"}} {{article.date|time:"G:i"}} {% if article.date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}
+            </span>
+        </h3>
+        <div id="version-67">{{ article.text|safe }}</div><br>
       </div><!-- well -->
     {% endfor %}
   </div>
