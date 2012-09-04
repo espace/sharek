@@ -748,26 +748,43 @@ left: 1px;
 .mada-title{
     color:#000;
     font-size: 24px;
-    font-family: FrutigerBold
+    font-family: FrutigerBold;
 }
 .mada-title a{
     color:#000;
 }
-.mada-title span.new{
+
+.editings-con {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+}
+.topic span.new{
     color: #fff;
-    padding:5px;
-    float: right;
+    padding:0 5px;
     background:#BA4242;
-    font-size: 10px;
+    font-size: 9px;
     font-family: tahoma;
-	margin-left: 10px;
+	margin-left: 3px;
+    line-height: 18px;
+    float: right;
+    border-radius: 0 0 3px 3px;
 }
-.mada-title .old{
-    color:#BA4242;
-    font-size: 11px;
+
+.topic .old{
+    color: #000;
+    padding:0 5px;
+    background:#ccc;
+    font-size: 9px;
     font-family: tahoma;
-    margin-right: 10px;
+    margin-left: 3px;
+    line-height: 18px;
+    float: right;
+    clear: left;
+    border-radius: 0 0 3px 3px;
+
 }
+
 .comments-number {
     background: url("../images/small-ribbon.png") no-repeat  right top transparent;
     color:#fff !important;
