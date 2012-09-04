@@ -242,6 +242,7 @@
       visible = $(".L_replies_block."+$(this[0]).attr('id')).is(":visible")
       if (visible)
       {
+		  alert('true');
         $(".L_show_more_icon."+$(this[0]).attr('id')).addClass("icon-plus")
         $(".L_show_more_icon."+$(this[0]).attr('id')).removeClass("icon-minus")
         $(".L_show_more_txt."+$(this[0]).attr('id')).text("إظهار باقي الردود")
@@ -249,6 +250,7 @@
       }
       else
       {
+		  alert('false');
         $(".L_show_more_icon."+$(this[0]).attr('id')).removeClass("icon-plus")
         $(".L_show_more_icon."+$(this[0]).attr('id')).addClass("icon-minus")
         $(".L_show_more_txt."+$(this[0]).attr('id')).text("إخفاء باقي الردود")
