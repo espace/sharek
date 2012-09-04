@@ -8,8 +8,7 @@
       $('#s3').cycle({ 
         fx:     'fade', 
         speed:   300, 
-        timeout: 3000, 
-        next:   '#s3', 
+        timeout: 3000,
         pause:   1 
       });
     });
@@ -150,8 +149,9 @@
     <div class="da-slide" style="right:0 !important; left: auto !important ;">
     
       <h1>مسودة الدستور | {{new.topic}}: {{new.name}}</h1>
-<a href="http://dostour.eg/sharek">
-      {{new.summary|safe|truncatewords_html:35}}<a href="http://dostour.eg/sharek" class="seemore">   المزيد ...  </a>
+	  <a href="{% url article_detail classified_by='topics' class_slug=new.topic.slug article_slug=new.slug %}">
+      	{{new.summary|safe|truncatewords_html:35}}
+        <a href="{% url article_detail classified_by='topics' class_slug=new.topic.slug article_slug=new.slug %}" class="seemore">   المزيد ...  </a>
       </a>
       <!--div class="comment-block ">
           <div class="facebook_user_img">
