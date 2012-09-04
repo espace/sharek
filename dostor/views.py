@@ -172,6 +172,7 @@ def article_diff(request, article_slug):
         article_info['name'] = temp.name
         article_info['slug'] = temp.slug
         article_info['date'] = temp.mod_date
+        article_info['topic_absolute_url'] = temp.topic.get_absolute_url
 
         if previous == "":
            article_info['text'] = previous = temp.summary.raw
