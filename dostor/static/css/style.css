@@ -754,10 +754,19 @@ left: 1px;
     color:#000;
 }
 .mada-title span.new{
+    color: #fff;
+    padding:5px;
+    float: right;
+    background:#BA4242;
+    font-size: 10px;
+    font-family: tahoma;
+	margin-left: 10px;
+}
+.mada-title .old{
     color:#BA4242;
     font-size: 11px;
     font-family: tahoma;
-	margin-right: 10px;
+    margin-right: 10px;
 }
 .comments-number {
     background: url("../images/small-ribbon.png") no-repeat  right top transparent;
