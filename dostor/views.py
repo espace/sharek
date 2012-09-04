@@ -45,7 +45,13 @@ def index(request):
     print temp_users
 
     for temp in temp_users:
-        top_users.append(User.objects.get(username=temp['user']))
+        try:
+            top_user = User.objects.get(username=temp['user'])
+        except Exception:
+            top_user = None
+        
+        if top_user:
+            top_users.append(top_user)
 
 
     target = 500000
