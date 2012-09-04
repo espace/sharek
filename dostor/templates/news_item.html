@@ -1,9 +1,5 @@
+<ul>
 {% for item in items %}
-<div class="da-slide">
-  <h1><a target="_blank" href="{{ item.link }}" style="color: #DF1B1C;">{{ item.title }}</a></h1>
-  
-  {{ item.summary|safe|truncatewords_html:35 }}
-  
-  <span class="date">{{item.published}}</span>
-</div>
+  <li><a href="{{ item.link }}">{{ item.title }}</a></li>
 {% endfor %}
+</ul>

@@ -61,6 +61,18 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('email', 'username' ,'first_name', 'last_name', 'is_staff', 'is_active')
     list_editable = ['is_staff', 'is_active']
     list_filter = ('is_staff', 'is_active')
+
+    def has_add_permission(self, request):
+        return False
+    def has_delete_permission(self, request, obj=None):
+        return False
+    def get_actions(self, request):
+       actions = super(UserAdmin, self).get_actions(request)
+       try:
+           del actions['delete_selected']
+       except KeyError:
+           pass
+       return actions
     
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Tag, TagAdmin)
