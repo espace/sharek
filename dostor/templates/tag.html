@@ -23,10 +23,16 @@
 			{% if articles %}
 
                 {% for article in articles %}
-                <div class="topic">
+                    <div class="topic">
+                    {% if article.id != article.original.id %}
+                    <div class="editings-con">
+                        <span class="new">نسخة معدلة </span> 
+                        <a class="old" href="{% url article_diff article_slug=article.original.slug %}" >التعديلات السابقة</a>
+                    </div>
+                    {% endif %}
                     <h3>
                         <p class="mada-title">
-                            <a href="{% url tag tag_slug=tag.get_absolute_url %}{{article.get_absolute_url}}" rel="{{tag.slug}}/{{article.slug}}">{{article.name}} </a> <span class="new">{% if article.id != article.original.id %}نسخة معدلة <a href="{% url article_diff article_slug=article.original.slug %}" > - تعديلات سابقة</a>{% endif %}</span>
+                            <a href="{% url tag tag_slug=tag.get_absolute_url %}{{article.get_absolute_url}}" rel="{{tag.slug}}/{{article.slug}}">{{article.name}} </a>
                             <a href="{% url tag tag_slug=tag.get_absolute_url %}{{article.get_absolute_url}}" class="comments-number pull-left">
                             	<i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i>
                                 {% if article.feedback_count > 0 %}

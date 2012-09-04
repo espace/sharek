@@ -21,12 +21,12 @@
                 {% if articles %}
                     {% for article in articles %}
                     <div class="topic">
-                      {% if article.id != article.original.id %}
-                            <div class="editings-con">
-                                <span class="new">نسخة معدلة </span> 
-                                <a class="old" href="{% url article_diff article_slug=article.original.slug %}" >التعديلات السابقة</a>
-                            </div>
-                            {% endif %}
+                        {% if article.id != article.original.id %}
+                        <div class="editings-con">
+                            <span class="new">نسخة معدلة </span> 
+                            <a class="old" href="{% url article_diff article_slug=article.original.slug %}" >التعديلات السابقة</a>
+                        </div>
+                        {% endif %}
                         <h3>
                             <p class="mada-title">
                                 
