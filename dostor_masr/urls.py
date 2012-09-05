@@ -5,11 +5,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-
-    
 	
     url(r'sharek/latest-comments/$', 'dostor.views.latest_comments', name='latest_comments'),
-
 
     #Facebook
     url(r'sharek/facebook/login', 'dostor.facebook.views.login', name='facebook_login'),
