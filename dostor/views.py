@@ -81,13 +81,9 @@ def tag_detail(request, tag_slug):
       user = request.user
     tags = Tag.objects.all
     tag = get_object_or_404( Tag, slug=tag_slug )
-    #articles = tag.article_set.all()
-    arts = tag.article_set.all().values('original').annotate(max_id=Max('id')).order_by()
-    articles = []
-    for art in arts:
-        articles.append(get_object_or_404( Article, id=art['max_id'] ))
-    articles = sorted(articles, key=lambda article: article.order)
     
+    articles = tag.get_articles()
+
     voted_articles = ArticleRating.objects.filter(user = user)
 
     paginator = Paginator(articles, settings.paginator) 
@@ -115,24 +111,12 @@ def topic_detail(request, topic_slug=None):
     if topic_slug:
         topics = Topic.objects.all
         topic = get_object_or_404( Topic, slug=topic_slug )
-        arts = topic.article_set.all().values('original').annotate(max_id=Max('id')).order_by()
-
-        articles = []
-        for art in arts:
-            print art
-            articles.append(get_object_or_404( Article, id= art['max_id'] ))
-            print get_object_or_404( Article, id= art['max_id'] ).order
-        articles = sorted(articles, key=lambda article: article.order)
+        articles = topic.get_articles()
     else:
         topics = Topic.objects.filter()
         if len(topics) > 0:
             topic = topics[0]
-            arts = topic.article_set.all().values('original').annotate(max_id=Max('id')).order_by()
-            articles = []
-            for art in arts:
-                print art
-                articles.append(get_object_or_404( Article, id=art['max_id'] ))
-            articles = sorted(articles, key=lambda article: article.order)
+            articles = topic.get_articles()
         else:
             topic = None
             articles = None

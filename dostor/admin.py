@@ -1,7 +1,7 @@
 from dostor.models import Tag
 from dostor.models import Article
 from dostor.models import Topic
-from dostor.models import Info, Feedback
+from dostor.models import Info, Feedback, ArticleDetails, ArticleHeader
 from dostor.models import ReadOnlyAdminFields
 from django.contrib.auth.models import User
 
@@ -9,19 +9,35 @@ from dostor.actions import export_as_csv_action
 
 from django.contrib import admin
 
+class ArticleDetailsInlineAdmin(admin.TabularInline):
+    model      = ArticleDetails
+    extra      = 1
+    can_delete = True
+    fields     = ['slug','summary','current', 'mod_date']
+
+
+class ArticleHeaderAdmin(admin.ModelAdmin):
+    inlines = [ArticleDetailsInlineAdmin,]
+    list_display = ('name','topic','order')
+    list_filter = ('topic',)
+    list_editable = ['order']
+
+    class Media:
+        js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
+
 
 class ArticleInlineAdmin(admin.TabularInline):
     model      = Article
     extra      = 0
     can_delete = True
-    fields     = [ 'tags','topic' ,'name','slug','summary','default', 'mod_date']
+    fields     = [ 'tags','topic' ,'name','slug','summary','current', 'mod_date']
 
 class ArticleAdmin(ReadOnlyAdminFields, admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
     inlines = [ArticleInlineAdmin,]
-    list_display = ('name','original','topic', 'default','order')
+    list_display = ('name','original','topic', 'current','order')
     list_filter = ('topic',)
-    list_editable = ['order', 'default']
+    list_editable = ['order', 'current']
     #readonly = ('likes', 'dislikes',)
 
     class Media:
@@ -81,3 +97,4 @@ admin.site.register(Info, InfoAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(ArticleHeader, ArticleHeaderAdmin)

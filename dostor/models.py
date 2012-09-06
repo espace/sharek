@@ -37,7 +37,17 @@ class Tag(models.Model):
         return self.slug
     
     def get_articles(self):
-        return Article.objects.filter(tag_id= self.id)
+        # the new tech of article " header and details "
+        '''
+        article_headers = self.articleheader_set.all()
+        article_details = []
+        for article_header in article_headers:
+            ad = article_header.articledetails_set.filter(current = True)
+            if len(ad) == 1:
+                article_details.append(ad[0])
+        return article_details
+        '''
+        return self.article_set.filter(current = True)
         
     class Meta:
        ordering = ["order"]
@@ -57,7 +67,17 @@ class Topic(models.Model):
         return self.slug
     
     def get_articles(self):
-        return Article.objects.filter(topic_id= self.id)
+        # the new tech of article " header and details "
+        '''
+        article_headers = self.articleheader_set.all()
+        article_details = []
+        for article_header in article_headers:
+            ad = article_header.articledetails_set.filter(current = True)
+            if len(ad) == 1:
+                article_details.append(ad[0])
+        return article_details
+        '''
+        return self.article_set.filter(current = True)
 
     def articles_count(self):
        arts = Article.objects.filter(topic_id= self.id).values('original').annotate(max_id=Max('id')).order_by()
@@ -70,6 +90,24 @@ class Topic(models.Model):
     class Meta:
        ordering = ["order"]
        
+class ArticleHeader(models.Model):
+    tags = models.ManyToManyField(Tag)
+    topic = models.ForeignKey(Topic,null = True)
+    name = models.CharField(max_length=40)
+    order = models.IntegerField(blank = True, null = True)
+
+    class Meta:
+       ordering = ["order"]
+
+class ArticleDetails(models.Model):
+    header =  models.ForeignKey(ArticleHeader, null = True, blank = True)
+    slug   = models.SlugField(max_length=40, unique=True, help_text="created from name")
+    summary = MarkupField(blank=True, default='')
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
+    current = models.BooleanField(default=False)
+    mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Last Modification Date')
+
 class Article(models.Model):
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)
@@ -80,7 +118,7 @@ class Article(models.Model):
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
     original = models.ForeignKey("self", null = True, blank = True)
-    default = models.BooleanField(default=False)
+    current = models.BooleanField(default=False)
     mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Last Modification Date')
 
     def feedback_count(self):
@@ -113,7 +151,11 @@ class Article(models.Model):
         super(Article, self).save()
         if self.original == None:
             self.original = self
+            self.current = True
             self.save()
+
+    def get_current_version(self):
+        return Article.objects.get(parent_id = self.parent_id, current = True)
 
     @classmethod
     def get_top_liked(self, limit):
@@ -130,7 +172,7 @@ class Article(models.Model):
     class Meta:
        ordering = ["order"]
 
-exclusive_boolean_fields(Article, ('default',), ('original',))
+exclusive_boolean_fields(Article, ('current',), ('original',))
 
 class Feedback(models.Model):
     article = models.ForeignKey(Article)
