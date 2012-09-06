@@ -143,15 +143,15 @@
 
       </style>
 <div class="da-slider">
-<div id="s3" >
+<div id="s3" > 
   
     {% for new in news %}
     <div class="da-slide" style="right:0 !important; left: auto !important ;">
     
-      <a href="{% url article_detail classified_by='topics' class_slug=new.topic.slug article_slug=new.slug %}"><h1>مسودة الدستور | {{new.topic}} - {{new.name}}</h1></a>
-	  <a href="{% url article_detail classified_by='topics' class_slug=new.topic.slug article_slug=new.slug %}">
+      <a target="_top" href="{% url article_detail classified_by='topics' class_slug=new.topic.slug article_slug=new.slug %}"><h1>مسودة الدستور | {{new.topic}} - {{new.name}}</h1></a>
+	  <a target="_top" href="{% url article_detail classified_by='topics' class_slug=new.topic.slug article_slug=new.slug %}">
       	{{new.summary|safe|truncatewords_html:40}}
-        <a href="{% url article_detail classified_by='topics' class_slug=new.topic.slug article_slug=new.slug %}" class="seemore">   المزيد ...  </a>
+        <a target="_top" href="{% url article_detail classified_by='topics' class_slug=new.topic.slug article_slug=new.slug %}" class="seemore">   المزيد ...  </a>
       </a>
       
       <br />
