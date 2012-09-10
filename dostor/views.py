@@ -582,7 +582,7 @@ def migrate(request):
         #header.tags = articles[0].tags
         #header.save()
         for art in articles:
-            ArticleDetails(slug = art.slug, summary = art.summary, mod_date = art.mod_date, header = header).save()
+            ArticleDetails(likes = art.likes,dislikes = art.dislikes ,slug = art.slug, summary = art.summary, mod_date = art.mod_date, header = header).save()
             details = ArticleDetails.objects.get(slug = art.slug)
             
             feedbacks = Feedback.objects.filter(article_id = art.id)
