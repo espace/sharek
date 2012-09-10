@@ -1,5 +1,5 @@
 from dostor.models import Tag
-from dostor.models import Article
+#from dostor.models import Article
 from dostor.models import Topic
 from dostor.models import Info, Feedback, ArticleDetails, ArticleHeader
 from dostor.models import ReadOnlyAdminFields
@@ -25,7 +25,7 @@ class ArticleHeaderAdmin(admin.ModelAdmin):
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
 
-
+'''
 class ArticleInlineAdmin(admin.TabularInline):
     model      = Article
     extra      = 0
@@ -42,12 +42,12 @@ class ArticleAdmin(ReadOnlyAdminFields, admin.ModelAdmin):
 
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
-    
+'''
 
 class FeedbackAdmin(admin.ModelAdmin):
     #prepopulated_fields = {"user": ["username"]}
-    list_filter = ('article',)
-    list_display = ('name', 'article','user', 'email', 'suggestion')
+    list_filter = ('articledetails',)
+    list_display = ('name', 'articledetails','user', 'email', 'suggestion')
     
 
 class TagAdmin(admin.ModelAdmin):
@@ -90,11 +90,12 @@ class UserAdmin(admin.ModelAdmin):
            pass
        return actions
     
-admin.site.register(Article, ArticleAdmin)
+#admin.site.register(Article, ArticleAdmin)
+admin.site.register(ArticleHeader, ArticleHeaderAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Topic, TopicAdmin)
 admin.site.register(Info, InfoAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
-admin.site.register(ArticleHeader, ArticleHeaderAdmin)
+

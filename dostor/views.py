@@ -11,7 +11,7 @@ from django.db import connection
 from diff_match import diff_match_patch
 from django.contrib import auth
 
-from dostor.models import Tag, Article, Feedback, Rating, Topic, Info, ArticleRating, User
+from dostor.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -61,9 +61,9 @@ def index(request):
 
     total = feedback + feedback_ratings + article_ratings
 	
-    top_liked = Article.get_top_liked(2)
-    top_disliked = Article.get_top_disliked(2)
-    top_commented = Article.get_top_commented(2)
+    top_liked = ArticleDetails.get_top_liked(2)
+    top_disliked = ArticleDetails.get_top_disliked(2)
+    top_commented = ArticleDetails.get_top_commented(2)
     tags = Tag.objects.all
     
     percent = int((float(total)/target)*100)
@@ -149,18 +149,18 @@ def article_diff(request, article_slug):
 
     lDiffClass = diff_match_patch()
 
-    article = get_object_or_404( Article, slug=article_slug )
-    tmp_versions = Article.objects.filter(original = article.original.id).order_by('id')
+    article = get_object_or_404( ArticleDetails, slug=article_slug )
+    tmp_versions = article.header.articledetails_set.all().order_by('id')#Article.objects.filter(original = article.original.id).order_by('id')
 
     previous = ''
     versions = []
     for temp in tmp_versions:
         article_info = {}
 
-        article_info['name'] = temp.name
+        article_info['name'] = temp.header.name
         article_info['slug'] = temp.slug
         article_info['date'] = temp.mod_date
-        article_info['topic_absolute_url'] = temp.topic.get_absolute_url
+        article_info['topic_absolute_url'] = temp.header.topic.get_absolute_url
 
         if previous == "":
            article_info['text'] = previous = temp.summary.raw
@@ -193,44 +193,44 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
-    article = get_object_or_404( Article, slug=article_slug )
+    article = get_object_or_404( ArticleDetails, slug=article_slug )
 
     versions = []
-    arts = Article.objects.filter(original = article.original).order_by('-id')
+    arts = article.header.articledetails_set.all() #Article.objects.filter(original = article.original).order_by('-id')
 
-    related_tags = article.tags.all
+    related_tags = article.header.tags.all
 
     top_ranked = None
     inactive_users = User.get_inactive
-    size = len(Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
+    size = len(Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
     if size > 3:
-        top_ranked = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[:3]
+        top_ranked = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[:3]
     else:
         top_ranked = None
 
     if order_by == "latest":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
+            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
+            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
     elif order_by == "order":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
+            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)
+            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)
     elif order_by == "def":
         if size > 3:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
+            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
-            feedbacks = Feedback.objects.filter(article_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
+            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
     
     
 
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
 
-    voted_fb = Rating.objects.filter(article_id = article.id, user = user)
-    voted_article = ArticleRating.objects.filter(article_id = article.id, user = user)
+    voted_fb = Rating.objects.filter(articledetails_id = article.id, user = user)
+    voted_article = ArticleRating.objects.filter(articledetails_id = article.id, user = user)
 
     article_rate = None
     for art in voted_article:
@@ -289,13 +289,13 @@ def modify(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
             sug = str(request.POST.get("suggestion").encode('utf-8'))
-            feedbacks = Feedback.objects.filter(article_id = request.POST.get("article"), email= request.POST.get("email"), name = request.POST.get("name"))
+            feedbacks = Feedback.objects.filter(articledetails_id = request.POST.get("article"), email= request.POST.get("email"), name = request.POST.get("name"))
             for feedback in feedbacks:
                 if feedback.suggestion.raw.encode('utf-8') in sug:
                     return HttpResponse(simplejson.dumps({'duplicate':True,'name':request.POST.get("name")}))
             else:
-                Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name")).save()
-                feedback = Feedback.objects.filter(article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
+                Feedback(user = request.POST.get("user_id"),articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name")).save()
+                feedback = Feedback.objects.filter(articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
             
             fb_user = FacebookSession.objects.get(user = request.user)
             # GraphAPI is the main class from facebook_sdp.py
@@ -312,12 +312,12 @@ def reply_feedback(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
             sug = str(request.POST.get("suggestion").encode('utf-8'))
-            feedbacks = Feedback.objects.filter(article_id = request.POST.get("article"), email= request.POST.get("email"), name = request.POST.get("name"))
+            feedbacks = Feedback.objects.filter(articledetails_id = request.POST.get("article"), email= request.POST.get("email"), name = request.POST.get("name"))
             for feedback in feedbacks:
                 if feedback.suggestion.raw.encode('utf-8') in sug:
                     return HttpResponse(simplejson.dumps({'duplicate':True,'name':request.POST.get("name")}))
-            Feedback(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name"), parent_id = request.POST.get("parent")).save()
-            reply = Feedback.objects.filter(user = request.POST.get("user_id"),article_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"), parent_id= request.POST.get("parent"))
+            Feedback(user = request.POST.get("user_id"),articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name"), parent_id = request.POST.get("parent")).save()
+            reply = Feedback.objects.filter(user = request.POST.get("user_id"),articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"), parent_id= request.POST.get("parent"))
             return HttpResponse(simplejson.dumps({'date':str(reply[0].date),'id':reply[0].id ,'suggestion':request.POST.get("suggestion"),'parent':request.POST.get("parent")}))
 
 def vote(request):
@@ -336,7 +336,7 @@ def vote(request):
                 record[0].vote = vote
                 record[0].save()
             else:
-                Rating(user = user, vote = vote, feedback_id = feedback,article_id = request.POST.get("article")).save()
+                Rating(user = user, vote = vote, feedback_id = feedback,articledetails_id = request.POST.get("article")).save()
             
             mod = Feedback.objects.get(id=feedback)
 
@@ -359,7 +359,7 @@ def article_vote(request):
             article =  request.POST.get("article")
             user =  request.user
 
-            record = ArticleRating.objects.filter(article_id = article, user = user )
+            record = ArticleRating.objects.filter(articledetails_id = article, user = user )
 
             vote = False
             action = 'برفض '
@@ -372,9 +372,9 @@ def article_vote(request):
                 record[0].vote = vote
                 record[0].save()
             else:
-                ArticleRating(user = user, vote = vote,article_id = article).save()
+                ArticleRating(user = user, vote = vote,articledetails_id = article).save()
             
-            votes = ArticleRating.objects.filter(article_id = article)
+            votes = ArticleRating.objects.filter(articledetails_id = article)
             p = 0
             n = 0
             for v in votes:
@@ -383,7 +383,7 @@ def article_vote(request):
               else:
                 n += 1
 
-            art = Article.objects.get(id = article)
+            art = ArticleDetails.objects.get(id = article)
             art.likes = p
             art.dislikes = n
             art.save()
@@ -460,30 +460,30 @@ def search(request):
     if len(query.strip()) == 0:
         return HttpResponseRedirect(reverse('index'))
 
-    arts = Article.objects.filter(Q(summary__contains=query.strip()) | Q(name__contains=query.strip())).values('original').annotate(max_id=Max('id')).order_by()
-    
+    arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
+    '''
     articles = []
     for art in arts:
-        articles.append(get_object_or_404( Article, id= art['max_id'] ))
+        articles.append(get_object_or_404( ArticleDetails, id= art['max_id'] ))
     
-    articles = sorted(articles, key=lambda article: article.order)
-
+    articles = sorted(arts, key=lambda article: article.order)
+    '''
     voted_articles = ArticleRating.objects.filter(user = user)
 
-    count = len(articles)
-    paginator = Paginator(articles, settings.paginator) 
+    count = len(arts)
+    paginator = Paginator(arts, settings.paginator) 
     page = request.GET.get('page')
 
     try:
-        articles = paginator.page(page)
+        arts = paginator.page(page)
     except PageNotAnInteger:
         # If page is not an integer, deliver first page.
-        articles = paginator.page(1)
+        arts = paginator.page(1)
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
-        articles = paginator.page(paginator.num_pages)
+        arts = paginator.page(paginator.num_pages)
 
-    return render_to_response('search.html',{'voted_articles':voted_articles, 'search':search,'request':request,'user':user,"articles":articles,'settings': settings,"query":query.strip(),"count":count},RequestContext(request))
+    return render_to_response('search.html',{'voted_articles':voted_articles, 'search':search,'request':request,'user':user,"articles":arts,'settings': settings,"query":query.strip(),"count":count},RequestContext(request))
 
 def info_detail(request, info_slug):
     user = None
@@ -552,20 +552,20 @@ def total_contribution(request):
 def top_liked(request):
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
-    articles = Article.get_top_liked(20)
+    articles = ArticleDetails.get_top_liked(20)
     title = 'الأكثر قبولا'
     return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_disliked(request):
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
-    articles = Article.get_top_disliked(20)
+    articles = ArticleDetails.get_top_disliked(20)
     title = 'الأكثر رفضا'
     return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_commented(request):
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
-    articles = Article.get_top_commented(20)
+    articles = ArticleDetails.get_top_commented(20)
     title = 'الأكثر مناقشة'
     return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))

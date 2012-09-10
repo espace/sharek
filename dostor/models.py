@@ -25,7 +25,6 @@ class Tag(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
-    #photo = models.ImageField(upload_to="dostor/static/photos/", blank=True)
     summary = MarkupField(blank=True, default='')
     order = models.IntegerField(blank = True, null = True)
 
@@ -38,7 +37,6 @@ class Tag(models.Model):
     
     def get_articles(self):
         # the new tech of article " header and details "
-        '''
         article_headers = self.articleheader_set.all()
         article_details = []
         for article_header in article_headers:
@@ -46,8 +44,8 @@ class Tag(models.Model):
             if len(ad) == 1:
                 article_details.append(ad[0])
         return article_details
-        '''
-        return self.article_set.filter(current = True)
+        
+        #return self.article_set.filter(current = True)
         
     class Meta:
        ordering = ["order"]
@@ -68,7 +66,6 @@ class Topic(models.Model):
     
     def get_articles(self):
         # the new tech of article " header and details "
-        '''
         article_headers = self.articleheader_set.all()
         article_details = []
         for article_header in article_headers:
@@ -76,11 +73,11 @@ class Topic(models.Model):
             if len(ad) == 1:
                 article_details.append(ad[0])
         return article_details
-        '''
-        return self.article_set.filter(current = True)
+        
+        #return self.article_set.filter(current = True)
 
     def articles_count(self):
-       arts = Article.objects.filter(topic_id= self.id).values('original').annotate(max_id=Max('id')).order_by()
+       arts = self.articleheader_set.all()
        return len(arts)
    
     def get_mod_date(self):
@@ -96,6 +93,15 @@ class ArticleHeader(models.Model):
     name = models.CharField(max_length=40)
     order = models.IntegerField(blank = True, null = True)
 
+    def clean(self):
+        if len(self.name) >= 40:
+            raise exceptions.ValidationError('Too many characters ...')
+        return self.name
+
+    def get_original(self):
+        versions = self.articledetails_set.all().order_by('id')
+        return versions[0]
+
     class Meta:
        ordering = ["order"]
 
@@ -107,6 +113,53 @@ class ArticleDetails(models.Model):
     dislikes = models.IntegerField(default=0)
     current = models.BooleanField(default=False)
     mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Last Modification Date')
+
+    def feedback_count(self):
+        inactive_users = User.get_inactive
+        return len(Feedback.objects.filter(articledetails_id = self.id).exclude(user__in=inactive_users))
+
+    def get_votes(self):
+        return Rating.objects.filter(articledetails_id= self.id)
+
+    def get_top_feedback(self):
+        inactive_users = User.get_inactive
+        feedback = Feedback.objects.filter(articledetails_id= self.id).order_by('-order').exclude(user__in=inactive_users)[:1]
+        if len(feedback) == 1:
+            return feedback[0]
+        else:
+            return None
+    
+    def __unicode__(self):
+        return self.slug
+    
+    def get_absolute_url(self):
+        return "%s/" % (self.slug)
+
+    def is_original(self):
+        versions = self.header.articledetails_set.all().order_by('id')
+        if self.id == versions[0].id:
+            return True
+        else:
+            return False
+
+    def get_current_version(self):
+        return self.header.articledetails_set.get(current = True)
+        #Article.objects.get(parent_id = self.parent_id, current = True)
+
+    @classmethod
+    def get_top_liked(self, limit):
+      return ArticleDetails.objects.filter(current = True).order_by('-likes')[:limit]
+    
+    @classmethod
+    def get_top_disliked(self, limit):
+      return ArticleDetails.objects.filter(current = True).order_by('-dislikes')[:limit]
+    
+    @classmethod
+    def get_top_commented(self, limit):
+      return ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')[:limit]
+
+exclusive_boolean_fields(ArticleDetails, ('current',), ('header',))
+
 
 class Article(models.Model):
     tags = models.ManyToManyField(Tag)
@@ -172,10 +225,12 @@ class Article(models.Model):
     class Meta:
        ordering = ["order"]
 
-exclusive_boolean_fields(Article, ('current',), ('original',))
+
+
 
 class Feedback(models.Model):
-    article = models.ForeignKey(Article)
+    articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
+    #article = models.ForeignKey(Article)
     parent = models.ForeignKey("self",blank=True,null=True)
     name = models.CharField(max_length=200)
     email = models.SlugField(default='')
@@ -189,14 +244,16 @@ class Feedback(models.Model):
         return Feedback.objects.filter(parent_id = self.id).order_by('id').exclude(user__in=inactive_users)
 
 class Rating(models.Model):
-    article = models.ForeignKey(Article)
+    articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
+    #article = models.ForeignKey(Article)
     feedback = models.ForeignKey(Feedback)
     user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()
 
 
 class ArticleRating(models.Model):
-    article = models.ForeignKey(Article)
+    articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
+    #article = models.ForeignKey(Article)
     user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()
 
