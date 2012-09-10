@@ -56,6 +56,8 @@ urlpatterns = patterns('',
     
     url(r'^sharek/$', 'dostor.views.index', name='index'),
 	
+	url(r'^sharek/', include('social_auth.urls')),
+	
     url(r'$', 'dostor.views.tmp'),
       
 )
