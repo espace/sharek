@@ -303,7 +303,7 @@ def modify(request):
             attachment = {}
             attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")
             attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-            message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(Article, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
+            message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
             graph.put_wall_post(message, attachment)
             
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
@@ -498,7 +498,7 @@ def info_detail(request, info_slug):
     return render_to_response('info.html',template_context ,RequestContext(request))
 
 def slider(request):
-    news = Article.objects.order_by('?')[:3]
+    news = ArticleDetails.objects.order_by('?')[:3]
     return render_to_response('slider.html',{'news':news} ,RequestContext(request))
 
 def latest_comments(request):
@@ -514,7 +514,7 @@ def latest_comments(request):
         offset = settings.paginator * int(page)
         limit = settings.paginator
 
-        obj_article = get_object_or_404( Article, id=article )
+        obj_article = get_object_or_404( ArticleDetails, id=article )
 
         votes = obj_article.get_votes()
         p_votes = {}
