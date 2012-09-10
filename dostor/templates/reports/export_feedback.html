@@ -3,7 +3,7 @@
 {% load replace %}
 {% load hash %} 
 <!-- {% load date_format %}  -->
-{% block title %}{{article.name}}{% endblock %}
+{% block title %}{{article.header.name}}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -18,8 +18,8 @@
   	  <div class="sidebar">
       	<ul class="nav nav-pills nav-stacked">
           {% for item in articles %}
-            <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %}">
-            	<a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}">تعليقات {{ item.name }}</a>
+            <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %} {% if item.current %}current{% endif %}" {% if item.is_original = 0 %}style="background: red"{% endif %}>
+            	<a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}">تعليقات {{ item.header.name }}</a>
             </li>
           {% endfor %}
        </ul>
@@ -29,7 +29,7 @@
   <div id="ajax-container" class="span9">
     
     <div class="topic">
-        <h3><p class="mada-title"><a>{{article.name}}</a></p></h3>
+        <h3><p class="mada-title"><a>{{article.header.name}}</a></p></h3>
         <p>{{article.summary}}</p>
         {% if article.mod_date %}
         <p class="edit-date-article">آخر تحديث في {{article.mod_date|date:"Y/m/d"}} {{article.mod_date|time:"G:i"}} {% if article.mod_date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}</p><br />

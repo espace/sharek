@@ -1,17 +1,17 @@
 {% load hash %}
 {% load call %}
 <div class="topic">
-  {% if article.id != article.original.id %}
+  {% if article.id != article.header.get_original.id %}
   <div class="editings-con">
       <span class="new">نسخة معدلة </span> 
-      <a class="old" href="{% url article_diff article_slug=article.original.slug %}" >التعديلات السابقة</a>
+      <a class="old" href="{% url article_diff article_slug=article.header.get_original.slug %}" >التعديلات السابقة</a>
   </div>
   {% endif %}
     
   <h3>
       <p class="mada-title">
-          <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}">{{article.name}}</a>
-          <a href="{% url article_detail classified_by='topics' class_slug=article.topic.get_absolute_url article_slug=article.slug %}" class="comments-number pull-left">
+          <a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</a>
+          <a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}" class="comments-number pull-left">
             <i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i>
               {% if article.feedback_count > 0 %}
                   {{article.feedback_count}}
