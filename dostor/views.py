@@ -11,7 +11,7 @@ from django.db import connection
 from diff_match import diff_match_patch
 from django.contrib import auth
 
-from dostor.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
+from dostor.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User, Article
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -570,3 +570,33 @@ def top_commented(request):
     articles = ArticleDetails.get_top_commented(20)
     title = 'الأكثر مناقشة'
     return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
+
+
+def migrate(request):
+    org_arts = Article.objects.filter(current = True) #all().values('original').annotate(org='original')
+    
+    for org_art in org_arts:
+        articles = Article.objects.filter(original_id = org_art.original_id)
+        ArticleHeader(name = articles[0].name, topic = articles[0].topic).save()
+        header = ArticleHeader.objects.get(name = articles[0].name)
+        #header.tags = articles[0].tags
+        #header.save()
+        for art in articles:
+            ArticleDetails(slug = art.slug, summary = art.summary, mod_date = art.mod_date, header = header).save()
+            details = ArticleDetails.objects.get(slug = art.slug)
+            
+            feedbacks = Feedback.objects.filter(article_id = art.id)
+            ratings = Rating.objects.filter(article_id = art.id)
+            art_ratings = ArticleRating.objects.filter(article_id = art.id)
+
+            for feedback in feedbacks:
+                feedback.articledetails_id = details.id#feedback.article_id
+                feedback.save()
+            for rating in ratings:
+                rating.articledetails_id = details.id#feedback.article_id
+                rating.save()
+            for art_rating in art_ratings:
+                art_rating.articledetails_id = details.id#feedback.article_id
+                art_rating.save()
+
+    return render_to_response('migrate.html',{'status':"done isA"},RequestContext(request))
