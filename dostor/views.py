@@ -303,7 +303,7 @@ def modify(request):
             attachment = {}
             attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")
             attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-            message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).name.encode('utf-8')+" من الدستور"
+            message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
             graph.put_wall_post(message, attachment)
             
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
