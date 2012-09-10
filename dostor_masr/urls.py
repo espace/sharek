@@ -22,6 +22,7 @@ urlpatterns = patterns('',
     url(r'^sharek/admin/', include(admin.site.urls)),
 
     url(r'^sharek/migrate/$', 'dostor.views.migrate', name='migrate'),
+    url(r'^sharek/migrate_db/$', 'dostor.views.migrate_db', name='migrate_db'),
     
     url(r'^sharek/slider/$', 'dostor.views.slider', name='slider'),
     url(r'^sharek/search/$', 'dostor.views.search', name='search'),

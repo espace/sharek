@@ -571,10 +571,21 @@ def top_commented(request):
     title = 'الأكثر مناقشة'
     return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
 
-
 def migrate(request):
-    org_arts = Article.objects.filter(current = True) #all().values('original').annotate(org='original')
+    return render_to_response('migrate.html',{},RequestContext(request))
+
+def migrate_db(request):
+    #org_arts = Article.objects.filter(current = True) #all().values('original').annotate(org='original')
     
+    arts = Article.objects.all().values('original').annotate(max_id=Max('id')).order_by()
+
+    org_arts = []
+    for art in arts:
+        temp = get_object_or_404( Article, id= art['max_id'] )
+        temp.current = True
+        temp.save()
+        org_arts.append(temp)
+
     for org_art in org_arts:
         articles = Article.objects.filter(original_id = org_art.original_id)
         ArticleHeader(name = articles[0].name, topic = articles[0].topic).save()
@@ -582,7 +593,7 @@ def migrate(request):
         #header.tags = articles[0].tags
         #header.save()
         for art in articles:
-            ArticleDetails(likes = art.likes,dislikes = art.dislikes ,slug = art.slug, summary = art.summary, mod_date = art.mod_date, header = header).save()
+            ArticleDetails(current = art.current,likes = art.likes,dislikes = art.dislikes ,slug = art.slug, summary = art.summary, mod_date = art.mod_date, header = header).save()
             details = ArticleDetails.objects.get(slug = art.slug)
             
             feedbacks = Feedback.objects.filter(article_id = art.id)
@@ -599,4 +610,4 @@ def migrate(request):
                 art_rating.articledetails_id = details.id#feedback.article_id
                 art_rating.save()
 
-    return render_to_response('migrate.html',{'status':"done isA"},RequestContext(request))
+    return HttpResponse(simplejson.dumps({'done':"done isA"}))
