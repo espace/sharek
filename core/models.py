@@ -173,7 +173,8 @@ class Article(models.Model):
     original = models.ForeignKey("self", null = True, blank = True)
     current = models.BooleanField(default=False)
     mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Last Modification Date')
-
+    
+    
     def feedback_count(self):
         inactive_users = User.get_inactive
         return len(Feedback.objects.filter(article_id = self.id).exclude(user__in=inactive_users))
