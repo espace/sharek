@@ -298,14 +298,14 @@ def modify(request):
                 feedback = Feedback.objects.filter(articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
             
             if request.user.username != "admin":
-            fb_user = FacebookSession.objects.get(user = request.user)
-            # GraphAPI is the main class from facebook_sdp.py
-            graph = facebook_sdk.GraphAPI(fb_user.access_token)
-            attachment = {}
-                attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
-            attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-                message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
-            graph.put_wall_post(message, attachment)
+                 fb_user = FacebookSession.objects.get(user = request.user)
+                 # GraphAPI is the main class from facebook_sdp.py
+                 graph = facebook_sdk.GraphAPI(fb_user.access_token)
+                 attachment = {}
+                 attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
+                 attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
+                 message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
+                 graph.put_wall_post(message, attachment)
             
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
@@ -551,25 +551,61 @@ def total_contribution(request):
 
 
 def top_liked(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_liked(20)
     title = 'الأكثر قبولا'
-    return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_disliked(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_disliked(20)
     title = 'الأكثر رفضا'
-    return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_commented(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_commented(20)
     title = 'الأكثر مناقشة'
-    return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
+
+def top_users_map(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
+    top_users = []
+    inactive_users = User.get_inactive
+    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users)[:500]
+
+    for temp in temp_users:
+        try:
+            top_user = User.objects.get(username=temp['user'])
+        except Exception:
+            top_user = None
+        
+        if top_user:
+            top_users.append(top_user)
+
+    return render_to_response('top_users_map.html', {'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
 
 def migrate(request):
     return render_to_response('migrate.html',{},RequestContext(request))
