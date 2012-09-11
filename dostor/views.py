@@ -588,7 +588,7 @@ def migrate_db(request):
 
     for org_art in org_arts:
         articles = Article.objects.filter(original_id = org_art.original_id)
-        ArticleHeader(name = articles[0].name, topic = articles[0].topic).save()
+        ArticleHeader(order = articles[0].order,name = articles[0].name, topic = articles[0].topic).save()
         header = ArticleHeader.objects.get(name = articles[0].name)
         #header.tags = articles[0].tags
         #header.save()
