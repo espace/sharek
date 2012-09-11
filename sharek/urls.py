@@ -43,7 +43,6 @@ urlpatterns = patterns('',
     #Topic detail URL    
     url(r'^sharek/topics/$', 'core.views.topic_detail', name='topics'),
     url(r'^sharek/topic/(?P<topic_slug>[-\w]+)/$', 'core.views.topic_detail', name='topic'),
-	
     
     url(r'^sharek/article_versions/(?P<article_slug>[-\w]+)/$', 'core.views.article_diff', name='article_diff'),
 
@@ -55,6 +54,8 @@ urlpatterns = patterns('',
     url(r'^sharek/top_commented/', 'core.views.top_commented', name='top_commented'),
     
     url(r'^sharek/$', 'core.views.index', name='index'),
+	
+	url(r'^sharek/', include('social_auth.urls')),
 	
     url(r'$', 'core.views.tmp'),
       
