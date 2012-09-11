@@ -1,0 +1,151 @@
+{% extends 'base.html' %} 
+
+{% load humanize %}
+
+{% block title %}الصفحة الرئيسية{% endblock %}
+
+{% block content %}
+
+<!-- <script src="{{ STATIC_URL }}js/init.js" type="text/javascript"></script> 
+ -->
+{% if perecent > 50 %}
+<style>
+.progress-promo .comments-till-now { margin-right: -194px; }
+.progress-promo .comments-till-now::after { left: 20px; }
+</style>
+{% endif %}
+
+<a href="{% url socialauth_begin 'facebook' %}">Facebook login</a>
+
+
+  <div class="row promo">
+    <div class="">
+      <div class="span6 progress-promo">
+        <p>هذا هو الموقع الرسمي للجمعية التأسيسية لوضع مشروع الدستور, والمواد المعلنة هنا هي الوحيدة المعتمدة من الجمعية وسيتم الأخذ بالملاحظات والمقترحات الموجودة هنا فقط ولا يوجد أي موقع آخر يمثل الجمعية.</p>
+        <a href="{% url topics %}" class="btn btn-green">شارك برأيك فى الدستور!</a>
+      </div>
+      <div class="span6 map">
+        <iframe width="460" height="230" src="http://www.youtube.com/embed/2ddxz5o_e18" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div><!-- below header -->
+  </div><!-- row -->
+  
+<div class="row">
+  <div class="span12 "> <span class="divider"></span> </div>
+</div>
+<!-- row -end -->
+
+<div class="row">
+  <div class="span8 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
+  <div class="span4 "> <h1 class="headtitle"><span>عدد مشاركات الزوار</span></h1> </div>
+</div>
+<!-- row -end -->
+
+<div class="row">
+  <div class="home-sections span8">
+  
+	<ul class="nav nav-pills divider-vert">
+      {% for topic_item in topics %}
+      <li class="span4"> 
+        <a href="{% url topic topic_slug=topic_item.get_absolute_url %}">
+          <span class="home-sections-icon {{topic_item.slug}}"></span>
+          {{topic_item.name}}
+          {{topic_item.summary}}
+        </a>
+        {% if topic_item.articles_count > 0 %}
+        	{% if topic_item.articles_count < 11 %}
+	        <div class="articles-count-new">{{ topic_item.articles_count }} مواد</div>
+    	    {% elif topic_item.articles_count >= 11 %}
+        	<div class="articles-count-new">{{ topic_item.articles_count }} مادة</div>
+            {% endif %}
+        {% endif %}
+        
+        {% if topic_item.get_mod_date and topic_item.get_mod_date.mod_date %}
+        <span class="edit-date"><i class=" icon-time"></i>   آخر تحديث  <strong>{{topic_item.get_mod_date.mod_date|date:"Y/m/d"}} </strong> <strong>{{topic_item.get_mod_date.mod_date|time:"G:i"}} </strong>{% if topic_item.get_mod_date.mod_date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}</span>
+        {% else %}
+        <span class="edit-date"><i class=" icon-time"></i> لم يتم التحديث من قبل</span>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+    
+    <div class="span12 "> <span style="margin-right:-20px;" class="divider"></span> </div>
+    
+    <div class="updates span8 divider-vert"> 
+            <div class="span4 most-liked">
+              <h1 class="headtitle small"><span>الأكثر قبولا</span></h1> 
+
+              {% for article in top_liked %}
+                <dl>
+                    <dt>
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</a>
+                      <span class="icon-update">{{article.likes}}</span>
+                    </dt> 
+                    <dd>{{article.summary|safe|truncatewords_html:5}}<a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">  ←</a></dd>
+                </dl>
+              {% endfor %}
+    
+           </div>
+
+           <div class="span4 most-argued">
+                <h1 class="headtitle small"><span><i class="icon-fire"></i>الأكثر مناقشة</span></h1> 
+                {% for article in top_commented %}
+                <dl>
+                    <dt>
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</a> 
+                      <span class="icon-update"><i class="icon-comment"></i>{{article.feedback_count}}</span>
+                    </dt> 
+                    <dd>{{article.summary|safe|truncatewords_html:5}}<a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">  ←</a></dd>
+                </dl>
+              {% endfor %}
+           </div> <!--  Most liked -->
+
+        </div>
+    
+  </div>
+  <!-- sidebar -->
+ 
+  <div class="facebook-plugin span4"> 
+  
+  <p class="mosharakat_number">
+    {{ total|intcomma }}
+    <br />
+    <span>مشاركة على مسودة الدستور المصرى</span>
+  </p>
+
+   <div class="top-members ">
+      <h4> <i class="icon-star"></i> أعلى المشاركين</h4>
+      <ul>
+      	{% for top in top_users %}
+        <li><a href="http://fb.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
+        {% endfor %}
+      </ul>
+  </div>
+
+    <!-- <div id="canvas"></div> -->
+    <!-- <input type="hidden" id="prgress_indicator" value="{{ percent_draw }}"> --><!-- The circle Progress Indicator -->
+<!--     <input type="hidden" id="prgress_Number" value="{{ total|intcomma }}"> --><!-- The circle Progress Indicator -->
+  <!--   <input type="hidden" id="prgress_Percentage_Number" value="{{ percent }}%"> --><!-- The circle Progress Indicator -->
+
+   <!--  <div class="circleText">
+      <p class="fir" >
+        عدد المشاركات <br />
+      <strong>{{ total|intcomma }} </strong>
+      </p>
+    
+      -->
+    </div>
+  
+       <div class="tags span4">     
+          <p> روابط دلالية:</p>
+          {% for tag in tags %}
+            <a href="{% url tag tag_slug=tag.get_absolute_url %}">{{tag.name}}</a>
+          {% endfor %}
+       </div>   
+  </div>
+  <!--span --> 
+</div>
+<!-- row end --> 
+
+
+{% endblock %}

@@ -1,0 +1,166 @@
+<head>
+  <script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+  <script src="http://bxslider.com/sites/default/files/jquery.bxSlider.min.js" type="text/javascript"></script>
+  <script src="{{STATIC_URL}}js/jquery.cycle.all.js" type="text/javascript"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('#slider1').bxSlider();
+      $('#s3').cycle({ 
+        fx:     'fade', 
+        speed:   300, 
+        timeout: 3000,
+        pause:   1 
+      });
+    });
+  </script>
+</head>
+
+{% load date_format %}
+  <style type="text/css">
+        .da-slider{
+          direction: rtl; 
+            width: 665px;
+            padding: 20px;
+            height: 200px;
+            position: relative;
+        }
+
+
+        h1{
+          color: #df1b1c;
+          font-size: 18px;
+          margin-top: 0;
+        }
+
+          p.mada{
+
+            font: 12px/18px tahoma,geneva;
+            height: 57px;
+          }
+        .comment-block{   
+            float: right;
+            padding: 5px 10px;
+            background-color: #f7f7f7;
+            border-radius: 5px;
+            border:solid 1px #e7e7e7;
+            width: 97%;
+            font: 12px tahoma,geneva;
+            height: 70px;
+
+        }
+        .comment-block .name{
+            display: inline;
+            float: right;
+        }
+        .facebook_user_img{
+            float: right;
+            margin-left: 5px;
+        }
+        .facebook_user_img img{
+          border-radius: 5px;
+        }
+        h3{
+          margin:0;
+        }
+        .comment-block .name a{
+            font-size:12px;
+            color:#333 !important;
+        }
+        .da-slide a p{
+          text-decoration: none;
+		  font-size: 15px;
+          display: inline;
+        }
+         .da-slide a{
+          text-decoration: none;
+          color: #000;
+          display: inline;
+        }
+        .da-slide a:visited{
+          
+          color: #000;
+          
+        }
+        .comment-block .on-subject{
+            display: inline;
+            margin-right: 10px;
+        }
+        .comment-block .on-subject a{
+            font-size:12px;
+        }
+        .comment-block .date{
+            float:left;
+            position: absolute;
+            left:20px;
+            top: 20px;
+            color:#9d9d9d;
+            font: 12px tahoma,geneva;
+
+        }
+        .seemore{
+          color: #a1a1a1 !important;
+          display: inline;
+          text-decoration: underline;
+         /* width: 180px;
+          margin: 0 auto;
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 20px;*/
+
+        }
+        .seemore:after{
+          content: "←"
+        }
+        .seemore:hover{
+          color: #222;
+        }
+
+        .news-con h3{
+          margin: 15px 0 5px 0;
+        }
+        .news-con ul{
+          margin:0;
+          padding-right: 0;
+        }
+        .news-con ul li{
+          list-style-type: none;
+          background: url('http://dostour.eg/templates/dostempl/images/blue-arrowe.png') top right no-repeat;
+          margin: 0;
+          padding: 2px 20px 0px 0;
+          list-style: none;
+
+        }
+        .news-con ul li a{
+          padding-left: 0px;
+          padding-right: 0px;
+          color: black;
+          text-decoration: none;
+          font: bold 14px Arial;
+
+        }
+        
+
+      </style>
+<div class="da-slider">
+<div id="s3" > 
+  
+    {% for new in news %}
+    <div class="da-slide" style="right:0 !important; left: auto !important ;">
+    
+      <a target="_top" href="{% url article_detail classified_by='topics' class_slug=new.header.topic.slug article_slug=new.slug %}"><h1>مسودة الدستور | {{new.header.topic}} - {{new.header.name}}</h1></a>
+	  <a target="_top" href="{% url article_detail classified_by='topics' class_slug=new.topic.slug article_slug=new.slug %}">
+      	{{new.summary|safe|truncatewords_html:40}}
+        <a target="_top" href="{% url article_detail classified_by='topics' class_slug=new.header.topic.slug article_slug=new.slug %}" class="seemore">   المزيد ...  </a>
+      </a>
+      
+      <br />
+    </div>
+    {% endfor %}
+</div>
+ <div class="news-con">
+      <h3>آخر الأخبار</h3>
+      {% load feeds %}
+      {% include_feed "http://dostour.eg/%D8%A7%D9%84%D8%A3%D8%AE%D8%A8%D8%A7%D8%B1?format=feed&type=rss" 3 news_item.html %}
+ </div>  <!-- News con -->
+</div><!-- con -->
