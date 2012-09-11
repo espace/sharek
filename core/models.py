@@ -229,7 +229,6 @@ class Article(models.Model):
 
 
 class Feedback(models.Model):
-    articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
     article = models.ForeignKey(Article, null = True, blank = True)
     parent = models.ForeignKey("self",blank=True,null=True)
     name = models.CharField(max_length=200)
@@ -238,6 +237,7 @@ class Feedback(models.Model):
     date = models.DateTimeField( auto_now_add=True, default=datetime.now() ,blank=True,null=True)
     order = models.IntegerField(default=0)
     user = models.CharField(max_length=200,default='')
+    articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
 
     def get_children(self):
         inactive_users = User.get_inactive
