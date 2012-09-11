@@ -1,7 +1,7 @@
 from core.models import Tag
 #from core.models import Article
 from core.models import Topic
-from core.models import Info, Feedback, ArticleDetails, ArticleHeader
+from core.models import Info, Feedback, ArticleDetails, ArticleHeader, Article
 from core.models import ReadOnlyAdminFields
 from django.contrib.auth.models import User
 
@@ -25,7 +25,7 @@ class ArticleHeaderAdmin(admin.ModelAdmin):
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
 
-'''
+
 class ArticleInlineAdmin(admin.TabularInline):
     model      = Article
     extra      = 0
@@ -42,7 +42,7 @@ class ArticleAdmin(ReadOnlyAdminFields, admin.ModelAdmin):
 
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
-'''    
+ 
 
 class FeedbackAdmin(admin.ModelAdmin):
     #prepopulated_fields = {"user": ["username"]}
@@ -90,7 +90,7 @@ class UserAdmin(admin.ModelAdmin):
            pass
        return actions
     
-#admin.site.register(Article, ArticleAdmin)
+admin.site.register(Article, ArticleAdmin)
 admin.site.register(ArticleHeader, ArticleHeaderAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Topic, TopicAdmin)
