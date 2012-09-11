@@ -11,13 +11,13 @@ from django.db import connection
 from diff_match import diff_match_patch
 from django.contrib import auth
 
-from dostor.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User, Article
+from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from dostor.facebook.models import FacebookSession
-from dostor.facebook import facebook_sdk
-from dostor_masr import settings
+from core.facebook.models import FacebookSession
+from core.facebook import facebook_sdk
+from sharek import settings
 
 from django.db.models import Q, Count
 
@@ -298,14 +298,14 @@ def modify(request):
                 feedback = Feedback.objects.filter(articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
             
             if request.user.username != "admin":
-                fb_user = FacebookSession.objects.get(user = request.user)
-                # GraphAPI is the main class from facebook_sdp.py
-                graph = facebook_sdk.GraphAPI(fb_user.access_token)
-                attachment = {}
+            fb_user = FacebookSession.objects.get(user = request.user)
+            # GraphAPI is the main class from facebook_sdp.py
+            graph = facebook_sdk.GraphAPI(fb_user.access_token)
+            attachment = {}
                 attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
-                attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
+            attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
                 message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
-                graph.put_wall_post(message, attachment)
+            graph.put_wall_post(message, attachment)
             
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
@@ -466,7 +466,7 @@ def search(request):
     articles = []
     for art in arts:
         articles.append(get_object_or_404( ArticleDetails, id= art['max_id'] ))
-    
+
     articles = sorted(arts, key=lambda article: article.order)
     '''
     voted_articles = ArticleRating.objects.filter(user = user)

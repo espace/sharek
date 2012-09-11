@@ -5,7 +5,7 @@ import cgi
 import urllib
 import simplejson 
 
-from dostor.facebook import models
+from core.facebook import models
 
 class FacebookBackend:
     

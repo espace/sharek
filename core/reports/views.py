@@ -6,10 +6,10 @@ from django.template import Context
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 
-from dostor.models import Tag , ArticleDetails
-from dostor.models import Feedback, Rating, Topic
-from dostor.models import Info, ArticleRating
-from dostor.views import login
+from core.models import Tag, ArticleDetails
+from core.models import Feedback, Rating, Topic
+from core.models import Info, ArticleRating
+from core.views import login
 
 from operator import attrgetter
 
