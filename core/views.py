@@ -11,7 +11,7 @@ from django.db import connection
 from diff_match import diff_match_patch
 from django.contrib import auth
 
-from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
+from core.models import Tag, Article, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
