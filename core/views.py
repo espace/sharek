@@ -551,25 +551,61 @@ def total_contribution(request):
 
 
 def top_liked(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_liked(20)
     title = 'الأكثر قبولا'
-    return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_disliked(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_disliked(20)
     title = 'الأكثر رفضا'
-    return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_commented(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_commented(20)
     title = 'الأكثر مناقشة'
-    return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
+
+def top_users_map(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
+    top_users = []
+    inactive_users = User.get_inactive
+    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users)[:500]
+
+    for temp in temp_users:
+        try:
+            top_user = User.objects.get(username=temp['user'])
+        except Exception:
+            top_user = None
+        
+        if top_user:
+            top_users.append(top_user)
+
+    return render_to_response('top_users_map.html', {'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
 
 def migrate(request):
     return render_to_response('migrate.html',{},RequestContext(request))
