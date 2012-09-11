@@ -30,7 +30,7 @@ urlpatterns = patterns('',
     url(r'^sharek/reply_feedback/', 'dostor.views.reply_feedback', name='reply_feedback'),
     url(r'^sharek/remove_feedback/', 'dostor.views.remove_feedback', name='remove_feedback'),
     url(r'^sharek/facebook/', 'dostor.views.facebook_comment', name='facebook_comment'),
-
+	url(r'^sharek/logout', 'dostor.views.logout', name='logout'),
     url(r'^sharek/info/(?P<info_slug>[-\w]+)/$', 'dostor.views.info_detail', name='info'),
 
     #Article detail URL    

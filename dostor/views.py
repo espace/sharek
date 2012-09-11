@@ -569,3 +569,8 @@ def top_commented(request):
     articles = ArticleDetails.get_top_commented(20)
     title = 'الأكثر مناقشة'
     return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
+
+def logout(request):
+    template_context = {}
+    auth.logout(request)
+    return HttpResponseRedirect(reverse('index'))
