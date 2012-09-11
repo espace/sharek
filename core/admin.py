@@ -30,7 +30,7 @@ class ArticleInlineAdmin(admin.TabularInline):
     model      = Article
     extra      = 0
     can_delete = True
-    fields     = [ 'tags','topic' ,'name','slug','summary','current', 'mod_date']
+    fields     = [ 'tags','topic' ,'name','slug','summary','current', 'mod_date','likes', 'dislikes']
 
 class ArticleAdmin(ReadOnlyAdminFields, admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
