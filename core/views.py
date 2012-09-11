@@ -594,7 +594,7 @@ def top_users_map(request):
 
     top_users = []
     inactive_users = User.get_inactive
-    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users)[:1000]
+    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users)[:780]
 
     for temp in temp_users:
         try:
