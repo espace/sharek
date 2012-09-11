@@ -46,6 +46,7 @@ urlpatterns = patterns('',
     
     url(r'^sharek/article_versions/(?P<article_slug>[-\w]+)/$', 'core.views.article_diff', name='article_diff'),
 
+	url(r'^sharek/map/', 'core.views.top_users_map', name='top_users_map'),
 	url(r'^sharek/total_contributions/', 'core.views.total_contribution', name='total_contributions'),
 	
     # statistics pages
