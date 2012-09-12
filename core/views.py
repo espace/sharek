@@ -610,9 +610,7 @@ def top_users_map(request):
 def migrate(request):
     return render_to_response('migrate.html',{},RequestContext(request))
 
-def migrate_db(request):
-    #org_arts = Article.objects.filter(current = True) #all().values('original').annotate(org='original')
-    
+def migrate_db(request):    
     arts = Article.objects.all().values('original').annotate(max_id=Max('id')).order_by()
 
     org_arts = []
@@ -624,8 +622,9 @@ def migrate_db(request):
 
     for org_art in org_arts:
         articles = Article.objects.filter(original_id = org_art.original_id)
-        ArticleHeader(order = articles[0].order,name = articles[0].name, topic = articles[0].topic).save()
-        header = ArticleHeader.objects.get(name = articles[0].name)
+        org = Article.objects.get(id = org_art.original_id)
+        ArticleHeader(order = org.order,name = org.name, topic = org.topic).save()
+        header = ArticleHeader.objects.get(name = org.name)
         #header.tags = articles[0].tags
         #header.save()
         for art in articles:
@@ -637,13 +636,34 @@ def migrate_db(request):
             art_ratings = ArticleRating.objects.filter(article_id = art.id)
 
             for feedback in feedbacks:
-                feedback.articledetails_id = details.id#feedback.article_id
+                feedback.articledetails_id = details.id
                 feedback.save()
             for rating in ratings:
-                rating.articledetails_id = details.id#feedback.article_id
+                rating.articledetails_id = details.id
                 rating.save()
             for art_rating in art_ratings:
-                art_rating.articledetails_id = details.id#feedback.article_id
+                art_rating.articledetails_id = details.id
                 art_rating.save()
+
+    return HttpResponse(simplejson.dumps({'done':"done isA"}))
+
+def migrate_tags(request):
+    arts = Article.objects.all().values('original').annotate(max_id=Max('id')).order_by()
+
+    org_arts = []
+    for art in arts:
+        temp = get_object_or_404( Article, id= art['max_id'] )
+        org_arts.append(temp)
+
+    for org_art in org_arts:
+        article = Article.objects.get(id = org_art.original_id)
+        header = ArticleHeader.objects.get(name = article.name)
+
+        tags = article.tags.all()
+
+        for tag in tags:
+            header.tags.add(tag)
+            header.save()
+
 
     return HttpResponse(simplejson.dumps({'done':"done isA"}))
