@@ -103,6 +103,8 @@ class ArticleHeader(models.Model):
         return versions[0]
 
     class Meta:
+       verbose_name = "Article"
+       verbose_name_plural = "Articles"
        ordering = ["order"]
 
 class ArticleDetails(models.Model):
@@ -157,6 +159,10 @@ class ArticleDetails(models.Model):
     @classmethod
     def get_top_commented(self, limit):
       return ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')[:limit]
+
+    class Meta:
+       verbose_name = "Article detail"
+       verbose_name_plural = "Article details"
 
 exclusive_boolean_fields(ArticleDetails, ('current',), ('header',))
 
