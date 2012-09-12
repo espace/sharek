@@ -16,6 +16,7 @@
   <link href="{{ STATIC_URL }}css/tipsy.css" rel="stylesheet">
  
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js" ></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.cookie.js" ></script>
   <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js" ></script>
 
   <script type="text/javascript" src="{{ STATIC_URL }}js/ajaxify-v2/jquery.history.js" ></script>
@@ -59,6 +60,13 @@
   <meta property="og:site_name" content="Dostour.eg"/>
   <meta property="og:description" content="دستور مصر"/>
   <meta property="og:type" content="website"/>
+  
+  <script type="text/javascript">
+	if(!$.cookie("cleaned"))
+		$.cookie("sessionid", null);
+	$.cookie('cleaned', 'true', { expires: 365 });
+  </script>
+  
 </head>
 
 <body>
