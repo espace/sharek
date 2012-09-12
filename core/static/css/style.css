@@ -677,6 +677,7 @@ left: 1px;
 .headtitle.innerpage span {
     margin-top: 10px !important;
     margin-right: -20px;
+	text-shadow: 1px 1px 1px #FFFFFF;
 }
 .headsubtitle,
 .headsubtitle a{
@@ -1830,7 +1831,7 @@ span.divider{
 
 .map-layout{
     width: 1030px;
-    height:1078px;
+    height:1178px;
     position: absolute;
     top: 78px;
     left: 0;
