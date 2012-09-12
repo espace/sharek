@@ -236,7 +236,7 @@ class Article(models.Model):
 
 
 class Feedback(models.Model):
-    article = models.ForeignKey(Article, null = True, blank = True)
+    #article = models.ForeignKey(Article, null = True, blank = True)
     parent = models.ForeignKey("self",blank=True,null=True)
     name = models.CharField(max_length=200)
     email = models.SlugField(default='')
@@ -252,7 +252,7 @@ class Feedback(models.Model):
 
 class Rating(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
-    article = models.ForeignKey(Article, null = True, blank = True)
+    #article = models.ForeignKey(Article, null = True, blank = True)
     feedback = models.ForeignKey(Feedback)
     user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()
@@ -260,7 +260,7 @@ class Rating(models.Model):
 
 class ArticleRating(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
-    article = models.ForeignKey(Article, null = True, blank = True)
+    #article = models.ForeignKey(Article, null = True, blank = True)
     user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()
 
