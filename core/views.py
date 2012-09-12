@@ -589,7 +589,7 @@ def top_commented(request):
 def logout(request):
     template_context = {}
     auth.logout(request)
-    return HttpResponseRedirect(reverse('index')
+    return HttpResponseRedirect(reverse('index'))
 
 def top_users_map(request):
 

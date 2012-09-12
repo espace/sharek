@@ -19,22 +19,11 @@
                         <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
                         <a href="{% url logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
                       </div>
-                      
-                      {% if request.session.social_auth_last_login_backend = 'facebook' %}
-                        <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
-                      {% elif request.session.social_auth_last_login_backend = 'twitter' %}
-                        <img src="http://api.twitter.com/1/users/profile_image?screen_name={{user}}&size=normal" class="user_img" />
-                      {% elif request.session.social_auth_last_login_backend = 'yahoo' %}
-                        <img src="http://img.msg.yahoo.com/avatar.php?yids={{user}}" class="user_img" />
-                      {% elif request.session.social_auth_last_login_backend = 'google' %}
-                        <img src="http://profiles.google.com/s2/photos/profile/{{user}}?sz=48x48" class="user_img" />
-                      {% else %}
-                        
-                      {% endif %}
+                      <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
                   {% else %}
                       <div class="attrs">
                         <p class="user_name">Administrator</p>
-                        <a href="{% url logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                        <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
                       </div>
                   {% endif %}
                   
@@ -56,11 +45,6 @@
                     <img style="float: left; padding-top: 25px;" src="http://egynda.com/resource/images/fb_sign.png"/>
                   </a>
                   
-                  <a href="{% url socialauth_begin 'twitter' %}">Twitter</a>
-                  <a href="{% url socialauth_begin 'facebook' %}">Facebook</a>
-                  <a href="{% url socialauth_begin 'google' %}">Google openID</a>
-                  <a href="{% url socialauth_begin 'yahoo' %}">Yahoo openID</a>
-                  <a href="{% url socialauth_begin 'google-oauth' %}">Google oauth</a>
                   {% endif %}
                 {% endif %}         
             </div>
