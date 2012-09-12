@@ -21,9 +21,9 @@ urlpatterns = patterns('',
     
     url(r'^sharek/admin/', include(admin.site.urls)),
     
-    url(r'^sharek/migrate/$', 'core.views.migrate', name='migrate'),
-    url(r'^sharek/migrate_db/$', 'core.views.migrate_db', name='migrate_db'),
-    url(r'^sharek/migrate_tags/$', 'core.views.migrate_tags', name='migrate_tags'),
+    #url(r'^sharek/migrate/$', 'core.views.migrate', name='migrate'),
+    #url(r'^sharek/migrate_db/$', 'core.views.migrate_db', name='migrate_db'),
+    #url(r'^sharek/migrate_tags/$', 'core.views.migrate_tags', name='migrate_tags'),
 
     url(r'^sharek/slider/$', 'core.views.slider', name='slider'),
     url(r'^sharek/search/$', 'core.views.search', name='search'),
