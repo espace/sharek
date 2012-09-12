@@ -1861,9 +1861,9 @@ span.divider{
     list-style-type: none;
 }
 .map-container .top-members ul li img{
-    width: 16px;
-    height: 16px;
-    margin: 2px;
+    width: 24px;
+    height: 24px;
+    margin: 1px;
 }
 .map-container .top-members ul li span{
    display: none;
