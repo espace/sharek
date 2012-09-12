@@ -586,6 +586,11 @@ def top_commented(request):
     title = 'الأكثر مناقشة'
     return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
+def logout(request):
+    template_context = {}
+    auth.logout(request)
+    return HttpResponseRedirect(reverse('index'))
+
 def top_users_map(request):
 
     user = None
