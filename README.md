@@ -11,7 +11,9 @@ Based on django 1.4.1 and users PostgreSQL as the database engine
 ### Setup on debian/ubuntu dependencies
 
   ```
-    sudo apt-get install build-essential python-dev python-setuptools git-core gcc curl libpcre3 libpcre3-dev build-essential bash-completion postgresql ipython python python-dev python-setuptools -y 
+    sudo apt-get install build-essential python-dev python-setuptools git-core gcc \
+    curl libpcre3 libpcre3-dev build-essential bash-completion postgresql ipython \
+    python python-dev python-setuptools -y 
 
     sudo easy_install pip  
 
@@ -64,7 +66,9 @@ Based on django 1.4.1 and users PostgreSQL as the database engine
 
  Then connecting to postgres has failed.. fix the authentication and verify connectivity using:
 
- ``` psql -d db_name -U db_user -W ```
+ ```
+  psql -d db_name -U db_user -W 
+ ```
 
 
 
