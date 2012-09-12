@@ -1,0 +1,36 @@
+<a href="javascript:;" id="migrate"> migrate </a>
+<br>
+<a href="javascript:;" id="migrate_tags"> migrate tags</a>
+
+
+<script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js" ></script>
+
+<script type="text/javascript">
+  $(document).ready(function() {   
+   $("#migrate").live("click",function(){
+      $.ajax({
+              type:"POST",
+              url :"{% url migrate_db %}",
+              data:{'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+              dataType:"json",
+              error:function(data){},
+              success:function(data){
+                alert("done isA");
+              },
+            });
+        });
+
+      $("#migrate_tags").live("click",function(){
+      $.ajax({
+              type:"POST",
+              url :"{% url migrate_tags %}",
+              data:{'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+              dataType:"json",
+              error:function(data){},
+              success:function(data){
+                alert("done isA");
+              },
+            });
+        });
+  });
+</script>

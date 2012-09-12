@@ -81,7 +81,7 @@ class Topic(models.Model):
        return len(arts)
    
     def get_mod_date(self):
-        last_mod_article = ArticleDetails.objects.filter(topic_id= self.id).order_by('-mod_date')[:1]
+        last_mod_article = ArticleDetails.objects.filter(header__topic_id= self.id).order_by('-mod_date')[:1]
         return last_mod_article[0]
     
     class Meta:
@@ -103,6 +103,8 @@ class ArticleHeader(models.Model):
         return versions[0]
 
     class Meta:
+       verbose_name = "Article"
+       verbose_name_plural = "Articles"
        ordering = ["order"]
 
 class ArticleDetails(models.Model):
@@ -158,6 +160,10 @@ class ArticleDetails(models.Model):
     def get_top_commented(self, limit):
       return ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')[:limit]
 
+    class Meta:
+       verbose_name = "Article detail"
+       verbose_name_plural = "Article details"
+
 exclusive_boolean_fields(ArticleDetails, ('current',), ('header',))
 
 
@@ -173,7 +179,8 @@ class Article(models.Model):
     original = models.ForeignKey("self", null = True, blank = True)
     current = models.BooleanField(default=False)
     mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Last Modification Date')
-
+    
+    
     def feedback_count(self):
         inactive_users = User.get_inactive
         return len(Feedback.objects.filter(article_id = self.id).exclude(user__in=inactive_users))
@@ -229,7 +236,6 @@ class Article(models.Model):
 
 
 class Feedback(models.Model):
-    articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
     article = models.ForeignKey(Article, null = True, blank = True)
     parent = models.ForeignKey("self",blank=True,null=True)
     name = models.CharField(max_length=200)
@@ -238,6 +244,7 @@ class Feedback(models.Model):
     date = models.DateTimeField( auto_now_add=True, default=datetime.now() ,blank=True,null=True)
     order = models.IntegerField(default=0)
     user = models.CharField(max_length=200,default='')
+    articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
 
     def get_children(self):
         inactive_users = User.get_inactive

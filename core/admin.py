@@ -1,7 +1,7 @@
 from core.models import Tag
 #from core.models import Article
 from core.models import Topic
-from core.models import Info, Feedback, ArticleDetails, ArticleHeader
+from core.models import Info, Feedback, ArticleDetails, ArticleHeader#, Article
 from core.models import ReadOnlyAdminFields
 from django.contrib.auth.models import User
 
@@ -30,7 +30,7 @@ class ArticleInlineAdmin(admin.TabularInline):
     model      = Article
     extra      = 0
     can_delete = True
-    fields     = [ 'tags','topic' ,'name','slug','summary','current', 'mod_date']
+    fields     = [ 'tags','topic' ,'name','slug','summary','current', 'mod_date','likes', 'dislikes']
 
 class ArticleAdmin(ReadOnlyAdminFields, admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
@@ -42,8 +42,8 @@ class ArticleAdmin(ReadOnlyAdminFields, admin.ModelAdmin):
 
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
-'''    
-
+ 
+'''
 class FeedbackAdmin(admin.ModelAdmin):
     #prepopulated_fields = {"user": ["username"]}
     list_filter = ('articledetails',)

@@ -389,7 +389,7 @@ left: 1px;
 .home-sections .nav li .articles-count,
 .home-sections .nav li .articles-count-new {
 	position: absolute;
-	top:80px;
+	top:93px;
 	right: 0px;
 	background: #999;
 	border-radius: 3px;
@@ -1861,9 +1861,9 @@ span.divider{
     list-style-type: none;
 }
 .map-container .top-members ul li img{
-    width: 32px;
-    height: 32px;
-    margin: 2px;
+    width: 21px;
+    height: 21px;
+    margin: 1px;
 }
 .map-container .top-members ul li span{
    display: none;
