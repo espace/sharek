@@ -26,7 +26,7 @@
   	<a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{article.id}} {% if voted_articles|vote_art:article.id == 1 %} active {% elif voted_articles|vote_art:article.id == -1 %} disabled {% endif %}" id="{{article.id}}" vote="1" ><small class="like article {{article.id}}">{{article.likes}}</small></a>
   </div>
   
-  <p>{{article.summary|safe|truncatewords_html:35}}</p>
+  <p>{%if related_tags%}{{article.summary|safe}}{%else%}{{article.summary|safe|truncatewords_html:35}}{%endif%}</p>
   
   {% if article.mod_date %}
   <p class="edit-date-article">آخر تحديث في {{article.mod_date|date:"Y/m/d"}} {{article.mod_date|time:"G:i"}} {% if article.mod_date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}</p><br />
