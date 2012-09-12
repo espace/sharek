@@ -13,7 +13,6 @@
           <div class="span4 pull-left facebook_log_in">
             <div class="">
                 {% if user %}
-                  <a href="{% url facebook_logout %}">Logout</a>
                   {% if user.username != 'admin' %}
                       <div class="attrs">
                         <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
