@@ -12,8 +12,9 @@
             <h4> <i class="icon-star"></i>أعلى المشاركين على دستور مصر</h4>
             <ul>
                {% for top in top_users %}
-                   <li><a href="http://fb.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
+                   <li><a class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
                {% endfor %}
+               
                <li><a href="http://fb.com/743874349" target="_blank" class="user-image" title="Nader Alhassan"><img class="loader" src="http://graph.facebook.com/743874349/picture"></a></li>
                     
                     <li><a href="http://fb.com/100002662395118" target="_blank" class="user-image" title="Osos First"><img class="loader" src="http://graph.facebook.com/100002662395118/picture"></a></li>
