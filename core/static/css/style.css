@@ -604,8 +604,8 @@ left: 1px;
             background-position: -141px -1857px ;
         }
 
-/*------------   dostor-image    ------ */
-.dostor-image{
+/*------------   core-image    ------ */
+.core-image{
     margin-bottom: 20px;
 }
 /*------------   general-info    ------ */
@@ -1824,6 +1824,70 @@ span.divider{
     top: 10px;
     left: 20px;
     letter-spacing: 0;
+}
+
+/*--------------------MAP Page-----------------  */
+
+.map-layout{
+    width: 1030px;
+    height:1078px;
+    position: absolute;
+    top: 78px;
+    left: 0;
+    background: url("../images/map-layout.png") 0 0 no-repeat;
+}
+.map-container .top-members{
+    margin-bottom: 40px;
+    display: block;
+    overflow: hidden;
+    position: relative;
+}
+.map-container .top-members h4{
+    text-align: center;
+    font: 20px GESSTwoMediumRegular ;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    color: #222;
+}
+.map-container .top-members h4 i{
+    margin-top: 5px;
+}
+.map-container .top-members ul{
+    margin: 0;
+}
+.map-container .top-members ul li{
+    margin: 0;
+    float: left;
+    list-style-type: none;
+}
+.map-container .top-members ul li img{
+    width: 32px;
+    height: 32px;
+    margin: 2px;
+}
+.map-container .top-members ul li span{
+   display: none;
+}
+
+.joiner-info {
+    height: 100px;
+    width: 160px;
+    background: #f8f8f8;
+    border-radius: 5px;
+    border: solid 2px #333;
+    position: absolute;
+    top: 200px;
+    left: 200px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.5), -10px 20px 2px rgba(0,0,0,0.6) 
+}
+.joiner-info:after{
+    width: 160px;
+    height: 30px;
+    content: " ";
+    position: absolute;
+    top: 100px;
+    background: url("../images/shadow-pin.png") 0 -4px no-repeat;
+
 }
 /*--------------------footer-----------------  */
 .footer{

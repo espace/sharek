@@ -21,7 +21,7 @@ class FacebookSession(models.Model):
     uid = models.BigIntegerField(unique=True, null=True)
         
     class Meta:
-        app_label = "dostor"
+        app_label = "core"
         unique_together = (('user', 'uid'), ('access_token', 'expires'))
         
     def query(self, object_id, connection_type=None, metadata=False):

@@ -8,11 +8,11 @@ import cgi
 import json
 import simplejson
 import urllib
-from dostor.facebook import facebook_sdk
+from core.facebook import facebook_sdk
 
-from dostor.facebook.models import FacebookSession
+from core.facebook.models import FacebookSession
 
-from dostor_masr import settings
+from sharek import settings
 
 from django.core.urlresolvers import reverse
 

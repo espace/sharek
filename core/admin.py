@@ -1,11 +1,11 @@
-from dostor.models import Tag
-#from dostor.models import Article
-from dostor.models import Topic
-from dostor.models import Info, Feedback, ArticleDetails, ArticleHeader
-from dostor.models import ReadOnlyAdminFields
+from core.models import Tag
+#from core.models import Article
+from core.models import Topic
+from core.models import Info, Feedback, ArticleDetails, ArticleHeader
+from core.models import ReadOnlyAdminFields
 from django.contrib.auth.models import User
 
-from dostor.actions import export_as_csv_action
+from core.actions import export_as_csv_action
 
 from django.contrib import admin
 
@@ -42,7 +42,7 @@ class ArticleAdmin(ReadOnlyAdminFields, admin.ModelAdmin):
 
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
-'''
+'''    
 
 class FeedbackAdmin(admin.ModelAdmin):
     #prepopulated_fields = {"user": ["username"]}
@@ -98,4 +98,3 @@ admin.site.register(Info, InfoAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
-

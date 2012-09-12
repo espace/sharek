@@ -11,13 +11,13 @@ from django.db import connection
 from diff_match import diff_match_patch
 from django.contrib import auth
 
-from dostor.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
+from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from dostor.facebook.models import FacebookSession
-from dostor.facebook import facebook_sdk
-from dostor_masr import settings
+from core.facebook.models import FacebookSession
+from core.facebook import facebook_sdk
+from sharek import settings
 
 from django.db.models import Q, Count
 
@@ -297,14 +297,15 @@ def modify(request):
                 Feedback(user = request.POST.get("user_id"),articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name")).save()
                 feedback = Feedback.objects.filter(articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
             
-            fb_user = FacebookSession.objects.get(user = request.user)
-            # GraphAPI is the main class from facebook_sdp.py
-            graph = facebook_sdk.GraphAPI(fb_user.access_token)
-            attachment = {}
-            attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
-            attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-            message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
-            graph.put_wall_post(message, attachment)
+            if request.user.username != "admin":
+                 fb_user = FacebookSession.objects.get(user = request.user)
+                 # GraphAPI is the main class from facebook_sdp.py
+                 graph = facebook_sdk.GraphAPI(fb_user.access_token)
+                 attachment = {}
+                 attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
+                 attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
+                 message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
+                 graph.put_wall_post(message, attachment)
             
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
@@ -465,7 +466,7 @@ def search(request):
     articles = []
     for art in arts:
         articles.append(get_object_or_404( ArticleDetails, id= art['max_id'] ))
-    
+
     articles = sorted(arts, key=lambda article: article.order)
     '''
     voted_articles = ArticleRating.objects.filter(user = user)
@@ -550,27 +551,108 @@ def total_contribution(request):
 
 
 def top_liked(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_liked(20)
     title = 'الأكثر قبولا'
-    return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_disliked(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_disliked(20)
     title = 'الأكثر رفضا'
-    return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_commented(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_commented(20)
     title = 'الأكثر مناقشة'
+<<<<<<< HEAD:dostor/views.py
     return render_to_response('statistics.html', {'articles': articles, 'title': title} ,RequestContext(request))
 
 def logout(request):
     template_context = {}
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
+=======
+    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
+
+def top_users_map(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
+    top_users = []
+    inactive_users = User.get_inactive
+    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users)[:500]
+
+    for temp in temp_users:
+        try:
+            top_user = User.objects.get(username=temp['user'])
+        except Exception:
+            top_user = None
+        
+        if top_user:
+            top_users.append(top_user)
+
+    return render_to_response('top_users_map.html', {'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
+
+def migrate(request):
+    return render_to_response('migrate.html',{},RequestContext(request))
+
+def migrate_db(request):
+    #org_arts = Article.objects.filter(current = True) #all().values('original').annotate(org='original')
+    
+    arts = Article.objects.all().values('original').annotate(max_id=Max('id')).order_by()
+
+    org_arts = []
+    for art in arts:
+        temp = get_object_or_404( Article, id= art['max_id'] )
+        temp.current = True
+        temp.save()
+        org_arts.append(temp)
+
+    for org_art in org_arts:
+        articles = Article.objects.filter(original_id = org_art.original_id)
+        ArticleHeader(order = articles[0].order,name = articles[0].name, topic = articles[0].topic).save()
+        header = ArticleHeader.objects.get(name = articles[0].name)
+        #header.tags = articles[0].tags
+        #header.save()
+        for art in articles:
+            ArticleDetails(current = art.current,likes = art.likes,dislikes = art.dislikes ,slug = art.slug, summary = art.summary, mod_date = art.mod_date, header = header).save()
+            details = ArticleDetails.objects.get(slug = art.slug)
+            
+            feedbacks = Feedback.objects.filter(article_id = art.id)
+            ratings = Rating.objects.filter(article_id = art.id)
+            art_ratings = ArticleRating.objects.filter(article_id = art.id)
+
+            for feedback in feedbacks:
+                feedback.articledetails_id = details.id#feedback.article_id
+                feedback.save()
+            for rating in ratings:
+                rating.articledetails_id = details.id#feedback.article_id
+                rating.save()
+            for art_rating in art_ratings:
+                art_rating.articledetails_id = details.id#feedback.article_id
+                art_rating.save()
+
+    return HttpResponse(simplejson.dumps({'done':"done isA"}))
+>>>>>>> 8a4e11858605d00aed538a0b815a76dc5ca5392c:core/views.py
