@@ -61,9 +61,9 @@ def index(request):
 
     total = feedback + feedback_ratings + article_ratings
 	
-    top_liked = ArticleDetails.get_top_liked(2)
-    top_disliked = ArticleDetails.get_top_disliked(2)
-    top_commented = ArticleDetails.get_top_commented(2)
+    top_liked = ArticleDetails.get_top_liked(5)
+    top_disliked = ArticleDetails.get_top_disliked(5)
+    top_commented = ArticleDetails.get_top_commented(5)
     tags = Tag.objects.all
     
     percent = int((float(total)/target)*100)

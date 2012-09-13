@@ -200,7 +200,7 @@ body {
     font: 16px GESSTwoMediumRegular;
     color: #474747;
     line-height: 36px;
-    text-shadow:0 0px 1px rgba(0,0,0,0.4);
+    text-shadow: 1px 1px 1px #FFFFFF;
 }
 .progress-promo a.btn{
     font: 20px GESSTwoMediumRegular;
@@ -335,6 +335,7 @@ left: 1px;
     color: #a11212;
     margin-top: 15px;
     margin-bottom: 0px;
+	text-shadow: 1px 1px 1px #FFF;
 
 }
 .mosharakat_number span{
@@ -700,7 +701,7 @@ left: 1px;
     background: url("../images/pattern.png") repeat;
     padding: 5px 10px;
     border-radius: 5px;
-}
+	text-shadow: 1px 1px 1px #FFFFFF;
 }
 .divider.pushed-up{
     margin-top: 50px;
