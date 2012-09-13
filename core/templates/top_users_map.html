@@ -12,7 +12,7 @@
                  <h4> <i class="icon-star"></i>أعلى المشاركين على دستور مصر</h4>
                  <ul>
                     {% for top in top_users %}
-                         {% if forloop.counter == 1000 %}
+                         {% if forloop.counter == 500 %}
                               <li class="current"><a class="user-image" title="{{ user.first_name }} {{ user.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture"></a></li>      
                          {% else %}
                               <li><a class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
@@ -38,7 +38,7 @@
                $(document).ready(function() {
 
                	var position = $("li.current").offset();
-               	var left = position.left-30;
+               	var left = position.left;
                	var top = position.top-120;
 
                	$(".joiner-info").css({"left":left,"top":top});
