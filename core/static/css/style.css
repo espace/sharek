@@ -882,7 +882,7 @@ left: 1px;
     font-family: GESSTwoMediumRegular;
     text-align: left;
     font-weight: normal;
-
+	padding-right: 25px;
 }
 .most-liked dl{
     padding-bottom: 10px;

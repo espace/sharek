@@ -3,7 +3,14 @@
 {% load date_format %}
 <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{feedback.id}}">
   <div class="facebook_user_img">
-    <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/></a>
+  	
+    {% if feedback.user.username == 'admin' %}
+    	<a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
+    {% else %}
+        <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.user.first_name }} {{ feedback.user.last_name }}">
+            <img class="loader" src="http://graph.facebook.com/{{ feedback.user }}/picture">
+        </a>
+    {% endif %}
   </div>
   <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3> 
   <div class="like-group">
@@ -28,7 +35,13 @@
       {% for reply in feedback.get_children %}
         <div class="comment-block child-reply L_{{reply.id}}">
           <div class="facebook_user_img">
-            <a href="http://www.facebook.com/{{ reply.user }}" target="_blank"><img src="http://graph.facebook.com/{{ reply.user }}/picture" class="loader"/></a>
+          	{% if reply.user.username == 'admin' %}
+                <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
+            {% else %}
+                <a href="http://www.facebook.com/{{ reply.user.username }}" target="_blank" class="user-image" title="{{ reply.user.first_name }} {{ reply.user.last_name }}">
+                    <img class="loader" src="http://graph.facebook.com/{{ reply.user.username }}/picture">
+                </a>
+            {% endif %}
           </div>
           <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3> 
           <div class="like-group">
@@ -49,7 +62,13 @@
     {% endif %}
     <div class="comment-block comment-entry child-reply {{feedback.id}}" style="display:none;">
       <div class="facebook_user_img">
-        <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
+        {% if user.username == 'admin' %}
+            <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
+        {% else %}
+            <a href="http://www.facebook.com/{{ user.username }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+                <img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture">
+            </a>
+        {% endif %}
       </div>
       <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
       <a href="javascript:;" class="L_hide close  " feedback_id="{{feedback.id}}" ><span>x</span></a>
