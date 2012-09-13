@@ -844,6 +844,8 @@ left: 1px;
 .updates   dt{
     margin-right: 10px;
     width: 90%;
+	font-size: 11px;
+	font-weight: normal;
 }
 .updates   dd p{
     display: inline !important;
@@ -873,8 +875,8 @@ left: 1px;
 .most-liked .icon-update{
     float: left; 
     background:url(../images/thumb-up.png) no-repeat right -70px;
-    padding-right: 25px;
-    font-size: 12px;
+    /*padding-right: 25px;*/
+    font-size: 11px;
     color: #999;
     font-family: GESSTwoMediumRegular;
     text-align: left;
@@ -954,7 +956,7 @@ left: 1px;
     float: left; 
     /*background:url(../images/thumb-up.png) no-repeat right -69px;*/
     padding-right: 25px;
-    font-size: 12px;
+    font-size: 11px;
     color: #999;
     font-family: GESSTwoMediumRegular;
     text-align: left;
