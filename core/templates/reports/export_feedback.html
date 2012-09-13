@@ -40,7 +40,13 @@
 	{% for feedback in feedbacks %}
         <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %}">
           <div class="facebook_user_img">
-            <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/></a>
+            {% if feedback.user.username == 'admin' %}
+                <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
+            {% else %}
+                <a href="http://www.facebook.com/{{ feedback.user.username }}" target="_blank" class="user-image" title="{{ feedback.user.first_name }} {{ feedback.user.last_name }}">
+                    <img class="loader" src="http://graph.facebook.com/{{ feedback.user.username }}/picture">
+                </a>
+            {% endif %}
           </div>
           <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3>
           <span class="date" style="left: 20px;">{{feedback.date|format}}</span>
@@ -50,7 +56,13 @@
               {% for reply in feedback.get_children %}
                 <div class="comment-block child-reply L_{{reply.id}}">
                   <div class="facebook_user_img">
-                    <a href="http://www.facebook.com/{{ reply.user }}" target="_blank"><img src="http://graph.facebook.com/{{ reply.user }}/picture" class="loader"/></a>
+                    {% if reply.user.username == 'admin' %}
+                        <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
+                    {% else %}
+                        <a href="http://www.facebook.com/{{ reply.user.username }}" target="_blank" class="user-image" title="{{ reply.user.first_name }} {{ reply.user.last_name }}">
+                            <img class="loader" src="http://graph.facebook.com/{{ reply.user.username }}/picture">
+                        </a>
+                    {% endif %}
                   </div>
                   <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3>
                   <span class="date" style="left: 20px;">{{reply.date|format}}</span>

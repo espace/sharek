@@ -5,7 +5,13 @@
 {% if user %}
   <div class="comment-block comment-entry">
     <div class="facebook_user_img">
-      <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
+    {% if user.username == 'admin' %}
+        <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
+    {% else %}
+        <a href="http://www.facebook.com/{{ user.username }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture">
+        </a>
+    {% endif %}
     </div>
     <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
     <p>
@@ -281,7 +287,13 @@
 <script id="reply_temp" type="text/x-jquery-tmpl">
   <div class="comment-block child-reply L_${id}">
     <div class="facebook_user_img">
-      <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
+		{% if user.username == 'admin' %}
+			<a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
+		{% else %}
+			<a href="http://www.facebook.com/{{ user.username }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+				<img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture">
+			</a>
+		{% endif %}
     </div>
     <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{user.first_name}} {{ user.last_name }}</a></p></h3> 
     <div class="like-group">
