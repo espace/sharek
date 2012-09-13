@@ -954,8 +954,8 @@ left: 1px;
 }
 .most-argued .icon-update{
     float: left; 
-    /*background:url(../images/thumb-up.png) no-repeat right -69px;*/
-    padding-right: 25px;
+    /*background:url(../images/thumb-up.png) no-repeat right -69px;
+    padding-right: 25px;*/
     font-size: 11px;
     color: #999;
     font-family: GESSTwoMediumRegular;
