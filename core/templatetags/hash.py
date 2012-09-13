@@ -19,7 +19,7 @@ def vote(voted, key_name):
 
 def vote_art(voted, key_name):
   for article_vote in voted:
-    if article_vote.article_id == key_name:
+    if article_vote.articledetails_id == key_name:
       if article_vote.vote == True:
         return 1
       else:
