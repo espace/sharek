@@ -6,7 +6,7 @@ Sharek is a platform that allows end users to contribute in building any structu
 
 ## Installation
 
-Based on django 1.4.1 and users PostgreSQL as the database engine
+Based on django 1.4.1 and uses PostgreSQL as the database engine
 
 ### Setup on debian/ubuntu dependencies
 
