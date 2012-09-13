@@ -13,9 +13,9 @@
                  <ul>
                     {% for top in top_users %}
                          {% if forloop.counter == bound %}
-                              <li class="current"><a class="user-image" title="{{ user.first_name }} {{ user.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture"></a></li>      
+                              <li class="current {{forloop.counter}}"><a class="user-image" title="{{ user.first_name }} {{ user.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture"></a></li>      
                       {% else %}
-                   	  <li><a class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
+                   	  <li class="{{forloop.counter}}"><a class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
                       {% endif %}
                         
                {% endfor %}
