@@ -56,11 +56,11 @@
               {% for reply in feedback.get_children %}
                 <div class="comment-block child-reply L_{{reply.id}}">
                   <div class="facebook_user_img">
-                    {% if reply.user.username == 'admin' %}
+                    {% if reply.user == 'admin' %}
                         <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
                     {% else %}
-                        <a href="http://www.facebook.com/{{ reply.user.username }}" target="_blank" class="user-image" title="{{ reply.user.first_name }} {{ reply.user.last_name }}">
-                            <img class="loader" src="http://graph.facebook.com/{{ reply.user.username }}/picture">
+                        <a href="http://www.facebook.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.user.first_name }} {{ reply.user.last_name }}">
+                            <img class="loader" src="http://graph.facebook.com/{{ reply.user }}/picture">
                         </a>
                     {% endif %}
                   </div>
