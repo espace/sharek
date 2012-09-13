@@ -26,6 +26,7 @@ from django.db.models.aggregates import Max
 import cgi
 import simplejson
 import urllib
+import random
 
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
@@ -593,6 +594,8 @@ def top_users_map(request):
     inactive_users = User.get_inactive
     temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users).exclude(user=user.username)[:2000]
 
+    bound = random.randint(200,600)
+
     for temp in temp_users:
         try:
             top_user = User.objects.get(username=temp['user'])
@@ -602,7 +605,7 @@ def top_users_map(request):
         if top_user:
             top_users.append(top_user)
 
-    return render_to_response('top_users_map.html', {'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
+    return render_to_response('top_users_map.html', {'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
 
 def migrate(request):
     return render_to_response('migrate.html',{},RequestContext(request))
