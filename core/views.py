@@ -389,14 +389,6 @@ def article_vote(request):
             art.dislikes = n
             art.save()
 
-            '''fb_user = FacebookSession.objects.get(user = request.user)
-            graph = facebook_sdk.GraphAPI(fb_user.access_token)
-            attachment = {}
-            attachment['link'] = settings.domain+"sharek/topics/"+art.topic.slug+"/"+art.slug
-            attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-            message = 'لقد شاركت في كتابة #دستور_مصر وقمت ' + action + art.name.encode('utf-8') + " من الدستور"
-            graph.put_wall_post(message, attachment)'''
-
             return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n,'vote':request.POST.get("type")}))
           
 def facebook_comment(request):
@@ -599,7 +591,7 @@ def top_users_map(request):
 
     top_users = []
     inactive_users = User.get_inactive
-    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users)[:2000]
+    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users).exclude(user=user.username)[:2000]
 
     for temp in temp_users:
         try:

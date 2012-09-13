@@ -77,8 +77,7 @@ class Topic(models.Model):
         #return self.article_set.filter(current = True)
 
     def articles_count(self):
-       arts = self.articleheader_set.all()
-       return len(arts)
+       return len(self.get_articles())
    
     def get_mod_date(self):
         last_mod_article = ArticleDetails.objects.filter(header__topic_id= self.id).order_by('-mod_date')[:1]

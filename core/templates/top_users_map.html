@@ -12,11 +12,12 @@
             <h4> <i class="icon-star"></i>أعلى المشاركين على دستور مصر</h4>
             <ul>
                {% for top in top_users %}
-                      {% if top.username == 'admin' %}
-                      <li><a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a></li>
+                         {% if forloop.counter == 500 %}
+                              <li class="current"><a class="user-image" title="{{ user.first_name }} {{ user.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture"></a></li>      
                       {% else %}
                    	  <li><a class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
                       {% endif %}
+                        
                {% endfor %}
             </ul>
        </div>
@@ -28,21 +29,16 @@
 {% if user %}
 
 <div class="joiner-info">
-    {% if user.username == 'admin' %}
-    	<a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
-    {% else %}
-        <a href="http://www.facebook.com/{{ user.username }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+          	<a href="http://fb.com/{{ user.username }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
             <img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture">
         </a>
-    {% endif %}
 </div>
        
 <script type="text/javascript">
-
 $(document).ready(function() {
 
 	var position = $("li.current").offset();
-	var left = position.left-30;
+               	var left = position.left;
 	var top = position.top-120;
 
 	$(".joiner-info").css({"left":left,"top":top});
