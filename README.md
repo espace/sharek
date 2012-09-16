@@ -3,6 +3,7 @@
 _Contribution of the crowd_
 
 Sharek is a platform that allows end users to contribute in building any structured text content. It basically started to allow Egyptian people write their own consistution after the uprising against corruption in 2011. A draft for the constitution articles is published allowing Egyptian users to to suggest and support enhancements to the text articles.
+On August 2012, the contribution platform has been released to the public at http://dostour.eg/sharek/
 
 ## Installation
 
