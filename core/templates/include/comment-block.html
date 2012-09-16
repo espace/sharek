@@ -13,7 +13,7 @@
     {% endif %}
   </div>
           
-          % if feedback.user == 'admin' %}
+          {% if feedback.user == 'admin' %}
 	        <h3><p class="name"><a>{{feedback.name}}</a></p></h3> 
           {% else %}
     	    <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3> 
