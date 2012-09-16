@@ -5,11 +5,11 @@
 {% if user %}
   <div class="comment-block comment-entry">
     <div class="facebook_user_img">
-    {% if user.username == 'admin' %}
+    {% if user == 'admin' %}
         <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
     {% else %}
-        <a href="http://www.facebook.com/{{ user.username }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
-            <img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture">
+        <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="http://graph.facebook.com/{{ user }}/picture">
         </a>
     {% endif %}
     </div>
