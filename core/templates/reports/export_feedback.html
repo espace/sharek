@@ -48,7 +48,13 @@
                 </a>
             {% endif %}
           </div>
-          <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3>
+          
+          % if feedback.user == 'admin' %}
+	        <h3><p class="name"><a>{{feedback.name}}</a></p></h3> 
+          {% else %}
+    	    <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3> 
+          {% endif %}
+            
           <span class="date" style="left: 20px;">{{feedback.date|format}}</span>
           <p>{{feedback.suggestion}}</p>
           <div class="L_replies_block child-wrapper {{feedback.id}}" >
@@ -64,7 +70,13 @@
                         </a>
                     {% endif %}
                   </div>
-                  <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3>
+          
+          % if reply.user == 'admin' %}
+	        <h3><p class="name"><a>{{reply.name}}</a></p></h3> 
+          {% else %}
+    	    <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3> 
+          {% endif %}
+            
                   <span class="date" style="left: 20px;">{{reply.date|format}}</span>
                   <p>{{reply.suggestion}}</p>
                 </div><!-- comment end -->

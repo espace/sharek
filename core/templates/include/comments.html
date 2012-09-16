@@ -13,7 +13,13 @@
         </a>
     {% endif %}
     </div>
+          
+          {% if user == 'admin' %}
+	        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+          {% else %}
     <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+          {% endif %}
+            
     <p>
       <textarea rows="3" class="input-xlarge span7" id="suggestion"></textarea>
       <br/>
@@ -271,7 +277,13 @@
     <div class="facebook_user_img">
       <a href="http://www.facebook.com/{{ user }}" target="_blank"><img src="http://graph.facebook.com/{{ user }}/picture" class="loader"/></a>
     </div>
-    <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{user.first_name}} {{ user.last_name }}</a></p></h3> 
+          
+          {% if user == 'admin' %}
+	        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+          {% else %}
+      <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+          {% endif %}
+             
     <div class="like-group">
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote  ${id}" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote  ${id}" id="${id}" vote="1"><small class="like ${id}">0</small></a>
@@ -295,7 +307,13 @@
 			</a>
 		{% endif %}
     </div>
-    <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{user.first_name}} {{ user.last_name }}</a></p></h3> 
+          
+          {% if user == 'admin' %}
+	        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+          {% else %}
+      <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+          {% endif %}
+             
     <div class="like-group">
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote  ${id}" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote  ${id}" id="${id}" vote="1"><small class="like ${id}">0</small></a>
