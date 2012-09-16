@@ -50,7 +50,7 @@
             {% endif %}
           </div>
           
-          % if reply.user == 'admin' %}
+          {% if reply.user == 'admin' %}
 	        <h3><p class="name"><a>{{reply.name}}</a></p></h3> 
           {% else %}
     	    <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3> 
