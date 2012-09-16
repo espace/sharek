@@ -14,9 +14,9 @@
   </div>
           
           {% if feedback.user == 'admin' %}
-	        <h3><p class="name"><a>{{feedback.name}}</a></p></h3> 
+	        <h3><p class="name"><a>{{ feedback.user.first_name }} {{ feedback.name }}</a></p></h3> 
           {% else %}
-    	    <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3> 
+    	    <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.user.first_name }} {{ feedback.user.last_name }}</a></p></h3> 
           {% endif %}
              
   <div class="like-group">
@@ -51,9 +51,9 @@
           </div>
           
           {% if reply.user == 'admin' %}
-	        <h3><p class="name"><a>{{reply.name}}</a></p></h3> 
+	        <h3><p class="name"><a>{{ reply.user.first_name }} {{ reply.user.last_name }}</a></p></h3> 
           {% else %}
-    	    <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3> 
+    	    <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{ reply.user.first_name }} {{ reply.user.last_name }}</a></p></h3> 
           {% endif %}
             
           <div class="like-group">
