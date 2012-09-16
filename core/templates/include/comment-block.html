@@ -7,16 +7,16 @@
     {% if feedback.user == 'admin' %}
     	<a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
     {% else %}
-        <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.user.first_name }} {{ feedback.user.last_name }}">
+        <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.name }}">
             <img class="loader" src="http://graph.facebook.com/{{ feedback.user }}/picture">
         </a>
     {% endif %}
   </div>
           
           {% if feedback.user == 'admin' %}
-	        <h3><p class="name"><a>{{ feedback.user.first_name }} {{ feedback.name }}</a></p></h3> 
+	        <h3><p class="name"><a>{{ feedback.name }}</a></p></h3> 
           {% else %}
-    	    <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.user.first_name }} {{ feedback.user.last_name }}</a></p></h3> 
+    	    <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3> 
           {% endif %}
              
   <div class="like-group">
