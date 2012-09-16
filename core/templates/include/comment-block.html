@@ -83,7 +83,7 @@
         {% endif %}
       </div>
           
-          % if user == 'admin' %}
+          {% if user == 'admin' %}
 	        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
           {% else %}
       <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
