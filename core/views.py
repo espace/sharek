@@ -223,13 +223,6 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
-    
-    no_pages = len(feedbacks)/settings.paginator
-    paginator_list = []
-    i = 0
-    while i <= 10:
-        #i +=1
-        paginator_list.append(++i)
 
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
