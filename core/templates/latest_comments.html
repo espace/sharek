@@ -9,7 +9,13 @@
   <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/></a>
   {% endif %}
 </div>
-  <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3>
+          
+          {% if feedback.user == 'admin' %}
+	        <h3><p class="name"><a>{{feedback.name}}</a></p></h3> 
+          {% else %}
+    	    <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{feedback.name}}</a></p></h3> 
+          {% endif %}
+            
             <div class="delete-group">
             {% if user %}
               {% if user.username = feedback.user or user.username = "admin" %}
