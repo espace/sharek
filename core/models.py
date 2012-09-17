@@ -80,8 +80,9 @@ class Topic(models.Model):
        return len(self.get_articles())
    
     def get_mod_date(self):
-        last_mod_article = ArticleDetails.objects.filter(header__topic_id= self.id).order_by('-mod_date')[:1]
-        return last_mod_article[0]
+        articles = self.get_articles()
+        articles = sorted(articles, key=lambda article: article.mod_date, reverse=True)
+        return articles[0]
     
     class Meta:
        ordering = ["order"]
