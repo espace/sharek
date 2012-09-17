@@ -73,11 +73,10 @@
           <a href="?page={{ feedbacks.next_page_number }}">التالى &larr; </a>
         {% endif %}
       </li>
-      <li>
-        <span class="current">
-              صفحه {{ feedbacks.number }} من {{ feedbacks.paginator.num_pages }}.
-        </span>
-      </li>
+      {% for i in paginator_list %}
+          <a href="?page={{ i }}">{{ i }} </a>
+      {% endfor %}
+
       <li class="previous">
         {% if feedbacks.has_previous %}
           <a href="?page={{ feedbacks.previous_page_number }}"> &rarr; السابق</a>
