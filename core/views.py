@@ -227,9 +227,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     no_pages = len(feedbacks)/settings.paginator
     paginator_list = []
     i = 0
-    while i <= no_pages:
-        i +=1
-        paginator_list.append(i)
+    while i <= 10:
+        #i +=1
+        paginator_list.append(++i)
 
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
