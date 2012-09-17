@@ -224,7 +224,12 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         else:
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
     
-    
+    no_pages = len(feedbacks)/settings.paginator
+    paginator_list = []
+    i = 0
+    while i <= no_pages:
+        i +=1
+        paginator_list.append(i)
 
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
@@ -263,12 +268,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         else:
           n_votes[vote.feedback_id] = 1
 
-    no_pages = len(feedbacks)/settings.paginator
-    paginator_list = []
-    i = 0
-    while i <= no_pages:
-        i +=1
-        paginator_list.append(i)
+
 
 
     if classified_by == "tags":  
