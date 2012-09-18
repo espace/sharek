@@ -1,4 +1,5 @@
 {% load settings %}
 <script type="text/javascript">
+alert('sdfsdf');
 window.location.href='https://www.facebook.com/login.php?api_key={{ settings.FACEBOOK_APP_ID }}&next={{settings.domain}}{% url facebook_login %}%3Floginsucc%3D1&cancel_url={{settings.domain}}{% url facebook_login %}%3Fcancel%3D1&display=popup&fbconnect=1&return_session=1&session_version=3&v=1.0&req_perms=publish_stream%2Cemail';
 </script>
