@@ -39,7 +39,7 @@ def login(request):
     error = None
 
     if request.user.is_authenticated():
-        return HttpResponse("<script> window.close(); window.opener.refreshPage(); </script>");
+        return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
 
     if request.GET:
 
@@ -60,13 +60,15 @@ def login(request):
             user = auth.authenticate(token=user_obj['access_token'])
             if user and user.is_active and request.GET['loginsucc']:
                 auth.login(request, user)
-                #return HttpResponseRedirect(request.path)
                 return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
             else:
                 error = True
 
-    template_context = {'settings': settings, 'error': error}
-    return render_to_response('facebook/login.html', template_context, context_instance=RequestContext(request))
+    if not error:
+        template_context = {'settings': settings, 'error': error}
+        return render_to_response('facebook/login.html', template_context, context_instance=RequestContext(request))
+    
+    return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");	
 
 def logout(request):
     template_context = {}
