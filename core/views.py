@@ -27,6 +27,9 @@ import cgi
 import simplejson
 import urllib
 import random
+import urllib2
+import core
+import os.path
 
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
@@ -615,40 +618,20 @@ def migrate(request):
     return render_to_response('migrate.html',{},RequestContext(request))
 
 def migrate_db(request):    
-    arts = Article.objects.all().values('original').annotate(max_id=Max('id')).order_by()
-
-    org_arts = []
-    for art in arts:
-        temp = get_object_or_404( Article, id= art['max_id'] )
-        temp.current = True
-        temp.save()
-        org_arts.append(temp)
-
-    for org_art in org_arts:
-        articles = Article.objects.filter(original_id = org_art.original_id)
-        org = Article.objects.get(id = org_art.original_id)
-        ArticleHeader(order = org.order,name = org.name, topic = org.topic).save()
-        header = ArticleHeader.objects.get(name = org.name)
-        #header.tags = articles[0].tags
-        #header.save()
-        for art in articles:
-            ArticleDetails(current = art.current,likes = art.likes,dislikes = art.dislikes ,slug = art.slug, summary = art.summary, mod_date = art.mod_date, header = header).save()
-            details = ArticleDetails.objects.get(slug = art.slug)
-            
-            feedbacks = Feedback.objects.filter(article_id = art.id)
-            ratings = Rating.objects.filter(article_id = art.id)
-            art_ratings = ArticleRating.objects.filter(article_id = art.id)
-
-            for feedback in feedbacks:
-                feedback.articledetails_id = details.id
-                feedback.save()
-            for rating in ratings:
-                rating.articledetails_id = details.id
-                rating.save()
-            for art_rating in art_ratings:
-                art_rating.articledetails_id = details.id
-                art_rating.save()
-
+    users = User.objects.all()
+    for user in users:
+        try:
+            picture_page = "https://graph.facebook.com/"+user.username+"/picture?type=square"
+            opener1 = urllib2.build_opener()
+            page1 = opener1.open(picture_page)
+            my_picture = page1.read()
+            filename = core.__path__[0] + '/static/images/profile/'+ user.username
+            fout = open(filename, "wb")
+            fout.write(my_picture)
+            fout.close()
+        except Exception:
+            pass
+        
     return HttpResponse(simplejson.dumps({'done':"done isA"}))
 
 def migrate_tags(request):
