@@ -27,17 +27,13 @@
               <ul class="articles_block {{item.header.topic.slug}}" style="display:none;">
           {% endifchanged %}
           {% if item.is_original = 1 %}
-            <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %} {% if item.current %}current{% endif %}" >
+            <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %} {% if item.current %}current{% endif %}" style="padding-right:25px;">
             	<a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}"> - تعليقات {{ item.header.name }}</a>
-              <ul>
-          {% endif %}
-          {% if item.is_original = 0 %}
-            <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %} {% if item.current %}current{% endif %}" >
-              <a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}"> - تعليقات {{ item.header.name }}</a>
             </li>
           {% endif %}
-          {% if item.is_original = 1 %}
-              </ul>
+          {% if item.is_original = 0 %}
+            <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %} {% if item.current %}current{% endif %}" style="padding-right:50px;">
+              <a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}"> - تعليقات {{ item.header.name }}</a>
             </li>
           {% endif %}
           {% if forloop.last %}
