@@ -6,15 +6,17 @@
 
   <title>دستور مصر :: {% block title %}{% endblock %}&rlm;</title>
   
+  <meta property="og:site_name" content="دستور مصر"/>
+  <meta property="og:image" content="http://dostour.eg/sharek/static/images/facebook.png"/>
+  
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="{{STATIC_URL}}images/favicon.png">
   <link href="{{ STATIC_URL }}css/bootstrap.css" rel="stylesheet" />
   <link href="{{ STATIC_URL }}css/bootstrap-responsive.css" rel="stylesheet" />
   <link href="{{ STATIC_URL }}css/style.css" rel="stylesheet" />
-  <link href="{{ STATIC_URL }}css/raph.css" rel="stylesheet">
-  <link href="{{ STATIC_URL }}css/tipsy.css" rel="stylesheet">
- 
+  <link href="{{ STATIC_URL }}css/responsive-custome.css" rel="stylesheet" />
+
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js" ></script>
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.cookie.js" ></script>
   <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js" ></script>
@@ -48,18 +50,16 @@
                   'width=' + width + ',height=' + height + ',left=' + left + ',top=' + top
                 );
     
-          newwindow=window.open('https://www.facebook.com/login.php?api_key={{ settings.FACEBOOK_APP_ID }}&next={{settings.domain}}{% url facebook_login %}%3Floginsucc%3D1&cancel_url={{settings.domain}}{% url facebook_login %}%3Fcancel%3D1&display=popup&fbconnect=1&return_session=1&session_version=3&v=1.0&req_perms=publish_stream%2Cemail','Login_by_facebook',features);
+          login_window = window.open('https://www.facebook.com/login.php?api_key={{ settings.FACEBOOK_APP_ID }}&next={{settings.domain}}{% url facebook_login %}%3Floginsucc%3D1&cancel_url={{settings.domain}}{% url facebook_login %}%3Fcancel%3D1&display=popup&fbconnect=1&return_session=1&session_version=3&v=1.0&req_perms=publish_stream%2Cemail','Login_by_facebook',features);
           
-           if (window.focus) {newwindow.focus()}
+           if (window.focus) {login_window.focus()}
           return false;
       }
+	  
+	  function refreshPage(){
+		document.location.reload();
+	  }
   </script>
-  
-  <meta property="og:title" content="دستور مصر"/>
-  <meta property="og:image" content="http://dostour.eg/sharek/static/images/logo.png"/>
-  <meta property="og:site_name" content="Dostour.eg"/>
-  <meta property="og:description" content="دستور مصر"/>
-  <meta property="og:type" content="website"/>
   
 </head>
 

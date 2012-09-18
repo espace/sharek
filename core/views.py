@@ -609,7 +609,7 @@ def top_users_map(request):
         if top_user:
             top_users.append(top_user)
 
-    return render_to_response('top_users_map.html', {'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
+    return render_to_response('map.html', {'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
 
 def migrate(request):
     return render_to_response('migrate.html',{},RequestContext(request))

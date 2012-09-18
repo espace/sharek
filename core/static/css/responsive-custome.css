@@ -1,0 +1,156 @@
+@media (max-width: 979px) {
+
+/*body{background: red;}*/
+
+/* home page - icons*/
+ 
+.home-sections-icon {
+    margin: 0 54px;
+
+}
+
+.home-sections .nav li .articles-count, .home-sections .nav li .articles-count-new{
+    top:70px;
+}
+
+.edit-date, .edit-date-article {
+    margin-right: 0;
+}
+
+/* home page - updates*/
+
+.updates dt {
+    margin-right: 0;
+    line-height: 18px;
+    width: 82%;
+}
+.map{
+    width: 100px !important;
+}
+
+/* inner pages fixes*/
+.sidebar .nav li a {
+    border-radius: 0 0 0 0 !important;
+    color: #B8BABB !important;
+    font-family: GESSTwoMediumRegular;
+    font-size: 12px;
+    height: 40px;
+    padding: 20px 0;
+}
+
+
+}/* Media close*/
+
+
+@media (max-width: 767px) {
+ 
+/*body{background:green }*/
+.progress-promo{
+    margin-bottom: 20px;
+}
+
+.divider-vert {
+    border-left: 0;
+    box-shadow: 0 0 0 ;
+}
+    .navbar-search .search-query{
+        margin-top: -45px;    
+      }
+
+.btn-group button{
+    margin-top:7px;
+    margin-bottom: 7px;
+}
+.btn-group li a{
+    color: #222;
+}
+.home-sections-icon {
+    margin: 0;
+
+}
+
+}/* Media close*/
+/* Landscape phones and down */
+@media (max-width: 480px) {
+/*body{background:orange }*/
+
+.navbar-search .search-query{
+        margin-top: -45px;  
+        width: 75px;  
+      }
+
+.progress-promo p {
+    font: 12px/24px GESSTwoMediumRegular;
+}
+.progress-promo a.btn {
+    font: 12px GESSTwoMediumRegular !important;
+}
+
+.headtitle, .headtitle a, .headsubtitle, .headsubtitle a {
+    color: #111111;
+    font: bold 12px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+
+.home-sections .nav li {
+    margin-bottom: 20px;
+}
+
+/*  fixing inner pages*/
+.like-group {
+    right: 10px !important;
+    left: auto !important;
+    top: 15px !important;
+}
+.mada-title {
+    margin-top: 50px;
+    font-size: 12px;
+}
+.comments-number{
+    top: 15px;
+}
+.topic .like-group a{
+    font-size: 8px !important;
+    padding: 5px 25px 5px 5px;
+}
+.topic .like-group a:hover{
+    font-size: 8px !important ;
+    padding: 2px 25px 2px 5px !important ;
+}
+
+.comments-number {
+    background: url("../images/small-ribbon.png") no-repeat scroll 0 top transparent;
+    font-size: 8px !important;
+    padding: 5px 0 0;
+    top: 15px;
+    width: 100px;
+}
+.comments-number i{
+    margin-top: 0 !important;
+}
+
+.comment-block .date {
+    clear: both;
+    float: right;
+    font: 8px GESSTwoMediumRegular;
+    left: 0 !important;
+    position: static !important;
+    top: 0 !important;
+    margin:5px 0 !important;
+    color: #999 !important;
+}
+.comment-block .like-group {
+    float: right;
+    clear: both;
+    display: block;
+    margin:5px 0 !important;
+    left: auto !important;
+    right: 0 !important;
+    top: 0 !important;
+    position: static !important;
+
+}
+.top-comments  .comment-block .comment-block{
+    width: 76% !important;
+}
+ }/* Media close*/
