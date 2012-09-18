@@ -2,7 +2,6 @@
 
 <div class="container header">
   <div class="row">
-
       <div class="span3">
         <div class="pull-right logo">
             <a href="http://dostour.eg"><img src="{{STATIC_URL}}images/logo.png" alt="دستور مصر"></a>
@@ -18,7 +17,7 @@
                         <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
                         <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
                       </div>
-                      <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
+                      <img src="{{STATIC_URL}}images/profile/{{user}}" class="user_img" />
                   {% else %}
                       <div class="attrs">
                         <p class="user_name">Administrator</p>

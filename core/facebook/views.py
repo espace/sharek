@@ -73,11 +73,9 @@ def login(request):
                 page1 = opener1.open(picture_page)
                 my_picture = page1.read()
                 filename = core.__path__[0] + '/static/images/profile/'+ user.username
-                print filename  # test
                 fout = open(filename, "wb")
                 fout.write(my_picture)
                 fout.close()
-                print "done"
                 
                 #return HttpResponseRedirect(request.path)
                 return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
