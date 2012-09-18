@@ -39,7 +39,7 @@ def login(request):
     error = None
 
     if request.user.is_authenticated():
-        return HttpResponse("<script> window.close(); window.opener.location.reload(); </script>");
+        return HttpResponse("<script> window.close(); window.opener.refreshPage(); </script>");
 
     if request.GET:
 
