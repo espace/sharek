@@ -13,7 +13,7 @@ class ArticleDetailsInlineAdmin(admin.TabularInline):
     model      = ArticleDetails
     extra      = 1
     can_delete = True
-    fields     = ['slug','summary','current', 'mod_date']
+    fields     = ['current', 'slug','summary','mod_date']
 
 
 class ArticleHeaderAdmin(admin.ModelAdmin):

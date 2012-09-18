@@ -80,8 +80,9 @@ class Topic(models.Model):
        return len(self.get_articles())
    
     def get_mod_date(self):
-        last_mod_article = ArticleDetails.objects.filter(header__topic_id= self.id).order_by('-mod_date')[:1]
-        return last_mod_article[0]
+        articles = self.get_articles()
+        articles = sorted(articles, key=lambda article: article.mod_date, reverse=True)
+        return articles[0]
     
     class Meta:
        ordering = ["order"]
@@ -113,7 +114,7 @@ class ArticleDetails(models.Model):
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
     current = models.BooleanField(default=False)
-    mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Last Modification Date')
+    mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Modification Date')
 
     def feedback_count(self):
         inactive_users = User.get_inactive
@@ -160,8 +161,8 @@ class ArticleDetails(models.Model):
       return ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')[:limit]
 
     class Meta:
-       verbose_name = "Article detail"
-       verbose_name_plural = "Article details"
+       verbose_name = "Article Text"
+       verbose_name_plural = "Article Texts"
 
 exclusive_boolean_fields(ArticleDetails, ('current',), ('header',))
 
@@ -177,7 +178,7 @@ class Article(models.Model):
     dislikes = models.IntegerField(default=0)
     original = models.ForeignKey("self", null = True, blank = True)
     current = models.BooleanField(default=False)
-    mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Last Modification Date')
+    mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Modification Date')
     
     
     def feedback_count(self):
