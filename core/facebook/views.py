@@ -47,7 +47,7 @@ def login(request):
             return HttpResponse("<script type='text/javascript'> window.close(); </script>");
 
        if 'auth_token' in request.GET:
-            return render_to_response('facebook/relogin.html', {}, context_instance=RequestContext(request))
+            return render_to_response('facebook/relogin.html', {'settings': settings}, context_instance=RequestContext(request))
 
        if 'session' in request.GET:
 
