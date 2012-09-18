@@ -19,18 +19,30 @@
           {% ifchanged item.header.topic %}
             {% if forloop.first %}
             {% else %}
-              </div>
+                </ul>
+              </li>
             {% endif %}
             <li class="tag_item articles_topic" id="{{item.header.topic.slug}}">
               <a  style="height: 20px; padding-top: 10px; padding-right: 10px;" href="javascript:;">{{ item.header.topic }}</a>
+              <ul class="articles_block {{item.header.topic.slug}}" style="display:none;">
+          {% endifchanged %}
+          {% if item.is_original = 1 %}
+            <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %} {% if item.current %}current{% endif %}" >
+            	<a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}"> - تعليقات {{ item.header.name }}</a>
+              <ul>
+          {% endif %}
+          {% if item.is_original = 0 %}
+            <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %} {% if item.current %}current{% endif %}" >
+              <a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}"> - تعليقات {{ item.header.name }}</a>
             </li>
-            <div class="articles_block {{item.header.topic.slug}}" style="display:none;">
-          {% endifchanged %} 
-          <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %} {% if item.current %}current{% endif %}" {% if item.is_original = 0 %}style="padding-right: 50px;"{% else %}style="padding-right: 25px;"{% endif %}>
-          	<a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}"> - تعليقات {{ item.header.name }}</a>
-          </li>
+          {% endif %}
+          {% if item.is_original = 1 %}
+              </ul>
+            </li>
+          {% endif %}
           {% if forloop.last %}
-            </div>
+              </ul>
+            </li>
           {% endif %} 
         {% endfor %}
       </ul>
