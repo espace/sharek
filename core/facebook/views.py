@@ -47,7 +47,7 @@ def login(request):
             return HttpResponse("<script type='text/javascript'> window.close(); </script>");
 
        if 'auth_token' in request.GET:
-            return HttpResponse("<script type='text/javascript'> document.location.reload(); </script>");
+            return HttpResponse("<script type='text/javascript'> document.location='https://www.facebook.com/login.php?api_key={{ settings.FACEBOOK_APP_ID }}&next={{settings.domain}}{% url facebook_login %}%3Floginsucc%3D1&cancel_url={{settings.domain}}{% url facebook_login %}%3Fcancel%3D1&display=popup&fbconnect=1&return_session=1&session_version=3&v=1.0&req_perms=publish_stream%2Cemail'; </script>");
 
        if 'session' in request.GET:
 
