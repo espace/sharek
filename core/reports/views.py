@@ -26,7 +26,7 @@ def export_feedback(request, article_slug):
     
     #Retrieve data or whatever you need
     articles = ArticleDetails.objects.all()
-    articles =  sorted(articles,  key=attrgetter('header.topic.id','header.id', 'id'))
+    articles =  sorted(articles,  key=attrgetter('header.order', 'id'))
     article = get_object_or_404( ArticleDetails, slug=article_slug )
     feedback = Feedback.objects.filter(articledetails_id = article.id)
 
