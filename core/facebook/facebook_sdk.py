@@ -384,7 +384,6 @@ class GraphAPI(object):
             response = json.loads(response)
             raise GraphAPIError(response)
 
-
 class GraphAPIError(Exception):
     def __init__(self, result):
         #Exception.__init__(self, message)

@@ -1,5 +1,4 @@
 {% load settings %}
-
 <div class="container header">
   <div class="row">
 
@@ -10,45 +9,45 @@
       </div><!-- logo end -->
       
       <div class="pull-left search">
-          <div class="span4 pull-left facebook_log_in">
-            <div class="">
-                {% if user %}
-                  {% if user.username != 'admin' %}
-                      <div class="attrs">
-                        <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
-                        <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
-                      </div>
-                      <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
+        <div class="span4 pull-left facebook_log_in">
+          <div class="">
+              {% if user %}
+                {% if user.username != 'admin' %}
+                    <div class="attrs">
+                      <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
+                      <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                    </div>
+                    <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
+                {% else %}
+                    <div class="attrs">
+                      <p class="user_name">Administrator</p>
+                      <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                    </div>
+                {% endif %}
+                
+              {% else %}  
+                {% if error %}
+                  {% if error == 'AUTH_FAILED' %}
+                      <p>Authentication failed</p>
                   {% else %}
-                      <div class="attrs">
-                        <p class="user_name">Administrator</p>
-                        <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
-                      </div>
-                  {% endif %}
-                  
-                {% else %}  
-                  {% if error %}
-                    {% if error == 'AUTH_FAILED' %}
-                        <p>Authentication failed</p>
+                    {% if error == 'AUTH_DISABLED' %}
+                      <p>Your account is disabled</p>
                     {% else %}
-                      {% if error == 'AUTH_DISABLED' %}
-                        <p>Your account is disabled</p>
-                      {% else %}
-                        {% if error == 'AUTH_DENIED' %}
-                        <p>You did not allow access</p>
-                        {% endif %}
+                      {% if error == 'AUTH_DENIED' %}
+                      <p>You did not allow access</p>
                       {% endif %}
                     {% endif %}
-                  {% else %}
+                  {% endif %}
+                {% else %}
                   <a href="#" onclick="login();return false;">
                     <img style="float: left; padding-top: 25px;" src="http://egynda.com/resource/images/fb_sign.png"/>
                   </a>
-                  
-                  {% endif %}
-                {% endif %}         
-            </div>
+                {% endif %}
+              {% endif %}         
           </div>
+        </div>
       </div> <!-- search -->
+      
   </div><!-- row end -->
 </div><!-- header -->
 
