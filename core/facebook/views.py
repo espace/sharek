@@ -61,7 +61,7 @@ def login(request):
             if user and user.is_active and request.GET['loginsucc']:
                 auth.login(request, user)
                 #return HttpResponseRedirect(request.path)
-                return HttpResponse("<script type='text/javascript'> window.close(); window.opener.location.reload(); </script>");
+                return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
             else:
                 error = True
 
