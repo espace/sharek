@@ -1947,3 +1947,17 @@ span.divider{
 	border-radius: 7px;
 	font: 12px GESSTwoMediumRegular;
 }
+
+#loading-image {
+	background-color: #333;
+	width: 55px;
+	height: 55px;
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	z-index: 1;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px; /* future proofing */
+	-khtml-border-radius: 10px;
+}
