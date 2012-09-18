@@ -46,7 +46,10 @@ def login(request):
        if 'cancel' in request.GET:
             return HttpResponse("<script type='text/javascript'> window.close(); </script>");
 
-       if 'session' in request.GET:
+       if 'auth_token' in request.GET
+            return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
+
+	   if 'session' in request.GET:
 
             user_obj = json.loads(request.GET['session'])
 
@@ -64,11 +67,8 @@ def login(request):
             else:
                 error = True
 
-    if not error:
-        template_context = {'settings': settings, 'error': error}
-        return render_to_response('facebook/login.html', template_context, context_instance=RequestContext(request))
-    
-    return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");	
+    template_context = {'settings': settings, 'error': error}
+    return render_to_response('facebook/login.html', template_context, context_instance=RequestContext(request))
 
 def logout(request):
     template_context = {}
