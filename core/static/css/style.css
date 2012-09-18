@@ -1849,10 +1849,11 @@ span.divider{
 }
 .map-container .top-members h4{
     text-align: center;
-    font: 20px GESSTwoMediumRegular ;
+    font: 25px GESSTwoMediumRegular ;
+	font-weight: bold;
     margin-top: 35px;
     margin-bottom: 15px;
-    color: #222;
+    color: #A11212;
 }
 .map-container .top-members h4 i{
     margin-top: 5px;
