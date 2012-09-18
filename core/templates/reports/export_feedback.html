@@ -7,28 +7,28 @@
 
 {% block content %}
 <div class="row">
-    <div class="span12 inner-article">
-        
-    </div>
+  <div class="span12 inner-article">
+  </div>
 </div>
 
 <div class="row">
-
   <div class="span3">
-  	  <div class="sidebar">
-      	<ul class="nav nav-pills nav-stacked">
-          {% for item in articles %}
-            {% ifchanged item.header.topic %}
-              <li class="tag_item" >
-                <a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url topic topic_slug=item.header.topic.slug %}">{{ item.header.topic }}</a>
-              </li>
-            {% endifchanged %} 
-            <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %} {% if item.current %}current{% endif %}" {% if item.is_original = 0 %}style="padding-right: 25px;"{% endif %}>
-            	<a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}"> - تعليقات {{ item.header.name }}</a>
+	  <div class="sidebar">
+    	<ul class="nav nav-pills nav-stacked">
+        {% for item in articles %}
+          {% ifchanged item.header.topic %}
+            </div>
+            <li class="tag_item articles_topic" id="{{item.header.topic.slug}}">
+              <a  style="height: 20px; padding-top: 10px; padding-right: 10px;" href="javascript:;">{{ item.header.topic }}</a>
             </li>
-          {% endfor %}
-       </ul>
-      </div>
+            <div class="articles_block {{item.header.topic.slug}}" style="display:none;">
+          {% endifchanged %} 
+          <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %} {% if item.current %}current{% endif %}" {% if item.is_original = 0 %}style="padding-right: 50px;"{% else %}style="padding-right: 25px;"{% endif %}>
+          	<a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}"> - تعليقات {{ item.header.name }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
   </div><!-- span3 -->
 
   <div id="ajax-container" class="span9">
@@ -40,66 +40,79 @@
         <p class="edit-date-article">آخر تحديث في {{article.mod_date|date:"Y/m/d"}} {{article.mod_date|time:"G:i"}} {% if article.mod_date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}</p><br />
         {% endif %}
     </div><!-- topic end -->
-    
-
-	{% for feedback in feedbacks %}
-        <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %}">
-          <div class="facebook_user_img">
-            {% if feedback.user == 'admin' %}
-                <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
-            {% else %}
-                <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.user.first_name }} {{ feedback.user.last_name }}">
-                    <img class="loader" src="http://graph.facebook.com/{{ feedback.user }}/picture">
-                </a>
-            {% endif %}
-          </div>
-          
+  	{% for feedback in feedbacks %}
+      <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %}">
+        <div class="facebook_user_img">
           {% if feedback.user == 'admin' %}
-	        <h3><p class="name"><a>{{feedback.name}}</a></p></h3> 
+            <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
           {% else %}
-    	    <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3> 
+            <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.user.first_name }} {{ feedback.user.last_name }}">
+                <img class="loader" src="http://graph.facebook.com/{{ feedback.user }}/picture">
+            </a>
           {% endif %}
-            
-          <span class="date" style="left: 20px;">{{feedback.date|format}}</span>
-          <p>{{feedback.suggestion}}</p>
-          <div class="L_replies_block child-wrapper {{feedback.id}}" >
-            {% if feedback.get_children|length > 0 %}
-              {% for reply in feedback.get_children %}
-                <div class="comment-block child-reply L_{{reply.id}}">
-                  <div class="facebook_user_img">
-                    {% if reply.user == 'admin' %}
-                        <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
-                    {% else %}
-                        <a href="http://www.facebook.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.user.first_name }} {{ reply.user.last_name }}">
-                            <img class="loader" src="http://graph.facebook.com/{{ reply.user }}/picture">
-                        </a>
-                    {% endif %}
-                  </div>
-          
-          {% if reply.user == 'admin' %}
-	        <h3><p class="name"><a>{{reply.name}}</a></p></h3> 
-          {% else %}
-    	    <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3> 
-          {% endif %}
-            
-                  <span class="date" style="left: 20px;">{{reply.date|format}}</span>
-                  <p>{{reply.suggestion}}</p>
-                </div><!-- comment end -->
-              {% endfor %}
-            {% endif %}
-          </div>
-        </div><!-- comment end -->
+        </div>
         
-        {% endfor %}
-
+        {% if feedback.user == 'admin' %}
+          <h3><p class="name"><a>{{feedback.name}}</a></p></h3> 
+        {% else %}
+  	      <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3> 
+        {% endif %}
+          
+        <span class="date" style="left: 20px;">{{feedback.date|format}}</span>
+        <p>{{feedback.suggestion}}</p>
+        <div class="L_replies_block child-wrapper {{feedback.id}}" >
+          {% if feedback.get_children|length > 0 %}
+            {% for reply in feedback.get_children %}
+              <div class="comment-block child-reply L_{{reply.id}}">
+                <div class="facebook_user_img">
+                  {% if reply.user == 'admin' %}
+                    <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
+                  {% else %}
+                    <a href="http://www.facebook.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.user.first_name }} {{ reply.user.last_name }}">
+                      <img class="loader" src="http://graph.facebook.com/{{ reply.user }}/picture">
+                    </a>
+                  {% endif %}
+                </div>
+                {% if reply.user == 'admin' %}
+                  <h3><p class="name"><a>{{reply.name}}</a></p></h3> 
+                {% else %}
+  	              <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{reply.name}}</a></p></h3> 
+                {% endif %}
+          
+                <span class="date" style="left: 20px;">{{reply.date|format}}</span>
+                <p>{{reply.suggestion}}</p>
+              </div><!-- comment end -->
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div><!-- comment end -->    
+    {% endfor %}
   </div><!-- span 8 -->
-
 </div><!-- row end -->
+<script type="text/javascript">
+  $(document).ready(function() {
 
+    $(".articles_topic").live("click",function(){
 
+      $(this).expand_effect()
+    });
 
+    jQuery.fn.expand_effect = function() 
+    {
 
-  
+      visible = $(".articles_block."+$(this).attr('id')).is(":visible")
+      if (visible)
+      {
+        $(".articles_block."+$(this).attr('id')).hide();
+      }
+      else
+      {
+        $(".articles_block."+$(this).attr('id')).show();
+      }
+    };
+
+  });
+</script>
 {% endblock %}
 
 
