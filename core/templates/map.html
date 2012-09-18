@@ -14,10 +14,10 @@
 	     <div id="loading-image"><img src="{{ STATIC_URL }}images/loader.gif" alt="تحميل ..." /></div>
          <ul id="map-users" style="display: none;">
            {% for top in top_users %}
-                 {% if forloop.counter == bound %}
-                      <li class="current {{forloop.counter}}"><a class="user-image" title="{{ user.first_name }} {{ user.last_name }}"><img class="loader" src="{{ STATIC_URL }}images/profile/{{ user.username }}"></a></li>      
+             {% if forloop.counter == bound %}
+                <li class="current {{forloop.counter}}"><a class="user-image" title="{{ user.first_name }} {{ user.last_name }}"><img width="21" height="21" class="loader" src="{{ STATIC_URL }}images/profile/{{ user.username }}"></a></li>      
              {% else %}
-             <li class="{{forloop.counter}}"><a class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="{{ STATIC_URL }}images/profile/{{ top.username }}"></a></li>
+             	<li class="{{forloop.counter}}"><a class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img width="21" height="21" class="loader" src="{{ STATIC_URL }}images/profile/{{ top.username }}"></a></li>
              {% endif %}
                     
            {% endfor %}
