@@ -47,7 +47,7 @@ def login(request):
             return HttpResponse("<script type='text/javascript'> window.close(); </script>");
 
        if 'auth_token' in request.GET:
-            return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
+            return HttpResponse("<script type='text/javascript'> document.location.reload(); </script>");
 
        if 'session' in request.GET:
 
