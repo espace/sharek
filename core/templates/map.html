@@ -7,16 +7,16 @@
 
 <div class="container content map-container">
    <div class="row">
-       <div class="top-members " style="display: none;">
+       <div class="top-members">
          <div class="map-layout"></div>
          <h4> <i class="icon-star"></i>أعلى المشاركين على دستور مصر</h4>
-         <ul>
-                {% for top in top_users %}
-                     {% if forloop.counter == bound %}
-                          <li class="current {{forloop.counter}}"><a class="user-image" title="{{ user.first_name }} {{ user.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture"></a></li>      
-                  {% else %}
-                  <li class="{{forloop.counter}}"><a class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
-                  {% endif %}
+         <ul id="map-users" style="display: none;">
+           {% for top in top_users %}
+                 {% if forloop.counter == bound %}
+                      <li class="current {{forloop.counter}}"><a class="user-image" title="{{ user.first_name }} {{ user.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture"></a></li>      
+             {% else %}
+             <li class="{{forloop.counter}}"><a class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
+             {% endif %}
                     
            {% endfor %}
         </ul>
@@ -36,7 +36,7 @@
 
 
 $(window).load(function() {
-	jQuery('.top-members').show();
+	jQuery('#map-users').show();
 });
 
 $(document).ready(function() {
