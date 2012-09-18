@@ -46,7 +46,7 @@ def login(request):
        if 'cancel' in request.GET:
             return HttpResponse("<script type='text/javascript'> window.close(); </script>");
 
-       if 'auth_token' in request.GET
+       if 'auth_token' in request.GET:
             return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
 
 	   if 'session' in request.GET:
