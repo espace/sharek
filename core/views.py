@@ -39,7 +39,7 @@ def index(request):
     if request.user.is_authenticated():
       user = request.user
     topics = Topic.objects.all
-
+    
     top_users = []
     inactive_users = User.get_inactive
     temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users)[:12]

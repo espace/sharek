@@ -8,6 +8,9 @@ import cgi
 import json
 import simplejson
 import urllib
+import urllib2
+import core
+import os.path
 from core.facebook import facebook_sdk
 
 from core.facebook.models import FacebookSession
@@ -63,6 +66,18 @@ def login(request):
             user = auth.authenticate(token=user_obj['access_token'])
             if user and user.is_active and request.GET['loginsucc']:
                 auth.login(request, user)
+                # copy the profile image
+                picture_page = "https://graph.facebook.com/"+user.username+"/picture?type=square"
+                
+                opener1 = urllib2.build_opener()
+                page1 = opener1.open(picture_page)
+                my_picture = page1.read()
+                filename = core.__path__[0] + '/static/images/profile/'+ user.username
+                fout = open(filename, "wb")
+                fout.write(my_picture)
+                fout.close()
+                
+                #return HttpResponseRedirect(request.path)
                 return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
             else:
                 error = True

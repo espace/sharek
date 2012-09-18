@@ -34,7 +34,8 @@ urlpatterns = patterns('',
     url(r'^sharek/reply_feedback/', 'core.views.reply_feedback', name='reply_feedback'),
     url(r'^sharek/remove_feedback/', 'core.views.remove_feedback', name='remove_feedback'),
     url(r'^sharek/facebook/', 'core.views.facebook_comment', name='facebook_comment'),
-
+	url(r'^sharek/logout', 'core.views.logout', name='logout'),
+	
     url(r'^sharek/info/(?P<info_slug>[-\w]+)/$', 'core.views.info_detail', name='info'),
 
     #Article detail URL    
