@@ -21,8 +21,8 @@ urlpatterns = patterns('',
     
     url(r'^sharek/admin/', include(admin.site.urls)),
     
-    #url(r'^sharek/migrate/$', 'core.views.migrate', name='migrate'),
-    #url(r'^sharek/migrate_db/$', 'core.views.migrate_db', name='migrate_db'),
+    url(r'^sharek/migrate/$', 'core.views.migrate', name='migrate'),
+    url(r'^sharek/migrate_db/$', 'core.views.migrate_db', name='migrate_db'),
     #url(r'^sharek/migrate_tags/$', 'core.views.migrate_tags', name='migrate_tags'),
 
     url(r'^sharek/slider/$', 'core.views.slider', name='slider'),
@@ -34,7 +34,8 @@ urlpatterns = patterns('',
     url(r'^sharek/reply_feedback/', 'core.views.reply_feedback', name='reply_feedback'),
     url(r'^sharek/remove_feedback/', 'core.views.remove_feedback', name='remove_feedback'),
     url(r'^sharek/facebook/', 'core.views.facebook_comment', name='facebook_comment'),
-
+	url(r'^sharek/logout', 'core.views.logout', name='logout'),
+	
     url(r'^sharek/info/(?P<info_slug>[-\w]+)/$', 'core.views.info_detail', name='info'),
 
     #Article detail URL    

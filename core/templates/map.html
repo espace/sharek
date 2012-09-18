@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load settings %}
 {% load hash %}
-{% block title %}أعلى المشاركين على دستور مصر{% endblock %}
+{% block title %}أكثر الأعضاء المشاركين في دستور مصر{% endblock %}
 
 {% block content %}
 
@@ -31,13 +31,14 @@
 $(window).load(function() {
 	$('#map-users').show();
 	$('#loading-image').hide();
+	$('.joiner-info').show();
 });
 
 </script> 
 
 {% if user %}
 
-<div class="joiner-info">
+<div class="joiner-info" style="display: none;">
           	<a href="http://fb.com/{{ user.username }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
             <img class="loader" src="http://graph.facebook.com/{{ user.username }}/picture">
             <p>محمد محمود أمين</p>
@@ -47,10 +48,10 @@ $(window).load(function() {
        
 <script type="text/javascript">
 
-$(document).ready(function() {
+$(window).load(function() {
 
 	var position = $("li.current").offset();
-               	var left = position.left;
+    var left = position.left;
 	var top = position.top-120;
 
 	$(".joiner-info").css({"left":left,"top":top});
