@@ -13,7 +13,7 @@ class ArticleDetailsInlineAdmin(admin.TabularInline):
     model      = ArticleDetails
     extra      = 1
     can_delete = True
-    fields     = ['slug','summary','current', 'mod_date']
+    fields     = ['current', 'slug','summary','mod_date']
 
 
 class ArticleHeaderAdmin(admin.ModelAdmin):
@@ -21,6 +21,7 @@ class ArticleHeaderAdmin(admin.ModelAdmin):
     list_display = ('name','topic','order')
     list_filter = ('topic',)
     list_editable = ['order']
+    search_fields = ['name']
 
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
@@ -77,6 +78,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ('email', 'username' ,'first_name', 'last_name', 'is_staff', 'is_active')
     list_editable = ['is_staff', 'is_active']
     list_filter = ('is_staff', 'is_active')
+    search_fields = ['email', 'username' ,'first_name', 'last_name']
 
     def has_add_permission(self, request):
         return False

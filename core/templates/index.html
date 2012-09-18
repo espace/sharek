@@ -13,7 +13,7 @@
 .progress-promo .comments-till-now { margin-right: -194px; }
 .progress-promo .comments-till-now::after { left: 20px; }
 </style>
-{% endif %}
+{% endif %} 
 
   <div class="row promo">
     <div class="">
@@ -21,27 +21,24 @@
         <p>هذا هو الموقع الرسمي للجمعية التأسيسية لوضع مشروع الدستور, والمواد المعلنة هنا هي الوحيدة المعتمدة من الجمعية وسيتم الأخذ بالملاحظات والمقترحات الموجودة هنا فقط ولا يوجد أي موقع آخر يمثل الجمعية.</p>
         <a href="{% url topics %}" class="btn btn-green">شارك برأيك فى الدستور!</a>
       </div>
-      <div class="span6 map">
+      <div class="span6 map hidden-phone">
         <iframe width="460" height="230" src="http://www.youtube.com/embed/2ddxz5o_e18" frameborder="0" allowfullscreen></iframe>
       </div>
     </div><!-- below header -->
   </div><!-- row -->
   
 <div class="row">
-  <div class="span12 "> <span class="divider"></span> <br /><br /></div>
+  <div class="span12 "> <span class="divider visible-desktop"></span> <br /><br /></div>
 </div>
 <!-- row -end -->
 
-<div class="row">
-  <div class="span8 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
-  <div class="span4 "> <h1 class="headtitle"><span>عدد مشاركات الزوار</span></h1> </div>
-</div>
-<!-- row -end -->
+
 
 <div class="row">
   <div class="home-sections span8">
-  
-	<ul class="nav nav-pills divider-vert">
+    <div class="span8 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
+
+	<ul class="nav nav-pills divider-vert ">
       {% for topic_item in topics %}
       <li class="span4"> 
         <a href="{% url topic topic_slug=topic_item.get_absolute_url %}">
@@ -75,10 +72,9 @@
               {% for article in top_liked %}
                 <dl>
                     <dt>
-                      <a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</a>
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{ article.header.topic }} - {{article.header.name}}</a>
                       <span class="icon-update">{{article.likes}}</span>
                     </dt> 
-                    <dd>{{article.summary|safe|truncatewords_html:5}}<a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">  ←</a></dd>
                 </dl>
               {% endfor %}
     
@@ -89,10 +85,9 @@
                 {% for article in top_commented %}
                 <dl>
                     <dt>
-                      <a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</a> 
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{ article.header.topic }} - {{article.header.name}}</a> 
                       <span class="icon-update"><i class="icon-comment"></i>{{article.feedback_count}}</span>
-                    </dt> 
-                    <dd>{{article.summary|safe|truncatewords_html:5}}<a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">  ←</a></dd>
+                    </dt>
                 </dl>
               {% endfor %}
            </div> <!--  Most liked -->
@@ -103,7 +98,8 @@
   <!-- sidebar -->
  
   <div class="facebook-plugin span4"> 
-  
+    <div class="span4 "> <h1 class="headtitle"><span>عدد مشاركات الزوار</span></h1> </div>
+
   <p class="mosharakat_number">
     {{ total|intcomma }}
     <br />
@@ -114,7 +110,7 @@
       <h4> <i class="icon-star"></i> أعلى المشاركين</h4>
       <ul>
       	{% for top in top_users %}
-        <li><a href="http://fb.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
+        	<li><a href="http://www.facebook.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
         {% endfor %}
       </ul>
   </div>

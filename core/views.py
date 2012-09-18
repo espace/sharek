@@ -26,6 +26,7 @@ from django.db.models.aggregates import Max
 import cgi
 import simplejson
 import urllib
+import random
 
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
@@ -61,9 +62,9 @@ def index(request):
 
     total = feedback + feedback_ratings + article_ratings
 	
-    top_liked = ArticleDetails.get_top_liked(2)
-    top_disliked = ArticleDetails.get_top_disliked(2)
-    top_commented = ArticleDetails.get_top_commented(2)
+    top_liked = ArticleDetails.get_top_liked(5)
+    top_disliked = ArticleDetails.get_top_disliked(5)
+    top_commented = ArticleDetails.get_top_commented(5)
     tags = Tag.objects.all
     
     percent = int((float(total)/target)*100)
@@ -175,7 +176,6 @@ def article_diff(request, article_slug):
     template_context = {'article': article, 'versions': versions, 'request':request, 'user':user,'settings': settings}
     return render_to_response('article_diff.html',template_context ,RequestContext(request))
 
-
 def article_detail(request, classified_by, class_slug, article_slug, order_by="def"):
     user = None
 
@@ -223,8 +223,6 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
-    
-    
 
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
@@ -262,14 +260,16 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
           n_votes[vote.feedback_id] += 1
         else:
           n_votes[vote.feedback_id] = 1
-          
+
+
+
+
     if classified_by == "tags":  
         template_context = {'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
     elif classified_by == "topics":
         template_context = {'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
-
 
 def remove_feedback(request):
     if request.user.is_authenticated():
@@ -388,14 +388,6 @@ def article_vote(request):
             art.likes = p
             art.dislikes = n
             art.save()
-
-            '''fb_user = FacebookSession.objects.get(user = request.user)
-            graph = facebook_sdk.GraphAPI(fb_user.access_token)
-            attachment = {}
-            attachment['link'] = settings.domain+"sharek/topics/"+art.topic.slug+"/"+art.slug
-            attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
-            message = 'لقد شاركت في كتابة #دستور_مصر وقمت ' + action + art.name.encode('utf-8') + " من الدستور"
-            graph.put_wall_post(message, attachment)'''
 
             return HttpResponse(simplejson.dumps({'article':article,'p':p,'n':n,'vote':request.POST.get("type")}))
           
@@ -599,7 +591,14 @@ def top_users_map(request):
 
     top_users = []
     inactive_users = User.get_inactive
-    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users)[:2000]
+    if user == None:
+        temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('?').exclude(user__in=inactive_users)[:2000]
+    else:
+        temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('?').exclude(user__in=inactive_users).exclude(user__in=inactive_users).exclude(user=user.username)[:2000]
+
+    bound_h = random.randint(210,235)
+    bound_v = random.randint(1,25)*41
+    bound = bound_h+bound_v
 
     for temp in temp_users:
         try:
@@ -610,7 +609,7 @@ def top_users_map(request):
         if top_user:
             top_users.append(top_user)
 
-    return render_to_response('top_users_map.html', {'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
+    return render_to_response('map.html', {'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
 
 def migrate(request):
     return render_to_response('migrate.html',{},RequestContext(request))

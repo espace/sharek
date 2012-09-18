@@ -1,4 +1,5 @@
 {% load settings %}
+
 <div class="container header">
   <div class="row">
 
@@ -9,45 +10,46 @@
       </div><!-- logo end -->
       
       <div class="pull-left search">
-        <div class="span4 pull-left facebook_log_in">
-          <div class="">
-              {% if user %}
-                {% if user.username != 'admin' %}
-                    <div class="attrs">
-                      <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
-                      <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
-                    </div>
-                    <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
-                {% else %}
-                    <div class="attrs">
-                      <p class="user_name">Administrator</p>
-                      <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
-                    </div>
-                {% endif %}
-                
-              {% else %}  
-                {% if error %}
-                  {% if error == 'AUTH_FAILED' %}
-                      <p>Authentication failed</p>
+          <div class="span4 pull-left facebook_log_in">
+            <div class="">
+                {% if user %}
+                  {% if user.username != 'admin' %}
+                      <div class="attrs">
+                        <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
+                        <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                      </div>
+                      <img src="http://graph.facebook.com/{{ user }}/picture" class="user_img" />
                   {% else %}
-                    {% if error == 'AUTH_DISABLED' %}
-                      <p>Your account is disabled</p>
+                      <div class="attrs">
+                        <p class="user_name">Administrator</p>
+                        <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                      </div>
+                      <img class="user_img" src="{{ STATIC_URL }}images/admin.gif">
+                  {% endif %}
+                  
+                {% else %}  
+                  {% if error %}
+                    {% if error == 'AUTH_FAILED' %}
+                        <p>Authentication failed</p>
                     {% else %}
-                      {% if error == 'AUTH_DENIED' %}
-                      <p>You did not allow access</p>
+                      {% if error == 'AUTH_DISABLED' %}
+                        <p>Your account is disabled</p>
+                      {% else %}
+                        {% if error == 'AUTH_DENIED' %}
+                        <p>You did not allow access</p>
+                        {% endif %}
                       {% endif %}
                     {% endif %}
-                  {% endif %}
-                {% else %}
+                  {% else %}
                   <a href="#" onclick="login();return false;">
                     <img style="float: left; padding-top: 25px;" src="http://egynda.com/resource/images/fb_sign.png"/>
                   </a>
-                {% endif %}
-              {% endif %}         
+                  
+                  {% endif %}
+                {% endif %}         
+            </div>
           </div>
-        </div>
       </div> <!-- search -->
-      
   </div><!-- row end -->
 </div><!-- header -->
 
@@ -55,8 +57,8 @@
   <div class="row">
       <div class="span12">
 
-        <div class="navbar-inner top-nav ">
-            <ul class="nav nav-pills">
+        <div class="navbar-inner top-nav hidden-phone">
+            <ul class="nav nav-pills ">
                 <li class="">
                   <a href="http://dostour.eg">الرئيسية</a>
                 </li>
@@ -82,13 +84,49 @@
                 </li>
 
               </ul>
+              
 
             <form class="navbar-search pull-left" action="{% url search %}" method="POST">
                 {% csrf_token %}
                  <input type="text" name="q" id="q" style="font: 11px tahoma;" class="search-query span2" placeholder="أدخل كلمات البحث">
             </form>
         </div><!-- nav -end -->
+      <div class="navbar-inner top-nav  visible-phone">
 
+            <div class="btn-group">
+                      <button data-toggle="dropdown" class="btn btn-large btn-inverse dropdown-toggle"><i class="icon-list icon-white"></i> <span class="caret"></span></button>
+                      <ul class="dropdown-menu">
+                            <li class="">
+                              <a href="http://dostour.eg">الرئيسية</a>
+                            </li>
+                            <li class="">
+                              <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
+                            </li>
+                            {% if user.is_staff %}
+                              <li class="">
+                                <a href="{% url feedback_report article_slug=1 %}">تعليقات الزوار</a>
+                              </li>
+                              <li class="">
+                                <a href="{% url top_liked %}">الأكثر قبولا</a>
+                              </li>
+                              <li class="">
+                                <a href="{% url top_disliked %}">الأكثر رفضا</a>
+                              </li>
+                              <li class="">
+                                <a href="{% url top_commented %}">الأكثر مناقشة</a>
+                              </li>
+                            {% endif %}
+                             <li class="">
+                              <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
+                            </li>
+                      </ul>
+              </div>
+
+              <form class="navbar-search pull-left" action="{% url search %}" method="POST">
+                      {% csrf_token %}
+                       <input type="text" name="q" id="q" style="font: 11px tahoma;" class="search-query span2" placeholder="أدخل كلمات البحث">
+              </form>
+         </div>
       </div>
       
 

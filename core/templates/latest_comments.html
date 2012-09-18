@@ -3,9 +3,19 @@
 {% for feedback in feedbacks %}
 <div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{feedback.id}}">
 <div class="facebook_user_img">
+  {% if feedback.user == 'admin' %}
+  <a class="user-image" title="Admin"><img class="loader" src="{{ STATIC_URL }}images/admin.gif"></a>
+  {% else %}
   <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank"><img src="http://graph.facebook.com/{{ feedback.user }}/picture" class="loader"/></a>
+  {% endif %}
 </div>
-  <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{feedback.name}}</a></p></h3>
+          
+          {% if feedback.user == 'admin' %}
+	        <h3><p class="name"><a>{{feedback.name}}</a></p></h3> 
+          {% else %}
+    	    <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{feedback.name}}</a></p></h3> 
+          {% endif %}
+            
             <div class="delete-group">
             {% if user %}
               {% if user.username = feedback.user or user.username = "admin" %}

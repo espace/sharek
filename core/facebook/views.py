@@ -42,12 +42,15 @@ def login(request):
     error = None
 
     if request.user.is_authenticated():
-        return HttpResponse("<script> window.close(); window.opener.location.reload(); </script>");
+        return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
 
     if request.GET:
 
        if 'cancel' in request.GET:
             return HttpResponse("<script type='text/javascript'> window.close(); </script>");
+
+       if 'auth_token' in request.GET:
+            return render_to_response('facebook/relogin.html', {'settings': settings}, context_instance=RequestContext(request))
 
        if 'session' in request.GET:
 
@@ -63,7 +66,7 @@ def login(request):
             user = auth.authenticate(token=user_obj['access_token'])
             if user and user.is_active and request.GET['loginsucc']:
                 auth.login(request, user)
-                
+                # copy the profile image
                 picture_page = "https://graph.facebook.com/"+user.username+"/picture?type=square"
                 
                 opener1 = urllib2.build_opener()
@@ -77,7 +80,7 @@ def login(request):
                 print "done"
                 
                 #return HttpResponseRedirect(request.path)
-                return HttpResponse("<script type='text/javascript'> window.close(); window.opener.location.reload(); </script>");
+                return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
             else:
                 error = True
 

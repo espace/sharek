@@ -200,7 +200,7 @@ body {
     font: 16px GESSTwoMediumRegular;
     color: #474747;
     line-height: 36px;
-    text-shadow:0 0px 1px rgba(0,0,0,0.4);
+    text-shadow: 1px 1px 1px #FFFFFF;
 }
 .progress-promo a.btn{
     font: 20px GESSTwoMediumRegular;
@@ -335,6 +335,7 @@ left: 1px;
     color: #a11212;
     margin-top: 15px;
     margin-bottom: 0px;
+	text-shadow: 1px 1px 1px #FFF;
 
 }
 .mosharakat_number span{
@@ -700,7 +701,7 @@ left: 1px;
     background: url("../images/pattern.png") repeat;
     padding: 5px 10px;
     border-radius: 5px;
-}
+	text-shadow: 1px 1px 1px #FFFFFF;
 }
 .divider.pushed-up{
     margin-top: 50px;
@@ -841,8 +842,11 @@ left: 1px;
     width: 90%;
 }
 .updates   dt{
-    margin-right: 10px;
     width: 90%;
+    margin-right: 10px;
+	font-size: 11px;
+	font-weight: normal;
+	line-height: 5px;
 }
 .updates   dd p{
     display: inline !important;
@@ -872,13 +876,13 @@ left: 1px;
 .most-liked .icon-update{
     float: left; 
     background:url(../images/thumb-up.png) no-repeat right -70px;
-    padding-right: 25px;
-    font-size: 12px;
+    /*padding-right: 25px;*/
+    font-size: 11px;
     color: #999;
     font-family: GESSTwoMediumRegular;
     text-align: left;
     font-weight: normal;
-
+	padding-right: 25px;
 }
 .most-liked dl{
     padding-bottom: 10px;
@@ -951,9 +955,9 @@ left: 1px;
 }
 .most-argued .icon-update{
     float: left; 
-    /*background:url(../images/thumb-up.png) no-repeat right -69px;*/
-    padding-right: 25px;
-    font-size: 12px;
+    /*background:url(../images/thumb-up.png) no-repeat right -69px;
+    padding-right: 25px;*/
+    font-size: 11px;
     color: #999;
     font-family: GESSTwoMediumRegular;
     text-align: left;
@@ -1833,7 +1837,7 @@ span.divider{
     width: 1030px;
     height:1178px;
     position: absolute;
-    top: 78px;
+    top: 75px;
     left: 0;
     background: url("../images/map-layout.png") 0 0 no-repeat;
 }
@@ -1845,13 +1849,15 @@ span.divider{
 }
 .map-container .top-members h4{
     text-align: center;
-    font: 20px GESSTwoMediumRegular ;
+    font: 25px GESSTwoMediumRegular ;
+	font-weight: bold;
     margin-top: 35px;
     margin-bottom: 15px;
-    color: #222;
+    color: #A11212;
 }
 .map-container .top-members h4 i{
     margin-top: 5px;
+	margin-left: 10px;
 }
 .map-container .top-members ul{
     margin: 0;
@@ -1942,4 +1948,14 @@ span.divider{
 	color:#777;
 	border-radius: 7px;
 	font: 12px GESSTwoMediumRegular;
+}
+
+#loading-image {
+	width: 100%;
+	height: 350px;
+	position: relative;
+	top: 50px;
+	margin: 0px auto;
+	z-index: 1;
+	text-align: center;
 }
