@@ -18,7 +18,11 @@
   	  <div class="sidebar">
       	<ul class="nav nav-pills nav-stacked">
           {% for item in articles %}
-
+            {% ifchanged item.header.topic %}
+              <li class="tag_item" >
+                <a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url topic topic_slug=item.header.topic.slug %}">{{ item.header.topic }}</a>
+              </li>
+            {% endifchanged %} 
             <li class="tag_item{% ifequal item.id article.id %} active{% endifequal %} {% if item.current %}current{% endif %}" {% if item.is_original = 0 %}style="padding-right: 25px;"{% endif %}>
             	<a style="height: 20px; padding-top: 10px; padding-right: 10px;" href="{% url feedback_report article_slug=item.slug %}"> - تعليقات {{ item.header.name }}</a>
             </li>
