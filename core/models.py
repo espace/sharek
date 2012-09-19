@@ -144,7 +144,6 @@ class ArticleDetails(models.Model):
 
     def get_current_version(self):
         return self.header.articledetails_set.get(current = True)
-        #Article.objects.get(parent_id = self.parent_id, current = True)
 
     @classmethod
     def get_top_liked(self, limit):
@@ -164,77 +163,7 @@ class ArticleDetails(models.Model):
 
 exclusive_boolean_fields(ArticleDetails, ('current',), ('header',))
 
-
-class Article(models.Model):
-    tags = models.ManyToManyField(Tag)
-    topic = models.ForeignKey(Topic,null = True)
-    name = models.CharField(max_length=40)
-    slug 	 = models.SlugField(max_length=40, unique=True, help_text="created from name")
-    summary = MarkupField(blank=True, default='')
-    order = models.IntegerField(blank = True, null = True)
-    likes = models.IntegerField(default=0)
-    dislikes = models.IntegerField(default=0)
-    original = models.ForeignKey("self", null = True, blank = True)
-    current = models.BooleanField(default=False)
-    mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Modification Date')
-    
-    
-    def feedback_count(self):
-        inactive_users = User.get_inactive
-        return len(Feedback.objects.filter(article_id = self.id).exclude(user__in=inactive_users))
-
-    def get_votes(self):
-        return Rating.objects.filter(article_id= self.id)
-
-    def get_top_feedback(self):
-        inactive_users = User.get_inactive
-        feedback = Feedback.objects.filter(article_id= self.id).order_by('-order').exclude(user__in=inactive_users)[:1]
-        if len(feedback) == 1:
-            return feedback[0]
-        else:
-            return None
-
-    def clean(self):
-        if len(self.name) >= 40:
-            raise exceptions.ValidationError('Too many characters ...')
-        return self.name
-    
-    def __unicode__(self):
-        return self.name
-    
-    def get_absolute_url(self):
-        return "%s/" % (self.slug)
-
-    def save(self):
-        super(Article, self).save()
-        if self.original == None:
-            self.original = self
-            self.current = True
-            self.save()
-
-    def get_current_version(self):
-        return Article.objects.get(parent_id = self.parent_id, current = True)
-
-    @classmethod
-    def get_top_liked(self, limit):
-      return Article.objects.order_by('-likes')[:limit]
-    
-    @classmethod
-    def get_top_disliked(self, limit):
-      return Article.objects.order_by('-dislikes')[:limit]
-    
-    @classmethod
-    def get_top_commented(self, limit):
-      return Article.objects.annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')[:limit]
-
-    class Meta:
-       ordering = ["order"]
-
-
-
-
 class Feedback(models.Model):
-    #article = models.ForeignKey(Article, null = True, blank = True)
     parent = models.ForeignKey("self",blank=True,null=True)
     name = models.CharField(max_length=200)
     email = models.SlugField(default='')
@@ -250,7 +179,6 @@ class Feedback(models.Model):
 
 class Rating(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
-    #article = models.ForeignKey(Article, null = True, blank = True)
     feedback = models.ForeignKey(Feedback)
     user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()
@@ -258,7 +186,6 @@ class Rating(models.Model):
 
 class ArticleRating(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
-    #article = models.ForeignKey(Article, null = True, blank = True)
     user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()
 
