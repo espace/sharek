@@ -94,6 +94,7 @@ def auto_post(request):
     # GraphAPI is the main class from facebook_sdp.py
     graph = facebook_sdk.GraphAPI("AAAGkNmgGfVYBALKMbE85YTPsGnxtTg3LlPSAHLvHcLN3FotSZBwkMgHrG80QFSV0ohscr1R1hdq0FAbZCjEPcFfjx2ng6SyZB1VVWjsYAZDZD")
     attachment = {}
+    attachment['link'] = "http://www.google.com"
     message = "Test Msg"
     graph.put_wall_post(message, attachment, 246121898775580)
     return HttpResponse(message)
