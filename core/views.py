@@ -621,25 +621,3 @@ def top_users_map(request):
             top_users.append(top_user)
 
     return render_to_response('map.html', {'counter':counter,'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
-def migrate(request):
-    return render_to_response('migrate.html',{},RequestContext(request))
-
-def migrate_images(request):
-    users = User.objects.all()
-    for user in users:
-        filename = core.__path__[0] + '/static/photos/profile/'+ user.username
-        if not os.path.exists(filename):
-            try:
-                picture_page = "https://graph.facebook.com/"+user.username+"/picture?type=square"
-                opener1 = urllib2.build_opener()
-                page1 = opener1.open(picture_page)
-                my_picture = page1.read()
-                fout = open(filename, "wb")
-                fout.write(my_picture)
-                fout.close()
-            except Exception:
-                pass
-        else:
-            print(filename + " is already exists.")
-        
-    return HttpResponse(simplejson.dumps({'done':"Done."}))
