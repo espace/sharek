@@ -96,3 +96,4 @@ def auto_post(request):
     attachment = {}
     message = "Test Msg"
     graph.put_wall_post(message, attachment, 246121898775580)
+    return HttpResponse(message)
