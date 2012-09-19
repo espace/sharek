@@ -535,7 +535,7 @@ def latest_comments(request):
         voted_fb = Rating.objects.filter(article_id = article, user = user)
         
         if(len(feedbacks) > 0):
-             return render_to_response('latest_comments.html',{'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
+             return render_to_response('include/latest_comments.html',{'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
         else: 
              return HttpResponse('')
 
