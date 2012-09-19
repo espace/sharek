@@ -16,14 +16,8 @@ urlpatterns = patterns('',
 
     #Reports
     url(r'sharek/reports/feedback/(?P<article_slug>[-\w]+)/$', 'core.reports.views.export_feedback', name='feedback_report'),
-    
-    #Home  Tags List
-    
+     
     url(r'^sharek/admin/', include(admin.site.urls)),
-    
-    url(r'^sharek/migrate/$', 'core.views.migrate', name='migrate'),
-    url(r'^sharek/migrate_images/$', 'core.views.migrate_images', name='migrate_images'),
-    #url(r'^sharek/migrate_tags/$', 'core.views.migrate_tags', name='migrate_tags'),
 
     url(r'^sharek/slider/$', 'core.views.slider', name='slider'),
     url(r'^sharek/search/$', 'core.views.search', name='search'),
@@ -38,7 +32,7 @@ urlpatterns = patterns('',
 	
     url(r'^sharek/info/(?P<info_slug>[-\w]+)/$', 'core.views.info_detail', name='info'),
 
-    #Article detail URL    
+    #ArticleDetails detail URL    
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'core.views.article_detail'),
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/$', 'core.views.article_detail', name='article_detail'),
 

@@ -11,7 +11,7 @@ from django.db import connection
 from diff_match import diff_match_patch
 from django.contrib import auth
 
-from core.models import Tag, Article, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
+from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -73,7 +73,7 @@ def index(request):
     percent = int((float(total)/target)*100)
     percent_draw = (float(total)/target)*10
 
-    template_context = {'request':request, 'top_users':top_users, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
         
@@ -154,7 +154,7 @@ def article_diff(request, article_slug):
     lDiffClass = diff_match_patch()
 
     article = get_object_or_404( ArticleDetails, slug=article_slug )
-    tmp_versions = article.header.articledetails_set.all().order_by('id')#Article.objects.filter(original = article.original.id).order_by('id')
+    tmp_versions = article.header.articledetails_set.all().order_by('id')
 
     previous = ''
     versions = []
@@ -199,7 +199,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     article = get_object_or_404( ArticleDetails, slug=article_slug )
 
     versions = []
-    arts = article.header.articledetails_set.all() #Article.objects.filter(original = article.original).order_by('-id')
+    arts = article.header.articledetails_set.all()
 
     related_tags = article.header.tags.all
 
@@ -457,13 +457,7 @@ def search(request):
         return HttpResponseRedirect(reverse('index'))
 
     arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-    '''
-    articles = []
-    for art in arts:
-        articles.append(get_object_or_404( ArticleDetails, id= art['max_id'] ))
 
-    articles = sorted(arts, key=lambda article: article.order)
-    '''
     voted_articles = ArticleRating.objects.filter(user = user)
 
     count = len(arts)
@@ -613,48 +607,3 @@ def top_users_map(request):
             top_users.append(top_user)
 
     return render_to_response('map.html', {'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
-
-def migrate(request):
-    return render_to_response('migrate.html',{},RequestContext(request))
-
-def migrate_images(request):  
-    users = User.objects.all()
-    for user in users:
-        filename = core.__path__[0] + '/static/photos/profile/'+ user.username
-        if not os.path.exists(filename):
-            try:
-                picture_page = "https://graph.facebook.com/"+user.username+"/picture?type=square"
-                opener1 = urllib2.build_opener()
-                page1 = opener1.open(picture_page)
-                my_picture = page1.read()
-                fout = open(filename, "wb")
-                fout.write(my_picture)
-                fout.close()
-                print("Fetch image "+user.username+" which is not exists.")
-            except Exception:
-                pass
-        else:
-            print(filename + " is already exists.")
-        
-    return HttpResponse(simplejson.dumps({'done':"Done."}))
-
-def migrate_tags(request):
-    arts = Article.objects.all().values('original').annotate(max_id=Max('id')).order_by()
-
-    org_arts = []
-    for art in arts:
-        temp = get_object_or_404( Article, id= art['max_id'] )
-        org_arts.append(temp)
-
-    for org_art in org_arts:
-        article = Article.objects.get(id = org_art.original_id)
-        header = ArticleHeader.objects.get(name = article.name)
-
-        tags = article.tags.all()
-
-        for tag in tags:
-            header.tags.add(tag)
-            header.save()
-
-
-    return HttpResponse(simplejson.dumps({'done':"done isA"}))
