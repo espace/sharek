@@ -15,9 +15,9 @@
          <ul id="map-users" style="display: none;">
            {% for top in top_users %}
              {% if forloop.counter == bound %}
-                <li class="current {{forloop.counter}}"><a class="user-image" title="{{ user.first_name }} {{ user.last_name }}"><img width="21" height="21" class="loader" src="{{ STATIC_URL }}images/profile/{{ user.username }}"></a></li>      
+                <li class="current {{forloop.counter}}"><a class="user-image" title="{{ user.first_name }} {{ user.last_name }}"><img width="21" height="21" class="loader" src="{{ STATIC_URL }}photos/profile/{{ user.username }}"></a></li>      
              {% else %}
-             	<li class="{{forloop.counter}}"><a class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img width="21" height="21" class="loader" src="{{ STATIC_URL }}images/profile/{{ top.username }}"></a></li>
+             	<li class="{{forloop.counter}}"><a class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img width="21" height="21" class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}"></a></li>
              {% endif %}
                     
            {% endfor %}
@@ -40,9 +40,9 @@ $(window).load(function() {
 
 <div class="joiner-info" style="display: none;">
           	<a href="http://fb.com/{{ user.username }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
-            <img class="loader" src="{{ STATIC_URL }}images/profile/{{ user.username }}">
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user.username }}">
             <p>{{ user.first_name }} {{ user.last_name }}</p>
-            <span>124 مشاركة</span>
+            <span>{{counter}} مشاركة</span>
         </a>
 </div>
        

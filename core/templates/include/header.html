@@ -17,7 +17,7 @@
                         <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
                         <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
                       </div>
-                      <img src="{{STATIC_URL}}images/profile/{{user}}" class="user_img" />
+                      <img src="{{STATIC_URL}}photos/profile/{{user}}" class="user_img" />
                   {% else %}
                       <div class="attrs">
                         <p class="user_name">Administrator</p>

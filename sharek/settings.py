@@ -1,21 +1,10 @@
 # Django settings for sharek project.
-# Rename this file to settings.py and use your own custom settings for facebook, twitter and database configuration
 
-FACEBOOK_APP_ID = 'YOUR_FACEBOOK_APP_ID'
-FACEBOOK_API_KEY = 'YOUR_FACEBOOK_API_KEY'
-FACEBOOK_API_SECRET = 'YOUR_FACEBOOK_API_SERCRET'
-FACEBOOK_REDIRECT_URI = 'YOUR_CALLBACK_URL_AFTER_FACEBOOK_CONNET'
+try:
+    from settings_local import *
+except ImportError:
+    pass
 
-
-TWITTER_CONSUMER_KEY         = 'YOUR_TWITTER_CONSUMER_KEY'
-TWITTER_CONSUMER_SECRET      = 'TWITTER_CONSUMER_SECRET'
-
-FACEBOOK_EXTENDED_PERMISSIONS = ['email']
-
-GOOGLE_CONSUMER_KEY          = ''
-GOOGLE_CONSUMER_SECRET       = ''
-GOOGLE_OAUTH2_CLIENT_ID      = ''
-GOOGLE_OAUTH2_CLIENT_SECRET  = ''
 
 LOGIN_URL          = '/sharek/login-form/'
 LOGIN_REDIRECT_URL = '/sharek/logged-in/'
@@ -30,10 +19,7 @@ SOCIAL_AUTH_EXTRA_DATA = False
 SOCIAL_AUTH_EXPIRATION = 'expires'
 SOCIAL_AUTH_SESSION_EXPIRATION = False
 
-
-paginator = 10
-domain = "URL_OF_UR_APP"
-
+SESSION_COOKIE_NAME = "dostorid"
 
 AUTHENTICATION_BACKENDS = (
 	'django.contrib.auth.backends.ModelBackend',
@@ -58,17 +44,6 @@ ADMINS = (
 )
 
 MANAGERS = ADMINS
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'DB_NAME',                      # Or path to database file if using sqlite3.
-        'USER': 'DB_USER',                      # Not used with sqlite3.
-        'PASSWORD': 'DB_PASSWORD',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
-    }
-}
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -114,6 +89,7 @@ STATIC_ROOT = ''
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
 STATIC_URL = '/sharek/static/'
+ADMIN_MEDIA_PREFIX = '/sharek/static/admin/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (

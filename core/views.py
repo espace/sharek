@@ -11,7 +11,7 @@ from django.db import connection
 from diff_match import diff_match_patch
 from django.contrib import auth
 
-from core.models import Tag, Article, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
+from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -73,7 +73,7 @@ def index(request):
     percent = int((float(total)/target)*100)
     percent_draw = (float(total)/target)*10
 
-    template_context = {'request':request, 'top_users':top_users, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
         
@@ -140,7 +140,7 @@ def topic_detail(request, topic_slug=None):
         # If page is out of range (e.g. 9999), deliver last page of results.
         articles = paginator.page(paginator.num_pages)
 
-    template_context = {'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
+    template_context = {'topic_page':True,'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
     return render_to_response('topic.html',template_context ,RequestContext(request))
 
 def article_diff(request, article_slug):
@@ -154,7 +154,7 @@ def article_diff(request, article_slug):
     lDiffClass = diff_match_patch()
 
     article = get_object_or_404( ArticleDetails, slug=article_slug )
-    tmp_versions = article.header.articledetails_set.all().order_by('id')#Article.objects.filter(original = article.original.id).order_by('id')
+    tmp_versions = article.header.articledetails_set.all().order_by('id')
 
     previous = ''
     versions = []
@@ -187,19 +187,32 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if request.user.is_authenticated():
       user = request.user
 
+    article = get_object_or_404( ArticleDetails, slug=article_slug )
+    topic = get_object_or_404( Topic, slug=article.header.topic.slug )
+    prev = None
+    next = None
+    if article.current == True:
+        articles = topic.get_articles()
+        index = articles.index(article)
+        if index == 0:
+            next = articles[index+1]
+        elif index == len(articles)-1:
+            prev = articles[index-1]
+        else:
+            prev = articles[index-1]
+            next = articles[index+1]           
+
     if classified_by == "tags":  
         tags = Tag.objects.all
         tag = get_object_or_404( Tag, slug=class_slug )
     elif classified_by == "topics":
         topics = Topic.objects.all
-        topic = get_object_or_404( Topic, slug=class_slug )
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
-    article = get_object_or_404( ArticleDetails, slug=article_slug )
-
+    
     versions = []
-    arts = article.header.articledetails_set.all() #Article.objects.filter(original = article.original).order_by('-id')
+    arts = article.header.articledetails_set.all()
 
     related_tags = article.header.tags.all
 
@@ -264,13 +277,10 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         else:
           n_votes[vote.feedback_id] = 1
 
-
-
-
     if classified_by == "tags":  
-        template_context = {'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+        template_context = {'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
     elif classified_by == "topics":
-        template_context = {'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+        template_context = {'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
@@ -457,13 +467,7 @@ def search(request):
         return HttpResponseRedirect(reverse('index'))
 
     arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-    '''
-    articles = []
-    for art in arts:
-        articles.append(get_object_or_404( ArticleDetails, id= art['max_id'] ))
 
-    articles = sorted(arts, key=lambda article: article.order)
-    '''
     voted_articles = ArticleRating.objects.filter(user = user)
 
     count = len(arts)
@@ -544,7 +548,6 @@ def total_contribution(request):
 
     return render_to_response('contribution.html',{'total':total,'feedback':feedback,'feedback_ratings':feedback_ratings,'article_ratings':article_ratings} ,RequestContext(request))
 
-
 def top_liked(request):
 
     user = None
@@ -594,10 +597,15 @@ def top_users_map(request):
 
     top_users = []
     inactive_users = User.get_inactive
+    counter = 0
     if user == None:
         temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('?').exclude(user__in=inactive_users)[:2000]
     else:
         temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('?').exclude(user__in=inactive_users).exclude(user__in=inactive_users).exclude(user=user.username)[:2000]
+        feedback = Feedback.objects.filter(user = user).count()
+        feedback_ratings = Rating.objects.filter(user = user).count()
+        article_ratings = ArticleRating.objects.filter(user = user).count()
+        counter = feedback + feedback_ratings + article_ratings
 
     bound_h = random.randint(210,235)
     bound_v = random.randint(1,25)*41
@@ -612,45 +620,4 @@ def top_users_map(request):
         if top_user:
             top_users.append(top_user)
 
-    return render_to_response('map.html', {'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
-
-def migrate(request):
-    return render_to_response('migrate.html',{},RequestContext(request))
-
-def migrate_db(request):    
-    users = User.objects.all()
-    for user in users:
-        try:
-            picture_page = "https://graph.facebook.com/"+user.username+"/picture?type=square"
-            opener1 = urllib2.build_opener()
-            page1 = opener1.open(picture_page)
-            my_picture = page1.read()
-            filename = core.__path__[0] + '/static/images/profile/'+ user.username
-            fout = open(filename, "wb")
-            fout.write(my_picture)
-            fout.close()
-        except Exception:
-            pass
-        
-    return HttpResponse(simplejson.dumps({'done':"done isA"}))
-
-def migrate_tags(request):
-    arts = Article.objects.all().values('original').annotate(max_id=Max('id')).order_by()
-
-    org_arts = []
-    for art in arts:
-        temp = get_object_or_404( Article, id= art['max_id'] )
-        org_arts.append(temp)
-
-    for org_art in org_arts:
-        article = Article.objects.get(id = org_art.original_id)
-        header = ArticleHeader.objects.get(name = article.name)
-
-        tags = article.tags.all()
-
-        for tag in tags:
-            header.tags.add(tag)
-            header.save()
-
-
-    return HttpResponse(simplejson.dumps({'done':"done isA"}))
+    return render_to_response('map.html', {'counter':counter,'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))

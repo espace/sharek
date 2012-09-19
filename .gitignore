@@ -4,7 +4,8 @@
 .DS_Store
 .coverage
 core/static/photos/
-sharek/settings.py
+core/static/photos/profile/
+sharek/settings_local.py
 .settings
 .project
 .pydevproject

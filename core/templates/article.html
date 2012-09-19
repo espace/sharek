@@ -38,12 +38,20 @@
 <div class="row">
 
   <div class="span3">
-      {% include "sidebar.html" %}
+      {% include "include/sidebar.html" %}
   </div><!-- span3 -->
 
   <div id="ajax-container" class="span9">
     
     {% include "include/article_block.html" %}
+
+    {% if prev %}
+      <a href="{% url article_detail classified_by='topics' class_slug=prev.header.topic.get_absolute_url article_slug=prev.slug %}">{{prev.header.name}}&raquo;</a>
+    {% endif %}
+    <br>
+    {% if next %}
+      <a href="{% url article_detail classified_by='topics' class_slug=next.header.topic.get_absolute_url article_slug=next.slug %}">&laquo;{{next.header.name}}</a>
+    {% endif %}
 
     {% include "include/comments.html" %}
 

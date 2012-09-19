@@ -21,9 +21,9 @@
           </a>
       </p>
   </h3>
-  
-  <a href="{% url topic topic_slug=article.header.topic.slug %}">{{ article.header.topic }}</a>
-  
+  {% ifnotequal topic_page 1 %}
+    <a href="{% url topic topic_slug=article.header.topic.slug %}">{{ article.header.topic }}</a>
+  {% endifnotequal %}
   <div class="like-group">
   	<a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{article.id}} {% if voted_articles|vote_art:article.id == -1 %} active {% elif voted_articles|vote_art:article.id == 1 %} disabled {% endif %}" id="{{article.id}} " vote="0"><small class="dislike article {{article.id}}">{{article.dislikes}}</small></a>
   	<a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{article.id}} {% if voted_articles|vote_art:article.id == 1 %} active {% elif voted_articles|vote_art:article.id == -1 %} disabled {% endif %}" id="{{article.id}}" vote="1" ><small class="like article {{article.id}}">{{article.likes}}</small></a>
