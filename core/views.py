@@ -91,20 +91,10 @@ def tag_detail(request, tag_slug):
     voted_articles = ArticleRating.objects.filter(user = user)
 
     paginator = Paginator(articles, settings.paginator) 
-    page = request.GET.get('page')
-
-
-    try:
-        articles = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        articles = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        articles = paginator.page(paginator.num_pages)
+    articles = paginator.page(1)
 
     template_context = {'voted_articles':voted_articles,'request':request, 'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
-    return render_to_response('tag_scroll.html',template_context ,RequestContext(request))
+    return render_to_response('tag.html',template_context ,RequestContext(request))
 
 def tag_next_articles(request):
 
@@ -149,20 +139,10 @@ def topic_detail(request, topic_slug=None):
     voted_articles = ArticleRating.objects.filter(user = user)
 
     paginator = Paginator(articles, settings.paginator) 
-    page = request.GET.get('page')
-
-
-    try:
-        articles = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        articles = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        articles = paginator.page(paginator.num_pages)
+    articles = paginator.page(1)
 
     template_context = {'topic_page':True,'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
-    return render_to_response('topic_scroll.html',template_context ,RequestContext(request))
+    return render_to_response('topic.html',template_context ,RequestContext(request))
 
 def topic_next_articles(request):
 
