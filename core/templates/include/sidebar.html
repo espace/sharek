@@ -12,11 +12,7 @@
         {% for topic_list in topics %}
           <li class="tag_item {% ifequal topic_list.id topic.id %}active{% endifequal %}" >
             <a id="{{topic_list.slug}}" alt="{{topic_list.name}}" rel="{{topic_list.slug}}" href="{% url topic topic_slug=topic_list.get_absolute_url %}" >
-<<<<<<< HEAD:core/templates/sidebar.html
                 <span class="sidebar-icon {{topic_list.slug}}"></span>{{topic_list.short_name}}
-=======
-                <span class="sidebar-icon {{tag_list.slug}}"></span>{{topic_list.short_name}}
->>>>>>> a6af214d0d577a7821319af96c91954aa9e6b18f:core/templates/include/sidebar.html
               </a>
           </li>
         {% endfor %}

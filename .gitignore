@@ -5,7 +5,6 @@
 .coverage
 core/static/photos/
 core/static/photos/profile/
-sharek/settings_local.py
 .settings
 .project
 .pydevproject
