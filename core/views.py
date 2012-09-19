@@ -597,6 +597,7 @@ def top_users_map(request):
 
     top_users = []
     inactive_users = User.get_inactive
+    counter = 0
     if user == None:
         temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('?').exclude(user__in=inactive_users)[:2000]
     else:
