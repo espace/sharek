@@ -44,15 +44,19 @@
   <div id="ajax-container" class="span9">
     
     {% include "include/article_block.html" %}
-
+    <ul class="topic-paging">
     {% if prev %}
+    <li class="prev" >
       <a href="{% url article_detail classified_by='topics' class_slug=prev.header.topic.get_absolute_url article_slug=prev.slug %}">{{prev.header.name}}&raquo;</a>
+    </li>
     {% endif %}
-    <br>
+    
     {% if next %}
+     <li class="next">
       <a href="{% url article_detail classified_by='topics' class_slug=next.header.topic.get_absolute_url article_slug=next.slug %}">&laquo;{{next.header.name}}</a>
+     </li>
     {% endif %}
-
+</ul>
     {% include "include/comments.html" %}
 
   </div><!-- span 8 -->
