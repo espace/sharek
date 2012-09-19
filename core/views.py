@@ -104,7 +104,28 @@ def tag_detail(request, tag_slug):
         articles = paginator.page(paginator.num_pages)
 
     template_context = {'voted_articles':voted_articles,'request':request, 'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
-    return render_to_response('tag.html',template_context ,RequestContext(request))
+    return render_to_response('tag_scroll.html',template_context ,RequestContext(request))
+
+def tag_next_articles(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
+    if request.method == 'POST':
+        page =  request.POST.get("page")
+        tag_slug =  request.POST.get("tag")
+
+        offset = settings.paginator * int(page)
+        limit = settings.paginator
+
+        tag = get_object_or_404( Tag, slug=tag_slug )
+        articles = tag.get_articles_limit(offset, offset + limit)
+        
+        if(len(articles) > 0):
+             return render_to_response('include/next_articles.html',{'articles':articles} ,RequestContext(request))
+        else: 
+             return HttpResponse('')
 
 def topic_detail(request, topic_slug=None):
     user = None
@@ -141,7 +162,28 @@ def topic_detail(request, topic_slug=None):
         articles = paginator.page(paginator.num_pages)
 
     template_context = {'topic_page':True,'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
-    return render_to_response('topic.html',template_context ,RequestContext(request))
+    return render_to_response('topic_scroll.html',template_context ,RequestContext(request))
+
+def topic_next_articles(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
+    if request.method == 'POST':
+        page =  request.POST.get("page")
+        topic_slug =  request.POST.get("topic")
+
+        offset = settings.paginator * int(page)
+        limit = settings.paginator
+
+        topic = get_object_or_404( Topic, slug=topic_slug )
+        articles = topic.get_articles_limit(offset, offset + limit)
+        
+        if(len(articles) > 0):
+             return render_to_response('include/next_articles.html',{'articles':articles} ,RequestContext(request))
+        else: 
+             return HttpResponse('')
 
 def article_diff(request, article_slug):
     
