@@ -593,7 +593,19 @@ background-position: -142px -9px !important;
         .sidebar .nav li:active .regulatory-bodies{
             background-position: -1px -387px ;
         }
-
+.sidebar .sidebar-icon.chapter{
+    background: url("../images/sidebar.png") 0 -102px no-repeat;
+       height: 50px;
+    margin-left: 10px;
+    margin-top: -10px;
+    width: 50px;
+}
+        .sidebar .nav li.active .sidebar-icon.chapter{
+            background-position: 0 0 !important ;
+        }
+.tagLi a{
+    padding: 20px 0 0px 0 !important;
+}
 /*
 .sidebar .judge{
     background-position: -23px -10px ;
@@ -1370,7 +1382,7 @@ span.divider{
     background:url(../images/thumb-down.png) no-repeat right 9px, -o-linear-gradient(top, #F7F7F7, #ECECEC);
     background:url(../images/thumb-down.png) no-repeat right 9px, linear-gradient(top, #F7F7F7, #ECECEC);
     background:url(../images/thumb-down.png) no-repeat right 9px, -moz-linear-gradient(top, #F7F7F7, #ECECEC);
-}
+} 
 /*.topic .like-group a:active{
     border-radius: 0 2px 2px 0!important;
     box-shadow: -1px 0px 2px rgba(0,0,0,0.3);

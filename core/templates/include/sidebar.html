@@ -2,7 +2,7 @@
     <ul class="nav nav-pills nav-stacked">
       {% if tags %}
       	{% for tag_list in tags %}
-          <li class="tag_item {% ifequal tag_list.id tag.id %}active{% endifequal %}" >
+          <li class="tag_item {% ifequal tag_list.id tag.id %}active{% endifequal %} tagLi" >
           	<a id="{{tag_list.slug}}" alt="{{tag_list.name}}" rel="{{tag_list.slug}}" href="{% url tag tag_slug=tag_list.get_absolute_url %}" >
               	<span class="sidebar-icon chapter"></span>{{tag_list.short_name}}
               </a>
