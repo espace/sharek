@@ -1,7 +1,7 @@
 {% load replace %}
 {% load hash %} 
 {% load date_format %}
-<div class="comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{feedback.id}}">
+<div class="last-comment comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{feedback.id}}">
   <div class="facebook_user_img">
   	
     {% if feedback.user == 'admin' %}

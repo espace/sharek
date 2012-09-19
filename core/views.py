@@ -306,6 +306,53 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
+def latest_comments(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
+    if request.method == 'POST':
+        page =  request.POST.get("page")
+        article =  request.POST.get("article")
+        order_by =  request.POST.get("order_by")
+
+        offset = settings.paginator * int(page)
+        limit = settings.paginator
+
+        inactive_users = User.get_inactive
+        obj_article = get_object_or_404( ArticleDetails, id=article )
+
+        votes = obj_article.get_votes()
+        p_votes = {}
+        n_votes = {}
+        for vote in votes:
+          if vote.vote == True:
+            if p_votes.__contains__(vote.feedback_id):
+              p_votes[vote.feedback_id] += 1
+            else:
+              p_votes[vote.feedback_id] = 1
+          else:
+            if n_votes.__contains__(vote.feedback_id):
+              n_votes[vote.feedback_id] += 1
+            else:
+              n_votes[vote.feedback_id] = 1
+
+        if order_by == "latest":
+            feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)[offset:offset + limit]
+        elif order_by == "order":
+            feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[offset:offset + limit]
+        elif order_by == "def":
+            feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)[offset:offset + limit]
+
+        voted_fb = Rating.objects.filter(articledetails_id = obj_article.id, user = user)
+        voted_article = ArticleRating.objects.filter(articledetails_id = obj_article.id, user = user)
+        
+        if(len(feedbacks) > 0):
+             return render_to_response('include/latest_comments.html',{'voted_fb':voted_fb,'voted_articles':voted_article,'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
+        else: 
+             return HttpResponse('')
+
 def remove_feedback(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
@@ -522,44 +569,6 @@ def info_detail(request, info_slug):
 def slider(request):
     news = ArticleDetails.objects.order_by('?')[:3]
     return render_to_response('slider.html',{'news':news} ,RequestContext(request))
-
-def latest_comments(request):
-
-    user = None
-    if request.user.is_authenticated():
-      user = request.user
-
-    if request.method == 'POST':
-        page =  request.POST.get("page")
-        article =  request.POST.get("article")
-
-        offset = settings.paginator * int(page)
-        limit = settings.paginator
-
-        obj_article = get_object_or_404( ArticleDetails, id=article )
-
-        votes = obj_article.get_votes()
-        p_votes = {}
-        n_votes = {}
-        for vote in votes:
-          if vote.vote == True:
-            if p_votes.__contains__(vote.feedback_id):
-              p_votes[vote.feedback_id] += 1
-            else:
-              p_votes[vote.feedback_id] = 1
-          else:
-            if n_votes.__contains__(vote.feedback_id):
-              n_votes[vote.feedback_id] += 1
-            else:
-              n_votes[vote.feedback_id] = 1
-
-        feedbacks = Feedback.objects.filter(article_id = article).order_by('-id')[offset:offset + limit]
-        voted_fb = Rating.objects.filter(article_id = article, user = user)
-        
-        if(len(feedbacks) > 0):
-             return render_to_response('include/latest_comments.html',{'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
-        else: 
-             return HttpResponse('')
 
 def total_contribution(request):
     feedback = Feedback.objects.all().count()
