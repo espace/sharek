@@ -10,7 +10,7 @@
    $("#migrate").live("click",function(){
       $.ajax({
               type:"POST",
-              url :"{% url migrate_db %}",
+              url :"{% url migrate_images %}",
               data:{'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
               dataType:"json",
               error:function(data){},

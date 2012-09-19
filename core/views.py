@@ -617,40 +617,20 @@ def top_users_map(request):
 def migrate(request):
     return render_to_response('migrate.html',{},RequestContext(request))
 
-def migrate_db(request):    
+def migrate_images(request):    
     users = User.objects.all()
     for user in users:
-        try:
-            picture_page = "https://graph.facebook.com/"+user.username+"/picture?type=square"
-            opener1 = urllib2.build_opener()
-            page1 = opener1.open(picture_page)
-            my_picture = page1.read()
-            filename = core.__path__[0] + '/static/photos/profile/'+ user.username
-            fout = open(filename, "wb")
-            fout.write(my_picture)
-            fout.close()
-        except Exception:
-            pass
+        filename = core.__path__[0] + '/static/photos/profile/'+ user.username
+        if not os.path.exists(filename):
+            try:
+                picture_page = "https://graph.facebook.com/"+user.username+"/picture?type=square"
+                opener1 = urllib2.build_opener()
+                page1 = opener1.open(picture_page)
+                my_picture = page1.read()
+                fout = open(filename, "wb")
+                fout.write(my_picture)
+                fout.close()
+            except Exception:
+                pass
         
-    return HttpResponse(simplejson.dumps({'done':"done isA"}))
-
-def migrate_tags(request):
-    arts = Article.objects.all().values('original').annotate(max_id=Max('id')).order_by()
-
-    org_arts = []
-    for art in arts:
-        temp = get_object_or_404( Article, id= art['max_id'] )
-        org_arts.append(temp)
-
-    for org_art in org_arts:
-        article = Article.objects.get(id = org_art.original_id)
-        header = ArticleHeader.objects.get(name = article.name)
-
-        tags = article.tags.all()
-
-        for tag in tags:
-            header.tags.add(tag)
-            header.save()
-
-
-    return HttpResponse(simplejson.dumps({'done':"done isA"}))
+    return HttpResponse(simplejson.dumps({'done':"Done"}))
