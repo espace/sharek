@@ -779,7 +779,16 @@ background-position: -142px -9px !important;
     margin-left: 15px;
     border-radius: 5px;
 }
-
+.topic-paging li{
+    list-style-type: none;
+    margin: 5px 0;
+}
+.topic-paging li.prev{
+    float: right;
+}
+.topic-paging li.next{
+    float: left;
+}
 .mada-title{
     color:#000;
     font-size: 24px;
