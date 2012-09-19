@@ -5,6 +5,8 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+
+    url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
     url(r'sharek/latest-comments/$', 'core.views.latest_comments', name='latest_comments'),
 	url(r'sharek/topic_next_articles/$', 'core.views.topic_next_articles', name='topic_next_articles'),

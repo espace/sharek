@@ -89,3 +89,12 @@ def logout(request):
     template_context = {}
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+def auto_post(request):
+    # GraphAPI is the main class from facebook_sdp.py
+    graph = facebook_sdk.GraphAPI("AAAGkNmgGfVYBALKMbE85YTPsGnxtTg3LlPSAHLvHcLN3FotSZBwkMgHrG80QFSV0ohscr1R1hdq0FAbZCjEPcFfjx2ng6SyZB1VVWjsYAZDZD")
+    attachment = {}
+    attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
+    attachment['picture'] = settings.domain+settings.STATIC_URL+"images/facebook.png"
+    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
+    graph.put_wall_post(message, attachment, 246121898775580)
