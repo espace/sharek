@@ -47,13 +47,13 @@
     <ul class="topic-paging">
     {% if prev %}
     <li class="prev" >
-      <a href="{% url article_detail classified_by='topics' class_slug=prev.header.topic.get_absolute_url article_slug=prev.slug %}">{{prev.header.name}}&raquo;</a>
+      <a href="{% url article_detail classified_by='topics' class_slug=prev.header.topic.get_absolute_url article_slug=prev.slug %}"> &rarr; &nbsp;&nbsp;{{prev.header.name}}</a>
     </li>
     {% endif %}
     
     {% if next %}
      <li class="next">
-      <a href="{% url article_detail classified_by='topics' class_slug=next.header.topic.get_absolute_url article_slug=next.slug %}">&laquo;{{next.header.name}}</a>
+      <a href="{% url article_detail classified_by='topics' class_slug=next.header.topic.get_absolute_url article_slug=next.slug %}">{{next.header.name}}&nbsp;&nbsp;  &larr;</a>
      </li>
     {% endif %}
 </ul>
