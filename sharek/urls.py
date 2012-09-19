@@ -21,6 +21,9 @@ urlpatterns = patterns('',
 
     url(r'^sharek/slider/$', 'core.views.slider', name='slider'),
     url(r'^sharek/search/$', 'core.views.search', name='search'),
+	
+	url(r'^sharek/migrate/$', 'core.views.migrate', name='migrate'),
+    url(r'^sharek/migrate_images/$', 'core.views.migrate_images', name='migrate_images'),
     
     url(r'^sharek/vote/', 'core.views.vote', name='vote'),
     url(r'^sharek/article_vote/', 'core.views.article_vote', name='article_vote'),
