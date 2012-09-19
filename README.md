@@ -49,7 +49,7 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine
 
 1. fork the and clone the repo
 2. Create the proper database and database user to be used
-3. rename the file *sharek/settings.py.example* to *sharek/settings.py* and change all the custom configuration for database, facebook and twitter to your own settings
+3. rename the file *sharek/settings_local.py.example* to *sharek/settings_local.py* and change all the custom configuration for database, facebook and twitter to your own settings
 4. Start the app using under development via:
 
 ```
