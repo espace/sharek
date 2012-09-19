@@ -601,6 +601,10 @@ def top_users_map(request):
         temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('?').exclude(user__in=inactive_users)[:2000]
     else:
         temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('?').exclude(user__in=inactive_users).exclude(user__in=inactive_users).exclude(user=user.username)[:2000]
+        feedback = Feedback.objects.filter(user = user).count()
+        feedback_ratings = Rating.objects.filter(user = user).count()
+        article_ratings = ArticleRating.objects.filter(user = user).count()
+        counter = feedback + feedback_ratings + article_ratings
 
     bound_h = random.randint(210,235)
     bound_v = random.randint(1,25)*41
@@ -615,4 +619,4 @@ def top_users_map(request):
         if top_user:
             top_users.append(top_user)
 
-    return render_to_response('map.html', {'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
+    return render_to_response('map.html', {'counter':counter,'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
