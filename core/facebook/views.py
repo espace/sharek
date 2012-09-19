@@ -72,7 +72,7 @@ def login(request):
                 opener1 = urllib2.build_opener()
                 page1 = opener1.open(picture_page)
                 my_picture = page1.read()
-                filename = core.__path__[0] + '/static/images/profile/'+ user.username
+                filename = core.__path__[0] + '/static/photos/profile/'+ user.username
                 fout = open(filename, "wb")
                 fout.write(my_picture)
                 fout.close()
