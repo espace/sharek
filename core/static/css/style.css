@@ -539,9 +539,10 @@ left: 1px;
 /* ------------------sidebar --------------------------- */
 .sidebar .nav li a{
     height: 40px;
-    padding: 20px 0 0 0 ;
+    padding: 20px 0  ;
     font-size: 14px;
     color: #b8babb !important;
+    line-height: 18px;
     font-family: GESSTwoMediumRegular;
     -webkit-border-radius:0 !important;
      -moz-border-radius: 0 !important;
@@ -555,13 +556,17 @@ left: 1px;
 }
 
 .sidebar-icon{
-    width: 58px;
-    height: 58px;
     float: right;
-    margin-right: 10px;
-    margin-top: -22px;
-    background: url("../images/sprite.png") no-repeat;
+    height: 58px;
+    margin-left: 20px;
+    margin-top: -12px;
+    width: 44px;
+    background: url("../images/sidebar.png") 0 -130px no-repeat;
 }
+ .sidebar .nav li.active .sidebar-icon{
+            background-position: 0 7px; 
+        }
+/*
 .sidebar .judge{
     background-position: -23px -10px ;
 }
@@ -604,7 +609,7 @@ left: 1px;
         .sidebar .nav li.active .chapter{
             background-position: -141px -1857px ;
         }
-
+*/
 /*------------   core-image    ------ */
 .core-image{
     margin-bottom: 20px;
@@ -1914,7 +1919,37 @@ span.divider{
     margin:5px 10px 5px 5px;
     color: #999 !important;
 }
-/*--------------------footer-----------------  */
+/*--------------------Feedback report-----------------  */
+ .sidebar .nav li.articles_topic {
+    padding: 5px;
+    float: right;
+    clear: both;
+    margin: 5px 0;
+ }
+  .sidebar .nav li.articles_topic ul li {
+    padding: 5px;
+    float: right;
+    clear: both;
+    margin: 5px 0;
+ }
+ .sidebar .nav li.articles_topic a{
+    color: #222 !important;
+ }
+  .sidebar .nav li.articles_topic ul li a{
+    color: #555 !important;
+    font: 12px tahoma !important;
+
+ }
+  .sidebar .nav li.articles_topic ul li.active a{
+    color: #fff !important;
+    background: #111;
+    font: 12px tahoma !important;
+    padding: 10px;
+
+ }
+
+ /*--------------------footer-----------------  */
+
 .footer{
     margin-top: 20px;
     border-top:solid 1px rgba(255,255,255,1);
