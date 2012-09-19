@@ -66,15 +66,13 @@ class Topic(models.Model):
     
     def get_articles(self):
         # the new tech of article " header and details "
-        article_headers = self.articleheader_set.all()
+        article_headers = self.articleheader_set.all().order_by('order')
         article_details = []
         for article_header in article_headers:
             ad = article_header.articledetails_set.filter(current = True)
             if len(ad) == 1:
                 article_details.append(ad[0])
         return article_details
-        
-        #return self.article_set.filter(current = True)
 
     def articles_count(self):
        return len(self.get_articles())

@@ -140,7 +140,7 @@ def topic_detail(request, topic_slug=None):
         # If page is out of range (e.g. 9999), deliver last page of results.
         articles = paginator.page(paginator.num_pages)
 
-    template_context = {'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
+    template_context = {'topic_page':True,'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
     return render_to_response('topic.html',template_context ,RequestContext(request))
 
 def article_diff(request, article_slug):
@@ -187,19 +187,32 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if request.user.is_authenticated():
       user = request.user
 
+    article = get_object_or_404( ArticleDetails, slug=article_slug )
+    topic = get_object_or_404( Topic, slug=article.header.topic.slug )
+    prev = None
+    next = None
+    if article.current == True:
+        articles = topic.get_articles()
+        index = articles.index(article)
+        if index == 0:
+            next = articles[index+1]
+        elif index == len(articles)-1:
+            prev = articles[index-1]
+        else:
+            prev = articles[index-1]
+            next = articles[index+1]           
+
     if classified_by == "tags":  
         tags = Tag.objects.all
         tag = get_object_or_404( Tag, slug=class_slug )
     elif classified_by == "topics":
         topics = Topic.objects.all
-        topic = get_object_or_404( Topic, slug=class_slug )
     else:
         return HttpResponseNotFound('<h1>Page not found</h1>')
 
-    article = get_object_or_404( ArticleDetails, slug=article_slug )
-
+    
     versions = []
-    arts = article.header.articledetails_set.all() #Article.objects.filter(original = article.original).order_by('-id')
+    arts = article.header.articledetails_set.all()
 
     related_tags = article.header.tags.all
 
@@ -264,13 +277,10 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         else:
           n_votes[vote.feedback_id] = 1
 
-
-
-
     if classified_by == "tags":  
-        template_context = {'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+        template_context = {'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
     elif classified_by == "topics":
-        template_context = {'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+        template_context = {'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
@@ -543,7 +553,6 @@ def total_contribution(request):
     total = feedback + feedback_ratings + article_ratings
 
     return render_to_response('contribution.html',{'total':total,'feedback':feedback,'feedback_ratings':feedback_ratings,'article_ratings':article_ratings} ,RequestContext(request))
-
 
 def top_liked(request):
 
