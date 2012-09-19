@@ -630,6 +630,7 @@ def migrate_images(request):
                 fout = open(filename, "wb")
                 fout.write(my_picture)
                 fout.close()
+                print("Fetch image "+user.username+" which is not exists.")
             except Exception:
                 pass
         else:
