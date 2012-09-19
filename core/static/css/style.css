@@ -292,6 +292,9 @@ left: 1px;
     font-size: 14px;
 }
 
+.map img{
+    margin-right: 40px;
+}
 .bar{
     text-align: center;
     font-weight: bold;
@@ -537,9 +540,10 @@ left: 1px;
 
 
 /* ------------------sidebar --------------------------- */
+
 .sidebar .nav li a{
     height: 40px;
-    padding: 20px 0  ;
+    padding: 15px 0  ;
     font-size: 14px;
     color: #b8babb !important;
     line-height: 18px;
@@ -552,20 +556,44 @@ left: 1px;
 .sidebar .nav li.active a{
     background: #a11212;
     color: #fff !important;
-
 }
+
 
 .sidebar-icon{
     float: right;
-    height: 58px;
-    margin-left: 20px;
-    margin-top: -12px;
-    width: 44px;
-    background: url("../images/sidebar.png") 0 -130px no-repeat;
+    height: 70px;
+/*    margin-left: 20px;
+*/    margin-top: -20px;
+    width: 70px;
+    background: url("../images/sprite-small.png") 0 0 no-repeat;
 }
- .sidebar .nav li.active .sidebar-icon{
-            background-position: 0 7px; 
+
+.sidebar .state-components{
+background-position: -142px -9px !important;
+}
+        .sidebar .nav li.active .state-components{
+            background-position: -1px -9px  !important; 
         }
+.sidebar .rights-duties{
+    background-position: -142px -136px ;
+}
+        .sidebar .nav li.active .rights-duties{
+            background-position: -1px -136px !important; 
+        }
+
+.sidebar .regime-authorities{
+    background-position: -142px -262px;
+}
+        .sidebar .nav li.active .regime-authorities{
+            background-position: -1px -262px ;
+        }
+.sidebar .regulatory-bodies{
+    background-position: -142px -387px ;
+}
+        .sidebar .nav li:active .regulatory-bodies{
+            background-position: -1px -387px ;
+        }
+
 /*
 .sidebar .judge{
     background-position: -23px -10px ;
@@ -811,6 +839,7 @@ left: 1px;
 }
 .tags{
     font-family: GESSTwoMediumRegular;
+    margin-top: 20px;
 
 }
 .tags p{
@@ -1132,10 +1161,11 @@ left: 1px;
     border-width: 0 1px 1px 0;
     z-index: 1;
 
-}/
+}
+/*
  @-moz-document url-prefix() {
    .comment-block.child-reply:before{
-    content: none; /*by amin*/
+    content: none; 
         width: 1px;
         min-height: 77px;
         height: 103%;
@@ -1149,7 +1179,7 @@ left: 1px;
 
     }
 }
-/*.comment-block.child-reply:after{
+.comment-block.child-reply:after{
     content: "";
     width: 1px;
     min-height: 77px;
@@ -1158,11 +1188,12 @@ left: 1px;
     right: -30px;
     bottom: 150%;
     border-radius: 0 0 0 0;
-    /*border: dashed 1px #CCC;*/
+    border: dashed 1px #CCC;
     border-width: 0 1px 1px 0;
     z-index: 1;
 
-}*/
+}
+*/
 
 /*.comment-block.child-reply:before{
     content: "";
@@ -1173,7 +1204,7 @@ left: 1px;
     right: -30px;
     top: -44px;
     border-radius: 5px;
-    /*border: dashed 1px #CCC;*/
+    border: dashed 1px #CCC;
     border-width: 0 1px 1px 0;
     z-index: 1;
 
