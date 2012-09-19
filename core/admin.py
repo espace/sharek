@@ -10,7 +10,7 @@ from django.contrib import admin
 
 class ArticleDetailsInlineAdmin(admin.TabularInline):
     model      = ArticleDetails
-    extra      = 1
+    extra      = 0
     can_delete = True
     fields     = ['current', 'slug','summary','mod_date']
 
