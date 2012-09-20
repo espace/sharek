@@ -376,7 +376,7 @@ def remove_feedback(request):
             for reply in replys:
                 reply_ids.append(reply.id)
             #the user has to be the feedback owner to be able to remove it
-            if feedback.user == request.user.username or request.user.username == "admin" or request.user.is_staff:
+            if feedback.user == request.user.username or request.user.is_staff:
                 feedback.delete()
                 return HttpResponse(simplejson.dumps({'feedback_id':request.POST.get("feedback"),'reply_ids':reply_ids}))
 
