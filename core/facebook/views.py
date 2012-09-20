@@ -82,7 +82,7 @@ def auto_post(request):
 
     for article in articles:
 
-        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "\n--------------------------------\n" + escape(truncate_words(article.summary.raw, 10)).encode('utf-8') + "\n\n  اضغط على الرابط أدناه لقراءة المادة كاملة ولإبداء رأيك عليها"
+        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "\n--------------------------------\n" + escape(truncate_words(article.summary.raw, 10)).encode('utf-8') + "\n\n  اضغط على الرابط أدناه لقراءة المادة كاملة ولإبداء رأيك فيها"
 
         attachment = {}
         attachment['name'] = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8')
