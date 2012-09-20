@@ -82,11 +82,11 @@ def auto_post(request):
 
     for article in articles:
 
-        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "\n--------------------------------\n" + escape(truncate_words(article.summary.raw, 10)).encode('utf-8') + "\n\n  اضغط على الرابط أدناه لقراءة المادة كاملة ولإبداء رأيك عليها"
+        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "\n--------------------------------\n" + escape(truncate_words(article.summary.raw, 10)).encode('utf-8') + "\n\n  اضغط على الرابط أدناه لقراءة المادة كاملة ولإبداء رأيك عليها"
 
         attachment = {}
         attachment['name'] = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8')
-        attachment['link'] = settings.domain + article.header.topic.slug + "/" + article.slug + "/"
+        attachment['link'] = settings.domain + "topics/" + article.header.topic.slug + "/" + article.slug + "/"
         attachment['description'] = article.summary.raw.encode('utf-8')
         attachment['picture'] = "http://dostour.eg/sharek/static/images/facebook.png"
 
