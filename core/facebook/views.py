@@ -80,12 +80,13 @@ def auto_post(request):
 
     for article in articles:
 
-        message = article.header.topic
+        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "&rlm; \n" + article.summary
 
         attachment = {}
-        attachment['name'] = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8')
+        attachment['name'] = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "&rlm;"
         #attachment['link'] = article.get_absolute_url
         attachment['link'] = settings.domain + "sharek/" + article.header.topic.slug + "/" + article.slug + "/"
+        attachment['description'] = article.summary
         attachment['picture'] = "http://dostour.eg/sharek/static/images/facebook.png"
 
         graph.put_wall_post(message, attachment, '246121898775580')
