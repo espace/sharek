@@ -24,7 +24,7 @@
   {{feedback.suggestion}}
   <div class="delete-group">
     {% if user %}
-      {% if user.username = feedback.user or user.username = "admin" %}
+      {% if user.username = feedback.user or user.username = "admin" or user.is_staff %}
         <a href="javascript:;" class="L_remove delete " feedback_id="{{feedback.id}}"><span class="icon-trash"></span>مسح التعليق</a>
       {% endif %}
     {% endif %}
@@ -57,7 +57,7 @@
           <p>{{reply.suggestion}}</p>
           <div class="delete-group">
             {% if user %}
-              {% if user.username = reply.user or user.username = "admin" %}
+              {% if user.username = reply.user or user.username = "admin" or user.is_staff %}
                 <a href="javascript:;" class="L_remove delete " feedback_id="{{reply.id}}"><span class="icon-trash"></span>مسح التعليق</a>
               {% endif %}
             {% endif %}
