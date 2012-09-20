@@ -38,7 +38,6 @@ class ArticleHeaderAdmin(admin.ModelAdmin):
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
 
 class FeedbackAdmin(admin.ModelAdmin):
-    #prepopulated_fields = {"user": ["username"]}
     list_filter = ('articledetails',)
     list_display = ('name', 'articledetails','user', 'email', 'suggestion')
     
