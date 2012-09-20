@@ -240,29 +240,24 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
 
     related_tags = article.header.tags.all
 
-    top_ranked = None
+    top_ranked = []
     inactive_users = User.get_inactive
     size = len(Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
     if size > 3:
         top_ranked = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[:3]
     else:
-        top_ranked = None
+        top_ranked = []
 
-    if order_by == "latest":
-        if size > 3:
+    if order_by == "latest" or order_by == "def":
+        if len(top_ranked) == 3:
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
     elif order_by == "order":
-        if size > 3:
+        if len(top_ranked) == 3:
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)
-    elif order_by == "def":
-        if size > 3:
-            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
-        else:
-            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
 
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
@@ -341,21 +336,21 @@ def latest_comments(request):
               n_votes[vote.feedback_id] = 1
 
 
-        top_ranked = None
+        top_ranked = []
         inactive_users = User.get_inactive
         size = len(Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
         if size > 3:
             top_ranked = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[:3]
         else:
-            top_ranked = None
+            top_ranked = []
 
         if order_by == "latest" or order_by == "def":
-            if size > 3:
+            if len(top_ranked) == 3:
                 feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users).exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
             else:
                 feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
         elif order_by == "order":
-            if size > 3:
+            if len(top_ranked) == 3:
                 feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users).exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
             else:
                 feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)
