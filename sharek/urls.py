@@ -15,7 +15,6 @@ urlpatterns = patterns('',
     #Facebook
     url(r'sharek/facebook/login', 'core.facebook.views.login', name='facebook_login'),
     url(r'sharek/facebook/logout', 'core.facebook.views.logout', name='facebook_logout'),
-    url(r'sharek/facebook/welcome/', 'core.facebook.views.welcome', name='facebook_welcome'),
 
 
     #Reports
