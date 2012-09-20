@@ -83,8 +83,9 @@ def auto_post(request):
         message = article.header.topic
 
         attachment = {}
-        attachment['name'] = article.header.topic
-        attachment['link'] = article.get_absolute_url
+        attachment['name'] = article.header.topic + " - " + article.header.name
+        #attachment['link'] = article.get_absolute_url
+        attachment['link'] = settings.domain + "sharek/" + article.header.topic.slug + "/" + article.slug + "/"
         attachment['picture'] = "http://dostour.eg/sharek/static/images/facebook.png"
 
         graph.put_wall_post(message, attachment, '246121898775580')
