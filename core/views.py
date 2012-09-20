@@ -339,19 +339,23 @@ def latest_comments(request):
               n_votes[vote.feedback_id] = 1
 
         if order_by == "latest":
-            feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)[offset:offset + limit]
+            feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)#[offset:offset + limit]
         elif order_by == "order":
-            feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[offset:offset + limit]
+            feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)#[offset:offset + limit]
         elif order_by == "def":
-            feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)[offset:offset + limit]
+            feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)#[offset:offset + limit]
 
         voted_fb = Rating.objects.filter(articledetails_id = obj_article.id, user = user)
         voted_article = ArticleRating.objects.filter(articledetails_id = obj_article.id, user = user)
-        
-        if(len(feedbacks) > 0):
-             return render_to_response('include/latest_comments.html',{'voted_fb':voted_fb,'voted_articles':voted_article,'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
-        else: 
-             return HttpResponse('')
+
+        paginator = Paginator(feedbacks, settings.paginator)
+        try:
+            feedbacks = paginator.page(page)
+            return render_to_response('include/latest_comments.html',{'voted_fb':voted_fb,'voted_articles':voted_article,'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
+        except PageNotAnInteger:
+            return HttpResponse('')
+        except EmptyPage:
+            return HttpResponse('')
 
 def remove_feedback(request):
     if request.user.is_authenticated():
