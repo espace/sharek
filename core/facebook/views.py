@@ -13,6 +13,8 @@ import core
 import os.path
 from core.facebook import facebook_sdk
 
+from core.models import ArticleDetails
+
 from core.facebook.models import FacebookSession
 from django.core.urlresolvers import reverse
 from sharek import settings
