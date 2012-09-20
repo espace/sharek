@@ -3,6 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from datetime import datetime
+from django.utils.text import truncate_words
+from django.utils.html import escape
 
 import cgi
 import json
@@ -80,15 +82,14 @@ def auto_post(request):
 
     for article in articles:
 
-        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') #+ "\n\n" + article.summary.raw.encode('utf-8') + "\n\n  اضغط على الرابط أدناه لقراءة المادة كاملة ولإبداء رأيك عليها"
+        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "\n--------------------------------\n" + escape(truncate_words(article.summary.raw, 10)).encode('utf-8') + "\n\n  اضغط على الرابط أدناه لقراءة المادة كاملة ولإبداء رأيك عليها"
 
         attachment = {}
         attachment['name'] = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8')
-        #attachment['link'] = article.get_absolute_url
-        attachment['link'] = settings.domain + "sharek/" + article.header.topic.slug + "/" + article.slug + "/"
+        attachment['link'] = settings.domain + article.header.topic.slug + "/" + article.slug + "/"
         attachment['description'] = article.summary.raw.encode('utf-8')
         attachment['picture'] = "http://dostour.eg/sharek/static/images/facebook.png"
 
-        graph.put_wall_post(message, attachment, '246121898775580')
+        graph.put_wall_post(message, attachment, settings.FACEBOOK_PAGE_ID)
 
-    return HttpResponse(message)
+    return HttpResponse(attachment['name'])
