@@ -19,10 +19,6 @@ SOCIAL_AUTH_EXTRA_DATA = False
 SOCIAL_AUTH_EXPIRATION = 'expires'
 SOCIAL_AUTH_SESSION_EXPIRATION = False
 
-STATIC_GENERATOR_URLS = (
-    r'^/static/photos/profile/',
-)
-
 SESSION_COOKIE_NAME = "dostorid"
 
 AUTHENTICATION_BACKENDS = (
@@ -124,8 +120,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'staticgenerator.middleware.StaticGeneratorMiddleware',
-    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
