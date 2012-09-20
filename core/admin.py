@@ -39,6 +39,7 @@ class ArticleHeaderAdmin(admin.ModelAdmin):
 
 class FeedbackAdmin(admin.ModelAdmin):
     list_filter = ('articledetails',)
+    search_fields = ['suggestion']
     list_display = ('name', 'articledetails','user', 'email', 'suggestion')
     
 
