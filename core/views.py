@@ -216,7 +216,8 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if article.current == True:
         articles = topic.get_articles()
         index = articles.index(article)
-        if index == 0:
+        if len(articles) == 0:
+        elif index == 0:
             next = articles[index+1]
         elif index == len(articles)-1:
             prev = articles[index-1]
