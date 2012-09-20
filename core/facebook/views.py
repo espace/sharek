@@ -14,29 +14,8 @@ import os.path
 from core.facebook import facebook_sdk
 
 from core.facebook.models import FacebookSession
-
-from sharek import settings
-
 from django.core.urlresolvers import reverse
-
-def welcome(request):
-    print request.user
-    fb_user = FacebookSession.objects.get(user = request.user)
-    # GraphAPI is the main class from facebook_sdp.py
-    graph = facebook_sdk.GraphAPI(fb_user.access_token)
-    attachment = {}
-    now = datetime.now()
-    message = 'test message at ' + now.strftime("%Y-%m-%d %H:%M")
-    caption = 'test caption'
-    attachment['caption'] = caption
-    attachment['name'] = 'test name'
-    attachment['link'] = 'link_to_picture'
-    attachment['description'] = 'test description'
-    #graph.put_wall_post(message, attachment)
-    #return 0
-
-    template_context = {'user':request.user,}
-    return render_to_response('facebook/welcome.html', template_context, context_instance=RequestContext(request))
+from sharek import settings
 
 def login(request):
     error = None
@@ -91,15 +70,21 @@ def logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 def auto_post(request):
+
     # GraphAPI is the main class from facebook_sdp.py
     graph = facebook_sdk.GraphAPI(settings.FACEBOOK_PAGE_TOKEN)
 
-    message = "Test Message"
+    articles = ArticleDetails.objects.order_by('?')[:1]
 
-    attachment = {}
-    attachment['link'] = "http://dostor-masr.espace-technologies.com/sharek/topics/rights-duties/3/"
-    attachment['picture'] = "http://dostour.eg/sharek/static/images/facebook.png"
-    attachment['name'] = "Test Name"
+    for article in articles:
 
-    graph.put_wall_post(message, attachment, '246121898775580')
+        message = article.header.topic
+
+        attachment = {}
+        attachment['name'] = article.header.topic
+        attachment['link'] = article.get_absolute_url
+        attachment['picture'] = "http://dostour.eg/sharek/static/images/facebook.png"
+
+        graph.put_wall_post(message, attachment, '246121898775580')
+
     return HttpResponse(message)
