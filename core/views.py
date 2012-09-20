@@ -335,7 +335,6 @@ def latest_comments(request):
             else:
               n_votes[vote.feedback_id] = 1
 
-
         top_ranked = []
         inactive_users = User.get_inactive
         size = len(Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
