@@ -98,8 +98,8 @@ def auto_post(request):
 
     attachment = {}
     attachment['link'] = "http://dostor-masr.espace-technologies.com/sharek/topics/rights-duties/3/"
-    attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook.png"
-    attachment['title'] = "Test Title"
+    attachment['picture'] = "http://dostour.eg/sharek/static/images/facebook.png"
+    attachment['name'] = "Test Name"
 
     graph.put_wall_post(message, attachment, '246121898775580')
     return HttpResponse(message)
