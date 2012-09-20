@@ -94,10 +94,12 @@ def auto_post(request):
     # GraphAPI is the main class from facebook_sdp.py
     graph = facebook_sdk.GraphAPI(settings.FACEBOOK_PAGE_TOKEN)
 
-    message = "Test Msg"
+    message = "Test Message"
 
     attachment = {}
     attachment['link'] = "http://dostor-masr.espace-technologies.com/sharek/topics/rights-duties/3/"
+    attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook.png"
+    attachment['title'] = "Test Title"
 
     graph.put_wall_post(message, attachment, '246121898775580')
     return HttpResponse(message)
