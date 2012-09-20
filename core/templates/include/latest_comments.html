@@ -1,0 +1,5 @@
+{% load hash %} 
+{% load date_format %}
+{% for feedback in feedbacks %}
+	{% include "include/comment-block.html" %}
+{% endfor %}

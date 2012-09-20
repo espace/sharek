@@ -2,7 +2,6 @@
 
 {% load settings %}
 {% load hash %} 
-{% get_setting AJAXIFY as ajaxify %}
 
 {% block title %}{{tag.name}}{% endblock %}
 
@@ -26,24 +25,54 @@
                 {% for article in articles %}
                     {% include "include/article_block.html" %}
                 {% endfor %}
-                
-                <ul class=" pager">
-                    <li class="next">
-                    {% if articles.has_next %}
-                    <a href="?page={{ articles.next_page_number }}">التالى &larr; </a>
-                    {% endif %}
-                    </li>
-                    <li>
-                      <span class="current">
-                            صفحه {{ articles.number }} من {{ articles.paginator.num_pages }}.
-                      </span>
-                    </li>
-                    <li class="previous">
-                    {% if articles.has_previous %}
-                    <a href="?page={{ articles.previous_page_number }}"> &rarr; السابق</a>
-                    {% endif %}
-                    </li>
-                </ul>
+                    
+                    <div id="last_articles_loader"></div>
+
+					<script type="text/javascript">
+                    
+                    $(document).ready(function(){
+                        
+                        var page = 0;
+                        var fetching = false;
+                        
+                        function next_articles() 
+                        { 
+                            fetching = true;
+                            
+                            $('div#last_articles_loader').html('<img src="{{STATIC_URL}}images/loading.gif">');
+                            
+                            $.ajax({
+                              type:"POST",
+                              url :"/sharek/tag_next_articles/",
+                              data:{
+                                  'page': ++page, 'tag': '{{ tag.slug }}',
+                                  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
+                              dataType:"html",
+                              error:function(data){},
+                              success:function(data){
+                                if (data != "") {
+                                    $(".article-block:last").after(data);
+                                    setTimeout(function(){ fetching = false; },300);
+                                    $('div#last_articles_loader').empty();
+                                } else{
+                                    $('div#last_articles_loader').html('');
+                                }
+                                
+                              },
+                            });
+                    
+                        }
+                        
+                        $(window).scroll(function(){
+                            var bufferzone = $(window).scrollTop() * 0.20;
+                            if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
+                                next_articles();
+                            }
+                        });
+                        
+                    });
+                    
+                    </script>
                 
             {% else %}
                 <div class="topic">

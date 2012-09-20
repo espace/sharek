@@ -12,19 +12,12 @@
           <div class="span4 pull-left facebook_log_in">
             <div class="">
                 {% if user %}
-                  {% if user.username != 'admin' %}
-                      <div class="attrs">
-                        <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
-                        <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
-                      </div>
-                      <img src="{{STATIC_URL}}photos/profile/{{user}}" class="user_img" />
-                  {% else %}
-                      <div class="attrs">
-                        <p class="user_name">Administrator</p>
-                        <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
-                      </div>
-                      <img class="user_img" src="{{ STATIC_URL }}images/admin.gif">
-                  {% endif %}
+                
+                  <div class="attrs">
+                    <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
+                    <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                  </div>
+                  <img src="{{STATIC_URL}}photos/profile/{{user}}" class="user_img" />
                   
                 {% else %}  
                   {% if error %}

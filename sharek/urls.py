@@ -5,13 +5,16 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
+
+    url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
     url(r'sharek/latest-comments/$', 'core.views.latest_comments', name='latest_comments'),
+	url(r'sharek/topic_next_articles/$', 'core.views.topic_next_articles', name='topic_next_articles'),
+	url(r'sharek/tag_next_articles/$', 'core.views.tag_next_articles', name='tag_next_articles'),
 
     #Facebook
     url(r'sharek/facebook/login', 'core.facebook.views.login', name='facebook_login'),
     url(r'sharek/facebook/logout', 'core.facebook.views.logout', name='facebook_logout'),
-    url(r'sharek/facebook/welcome/', 'core.facebook.views.welcome', name='facebook_welcome'),
 
 
     #Reports

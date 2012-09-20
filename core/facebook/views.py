@@ -1,8 +1,10 @@
-from django.contrib import auth
+﻿from django.contrib import auth
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from datetime import datetime
+from django.utils.text import truncate_words
+from django.utils.html import escape
 
 import cgi
 import json
@@ -13,30 +15,11 @@ import core
 import os.path
 from core.facebook import facebook_sdk
 
+from core.models import ArticleDetails
+
 from core.facebook.models import FacebookSession
-
-from sharek import settings
-
 from django.core.urlresolvers import reverse
-
-def welcome(request):
-    print request.user
-    fb_user = FacebookSession.objects.get(user = request.user)
-    # GraphAPI is the main class from facebook_sdp.py
-    graph = facebook_sdk.GraphAPI(fb_user.access_token)
-    attachment = {}
-    now = datetime.now()
-    message = 'test message at ' + now.strftime("%Y-%m-%d %H:%M")
-    caption = 'test caption'
-    attachment['caption'] = caption
-    attachment['name'] = 'test name'
-    attachment['link'] = 'link_to_picture'
-    attachment['description'] = 'test description'
-    #graph.put_wall_post(message, attachment)
-    #return 0
-
-    template_context = {'user':request.user,}
-    return render_to_response('facebook/welcome.html', template_context, context_instance=RequestContext(request))
+from sharek import settings
 
 def login(request):
     error = None
@@ -89,3 +72,24 @@ def logout(request):
     template_context = {}
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+def auto_post(request):
+
+    # GraphAPI is the main class from facebook_sdp.py
+    graph = facebook_sdk.GraphAPI(settings.FACEBOOK_PAGE_TOKEN)
+
+    articles = ArticleDetails.objects.order_by('?')[:1]
+
+    for article in articles:
+
+        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "\n--------------------------------\n" + escape(truncate_words(article.summary.raw, 10)).encode('utf-8') + "\n\n  اضغط على الرابط أدناه لقراءة المادة كاملة ولإبداء رأيك فيها"
+
+        attachment = {}
+        attachment['name'] = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8')
+        attachment['link'] = settings.domain + "topics/" + article.header.topic.slug + "/" + article.slug + "/"
+        attachment['description'] = article.summary.raw.encode('utf-8')
+        attachment['picture'] = "http://dostour.eg/sharek/static/images/facebook.png"
+
+        graph.put_wall_post(message, attachment, settings.FACEBOOK_PAGE_ID)
+
+    return HttpResponse(attachment['name'])

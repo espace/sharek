@@ -112,23 +112,15 @@
       <h4> <i class="icon-star"></i> أعلى المشاركين</h4>
       <ul>
       	{% for top in top_users %}
-        	<li><a href="http://www.facebook.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}"><img class="loader" src="http://graph.facebook.com/{{ top.username }}/picture"></a></li>
+        	<li>
+            	<a href="http://www.facebook.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
+                	<img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
+                </a>
+            </li>
         {% endfor %}
       </ul>
   </div>
-
-    <!-- <div id="canvas"></div> -->
-    <!-- <input type="hidden" id="prgress_indicator" value="{{ percent_draw }}"> --><!-- The circle Progress Indicator -->
-<!--     <input type="hidden" id="prgress_Number" value="{{ total|intcomma }}"> --><!-- The circle Progress Indicator -->
-  <!--   <input type="hidden" id="prgress_Percentage_Number" value="{{ percent }}%"> --><!-- The circle Progress Indicator -->
-
-   <!--  <div class="circleText">
-      <p class="fir" >
-        عدد المشاركات <br />
-      <strong>{{ total|intcomma }} </strong>
-      </p>
-    
-      -->
+  
     </div>
   
        <div class="tags span4">     

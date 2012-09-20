@@ -91,20 +91,31 @@ def tag_detail(request, tag_slug):
     voted_articles = ArticleRating.objects.filter(user = user)
 
     paginator = Paginator(articles, settings.paginator) 
-    page = request.GET.get('page')
-
-
-    try:
-        articles = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        articles = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        articles = paginator.page(paginator.num_pages)
+    articles = paginator.page(1)
 
     template_context = {'voted_articles':voted_articles,'request':request, 'tags':tags,'tag':tag,'articles': articles,'settings': settings,'user':user,}
     return render_to_response('tag.html',template_context ,RequestContext(request))
+
+def tag_next_articles(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
+    if request.method == 'POST':
+        page =  request.POST.get("page")
+        tag_slug =  request.POST.get("tag")
+
+        offset = settings.paginator * int(page)
+        limit = settings.paginator
+
+        tag = get_object_or_404( Tag, slug=tag_slug )
+        articles = tag.get_articles_limit(offset, offset + limit)
+        
+        if(len(articles) > 0):
+             return render_to_response('include/next_articles.html',{'articles':articles} ,RequestContext(request))
+        else: 
+             return HttpResponse('')
 
 def topic_detail(request, topic_slug=None):
     user = None
@@ -128,20 +139,31 @@ def topic_detail(request, topic_slug=None):
     voted_articles = ArticleRating.objects.filter(user = user)
 
     paginator = Paginator(articles, settings.paginator) 
-    page = request.GET.get('page')
-
-
-    try:
-        articles = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        articles = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        articles = paginator.page(paginator.num_pages)
+    articles = paginator.page(1)
 
     template_context = {'topic_page':True,'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
     return render_to_response('topic.html',template_context ,RequestContext(request))
+
+def topic_next_articles(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
+    if request.method == 'POST':
+        page =  request.POST.get("page")
+        topic_slug =  request.POST.get("topic")
+
+        offset = settings.paginator * int(page)
+        limit = settings.paginator
+
+        topic = get_object_or_404( Topic, slug=topic_slug )
+        articles = topic.get_articles_limit(offset, offset + limit)
+        
+        if(len(articles) > 0):
+             return render_to_response('include/next_articles.html',{'articles':articles} ,RequestContext(request))
+        else: 
+             return HttpResponse('')
 
 def article_diff(request, article_slug):
     
@@ -194,7 +216,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if article.current == True:
         articles = topic.get_articles()
         index = articles.index(article)
-        if index == 0:
+        if len(articles) == 1:
+            next = None
+        elif index == 0:
             next = articles[index+1]
         elif index == len(articles)-1:
             prev = articles[index-1]
@@ -216,29 +240,24 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
 
     related_tags = article.header.tags.all
 
-    top_ranked = None
+    top_ranked = []
     inactive_users = User.get_inactive
     size = len(Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
     if size > 3:
         top_ranked = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[:3]
     else:
-        top_ranked = None
+        top_ranked = []
 
-    if order_by == "latest":
-        if size > 3:
+    if order_by == "latest" or order_by == "def":
+        if len(top_ranked) == 3:
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
     elif order_by == "order":
-        if size > 3:
+        if len(top_ranked) == 3:
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
         else:
             feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)
-    elif order_by == "def":
-        if size > 3:
-            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
-        else:
-            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
 
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
@@ -284,6 +303,69 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
+def latest_comments(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+
+    if request.method == 'POST':
+        page =  request.POST.get("page")
+        article =  request.POST.get("article")
+        order_by =  request.POST.get("order_by")
+
+        offset = settings.paginator * int(page)
+        limit = settings.paginator
+
+        inactive_users = User.get_inactive
+        obj_article = get_object_or_404( ArticleDetails, id=article )
+
+        votes = obj_article.get_votes()
+        p_votes = {}
+        n_votes = {}
+        for vote in votes:
+          if vote.vote == True:
+            if p_votes.__contains__(vote.feedback_id):
+              p_votes[vote.feedback_id] += 1
+            else:
+              p_votes[vote.feedback_id] = 1
+          else:
+            if n_votes.__contains__(vote.feedback_id):
+              n_votes[vote.feedback_id] += 1
+            else:
+              n_votes[vote.feedback_id] = 1
+
+        top_ranked = []
+        inactive_users = User.get_inactive
+        size = len(Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
+        if size > 3:
+            top_ranked = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[:3]
+        else:
+            top_ranked = []
+
+        if order_by == "latest" or order_by == "def":
+            if len(top_ranked) == 3:
+                feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users).exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+            else:
+                feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
+        elif order_by == "order":
+            if len(top_ranked) == 3:
+                feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users).exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
+            else:
+                feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)
+
+        voted_fb = Rating.objects.filter(articledetails_id = obj_article.id, user = user)
+        voted_article = ArticleRating.objects.filter(articledetails_id = obj_article.id, user = user)
+
+        paginator = Paginator(feedbacks, settings.paginator)
+        try:
+            feedbacks = paginator.page(page)
+            return render_to_response('include/latest_comments.html',{'voted_fb':voted_fb,'voted_articles':voted_article,'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
+        except PageNotAnInteger:
+            return HttpResponse('')
+        except EmptyPage:
+            return HttpResponse('')
+
 def remove_feedback(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
@@ -294,7 +376,7 @@ def remove_feedback(request):
             for reply in replys:
                 reply_ids.append(reply.id)
             #the user has to be the feedback owner to be able to remove it
-            if feedback.user == request.user.username or request.user.username == "admin":
+            if feedback.user == request.user.username or request.user.is_staff:
                 feedback.delete()
                 return HttpResponse(simplejson.dumps({'feedback_id':request.POST.get("feedback"),'reply_ids':reply_ids}))
 
@@ -500,44 +582,6 @@ def info_detail(request, info_slug):
 def slider(request):
     news = ArticleDetails.objects.order_by('?')[:3]
     return render_to_response('slider.html',{'news':news} ,RequestContext(request))
-
-def latest_comments(request):
-
-    user = None
-    if request.user.is_authenticated():
-      user = request.user
-
-    if request.method == 'POST':
-        page =  request.POST.get("page")
-        article =  request.POST.get("article")
-
-        offset = settings.paginator * int(page)
-        limit = settings.paginator
-
-        obj_article = get_object_or_404( ArticleDetails, id=article )
-
-        votes = obj_article.get_votes()
-        p_votes = {}
-        n_votes = {}
-        for vote in votes:
-          if vote.vote == True:
-            if p_votes.__contains__(vote.feedback_id):
-              p_votes[vote.feedback_id] += 1
-            else:
-              p_votes[vote.feedback_id] = 1
-          else:
-            if n_votes.__contains__(vote.feedback_id):
-              n_votes[vote.feedback_id] += 1
-            else:
-              n_votes[vote.feedback_id] = 1
-
-        feedbacks = Feedback.objects.filter(article_id = article).order_by('-id')[offset:offset + limit]
-        voted_fb = Rating.objects.filter(article_id = article, user = user)
-        
-        if(len(feedbacks) > 0):
-             return render_to_response('latest_comments.html',{'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
-        else: 
-             return HttpResponse('')
 
 def total_contribution(request):
     feedback = Feedback.objects.all().count()

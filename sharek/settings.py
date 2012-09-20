@@ -34,8 +34,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
 )
 
-AJAXIFY = False
-
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
