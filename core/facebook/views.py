@@ -80,7 +80,7 @@ def auto_post(request):
 
     for article in articles:
 
-        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "\n" + article.summary.encode('utf-8')
+        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "&rlm; \n" + article.summary.raw
 
         attachment = {}
         attachment['name'] = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "&rlm;"
