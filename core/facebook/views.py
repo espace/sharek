@@ -90,6 +90,6 @@ def auto_post(request):
         attachment['description'] = article.summary.raw.encode('utf-8')
         attachment['picture'] = "http://dostour.eg/sharek/static/images/facebook.png"
 
-        graph.put_wall_post(message, attachment, '246121898775580')
+        graph.put_wall_post(message, attachment, settings.FACEBOOK_PAGE_ID)
 
     return HttpResponse(attachment['name'])
