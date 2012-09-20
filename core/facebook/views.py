@@ -92,7 +92,7 @@ def logout(request):
 
 def auto_post(request):
     # GraphAPI is the main class from facebook_sdp.py
-    graph = facebook_sdk.GraphAPI("AAAGkNmgGfVYBAM3M6CAQTLBV6ExBtaxYxJD6opSn3KvPefAOgEyO6GqE7yVSSqBn55xpV79xWs08ZClv5eU86O1L1XOmkZAXbxzwsWdQZDZD")
+    graph = facebook_sdk.GraphAPI("AAAGkNmgGfVYBAGxeFNMMRiO1baCAICnuQCJInplnXMreZAOBDzkZAJX3drb8dbxKv0DjiQjZCtFJWCZCzpCyOIPn5uZBtwH2PgsQTlNdJQntp4ppQK8Mi")
     attachment = {}
     attachment['link'] = "http://www.google.com"
     message = "Test Msg"
