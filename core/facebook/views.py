@@ -80,10 +80,10 @@ def auto_post(request):
 
     for article in articles:
 
-        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "\n\n" + article.summary.raw.encode('utf-8')
+        message = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "\n\n" + truncate_html_words(article.summary.raw.encode('utf-8'), 10, '...') + "\n\n" + " اضغط على الرابط أدناه لقراءة المادة كاملة ولإبداء رأيك عليها"
 
         attachment = {}
-        attachment['name'] = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8') + "&rlm;"
+        attachment['name'] = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8')
         #attachment['link'] = article.get_absolute_url
         attachment['link'] = settings.domain + "sharek/" + article.header.topic.slug + "/" + article.slug + "/"
         attachment['description'] = article.summary.raw.encode('utf-8')
