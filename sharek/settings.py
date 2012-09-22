@@ -135,8 +135,6 @@ TEMPLATE_DIRS = (
     # Don't forget to use absolute paths, not relative paths.
 )
 
-WKHTMLTOPDF_CMD = '/usr/local/lib/python2.6/dist-packages/wkhtmltopdf'
-
 INSTALLED_APPS = (
     'django.contrib.auth',
     'django.contrib.contenttypes',
