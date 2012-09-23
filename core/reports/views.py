@@ -22,10 +22,10 @@ from operator import attrgetter
 from sharek import settings
 
 
-def ddd(request):
+def pdf(request):
     return render_to_pdf('reports/template.html')
 
-def pdf(request):
+def ddd(request):
     template = loader.get_template('reports/template.html')
     context = Context({'user':request.user,'msg':'Testing sample PDF creation'})
     rendered = template.render(context)
