@@ -30,7 +30,7 @@ def pdf(request):
     full_temp_html_file_name = core.__path__[0] + '/static/temp_template.html'
     print(full_temp_html_file_name)
     file= open(full_temp_html_file_name, 'w')
-    file.write(rendered)
+    file.write(rendered.encode('utf8'))
     file.close( )
 
     command_args = 'wkhtmltopdf --page-size Letter ' + full_temp_html_file_name
