@@ -27,10 +27,7 @@ def pdf(request):
     context = Context({'user':request.user,'msg':'Testing sample PDF creation'})
     rendered = template .render(context )
 
-    ROOT_FOLDER =  core.__path__[0] + '/static/'
-
-    temp_html_file_name = 'temp_template.html'
-    full_temp_html_file_name = ROOT_FOLDER + temp_html_file_name
+    full_temp_html_file_name = core.__path__[0] + '/static/temp_template.html'
     print(full_temp_html_file_name)
     file= open(full_temp_html_file_name, 'w')
     file.write(rendered)
