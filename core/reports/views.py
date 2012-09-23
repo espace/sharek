@@ -16,20 +16,20 @@ from operator import attrgetter
 
 
 def pdf(request):
+      t = loader.get_template('qc/report.html')
+      c = Context({'inspection':'test'})
+      rendered = t.render(c)
+      f = open('/reports/template.html', 'w')
+      f.write(rendered)
+      f.close()
+      command_args = 'wkhtmltopdf --page-size Letter /reports/template.html -'
+      popen = Popen(command_args, bufsize=4096, stdout=PIPE, stderr=PIPE, shell=True)
+      popen.wait()
+      pdf_contents = popen.stdout.read()
+      r = HttpResponse(pdf_contents, mimetype='application/pdf')
+      r['Content-Disposition'] = 'filename=InspectionReport.pdf'
+      return r
 
-    kwargs = {}
-    if request.GET and request.GET.get('as', '') == 'html':
-        render_to = render_to_response
-    else:
-        render_to = render_to_pdf
-        kwargs.update(dict(
-            filename='model-a.pdf',
-            margin_top=0,
-            margin_right=0,
-            margin_bottom=0,
-            margin_left=0))
-
-    return render_to('reports/template.html', {}, **kwargs)
 
 
 
