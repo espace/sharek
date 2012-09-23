@@ -10,21 +10,28 @@ from core.models import Feedback, Rating, Topic
 from core.models import Info, ArticleRating
 from core.views import login
 
-from pywkher import generate_pdf
-from wkhtmltopdf.views import PDFTemplateView
+from wkhtmltopdf import render_to_pdf
 
 from operator import attrgetter
 
 
-def return_a_pdf(request):
-  template = get_template('reports/template.html')
-  html = template.render(RequestContext(request))
-  pdf_file = generate_pdf(html=html)
-  response = HttpResponse(FileWrapper(pdf_file), content_type='application/pdf')
-  response['Content-Disposition'] = 'attachment; filename=%s.zip' % basename(pdf_file.name)
-  response['Content-Length'] = pdf_file.tell()
-  pdf_file.seek(0)
-  return response
+def pdf(request):
+    context.update({'objects': ModelA.objects.filter(p_id=100)})
+
+    kwargs = {}
+    if request.GET and request.GET.get('as', '') == 'html':
+        render_to = render_to_response
+    else:
+        render_to = render_to_pdf
+        kwargs.update(dict(
+            filename='model-a.pdf',
+            margin_top=0,
+            margin_right=0,
+            margin_bottom=0,
+            margin_left=0))
+
+    return render_to('pdf.html', context, **kwargs)
+
 
 
 def export_feedback(request, article_slug):
