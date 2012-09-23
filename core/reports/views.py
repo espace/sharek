@@ -22,10 +22,13 @@ from operator import attrgetter
 from sharek import settings
 
 
+def ddd(request):
+    return render_to_pdf('reports/template.html')
+
 def pdf(request):
     template = loader.get_template('reports/template.html')
     context = Context({'user':request.user,'msg':'Testing sample PDF creation'})
-    rendered = template.render(context )
+    rendered = template.render(context)
 
     full_temp_html_file_name = core.__path__[0] + '/static/temp_template.html'
     print(full_temp_html_file_name)
@@ -42,8 +45,6 @@ def pdf(request):
     #email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
     #email.attach('sample.pdf', pdf_contents, 'application/pdf')
     #email.send()
-    
-    print(pdf_contents)	
     	
     response = HttpResponse(pdf_contents, mimetype='application/pdf')
     response['Content-Disposition'] = 'filename=Sample.pdf'
