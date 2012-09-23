@@ -16,13 +16,13 @@ from operator import attrgetter
 
 
 def pdf(request):
-      t = loader.get_template('/reports/template.html')
+      t = loader.get_template('reports/template.html')
       c = Context({'inspection':'test'})
       rendered = t.render(c)
-      f = open('/reports/template.html', 'w')
+      f = open('reports/template.html', 'w')
       f.write(rendered)
       f.close()
-      command_args = 'wkhtmltopdf --page-size Letter /reports/template.html -'
+      command_args = 'wkhtmltopdf --page-size Letter reports/template.html -'
       popen = Popen(command_args, bufsize=4096, stdout=PIPE, stderr=PIPE, shell=True)
       popen.wait()
       pdf_contents = popen.stdout.read()
