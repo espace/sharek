@@ -21,7 +21,7 @@ def pdf(request):
     context = Context({'user':request.user,'msg':'Testing sample PDF creation'})
     rendered = template .render(context )
 
-    ROOT_FOLDER =  getattr(settings, "STATIC_URL")
+    ROOT_FOLDER =  '/usr/local/dostor-masr/current/core/static/'
 
     temp_html_file_name = 'temp_template.html'
     full_temp_html_file_name = ROOT_FOLDER + temp_html_file_name
@@ -31,7 +31,7 @@ def pdf(request):
     file.close( )
 
     command_args = 'wkhtmltopdf --page-size Letter ' + full_temp_html_file_name + ' -'
-    popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    popen = subprocess.Popcd en(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     pdf_contents = popen.stdout.read( )
     popen.wait()    
 	
