@@ -15,21 +15,32 @@ from core.views import login
 from operator import attrgetter
 
 
-def pdf(request):
-      t = loader.get_template('reports/template.html')
-      c = Context({'inspection':'test'})
-      rendered = t.render(c)
-      f = open('reports/template.html', 'w')
-      f.write(rendered)
-      f.close()
-      command_args = 'wkhtmltopdf --page-size Letter reports/template.html -'
-      popen = Popen(command_args, bufsize=4096, stdout=PIPE, stderr=PIPE, shell=True)
-      popen.wait()
-      pdf_contents = popen.stdout.read()
-      r = HttpResponse(pdf_contents, mimetype='application/pdf')
-      r['Content-Disposition'] = 'filename=InspectionReport.pdf'
-      return r
+def sample_pdfs(request):
+    template = loader.get_template('reports/template.html')
+    context = Context({'user':request.user,'msg':'Testing sample PDF creation'})
+    rendered = template .render(context )
 
+    ROOT_FOLDER =  getattr(settings, "MEDIA_ROOT")
+
+    temp_html_file_name = 'temp_template.html'
+    full_temp_html_file_name = ROOT_FOLDER + "/" + temp_html_file_name
+    file= open(full_temp_html_file_name, 'w')
+    file.write(rendered)
+    file.close( )
+
+    command_args = 'wkhtmltopdf --page-size Letter ' + full_temp_html_file_name + ' -'
+    popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    pdf_contents = popen.stdout.read( )
+    popen.wait()    
+	
+    #If you want to send email (Better use Thread)
+    #email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
+    #email.attach('sample.pdf', pdf_contents, 'application/pdf')
+    #email.send()
+
+    response = HttpResponse(pdf_contents, mimetype='application/pdf')
+    response['Content-Disposition'] = 'filename=Sample.pdf'
+    return response
 
 
 
