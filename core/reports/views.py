@@ -16,7 +16,6 @@ from operator import attrgetter
 
 
 def pdf(request):
-    context.update({'objects': ModelA.objects.filter(p_id=100)})
 
     kwargs = {}
     if request.GET and request.GET.get('as', '') == 'html':
@@ -30,7 +29,7 @@ def pdf(request):
             margin_bottom=0,
             margin_left=0))
 
-    return render_to('pdf.html', context, **kwargs)
+    return render_to('reports/template.html', {}, **kwargs)
 
 
 
