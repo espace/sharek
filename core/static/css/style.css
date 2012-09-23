@@ -593,7 +593,7 @@ background-position: -142px -9px !important;
 .sidebar .regulatory-bodies{
     background-position: -142px -387px ;
 }
-        .sidebar .nav li:active .regulatory-bodies{
+        .sidebar .nav li.active .regulatory-bodies{
             background-position: -1px -387px ;
         }
 .sidebar .sidebar-icon.chapter{
