@@ -36,15 +36,15 @@
       {% for reply in feedback.get_children %}
         <div class="comment-block child-reply L_{{reply.id}}">
           <div class="facebook_user_img">
-            <a href="http://www.facebook.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.user.first_name }} {{ reply.user.last_name }}">
-                <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ reply.user }}">
+            <a href="http://www.facebook.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.name }}">
+              <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ reply.user }}">
             </a>
           </div>
           
           {% if reply.user == 'admin' %}
-	        <h3><p class="name"><a>{{ reply.user.first_name }} {{ reply.user.last_name }}</a></p></h3> 
+	          <h3><p class="name"><a>{{ reply.name }}</a></p></h3> 
           {% else %}
-    	    <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{ reply.user.first_name }} {{ reply.user.last_name }}</a></p></h3> 
+    	      <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{ reply.name }}</a></p></h3> 
           {% endif %}
             
           <div class="like-group">
@@ -65,16 +65,15 @@
     {% endif %}
     <div class="comment-block comment-entry child-reply {{feedback.id}}" style="display:none;">
       <div class="facebook_user_img">
-            <a href="http://www.facebook.com/{{ user.username }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
-                <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-            </a>
+          <a href="http://www.facebook.com/{{ user.username }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+              <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          </a>
       </div>
-          
-          {% if user == 'admin' %}
-	        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
-          {% else %}
-      <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-          {% endif %}
+      {% if user == 'admin' %}
+        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+      {% else %}
+        <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% endif %}
              
       <a href="javascript:;" class="L_hide close  " feedback_id="{{feedback.id}}" ><span>x</span></a>
       <p >
