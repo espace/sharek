@@ -183,6 +183,7 @@ def article_diff(request, article_slug):
     for temp in tmp_versions:
         article_info = {}
 
+        article_info['current'] = temp.current
         article_info['name'] = temp.header.name
         article_info['slug'] = temp.slug
         article_info['date'] = temp.mod_date
