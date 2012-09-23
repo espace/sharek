@@ -25,7 +25,7 @@ from sharek import settings
 def pdf(request):
     template = loader.get_template('reports/template.html')
     context = Context({'user':request.user,'msg':'Testing sample PDF creation'})
-    rendered = template .render(context )
+    rendered = template.render(context )
 
     full_temp_html_file_name = core.__path__[0] + '/static/temp_template.html'
     print(full_temp_html_file_name)
@@ -35,7 +35,7 @@ def pdf(request):
 
     command_args = 'wkhtmltopdf --page-size Letter ' + full_temp_html_file_name
     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    pdf_contents = "dfsdf"#popen.stdout.read( )
+    pdf_contents = popen.stdout.read( )
     popen.wait()    
 	
     #If you want to send email (Better use Thread)
