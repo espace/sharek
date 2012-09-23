@@ -16,7 +16,7 @@ from operator import attrgetter
 
 
 def pdf(request):
-      t = loader.get_template('qc/report.html')
+      t = loader.get_template('/reports/template.html')
       c = Context({'inspection':'test'})
       rendered = t.render(c)
       f = open('/reports/template.html', 'w')
