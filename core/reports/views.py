@@ -13,6 +13,7 @@ from core.views import login
 #from wkhtmltopdf import render_to_pdf
 
 from operator import attrgetter
+from sharek import settings
 
 
 def pdf(request):
