@@ -24,7 +24,7 @@ def pdf(request):
     ROOT_FOLDER =  getattr(settings, "STATIC_URL")
 
     temp_html_file_name = 'temp_template.html'
-    full_temp_html_file_name = ROOT_FOLDER + "../" + temp_html_file_name
+    full_temp_html_file_name = ROOT_FOLDER + temp_html_file_name
     file= open(full_temp_html_file_name, 'w')
     file.write(rendered)
     file.close( )
