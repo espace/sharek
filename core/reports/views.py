@@ -25,6 +25,7 @@ def pdf(request):
 
     temp_html_file_name = 'temp_template.html'
     full_temp_html_file_name = ROOT_FOLDER + temp_html_file_name
+    print(full_temp_html_file_name)
     file= open(full_temp_html_file_name, 'w')
     file.write(rendered)
     file.close( )
