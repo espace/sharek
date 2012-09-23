@@ -15,7 +15,7 @@ from core.views import login
 from operator import attrgetter
 
 
-def sample_pdfs(request):
+def pdf(request):
     template = loader.get_template('reports/template.html')
     context = Context({'user':request.user,'msg':'Testing sample PDF creation'})
     rendered = template .render(context )
