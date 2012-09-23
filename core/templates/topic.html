@@ -10,8 +10,9 @@
     <div class="row">
         <div class="span12 ">
             <h1 id="headtitle" class="headtitle innerpage offset3 visible-desktop"><span>{{topic.name}}</span></h1>
-            <h1 id="headtitle" class="headtitle innerpage hidden-desktop"><span>{{topic.name}}</span></h1>
 
+            <h1 id="headtitle" class="headtitle innerpage hidden-desktop"><span>{{topic.name}}</span></h1>
+    
         </div>
 
     </div><!-- row -end -->
@@ -22,6 +23,7 @@
         </div><!-- span3 -->
 
         <div id="ajax-container" class="span9">
+            
                 {% if articles %}
                 
                     {% for article in articles %}
@@ -79,6 +81,7 @@
                     
                 {% else %}
                 <div class="topic">
+
                     <h3>
                         <p class="mada-title">
                             لا توجد مواد متعلقة ب " <span  STYLE="font-size: x-large; color: #B66B5E"> {{topic.name}} </span> "
