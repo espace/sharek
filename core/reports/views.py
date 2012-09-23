@@ -35,7 +35,7 @@ def pdf(request):
 
     command_args = 'wkhtmltopdf --page-size Letter ' + full_temp_html_file_name
     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    pdf_contents = popen.stdout.read( )
+    pdf_contents = "dfsdf"#popen.stdout.read( )
     popen.wait()    
 	
     #If you want to send email (Better use Thread)
