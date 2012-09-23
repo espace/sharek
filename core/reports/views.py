@@ -30,7 +30,7 @@ def pdf(request):
     file.write(rendered)
     file.close( )
 
-    command_args = 'wkhtmltopdf --page-size Letter ' + full_temp_html_file_name + ' -'
+    command_args = 'wkhtmltopdf --page-size Letter ' + full_temp_html_file_name
     popen = subprocess.Popcd en(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     pdf_contents = popen.stdout.read( )
     popen.wait()    
