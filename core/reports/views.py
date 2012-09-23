@@ -10,7 +10,8 @@ from core.models import Feedback, Rating, Topic
 from core.models import Info, ArticleRating
 from core.views import login
 
-#from wkhtmltopdf.views import PDFTemplateView
+from pywkher import generate_pdf
+from wkhtmltopdf.views import PDFTemplateView
 
 from operator import attrgetter
 
