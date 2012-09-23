@@ -1,3 +1,9 @@
+import sys
+import os
+import core
+import os.path
+import subprocess
+
 from django.template import Context, loader, RequestContext
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.template.loader import get_template
@@ -10,20 +16,39 @@ from core.models import Feedback, Rating, Topic
 from core.models import Info, ArticleRating
 from core.views import login
 
-#from wkhtmltopdf.views import PDFTemplateView
+#from wkhtmltopdf import render_to_pdf
 
 from operator import attrgetter
+from sharek import settings
 
 
-def return_a_pdf(request):
-  template = get_template('reports/template.html')
-  html = template.render(RequestContext(request))
-  pdf_file = generate_pdf(html=html)
-  response = HttpResponse(FileWrapper(pdf_file), content_type='application/pdf')
-  response['Content-Disposition'] = 'attachment; filename=%s.zip' % basename(pdf_file.name)
-  response['Content-Length'] = pdf_file.tell()
-  pdf_file.seek(0)
-  return response
+def pdf(request):
+    template = loader.get_template('reports/template.html')
+    context = Context({'user':request.user,'msg':'Testing sample PDF creation'})
+    rendered = template.render(context )
+
+    full_temp_html_file_name = core.__path__[0] + '/static/temp_template.html'
+    print(full_temp_html_file_name)
+    file= open(full_temp_html_file_name, 'w')
+    file.write(rendered.encode('utf8'))
+    file.close( )
+
+    command_args = 'wkhtmltopdf --page-size Letter ' + full_temp_html_file_name
+    popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    pdf_contents = popen.stdout.read( )
+    popen.wait()    
+	
+    #If you want to send email (Better use Thread)
+    #email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
+    #email.attach('sample.pdf', pdf_contents, 'application/pdf')
+    #email.send()
+    
+    print(pdf_contents)	
+    	
+    response = HttpResponse(pdf_contents, mimetype='application/pdf')
+    response['Content-Disposition'] = 'filename=Sample.pdf'
+    return response
+
 
 
 def export_feedback(request, article_slug):
