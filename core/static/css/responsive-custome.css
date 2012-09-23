@@ -28,6 +28,11 @@
     width: 300px !important;
 }
 
+.headtitle {
+	font-size: 22px;
+	min-width: 240px;
+}
+
 /* inner pages fixes*/
 .sidebar .nav li a {
     border-radius: 0 0 0 0 !important;
