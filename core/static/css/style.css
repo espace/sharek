@@ -325,12 +325,15 @@ left: 1px;
     margin: 0;
 }
 .top-members ul li{
-    margin: 0;
+    margin: 1px;
     float: right;
     list-style-type: none;
 }
 .top-members ul li span{
    display: none;
+}
+.top-members ul li img{
+   width: 45px;
 }
 .mosharakat_number{
     text-align: center;

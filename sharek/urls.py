@@ -1,4 +1,6 @@
 from django.conf.urls import patterns, include, url
+#from wkhtmltopdf.views import PDFTemplateView
+import core
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -7,6 +9,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
+	
+	#url(r'sharek/index/$', PDFTemplateView.as_view(template_name='reports/template.html',filename=core.__path__[0] + '/static/photos/my_pdf.pdf'), name='pdf'),
 	
     url(r'sharek/latest-comments/$', 'core.views.latest_comments', name='latest_comments'),
 	url(r'sharek/topic_next_articles/$', 'core.views.topic_next_articles', name='topic_next_articles'),

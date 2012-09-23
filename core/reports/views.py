@@ -1,4 +1,3 @@
-
 from django.template import Context, loader, RequestContext
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.template.loader import get_template
@@ -11,7 +10,21 @@ from core.models import Feedback, Rating, Topic
 from core.models import Info, ArticleRating
 from core.views import login
 
+#from wkhtmltopdf.views import PDFTemplateView
+
 from operator import attrgetter
+
+
+def return_a_pdf(request):
+  template = get_template('reports/template.html')
+  html = template.render(RequestContext(request))
+  pdf_file = generate_pdf(html=html)
+  response = HttpResponse(FileWrapper(pdf_file), content_type='application/pdf')
+  response['Content-Disposition'] = 'attachment; filename=%s.zip' % basename(pdf_file.name)
+  response['Content-Length'] = pdf_file.tell()
+  pdf_file.seek(0)
+  return response
+
 
 def export_feedback(request, article_slug):
     

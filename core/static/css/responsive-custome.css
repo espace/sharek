@@ -25,7 +25,12 @@
     width: 82%;
 }
 .map{
-    width: 100px !important;
+    width: 300px !important;
+}
+
+.headtitle {
+	font-size: 22px;
+	min-width: 240px;
 }
 
 /* inner pages fixes*/
