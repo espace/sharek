@@ -603,7 +603,7 @@ def top_liked(request):
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_liked(20)
     title = 'الأكثر قبولا'
-    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'type':"likes",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_disliked(request):
 
@@ -615,7 +615,7 @@ def top_disliked(request):
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_disliked(20)
     title = 'الأكثر رفضا'
-    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'type':"dislikes",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_commented(request):
 
@@ -627,7 +627,7 @@ def top_commented(request):
         return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.get_top_commented(20)
     title = 'الأكثر مناقشة'
-    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'type':"comments",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
 def statistics(request):
         if request.method == 'POST':
@@ -635,11 +635,11 @@ def statistics(request):
             stat_type = request.POST.get("type")
 
             if stat_type == "likes":
-                articles = ArticleDetails.get_top_liked()
+                articles = ArticleDetails.objects.filter(current = True).order_by('-likes')
             elif stat_type == "dislikes":
-                articles = ArticleDetails.get_top_disliked()
+                articles = ArticleDetails.objects.filter(current = True).order_by('-dislikes')
             elif stat_type == "comments":
-                articles = ArticleDetails.get_top_commented()
+                articles = ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')
             
 
             paginator = Paginator(articles, settings.paginator)

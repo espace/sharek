@@ -75,6 +75,7 @@
           type:"POST",
           url :"/sharek/statistics/",
           data:{
+              'type': "{{type}}",
               'page': ++page,
               'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
           dataType:"html",
