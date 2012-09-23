@@ -42,7 +42,9 @@ def pdf(request):
     #email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
     #email.attach('sample.pdf', pdf_contents, 'application/pdf')
     #email.send()
-
+    
+    print(pdf_contents)	
+    	
     response = HttpResponse(pdf_contents, mimetype='application/pdf')
     response['Content-Disposition'] = 'filename=Sample.pdf'
     return response
