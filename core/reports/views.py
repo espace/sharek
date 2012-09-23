@@ -21,7 +21,7 @@ def pdf(request):
     context = Context({'user':request.user,'msg':'Testing sample PDF creation'})
     rendered = template .render(context )
 
-    ROOT_FOLDER =  '/usr/local/dostor-masr/current/core/static/'
+    ROOT_FOLDER =  'http://dostor-masr.espace-technologies.com/sharek/static/'
 
     temp_html_file_name = 'temp_template.html'
     full_temp_html_file_name = ROOT_FOLDER + temp_html_file_name
