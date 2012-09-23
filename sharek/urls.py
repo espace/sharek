@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'sharek/latest-comments/$', 'core.views.latest_comments', name='latest_comments'),
 	url(r'sharek/topic_next_articles/$', 'core.views.topic_next_articles', name='topic_next_articles'),
 	url(r'sharek/tag_next_articles/$', 'core.views.tag_next_articles', name='tag_next_articles'),
-
+    
     #Facebook
     url(r'sharek/facebook/login', 'core.facebook.views.login', name='facebook_login'),
     url(r'sharek/facebook/logout', 'core.facebook.views.logout', name='facebook_logout'),
@@ -59,6 +59,7 @@ urlpatterns = patterns('',
     url(r'^sharek/top_liked/', 'core.views.top_liked', name='top_liked'),
     url(r'^sharek/top_disliked/', 'core.views.top_disliked', name='top_disliked'),
     url(r'^sharek/top_commented/', 'core.views.top_commented', name='top_commented'),
+    url(r'sharek/statistics/$', 'core.views.statistics', name='statistics'),
     
     url(r'^sharek/$', 'core.views.index', name='index'),
 	

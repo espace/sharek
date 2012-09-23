@@ -629,6 +629,29 @@ def top_commented(request):
     title = 'الأكثر مناقشة'
     return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
+def statistics(request):
+        if request.method == 'POST':
+            page =  request.POST.get("page")
+            stat_type = request.POST.get("type")
+
+            if stat_type == "likes":
+                articles = ArticleDetails.get_top_liked()
+            elif stat_type == "dislikes":
+                articles = ArticleDetails.get_top_disliked()
+            elif stat_type == "comments":
+                articles = ArticleDetails.get_top_commented()
+            
+
+            paginator = Paginator(articles, settings.paginator)
+            try:
+                articles = paginator.page(page)
+                return render_to_response('include/next_articles.html',{'articles':articles} ,RequestContext(request))
+            except PageNotAnInteger:
+                return HttpResponse('')
+            except EmptyPage:
+                return HttpResponse('')
+
+
 def logout(request):
     template_context = {}
     auth.logout(request)
