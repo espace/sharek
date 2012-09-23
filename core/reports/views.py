@@ -16,16 +16,16 @@ from core.models import Feedback, Rating, Topic
 from core.models import Info, ArticleRating
 from core.views import login
 
-from wkhtmltopdf import render_to_pdf
+#from wkhtmltopdf import render_to_pdf
 
 from operator import attrgetter
 from sharek import settings
 
-
+'''
 def pdf(request):
     return render_to_pdf(request, 'reports/template.html')
-
-def ddd(request):
+''' 
+def pdf(request):
     template = loader.get_template('reports/template.html')
     context = Context({'user':request.user,'msg':'Testing sample PDF creation'})
     rendered = template.render(context)
