@@ -7,14 +7,20 @@ body {
  
 .topic-title {
     color: #111111;
+    font-family: GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
     font-size: 26px;
 	margin: 35px 0px 45px 0px;
+	direction: rtl;
+	text-align: right;
 }
  
 .article-title {
     color: #111111;
+    font-family: GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
     font-size: 20px;
 	margin: 45px 0px 10px 0px;
+	direction: rtl;
+	text-align: right;
 }
 
 @font-face {
