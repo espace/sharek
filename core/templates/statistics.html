@@ -7,19 +7,27 @@
 
 
 {% if articles %}
-    <div class="comment-block well top" style="float:right;">
-          <a class="{%if type = 'likes' %}selected{%endif%}" href="{% url top_liked %}">الأكثر قبولا</a>
-        <a> | </a>
-          <a class="{%if type = 'dislikes' %}selected{%endif%}" href="{% url top_disliked %}">الأكثر رفضا</a>
-        <a> | </a>
-          <a class="{%if type = 'comments' %}selected{%endif%}" href="{% url top_commented %}">الأكثر مناقشة</a>
-    </div>
     <div class="row">
-        <div id="ajax-container" class="span12">
-          {% for article in articles %}
-          	{% include "include/article_block.html" %}
-          {% endfor %}
-        </div>
+      <div class="span3">
+        <div class="sidebar">
+          <ul class="nav nav-pills nav-stacked">
+            <li class="{%if type = 'likes' %}active{%endif%}" >
+              <a  href="{% url top_liked %}">الأكثر قبولا</a>
+            </li>
+            <li class="{%if type = 'dislikes' %}active{%endif%}" >
+              <a  href="{% url top_disliked %}">الأكثر رفضا</a>
+            </li>
+            <li class="{%if type = 'comments' %}active{%endif%}" >
+              <a  href="{% url top_commented %}">الأكثر مناقشة</a>
+            </li>
+          </ul>
+      </div>
+      </div><!-- span3 -->
+      <div id="ajax-container" class="span9">
+        {% for article in articles %}
+        	{% include "include/article_block.html" %}
+        {% endfor %}
+      </div>
     </div><!-- row end -->
 {% else %}
 <div class="topic">
