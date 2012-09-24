@@ -21,25 +21,24 @@ from core.views import login
 from operator import attrgetter
 from sharek import settings
 
-'''
-def pdf(request):
-    return render_to_pdf(request, 'reports/template.html')
-''' 
+
+
 def pdf(request):
     template = loader.get_template('reports/template.html')
-    context = Context({'user':request.user,'msg':'Testing sample PDF creation'})
+    context = Context({'msg':'Testing sample PDF creation'})
     rendered = template.render(context)
 
     full_temp_html_file_name = core.__path__[0] + '/static/temp_template.html'
-    print(full_temp_html_file_name)
     file= open(full_temp_html_file_name, 'w')
     file.write(rendered.encode('utf8'))
     file.close( )
 
-    command_args = 'wkhtmltopdf --page-size Letter ' + full_temp_html_file_name
+    command_args = 'wkhtmltopdf http://dostor-masr.espace-technologies.com/sharek/static/temp_template.html /usr/local/dostor-masr/current/core/static/test.pdf'
     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     pdf_contents = popen.stdout.read( )
-    popen.wait()    
+    popen.wait()
+
+    print(pdf_contents)
 	
     #If you want to send email (Better use Thread)
     #email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
