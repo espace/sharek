@@ -31,9 +31,9 @@ def topic_pdf(request, topic_slug=None):
 
     if topic_slug:
         topic = get_object_or_404( Topic, slug=topic_slug )
-        all_articles = topic.get_articles()
+        articles = topic.get_articles()
 
-    context = Context({'all_articles':all_articles})
+    context = Context({'topic':topic, 'articles':articles})
 
     kwargs = {}
 
