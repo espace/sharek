@@ -36,7 +36,9 @@ def pdf(request):
     command_args = 'wkhtmltopdf http://dostor-masr.espace-technologies.com/sharek/static/temp_template.html'
     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     pdf_contents = popen.stdout.read( )
-    popen.wait()    
+    popen.wait()
+
+    print(pdf_contents)
 	
     #If you want to send email (Better use Thread)
     #email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
