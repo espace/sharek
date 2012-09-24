@@ -25,7 +25,7 @@ from sharek import settings
 
 def pdf(request):
     template = loader.get_template('reports/template.html')
-    context = Context({'msg':'Alaa Testing sample PDF creation'})
+    context = Context({'msg':'Haitham Testing sample PDF creation'})
     rendered = template.render(context)
 
     full_temp_html_file_name = core.__path__[0] + '/static/temp_template.html'
