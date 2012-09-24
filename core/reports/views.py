@@ -33,7 +33,7 @@ def pdf(request):
     file.write(rendered.encode('utf8'))
     file.close( )
 
-    command_args = 'wkhtmltopdf --page-size Letter http://dostor-masr.espace-technologies.com/sharek/static/temp_template.html'
+    command_args = 'wkhtmltopdf http://dostor-masr.espace-technologies.com/sharek/static/temp_template.html'
     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     pdf_contents = popen.stdout.read( )
     popen.wait()    
