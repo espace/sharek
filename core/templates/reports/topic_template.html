@@ -6,6 +6,7 @@
         </style>
     </head>
     <body>
+    	<h1>{{article.header.topic}}</h1>
 		{% for article in all_articles %}
             {{article.header.name}}<br />{{article.summary}}<br />
         {% endfor %} 
