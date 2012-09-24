@@ -751,6 +751,12 @@ background-position: -142px -9px !important;
     border-radius: 5px;
 	text-shadow: 1px 1px 1px #FFFFFF;
 }
+.headtitle span{
+    background: url("../images/pattern.png") repeat;
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-shadow: 1px 1px 1px #FFFFFF;
+}
 .headtitle select{
   float: left;
   margin-left: 14px;
