@@ -745,7 +745,7 @@ background-position: -142px -9px !important;
     text-align: right;
 
 }
-.headtitle span{
+.headtitle h1{
     background: url("../images/pattern.png") repeat;
     padding: 5px 10px;
     border-radius: 5px;
@@ -765,6 +765,17 @@ background-position: -142px -9px !important;
 .inner-article{
     margin-top: 32px;
 }
+.donload-pdf{
+    background: url(http://cdn1.iconfinder.com/data/icons/Momentum_MatteEntireSet/16/pdf.png) right 0 no-repeat ;
+    padding-right: 20px;
+   float: right;
+   font-size: 12px !important;
+   text-shadow:0 0 0 !important;
+   margin-top: 20px;
+   font-family: tahoma,Geneva !important;
+
+}
+
 /*------------   subject-title    ------ */
 
 .subject-title{
