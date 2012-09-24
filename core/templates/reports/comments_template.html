@@ -41,7 +41,7 @@
         {% for comment in comments %}
             <h2>{{ comment.name }}</h2>
             <p>{{comment.suggestion}}</p>
-            <p>{{comment.date|format}}</p>
+            <small>{{comment.date|format}}</small>
         {% endfor %}
         
     </body>
