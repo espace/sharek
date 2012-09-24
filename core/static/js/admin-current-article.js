@@ -3,8 +3,6 @@ $(document).ready(function() {
     
     $action = $($(this).children()[0])
     current_state = $action.is(':checked');
-    //var fields_current = $('field-current');
-    //var arr = $.makeArray(fields_current);
     $('.field-current').each(function(index) {
       var $temp = $($(this).children()[0])
       $temp.val(false);  
