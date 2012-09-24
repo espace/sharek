@@ -35,7 +35,8 @@ def pdf(request):
 
     command_args = 'wkhtmltopdf http://dostour.eg/sharek/'
     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    pdf_contents = popen.stdout.read( )
+    pdf_contents = popen.stdout.read()
+    popen.terminate()
     popen.wait()
 
     print(pdf_contents)
