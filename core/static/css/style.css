@@ -751,6 +751,13 @@ background-position: -142px -9px !important;
     border-radius: 5px;
 	text-shadow: 1px 1px 1px #FFFFFF;
 }
+.headtitle select{
+  float: left;
+  margin-left: 14px;
+  margin-top: 12px;
+  border-radius: 5px;
+  font:12px tahoma, Geneva;
+}
 .divider.pushed-up{
     margin-top: 50px;
 }
