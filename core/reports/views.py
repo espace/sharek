@@ -16,6 +16,7 @@ from core.models import Feedback, Rating, Topic
 from core.models import Info, ArticleRating
 from core.views import login
 
+import time
 from datetime import datetime
 from operator import attrgetter
 from sharek import settings
