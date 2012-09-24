@@ -28,11 +28,11 @@ def comments_pdf(request, article_slug=None):
 
     if request.user.is_authenticated() and request.user.is_staff:
       user = request.user
+    else:
+        return HttpResponseRedirect(reverse('index'))
 
     if article_slug:
         article = get_object_or_404( ArticleDetails, slug=article_slug )
-    else:
-        return HttpResponseRedirect(reverse('index'))
 
     inactive_users = User.get_inactive
 
