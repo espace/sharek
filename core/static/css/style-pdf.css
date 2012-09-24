@@ -4,6 +4,37 @@ body {
 	font: 12px tahoma;
 	line-height: 16px;
  }
+ 
+.headtitle {
+    -moz-font-feature-settings: normal;
+    -moz-font-language-override: normal;
+    -x-system-font: none;
+    color: #111111;
+    font-family: GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    font-size: 26px;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: bold;
+    line-height: normal;
+    margin-bottom: 0;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+ 
+.topic-title {
+    color: #111111;
+    font-family: GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    font-size: 26px;
+	margin: 35px 0px 45px 0px;
+}
+ 
+.article-title {
+    color: #111111;
+    font-family: GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    font-size: 20px;
+	margin: 45px 0px 10px 0px;
+}
 
 @font-face {
     font-family: 'FrutigerBold';

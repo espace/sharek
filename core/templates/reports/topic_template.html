@@ -4,10 +4,13 @@
 	    <link href="{{ STATIC_URL }}css/style-pdf.css" rel="stylesheet" />
     </head>
     <body>
-    	<h1>{{topic.name}}</h1>
-        <br />
+    
+    	<h1 class="topic-title">{{topic.name}}</h1>
+        
 		{% for article in articles %}
-            {{article.header.name}}<br />{{article.summary}}<br />
+            <h2 class="article-title">{{article.header.name}}</h2>
+            <p>{{article.summary}}</p>
         {% endfor %} 
+        
     </body>
 </html>
