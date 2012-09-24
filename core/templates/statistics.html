@@ -5,14 +5,16 @@
 
 {% block content %}
 
-{% if articles %}
-    <div class="row">
-        <div class="span12">
-            <h1 id="headtitle" class="headtitle innerpage"><span style="margin-right: 0px">{{title}}</span></h1>
-        </div>
-    </div><!-- row -end -->
-    <div class="row">
 
+{% if articles %}
+    <div class="comment-block well top" style="float:right;">
+          <a class="{%if type = 'likes' %}selected{%endif%}" href="{% url top_liked %}">الأكثر قبولا</a>
+        <a> | </a>
+          <a class="{%if type = 'dislikes' %}selected{%endif%}" href="{% url top_disliked %}">الأكثر رفضا</a>
+        <a> | </a>
+          <a class="{%if type = 'comments' %}selected{%endif%}" href="{% url top_commented %}">الأكثر مناقشة</a>
+    </div>
+    <div class="row">
         <div id="ajax-container" class="span12">
           {% for article in articles %}
           	{% include "include/article_block.html" %}
