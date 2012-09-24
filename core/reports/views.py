@@ -25,7 +25,7 @@ from sharek import settings
 
 def pdf(request):
     template = loader.get_template('reports/template.html')
-    context = Context({'msg':'Testing sample PDF creation'})
+    context = Context({'msg':'Haitham Testing sample PDF creation'})
     rendered = template.render(context)
 
     full_temp_html_file_name = core.__path__[0] + '/static/temp_template.html'
@@ -33,7 +33,7 @@ def pdf(request):
     file.write(rendered.encode('utf8'))
     file.close( )
 
-    command_args = 'wkhtmltopdf -O %s -s %s -T 0 -R 0 -B 0 -L 0  http://dostour.eg/sharek/ -'
+    command_args = 'wkhtmltopdf ' + full_temp_html_file_name + ' -'
     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     pdf_contents = popen.stdout.read()
     popen.terminate()
