@@ -12,13 +12,13 @@
         <div class="sidebar">
           <ul class="nav nav-pills nav-stacked">
             <li class="{%if type = 'likes' %}active{%endif%}" >
-              <a  href="{% url top_liked %}">الأكثر قبولا</a>
+              <a  href="{% url top_liked %}"><span class="sidebar-icon chapter"></span>الأكثر قبولا</a>
             </li>
             <li class="{%if type = 'dislikes' %}active{%endif%}" >
-              <a  href="{% url top_disliked %}">الأكثر رفضا</a>
+              <a  href="{% url top_disliked %}"><span class="sidebar-icon chapter"></span>الأكثر رفضا</a>
             </li>
             <li class="{%if type = 'comments' %}active{%endif%}" >
-              <a  href="{% url top_commented %}">الأكثر مناقشة</a>
+              <a  href="{% url top_commented %}"><span class="sidebar-icon chapter"></span>الأكثر مناقشة</a>
             </li>
           </ul>
       </div>
