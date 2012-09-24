@@ -21,6 +21,50 @@ from datetime import datetime
 from operator import attrgetter
 from sharek import settings
 
+def topics_pdf(request):
+    user = None
+
+    login(request)
+
+    if request.user.is_authenticated():
+      user = request.user
+
+    topics = Topic.objects.all
+
+    dt_obj = datetime.now()
+    date_str = dt_obj.strftime("%Y%m%d_%H%M%S")
+    date_display = dt_obj.strftime("%Y-%m-%d")
+
+    context = Context({'topics':topics, 'date_display': date_display})
+
+    kwargs = {}
+
+    if request.GET and request.GET.get('as', '') == 'html':
+        return render_to_response('reports/topics_template.html', context ,RequestContext(request))
+
+    else:
+		template = loader.get_template('reports/topics_template.html')
+		rendered = template.render(context)
+		full_temp_html_file_name = core.__path__[0] + '/static/temp/topics_template_' + date_str + '.html'
+		file= open(full_temp_html_file_name, 'w')
+		file.write(rendered.encode('utf8'))
+		file.close( )
+	
+		command_args = 'wkhtmltopdf ' + full_temp_html_file_name + ' -'
+		popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+		pdf_contents = popen.stdout.read()
+		popen.terminate()
+		popen.wait()
+		
+		#If you want to send email (Better use Thread)
+		#email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
+		#email.attach('sample.pdf', pdf_contents, 'application/pdf')
+		#email.send()
+			
+		response = HttpResponse(pdf_contents, mimetype='application/pdf')
+		response['Content-Disposition'] = 'filename=Sample.pdf'
+		return response
+
 def topic_pdf(request, topic_slug=None):
     user = None
 
