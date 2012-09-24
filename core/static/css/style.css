@@ -204,7 +204,6 @@ body {
 }
 .progress-promo a.btn{
     font: 20px GESSTwoMediumRegular;
-	margin-top: 20px;
 }
 .progress-promo p strong{
     font: 12px GESSTwoBoldRegular;
@@ -771,7 +770,7 @@ background-position: -142px -9px !important;
    float: right;
    font-size: 12px !important;
    text-shadow:0 0 0 !important;
-   margin-top: 20px;
+   margin-top: 15px;
    color: #0088CC !important;
    font-family: tahoma,Geneva !important;
    font-weight: normal !important; 
