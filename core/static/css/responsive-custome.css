@@ -45,10 +45,13 @@
     height: 40px;
     padding: 20px 0;
 }
+
 .tags{
     margin-top: 130px;
 }
-
+.content .tags{
+    margin-top: 0;
+}
 .headtitle select {
     margin-top: 5px;
 }

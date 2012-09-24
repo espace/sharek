@@ -1314,6 +1314,7 @@ span.divider{
     /*background: rgba(0,0,0,0.1) !important;*/
     float: left;
     margin-left: 14px;
+    clear: none;
 }
 .top a{
     color: #a6a6a6 !important;
