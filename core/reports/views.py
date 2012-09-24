@@ -33,31 +33,38 @@ def topic_pdf(request, topic_slug=None):
         topic = get_object_or_404( Topic, slug=topic_slug )
         all_articles = topic.get_articles()
 
-    template = loader.get_template('reports/topic_template.html')
     context = Context({'all_articles':all_articles})
-    rendered = template.render(context)
 
-    dt_obj = datetime.now()
-    date_str = dt_obj.strftime("%Y%m%d_%H%M%S")
-    full_temp_html_file_name = core.__path__[0] + '/static/temp/topic_template_' + date_str + '.html'
-    file= open(full_temp_html_file_name, 'w')
-    file.write(rendered.encode('utf8'))
-    file.close( )
+    kwargs = {}
 
-    command_args = 'wkhtmltopdf ' + full_temp_html_file_name + ' -'
-    popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    pdf_contents = popen.stdout.read()
-    popen.terminate()
-    popen.wait()
+    if request.GET and request.GET.get('as', '') == 'html':
+        return render_to_response('reports/topic_template.html', context ,RequestContext(request))
+
+    else:
+		template = loader.get_template('reports/topic_template.html')
+		rendered = template.render(context)
 	
-    #If you want to send email (Better use Thread)
-    #email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
-    #email.attach('sample.pdf', pdf_contents, 'application/pdf')
-    #email.send()
-    	
-    response = HttpResponse(pdf_contents, mimetype='application/pdf')
-    response['Content-Disposition'] = 'filename=Sample.pdf'
-    return response
+		dt_obj = datetime.now()
+		date_str = dt_obj.strftime("%Y%m%d_%H%M%S")
+		full_temp_html_file_name = core.__path__[0] + '/static/temp/topic_template_' + date_str + '.html'
+		file= open(full_temp_html_file_name, 'w')
+		file.write(rendered.encode('utf8'))
+		file.close( )
+	
+		command_args = 'wkhtmltopdf ' + full_temp_html_file_name + ' -'
+		popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+		pdf_contents = popen.stdout.read()
+		popen.terminate()
+		popen.wait()
+		
+		#If you want to send email (Better use Thread)
+		#email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
+		#email.attach('sample.pdf', pdf_contents, 'application/pdf')
+		#email.send()
+			
+		response = HttpResponse(pdf_contents, mimetype='application/pdf')
+		response['Content-Disposition'] = 'filename=Sample.pdf'
+		return response
 
 
 def export_feedback(request, article_slug):
