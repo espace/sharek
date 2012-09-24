@@ -60,6 +60,7 @@ def topic_pdf(request, topic_slug=None):
     response['Content-Disposition'] = 'filename=Sample.pdf'
     return response
     '''
+    return ''
 
 
 def export_feedback(request, article_slug):
