@@ -10,157 +10,19 @@
     <div class="row">
         <div class="span12 ">
             <h1 id="headtitle" class="headtitle innerpage offset3 visible-desktop"><span>{{topic.name}}</span> 
-                <select class="span2"> 
-                    <OPTION>-- ذهب للمادة --</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
+                <select class="span2" onchange="window.open(this.options[this.selectedIndex].value,'_top')"> 
+                    <option>-- اذهب للمادة --</option>
+                    {% for article in all_articles %}
+                    <option value="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</option>
+                    {% endfor %} 
                 </select>
             </h1>
             <h1 id="headtitle" class="headtitle innerpage hidden-desktop"><span>{{topic.name}}</span>
                 <select class="span2"> 
-                    <OPTION>-- ذهب للمادة --</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
-                    <OPTION>42</OPTION> 
+                    <option>-- اذهب للمادة --</option>
+                    {% for article in all_articles %}
+                    <option value="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</option>
+                    {% endfor %} 
                 </select>
             </h1>
         </div>

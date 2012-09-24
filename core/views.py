@@ -126,22 +126,22 @@ def topic_detail(request, topic_slug=None):
     if topic_slug:
         topics = Topic.objects.all
         topic = get_object_or_404( Topic, slug=topic_slug )
-        articles = topic.get_articles()
+        all_articles = topic.get_articles()
     else:
         topics = Topic.objects.filter()
         if len(topics) > 0:
             topic = topics[0]
-            articles = topic.get_articles()
+            all_articles = topic.get_articles()
         else:
             topic = None
-            articles = None
+            all_articles = None
 
     voted_articles = ArticleRating.objects.filter(user = user)
 
-    paginator = Paginator(articles, settings.paginator) 
+    paginator = Paginator(all_articles, settings.paginator) 
     articles = paginator.page(1)
 
-    template_context = {'topic_page':True,'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
+    template_context = {'topic_page':True, 'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
     return render_to_response('topic.html',template_context ,RequestContext(request))
 
 def topic_next_articles(request):
