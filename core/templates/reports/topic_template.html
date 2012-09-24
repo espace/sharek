@@ -1,12 +1,29 @@
 <html>
 	<head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	    <link href="{{ STATIC_URL }}css/style-pdf.css" rel="stylesheet" />
+        <style>
+		body {
+			direction: rtl;
+			text-align: right;
+			font: 12px tahoma;
+			line-height: 16px;
+		 }
+		 .topic-title, .article-title {
+			color: #111111;
+			font-size: 26px;
+			margin: 35px 0px 45px 0px;
+			direction: rtl;
+			text-align: right;
+		}
+		 
+		.article-title {
+			font-size: 20px;
+			margin: 45px 0px 10px 0px;
+		}
+        </style>
     </head>
     <body>
-    
-    	<h1 class="topic-title">{{topic.name}}</h1>
-        
+        <h1 class="topic-title">{{ topic.name }}</h1>
 		{% for article in articles %}
             <h2 class="article-title">{{article.header.name}}</h2>
             <p>{{article.summary}}</p>
