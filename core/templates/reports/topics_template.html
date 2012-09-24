@@ -34,9 +34,9 @@
         <h1>{{ topic.name }}</h1>
         <h5>{{ date_display }}</h5>
         
-        <br><br><br><br>
         
 		{% for topic in topics %}
+        	<br><br><br><br>
         	<h1>{{ topic.name }}</h1>
             {% for article in topic.get_articles %}
                 <h2>{{article.header.name}}</h2>
