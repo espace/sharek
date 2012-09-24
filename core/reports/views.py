@@ -37,7 +37,7 @@ def topic_pdf(request, topic_slug=None):
     context = Context({'all_articles':all_articles})
     rendered = template.render(context)
 
-    full_temp_html_file_name = core.__path__[0] + '/static/temp/topic_template_' + time.strptime(datetime.now(), "%m%d%Y_%H%M%S") + '.html'
+    full_temp_html_file_name = core.__path__[0] + '/static/temp/topic_template_.html'
     file= open(full_temp_html_file_name, 'w')
     file.write(rendered.encode('utf8'))
     file.close( )
