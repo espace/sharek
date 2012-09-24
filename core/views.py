@@ -183,6 +183,7 @@ def article_diff(request, article_slug):
     for temp in tmp_versions:
         article_info = {}
 
+        article_info['current'] = temp.current
         article_info['name'] = temp.header.name
         article_info['slug'] = temp.slug
         article_info['date'] = temp.mod_date
@@ -600,9 +601,9 @@ def top_liked(request):
 
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
-    articles = ArticleDetails.get_top_liked(20)
+    articles = ArticleDetails.get_top_liked(settings.paginator)
     title = 'الأكثر قبولا'
-    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'type':"likes",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_disliked(request):
 
@@ -612,9 +613,9 @@ def top_disliked(request):
 
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
-    articles = ArticleDetails.get_top_disliked(20)
+    articles = ArticleDetails.get_top_disliked(settings.paginator)
     title = 'الأكثر رفضا'
-    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'type':"dislikes",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
 def top_commented(request):
 
@@ -624,9 +625,32 @@ def top_commented(request):
 
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
-    articles = ArticleDetails.get_top_commented(20)
+    articles = ArticleDetails.get_top_commented(settings.paginator)
     title = 'الأكثر مناقشة'
-    return render_to_response('statistics.html', {'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
+    return render_to_response('statistics.html', {'type':"comments",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
+
+def statistics(request):
+        if request.method == 'POST':
+            page =  request.POST.get("page")
+            stat_type = request.POST.get("type")
+
+            if stat_type == "likes":
+                articles = ArticleDetails.objects.filter(current = True).order_by('-likes')
+            elif stat_type == "dislikes":
+                articles = ArticleDetails.objects.filter(current = True).order_by('-dislikes')
+            elif stat_type == "comments":
+                articles = ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')
+            
+
+            paginator = Paginator(articles, settings.paginator)
+            try:
+                articles = paginator.page(page)
+                return render_to_response('include/next_articles.html',{'articles':articles} ,RequestContext(request))
+            except PageNotAnInteger:
+                return HttpResponse('')
+            except EmptyPage:
+                return HttpResponse('')
+
 
 def logout(request):
     template_context = {}

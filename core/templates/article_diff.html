@@ -14,7 +14,7 @@
 <div class="row">
   <div class="span12 history-records ">
     {% for article in versions %}
-      <div class="well {% if forloop.last %}recent{% endif %}">
+      <div class="well {% if article.current %}recent{% endif %}">
         <h3>
         	<p class="mada-title"><a href="{% url article_detail classified_by='topics' class_slug=article.topic_absolute_url article_slug=article.slug %}">{{article.name}}</a></p>
         	<span class="edit-date">
@@ -27,5 +27,4 @@
     {% endfor %}
   </div>
 </div><!-- roww -->
-
 {% endblock %}
