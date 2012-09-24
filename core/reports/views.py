@@ -33,7 +33,11 @@ def topic_pdf(request, topic_slug=None):
         topic = get_object_or_404( Topic, slug=topic_slug )
         articles = topic.get_articles()
 
-    context = Context({'topic':topic, 'articles':articles})
+    dt_obj = datetime.now()
+    date_str = dt_obj.strftime("%Y%m%d_%H%M%S")
+    date_display = dt_obj.strftime("%Y-%m-%d")
+
+    context = Context({'topic':topic, 'articles':articles, 'date_display': date_display})
 
     kwargs = {}
 
@@ -43,9 +47,6 @@ def topic_pdf(request, topic_slug=None):
     else:
 		template = loader.get_template('reports/topic_template.html')
 		rendered = template.render(context)
-	
-		dt_obj = datetime.now()
-		date_str = dt_obj.strftime("%Y%m%d_%H%M%S")
 		full_temp_html_file_name = core.__path__[0] + '/static/temp/topic_template_' + date_str + '.html'
 		file= open(full_temp_html_file_name, 'w')
 		file.write(rendered.encode('utf8'))
