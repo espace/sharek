@@ -8,24 +8,33 @@
 			font: 12px tahoma;
 			line-height: 16px;
 		 }
-		 .topic-title, .article-title {
+		 h1, h2 {
 			color: #111111;
 			font-size: 20px;
-			margin: 35px 0px 45px 0px;
+			margin: 35px 0px 15px 0px;
 			direction: rtl;
+			text-align: center;
+		}
+		 
+		h2 {
+			font-size: 16px;
+			margin: 45px 0px 10px 0px;
 			text-align: right;
 		}
 		 
-		.article-title {
-			font-size: 16px;
-			margin: 45px 0px 10px 0px;
+		h5 {
+			text-align: center;
 		}
         </style>
     </head>
     <body>
-        <h1 class="topic-title">{{ topic.name }}</h1>
+    	<h1>بسم الله الرحمن الرحيم</h1>
+        <h1>جمهورية مصر العربية</h1>
+        <h1>الجمعية التأسيسية لوضع مشروع الدستور</h1>
+        <h1>{{ topic.name }}</h1>
+        <h5>بتاريخ 15/5/2012</h5>
 		{% for article in articles %}
-            <h2 class="article-title">{{article.header.name}}</h2>
+            <h2>{{article.header.name}}</h2>
             <p>{{article.summary}}</p>
         {% endfor %} 
         
