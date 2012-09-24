@@ -16,19 +16,28 @@ from core.models import Feedback, Rating, Topic
 from core.models import Info, ArticleRating
 from core.views import login
 
-#from wkhtmltopdf import render_to_pdf
-
+import time
+from datetime import datetime
 from operator import attrgetter
 from sharek import settings
 
+def topic_pdf(request, topic_slug=None):
+    user = None
 
+    login(request)
 
-def pdf(request):
-    template = loader.get_template('reports/template.html')
-    context = Context({'msg':'Haitham Testing sample PDF creation'})
+    if request.user.is_authenticated():
+      user = request.user
+
+    if topic_slug:
+        topic = get_object_or_404( Topic, slug=topic_slug )
+        all_articles = topic.get_articles()
+
+    template = loader.get_template('reports/topic_template.html')
+    context = Context({'all_articles':all_articles})
     rendered = template.render(context)
 
-    full_temp_html_file_name = core.__path__[0] + '/static/temp_template.html'
+    full_temp_html_file_name = core.__path__[0] + '/static/temp/topic_template_' + time.strptime(datetime.now(), "%m%d%Y_%H%M%S") + '.html'
     file= open(full_temp_html_file_name, 'w')
     file.write(rendered.encode('utf8'))
     file.close( )
