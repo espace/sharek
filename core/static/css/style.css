@@ -2073,3 +2073,6 @@ span.divider{
 	z-index: 1;
 	text-align: center;
 }
+.no-mada .mada-title {
+    margin-top: 0;
+}
