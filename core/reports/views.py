@@ -19,7 +19,7 @@ from core.views import login
 from operator import attrgetter
 from sharek import settings
 
-def topic_pdf(request):
+def topic_pdf(request, topic_slug=None):
     user = None
 
     login(request)
