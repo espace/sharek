@@ -44,13 +44,12 @@ def topic_pdf(request, topic_slug=None):
     file.write(rendered.encode('utf8'))
     file.close( )
 
+    '''
     command_args = 'wkhtmltopdf ' + full_temp_html_file_name + ' -'
     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     pdf_contents = popen.stdout.read()
     popen.terminate()
     popen.wait()
-
-    print(pdf_contents)
 	
     #If you want to send email (Better use Thread)
     #email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
@@ -60,7 +59,7 @@ def topic_pdf(request, topic_slug=None):
     response = HttpResponse(pdf_contents, mimetype='application/pdf')
     response['Content-Disposition'] = 'filename=Sample.pdf'
     return response
-
+    '''
 
 
 def export_feedback(request, article_slug):
