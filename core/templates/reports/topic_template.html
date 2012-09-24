@@ -1,3 +1,10 @@
-{% for article in all_articles %}
-	{{article.header.name}}<br />{{article.summary}}<br />
-{% endfor %} 
+<html>
+	<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    </head>
+    <body>
+		{% for article in all_articles %}
+            {{article.header.name}}<br />{{article.summary}}<br />
+        {% endfor %} 
+    </body>
+</html>
