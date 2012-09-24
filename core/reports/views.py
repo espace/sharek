@@ -33,7 +33,7 @@ def pdf(request):
     file.write(rendered.encode('utf8'))
     file.close( )
 
-    command_args = 'wkhtmltopdf http://dostour.eg/sharek/ /usr/local/dostor-masr/current/core/static/test.pdf'
+    command_args = 'wkhtmltopdf http://dostour.eg/sharek/'
     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     pdf_contents = popen.stdout.read( )
     popen.wait()
