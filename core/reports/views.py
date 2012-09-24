@@ -16,30 +16,40 @@ from core.models import Feedback, Rating, Topic
 from core.models import Info, ArticleRating
 from core.views import login
 
-#from wkhtmltopdf import render_to_pdf
-
+import time
+from datetime import datetime
 from operator import attrgetter
 from sharek import settings
 
+def topic_pdf(request, topic_slug=None):
+    user = None
 
+    login(request)
 
-def pdf(request):
-    template = loader.get_template('reports/template.html')
-    context = Context({'msg':'Haitham Testing sample PDF creation'})
+    if request.user.is_authenticated():
+      user = request.user
+
+    if topic_slug:
+        topic = get_object_or_404( Topic, slug=topic_slug )
+        all_articles = topic.get_articles()
+
+    template = loader.get_template('reports/topic_template.html')
+    context = Context({'all_articles':all_articles})
     rendered = template.render(context)
 
-    full_temp_html_file_name = core.__path__[0] + '/static/temp_template.html'
+    dt_obj = datetime.now()
+    date_str = dt_obj.strftime("%Y%m%d_%H%M%S")
+    full_temp_html_file_name = core.__path__[0] + '/static/temp/topic_template_' + date_str + '.html'
     file= open(full_temp_html_file_name, 'w')
     file.write(rendered.encode('utf8'))
     file.close( )
 
+    '''
     command_args = 'wkhtmltopdf ' + full_temp_html_file_name + ' -'
     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     pdf_contents = popen.stdout.read()
     popen.terminate()
     popen.wait()
-
-    print(pdf_contents)
 	
     #If you want to send email (Better use Thread)
     #email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
@@ -49,7 +59,7 @@ def pdf(request):
     response = HttpResponse(pdf_contents, mimetype='application/pdf')
     response['Content-Disposition'] = 'filename=Sample.pdf'
     return response
-
+    '''
 
 
 def export_feedback(request, article_slug):

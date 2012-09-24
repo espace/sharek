@@ -3,6 +3,7 @@
 *.db
 .DS_Store
 .coverage
+core/static/temp/
 core/static/photos/
 core/static/photos/profile/
 sharek/settings_local.py
