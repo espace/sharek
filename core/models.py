@@ -197,6 +197,8 @@ class Feedback(models.Model):
     order = models.IntegerField(default=0)
     user = models.CharField(max_length=200,default='')
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
 
     def get_children(self):
         inactive_users = User.get_inactive
