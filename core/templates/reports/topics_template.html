@@ -28,20 +28,24 @@
         </style>
     </head>
     <body>
+    
     	<h1>بسم الله الرحمن الرحيم</h1>
         <h1>جمهورية مصر العربية</h1>
         <h1>الجمعية التأسيسية لوضع مشروع الدستور</h1>
+        
         <h1>{{ topic.name }}</h1>
         <h5>{{ date_display }}</h5>
         
         
 		{% for topic in topics %}
-        	<br><br><br><br>
-        	<h1>{{ topic.name }}</h1>
-            {% for article in topic.get_articles %}
-                <h2>{{article.header.name}}</h2>
-                <p>{{article.summary}}</p>
-            {% endfor %}
+        	{% if topic.get_articles %}
+                <br><br><br><br>
+                <h1>{{ topic.name }}</h1>
+                {% for article in topic.get_articles %}
+                    <h2>{{article.header.name}}</h2>
+                    <p>{{article.summary}}</p>
+                {% endfor %}
+            {% endif %}
         {% endfor %} 
         
     </body>

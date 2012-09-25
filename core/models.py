@@ -113,6 +113,9 @@ class ArticleHeader(models.Model):
     name = models.CharField(max_length=40)
     order = models.IntegerField(blank = True, null = True)
 
+    def __unicode__(self):
+        return self.name
+
     def clean(self):
         if len(self.name) >= 40:
             raise exceptions.ValidationError('Too many characters ...')

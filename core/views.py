@@ -458,31 +458,35 @@ def article_vote(request):
             article =  request.POST.get("article")
             user =  request.user
 
-            record = ArticleRating.objects.filter(articledetails_id = article, user = user )
-
             vote = False
-            action = 'برفض '
 			
             if request.POST.get("type") == "1" :
               vote = True
-              action = 'بالموافقة على '
+
+            art = ArticleDetails.objects.get(id = article)
+
+            p = art.likes
+            n = art.dislikes
+
+            record = ArticleRating.objects.filter(articledetails_id = article, user = user )
             
             if record:
+                if record[0].vote != vote:
+                    if vote == True:
+                      p += 1
+                      n -= 1
+                    else:
+                      n += 1
+                      p -= 1
                 record[0].vote = vote
                 record[0].save()
             else:
                 ArticleRating(user = user, vote = vote,articledetails_id = article).save()
-            
-            votes = ArticleRating.objects.filter(articledetails_id = article)
-            p = 0
-            n = 0
-            for v in votes:
-              if v.vote == True:
-                p += 1
-              else:
-                n += 1
+                if vote == True:
+                  p += 1
+                else:
+                  n += 1
 
-            art = ArticleDetails.objects.get(id = article)
             art.likes = p
             art.dislikes = n
             art.save()
