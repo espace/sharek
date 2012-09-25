@@ -1,4 +1,4 @@
-import sys
+﻿import sys
 import os
 import core
 import os.path
@@ -39,7 +39,6 @@ def comments_pdf(request, article_slug=None):
     comments = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
 
     dt_obj = datetime.now()
-    date_str = dt_obj.strftime("%Y%m%d_%H%M%S")
     date_display = dt_obj.strftime("%Y-%m-%d")
 
     context = Context({'article':article, 'comments':comments, 'date_display': date_display})
@@ -50,27 +49,7 @@ def comments_pdf(request, article_slug=None):
         return render_to_response('reports/comments_template.html', context ,RequestContext(request))
 
     else:
-		template = loader.get_template('reports/comments_template.html')
-		rendered = template.render(context)
-		full_temp_html_file_name = core.__path__[0] + '/static/temp/comments_template_' + date_str + '.html'
-		file= open(full_temp_html_file_name, 'w')
-		file.write(rendered.encode('utf8'))
-		file.close( )
-	
-		command_args = 'wkhtmltopdf ' + full_temp_html_file_name + ' -'
-		popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		pdf_contents = popen.stdout.read()
-		popen.terminate()
-		popen.wait()
-		
-		#If you want to send email (Better use Thread)
-		#email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
-		#email.attach('sample.pdf', pdf_contents, 'application/pdf')
-		#email.send()
-			
-		response = HttpResponse(pdf_contents, mimetype='application/pdf')
-		response['Content-Disposition'] = 'filename=Sample.pdf'
-		return response
+        return render_to_pdf('reports/comments_template.html', 'comments_template_', context, 'article_' + article.slug)
 
 def topics_pdf(request):
     user = None
@@ -94,27 +73,7 @@ def topics_pdf(request):
         return render_to_response('reports/topics_template.html', context ,RequestContext(request))
 
     else:
-		template = loader.get_template('reports/topics_template.html')
-		rendered = template.render(context)
-		full_temp_html_file_name = core.__path__[0] + '/static/temp/topics_template_' + date_str + '.html'
-		file= open(full_temp_html_file_name, 'w')
-		file.write(rendered.encode('utf8'))
-		file.close( )
-	
-		command_args = 'wkhtmltopdf ' + full_temp_html_file_name + ' -'
-		popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		pdf_contents = popen.stdout.read()
-		popen.terminate()
-		popen.wait()
-		
-		#If you want to send email (Better use Thread)
-		#email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
-		#email.attach('sample.pdf', pdf_contents, 'application/pdf')
-		#email.send()
-			
-		response = HttpResponse(pdf_contents, mimetype='application/pdf')
-		response['Content-Disposition'] = 'filename=Sample.pdf'
-		return response
+        return render_to_pdf('reports/topics_template.html', 'topics_template_', context, 'dostor_masr')
 
 def topic_pdf(request, topic_slug=None):
     user = None
@@ -140,27 +99,7 @@ def topic_pdf(request, topic_slug=None):
         return render_to_response('reports/topic_template.html', context ,RequestContext(request))
 
     else:
-		template = loader.get_template('reports/topic_template.html')
-		rendered = template.render(context)
-		full_temp_html_file_name = core.__path__[0] + '/static/temp/topic_template_' + date_str + '.html'
-		file= open(full_temp_html_file_name, 'w')
-		file.write(rendered.encode('utf8'))
-		file.close( )
-	
-		command_args = 'wkhtmltopdf ' + full_temp_html_file_name + ' -'
-		popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-		pdf_contents = popen.stdout.read()
-		popen.terminate()
-		popen.wait()
-		
-		#If you want to send email (Better use Thread)
-		#email = EmailMultiAlternatives("Sample PDF", "Please find the attached sample pdf.", "example@shivul.com", ["email@example.com",])
-		#email.attach('sample.pdf', pdf_contents, 'application/pdf')
-		#email.send()
-			
-		response = HttpResponse(pdf_contents, mimetype='application/pdf')
-		response['Content-Disposition'] = 'filename=Sample.pdf'
-		return response
+        return render_to_pdf('reports/topic_template.html', 'topic_template_', context, 'topic_' + topic.slug)
 
 def export_feedback(request, article_slug):
     
@@ -181,3 +120,27 @@ def export_feedback(request, article_slug):
 
     template_context = {'article':article, 'articles':articles, 'feedbacks':feedback}
     return render_to_response('reports/export_feedback.html', template_context ,RequestContext(request))
+
+def render_to_pdf(template_html, template_prefix, context, pdf_filename):
+
+     dt_obj = datetime.now()
+     date_str = dt_obj.strftime("%Y%m%d_%H%M%S")
+     date_display = dt_obj.strftime("%Y-%m-%d")
+
+     template = loader.get_template(template_html)
+     rendered = template.render(context)
+     full_temp_html_file_name = core.__path__[0] + '/static/temp/' + template_prefix + date_str + '.html'
+     file= open(full_temp_html_file_name, 'w')
+     file.write(rendered.encode('utf8'))
+     file.close( )
+
+     command_args = 'wkhtmltopdf ' + full_temp_html_file_name + ' -'
+     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+     pdf_contents = popen.stdout.read()
+     popen.terminate()
+     popen.wait()
+
+     response = HttpResponse(pdf_contents, mimetype='application/pdf')
+     response['Content-Disposition'] = 'filename=' + pdf_filename + '.pdf'
+     return response
+
