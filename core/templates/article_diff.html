@@ -12,7 +12,12 @@
 </div>
 
 <div class="row">
-  <div class="span12 history-records ">
+
+  <div class="span3">
+      {% include "include/sidebar.html" %}
+  </div><!-- span3 -->
+  
+  <div class="span9 history-records ">
     {% for article in versions %}
       <div class="well {% if article.current %}recent{% endif %}">
         <h3>
