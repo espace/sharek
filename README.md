@@ -43,6 +43,12 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine
     sudo apt-get install python-tz
 
     sudo easy_install humanize
+	
+	download django-sugar from https://github.com/acdha/django-sugar.git
+	cd django-sugar
+	python setup.py install
+	
+	
   ```
 
 ### Getting the app up
