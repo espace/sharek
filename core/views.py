@@ -201,7 +201,7 @@ def article_diff(request, article_slug):
 
         versions.append(article_info)
 
-    template_context = {'article': article, 'topics':topics, 'versions': versions, 'request':request, 'user':user,'settings': settings}
+    template_context = {'article': article, 'topics':topics, 'topic':article.header.topic, 'versions': versions, 'request':request, 'user':user,'settings': settings}
     return render_to_response('article_diff.html',template_context ,RequestContext(request))
 
 def article_detail(request, classified_by, class_slug, article_slug, order_by="def"):
