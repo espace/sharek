@@ -32,6 +32,9 @@
 	font-size: 22px;
 	min-width: 240px;
 }
+.headtitle.innerpage span {
+    margin-right: 0px;
+}
 
 /* inner pages fixes*/
 .sidebar .nav li a {
@@ -43,6 +46,15 @@
     padding: 20px 0;
 }
 
+.tags{
+    margin-top: 130px;
+}
+.content .tags{
+    margin-top: 0;
+}
+.headtitle select {
+    margin-top: 5px;
+}
 
 }/* Media close*/
 
@@ -73,8 +85,28 @@
     margin: 0;
 
 }
+.sidebar .nav li a {
+    line-height: 28px;
+    height: 30px;
+    padding: 10px 0 !important;
+}
+
+.tags{
+    margin-top: 20px;
+}
+
+.headtitle.innerpage span {
+    margin-right: 0px;
+}
+
+.headtitle select {
+    margin-left: 0px;
+}
+
 
 }/* Media close*/
+
+
 /* Landscape phones and down */
 @media (max-width: 480px) {
 /*body{background:orange }*/
@@ -115,12 +147,12 @@
     top: 15px;
 }
 .topic .like-group a{
-    font-size: 8px !important;
+    font-size: 9px !important;
     padding: 5px 25px 5px 5px;
 }
 .topic .like-group a:hover{
-    font-size: 8px !important ;
-    padding: 2px 25px 2px 5px !important ;
+    font-size: 9px !important ;
+    padding: 5px 25px 5px 5px !important ;
 }
 
 .comments-number {

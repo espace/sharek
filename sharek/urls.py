@@ -10,8 +10,10 @@ urlpatterns = patterns('',
 
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
-	#url(r'sharek/index/$', PDFTemplateView.as_view(template_name='reports/template.html',filename=core.__path__[0] + '/static/new_pdf.pdf'), name='pdf'),
-	url(r'sharek/pdf/$', 'core.reports.views.pdf', name='pdf'),
+	#Generate PDF
+    url(r'^sharek/pdf/topics/$', 'core.reports.views.topics_pdf', name='topics_pdf'),
+	url(r'^sharek/pdf/topic/(?P<topic_slug>[-\w]+)/$', 'core.reports.views.topic_pdf', name='topic_pdf'),
+	url(r'^sharek/pdf/comments/(?P<article_slug>[-\w]+)/$', 'core.reports.views.comments_pdf', name='comments_pdf'),
 	
     url(r'sharek/latest-comments/$', 'core.views.latest_comments', name='latest_comments'),
 	url(r'sharek/topic_next_articles/$', 'core.views.topic_next_articles', name='topic_next_articles'),

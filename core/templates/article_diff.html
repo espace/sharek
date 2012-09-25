@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}{{article.name}}{% endblock %}
+{% block title %}تعديلات {{article.header.name}}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -7,12 +7,23 @@
 </div>
 <div class="row">
 	<div class="span12">
-		<h1 class="headtitle"><span>تعديلات المادة 48</span></h1>
+        <div id="headtitle" class="headtitle offset3 visible-desktop">
+            <h1>تعديلات {{article.header.name}}</h1> 
+        </div>
+
+        <div id="headtitle" class="headtitle hidden-desktop">
+            <h1>تعديلات {{article.header.name}}</h1>
+        </div>
 	</div>
 </div>
 
 <div class="row">
-  <div class="span12 history-records ">
+
+  <div class="span3">
+      {% include "include/sidebar.html" %}
+  </div><!-- span3 -->
+  
+  <div class="span9 history-records ">
     {% for article in versions %}
       <div class="well {% if article.current %}recent{% endif %}">
         <h3>

@@ -1,0 +1,48 @@
+{% load date_format %}
+<html>
+	<head>
+    	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <style>
+		body {
+			direction: rtl;
+			text-align: right;
+			font: 12px tahoma;
+			line-height: 16px;
+		 }
+		 h1, h2 {
+			color: #111111;
+			font-size: 20px;
+			margin: 25px 0px 25px 0px;
+			direction: rtl;
+			text-align: center;
+		}
+		 
+		h2 {
+			font-size: 16px;
+			margin: 45px 0px 10px 0px;
+			text-align: right;
+		}
+		 
+		h5 {
+			text-align: center;
+		}
+        </style>
+    </head>
+    <body>
+        <h1>تعليقات "{{ article.header.name }}"</h1>
+        <h1>{{ article.header.topic.name }}</h1>
+        <h5>{{ date_display }}</h5>
+        
+        <h2>{{ article.header.name }}</h2>
+        <p>{{ article.summary }}</p>
+        
+        <br><br><hr>
+        
+        {% for comment in comments %}
+            <h2>{{ comment.name }}</h2>
+            <p>{{comment.suggestion}}</p>
+            <small>{{comment.date|format}}</small>
+        {% endfor %}
+        
+    </body>
+</html>

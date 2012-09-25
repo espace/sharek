@@ -21,10 +21,12 @@
       <div class="span6 progress-promo">
         <p>{{settings.new_domain}}هذا هو الموقع الرسمي للجمعية التأسيسية لوضع مشروع الدستور, والمواد المعلنة هنا هي الوحيدة المعتمدة من الجمعية وسيتم الأخذ بالملاحظات والمقترحات الموجودة هنا فقط ولا يوجد أي موقع آخر يمثل الجمعية.</p>
         <a href="{% url topics %}" class="btn btn-green">شارك برأيك فى الدستور!</a>
+        <br />
+        <a href="{% url topics_pdf %}" target="_blank" class="donload-pdf">تحميل المسودة الأولى من الدستور</a>
       </div>
       <div class="span6 map hidden-phone">
         <!-- <iframe width="460" height="230" src="http://www.youtube.com/embed/2ddxz5o_e18" frameborder="0" allowfullscreen></iframe> -->
-        <a href="{% url top_users_map %}"><img src="{{ STATIC_URL }}images/map.jpg" alt=""></a>
+        <a href="{% url top_users_map %}" ><img src="{{ STATIC_URL }}images/map.jpg" alt=""></a>
       </div>
     </div><!-- below header -->
   </div><!-- row -->
@@ -83,7 +85,7 @@
            </div>
 
            <div class="span4 most-argued">
-                <h1 class="headtitle small"><span><i class="icon-fire"></i>الأكثر مناقشة</span></h1> 
+                <div class="headtitle small"><span><i class="icon-fire"></i>الأكثر مناقشة</span></div> 
                 {% for article in top_commented %}
                 <dl>
                     <dt>
