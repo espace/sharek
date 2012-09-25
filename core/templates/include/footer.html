@@ -9,16 +9,7 @@
                         </li>
                         {% if user.is_staff %}
                           <li class="">
-                            <a href="{% url top_commented %}">الأكثر مناقشة</a>
-                          </li>
-                          <li class="">
-                            <a href="{% url top_disliked %}">الأكثر رفضا</a>
-                          </li>
-                          <li class="">
-                            <a href="{% url top_liked %}">الأكثر قبولا</a>
-                          </li>
-                          <li class="">
-                            <a href="{% url feedback_report article_slug=1 %}">تعليقات الزوار</a>
+                            <a href="{% url top_liked %}">الإحصائيات</a>
                           </li>
                         {% endif %}
                         <li class="">
