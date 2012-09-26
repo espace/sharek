@@ -556,7 +556,7 @@ def search(request):
         return HttpResponseRedirect(reverse('index'))
 
     arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-
+    arts = sorted(arts,  key=attrgetter('header.topic.id','header.order','id'))
     voted_articles = ArticleRating.objects.filter(user = user)
 
     count = len(arts)
@@ -580,7 +580,8 @@ def ajx_search(request):
         query = request.GET.get("q")
 
         articles = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-
+        articles =  sorted(articles,  key=attrgetter('header.topic.id','header.order','id'))
+        
         paginator = Paginator(articles, settings.paginator)
         try:
             articles = paginator.page(page)
