@@ -9,6 +9,7 @@ from django.db.models import Count
 from django.db.models.signals import post_save
 from django.db.models.aggregates import Max
 from core.actions import exclusive_boolean_fields
+#from mptt.models import MPTTModel , TreeForeignKey
 
 @classmethod
 def get_inactive(self):
@@ -20,7 +21,14 @@ def get_inactive(self):
     return inactive
 
 User.add_to_class('get_inactive', get_inactive)
-
+'''
+class temp(MPTTModel):
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+    name = models.CharField(max_length=100)
+    
+    class MPTTMeta:
+        order_insertion_by = ['name']
+'''
 class Tag(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
@@ -63,6 +71,7 @@ class Tag(models.Model):
        ordering = ["order"]
 
 class Topic(models.Model):
+    #parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
@@ -209,7 +218,6 @@ class Rating(models.Model):
     feedback = models.ForeignKey(Feedback)
     user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()
-
 
 class ArticleRating(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
