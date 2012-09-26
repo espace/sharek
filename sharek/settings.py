@@ -122,7 +122,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	'sugar.middleware.speedtracer.SpeedTracerMiddleware',
+	#'sugar.middleware.speedtracer.SpeedTracerMiddleware',
 )
 
 ROOT_URLCONF = 'sharek.urls'
