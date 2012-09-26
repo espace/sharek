@@ -571,13 +571,24 @@ def search(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         arts = paginator.page(paginator.num_pages)
-    if len(arts) == 0:
-        done = True
-    else:
-        done = False
-    if request.GET.get('pagination'):
-        return render_to_response('include/next_articles.html',{"articles":arts,"query":query.strip(),'done':done},RequestContext(request))
+
     return render_to_response('search.html',{'voted_articles':voted_articles, 'search':search,'request':request,'user':user,"articles":arts,'settings': settings,"query":query.strip(),"count":count},RequestContext(request))
+
+def ajx_search(request):
+    if request.method == 'GET':
+        page =  request.GET.get("page")
+        query = request.GET.get("q")
+
+        articles = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
+
+        paginator = Paginator(articles, settings.paginator)
+        try:
+            articles = paginator.page(page)
+            return render_to_response('include/next_articles.html',{'articles':articles} ,RequestContext(request))
+        except PageNotAnInteger:
+            return HttpResponse('')
+        except EmptyPage:
+            return HttpResponse('')
 
 def info_detail(request, info_slug):
     user = None
