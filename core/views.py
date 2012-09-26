@@ -30,6 +30,7 @@ import random
 import urllib2
 import core
 import os.path
+from operator import attrgetter
 
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
@@ -581,7 +582,7 @@ def ajx_search(request):
 
         articles = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
         articles =  sorted(articles,  key=attrgetter('header.topic.id','header.order','id'))
-        
+
         paginator = Paginator(articles, settings.paginator)
         try:
             articles = paginator.page(page)
