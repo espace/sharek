@@ -134,7 +134,7 @@ def render_to_pdf(template_html, template_prefix, context, pdf_filename):
      file.write(rendered.encode('utf8'))
      file.close( )
 
-     command_args = 'wkhtmltopdf -L 10 -R 10 -T 20 -B 20 --footer-html ' + core.__path__[0] + '/static/footer.html ' + full_temp_html_file_name + ' -'
+     command_args = 'wkhtmltopdf -L 10 -R 10 -T 20 -B 20 --footer-spacing 20 --footer-html ' + core.__path__[0] + '/static/footer.html ' + full_temp_html_file_name + ' -'
      popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
      pdf_contents = popen.stdout.read()
      popen.terminate()
