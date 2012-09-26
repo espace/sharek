@@ -122,6 +122,9 @@ class ArticleHeader(models.Model):
     name = models.CharField(max_length=40)
     order = models.IntegerField(blank = True, null = True)
 
+    def __unicode__(self):
+        return self.name
+
     def clean(self):
         if len(self.name) >= 40:
             raise exceptions.ValidationError('Too many characters ...')
@@ -203,6 +206,8 @@ class Feedback(models.Model):
     order = models.IntegerField(default=0)
     user = models.CharField(max_length=200,default='')
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
 
     def get_children(self):
         inactive_users = User.get_inactive

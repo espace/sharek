@@ -471,6 +471,19 @@ left: 1px;
         .home-sections .nav li:hover .regulatory-bodies{
             background-position: -19px -715px ;
         }
+.home-sections .local-councils{
+    background-position: -270px -1112px ;
+}
+        .home-sections .nav li:hover .local-councils{
+            background-position: -18px -1112px ;
+        }
+
+.home-sections .transitional-subject{
+    background-position: -270px -890px ;
+}
+        .home-sections .nav li:hover .transitional-subject{
+            background-position: -18px -890px ;
+        }
 
 .edit-date,
 .edit-date-article {
@@ -596,6 +609,21 @@ background-position: -142px -9px !important;
         .sidebar .nav li.active .regulatory-bodies{
             background-position: -1px -387px ;
         }
+
+.sidebar .local-councils{
+    background-position: -142px -593px ;
+}
+        .sidebar .nav li.active .local-councils{
+            background-position: -1px -593px ;
+        }
+
+.sidebar .transitional-subject{
+    background-position: -142px -492px ;
+}
+        .sidebar .nav li.active .transitional-subject{
+            background-position: -1px -492px ;
+        }
+
 .sidebar .sidebar-icon.chapter{
     background: url("../images/sidebar.png") 0 -102px no-repeat;
        height: 50px;
@@ -930,7 +958,7 @@ background-position: -142px -9px !important;
     margin-right: 10px;
 	font-size: 11px;
 	font-weight: normal;
-	line-height: 5px;
+    line-height: 18px;
 }
 .updates   dd p{
     display: inline !important;
