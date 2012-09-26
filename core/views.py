@@ -571,7 +571,12 @@ def search(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         arts = paginator.page(paginator.num_pages)
-
+    if len(arts) == 0:
+        done = True
+    else:
+        done = False
+    if request.GET.get('pagination'):
+        return render_to_response('include/next_articles.html',{"articles":arts,"query":query.strip(),'done':done},RequestContext(request))
     return render_to_response('search.html',{'voted_articles':voted_articles, 'search':search,'request':request,'user':user,"articles":arts,'settings': settings,"query":query.strip(),"count":count},RequestContext(request))
 
 def info_detail(request, info_slug):

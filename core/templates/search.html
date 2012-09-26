@@ -45,10 +45,11 @@
                 'q': "{{query}}",
                 'page': ++page,
                 'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
+                'pagination': true,
             dataType:"html",
             error:function(data){},
             success:function(data){
-              if (data != "") {
+              if (data.done == 0) {
                   $(".article-block:last").after(data);
                   setTimeout(function(){ fetching = false; },300);
                   $('div#last_articles_loader').empty();
