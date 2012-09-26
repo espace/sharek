@@ -1,0 +1,20 @@
+<html>
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<script type="text/javascript">
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth()+1; //January is 0!
+			
+			var yyyy = today.getFullYear();
+			if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = mm+'/'+dd+'/'+yyyy;
+        </script>
+    </head>
+    
+    <body>
+    	<center>
+            <small>الجمعية التأسيسية لوضع مشروع الدستور - تاريخ النسخة: <script type="text/javascript">document.write(today);</script></small>
+        </center>
+    </body>
+    
+</html>
