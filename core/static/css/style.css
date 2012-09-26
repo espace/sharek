@@ -871,6 +871,7 @@ background-position: -142px -9px !important;
     top: 0px;
     right: 140px;
     position: absolute;
+	width: 165px;
 }
 .topic span.new{
     color: #fff;
