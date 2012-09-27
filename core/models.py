@@ -9,7 +9,7 @@ from django.db.models import Count
 from django.db.models.signals import post_save
 from django.db.models.aggregates import Max
 from core.actions import exclusive_boolean_fields
-#from mptt.models import MPTTModel , TreeForeignKey
+from mptt.models import MPTTModel , TreeForeignKey
 
 @classmethod
 def get_inactive(self):
@@ -21,14 +21,17 @@ def get_inactive(self):
     return inactive
 
 User.add_to_class('get_inactive', get_inactive)
-'''
-class temp(MPTTModel):
+
+class Temp(MPTTModel):
     parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
     name = models.CharField(max_length=100)
     
+    def __unicode__(self):
+        return self.name
+        
     class MPTTMeta:
         order_insertion_by = ['name']
-'''
+
 class Tag(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
@@ -86,7 +89,6 @@ class Topic(models.Model):
         return self.slug
     
     def get_articles(self):
-        # the new tech of article " header and details "
         article_headers = self.articleheader_set.all().order_by('order')
         article_details = []
         for article_header in article_headers:
@@ -106,7 +108,7 @@ class Topic(models.Model):
         return article_details
 
     def articles_count(self):
-       return len(self.get_articles())
+       return len(self.articleheader_set.filter(canceled=False))
    
     def get_mod_date(self):
         articles = self.get_articles()
@@ -117,13 +119,11 @@ class Topic(models.Model):
        ordering = ["order"]
        
 class ArticleHeader(models.Model):
+    canceled = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)
     name = models.CharField(max_length=40)
     order = models.IntegerField(blank = True, null = True)
-
-    def __unicode__(self):
-        return self.name
 
     def clean(self):
         if len(self.name) >= 40:
@@ -206,8 +206,6 @@ class Feedback(models.Model):
     order = models.IntegerField(default=0)
     user = models.CharField(max_length=200,default='')
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
-    likes = models.IntegerField(default=0)
-    dislikes = models.IntegerField(default=0)
 
     def get_children(self):
         inactive_users = User.get_inactive
