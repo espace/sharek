@@ -13,11 +13,11 @@
 
 
 @font-face {
-    font-family: ''Droid Arabic Kufi'';
+    font-family: 'GESSTwoMediumRegular';
     src: url('../fonts/gess-med.eot');
     src: url('../fonts/gess-med.eot?#iefix') format('embedded-opentype'),
          url('../fonts/gess-med.ttf') format('truetype'),
-         url('../fonts/gess-med.svg#'Droid Arabic Kufi'') format('svg');
+         url('../fonts/gess-med.svg#GESSTwoMediumRegular') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -75,7 +75,7 @@ body {
     clear: right;
 }
 .intro-text{
-    font: 20px 'Droid Arabic Kufi';
+    font: 20px GESSTwoMediumRegular;
     margin: 80px 0 0 0;
 }
 
@@ -134,8 +134,8 @@ body {
     font-size: 11px;
     height: 15px;
     text-decoration: none;
-    padding: 8px;
-    font: 12px 'Droid Arabic Kufi';
+    padding: 11px 8px;
+    font: 12px GESSTwoMediumRegular;
     padding-right:10px !important;
     border-radius: 0;
 }
@@ -149,7 +149,7 @@ body {
 }
 .footer-nav ul li{
     margin: 10px 2px 5px !important;
-    font: 12px 'Droid Arabic Kufi';
+    font: 12px GESSTwoMediumRegular;
 	float: left;
 }
 .footer-nav ul li a{
@@ -176,17 +176,17 @@ body {
     margin-top: 20px;
 }
 .progress-promo p{
-    font: bold 20px 'Droid Arabic Kufi';
+    font: 16px GESSTwoMediumRegular;
     color: #474747;
-    line-height: 34px;
+    line-height: 36px;
     text-shadow: 1px 1px 1px #FFFFFF;
 }
 .progress-promo a.btn{
-    font: bold 14px 'Droid Arabic Kufi' !important;
+    font: 20px GESSTwoMediumRegular;
 	margin-top: 20px;
 }
 .progress-promo p strong{
-    font: bold 12px 'Droid Arabic Kufi';
+    font: 12px GESSTwoBoldRegular;
     color: #a11212;
 }
 .progress-promo .progress{
@@ -199,7 +199,7 @@ body {
 }
 
 .progress-promo .comments-till-now{
-font: 14px 'Droid Arabic Kufi';
+font: 14px GESSTwoMediumRegular;
 color: #fff;
 top: 15px;
 right: 20%;
@@ -234,7 +234,7 @@ left: 70px;
 
 
 .progress-promo .comments-will-be{
-font: 12px 'Droid Arabic Kufi';
+font: 12px GESSTwoMediumRegular;
 color: #fff;
 top: 15px;
 left: 10px;
@@ -272,13 +272,13 @@ left: 1px;
 }
 
 .map img{
-    margin-right: 0px;
+    margin-right: 40px;
 }
 .bar{
     text-align: center;
     font-weight: bold;
     color: #003300 !important;
-    font: 16px 'Droid Arabic Kufi' !important;
+    font: 16px GESSTwoMediumRegular !important;
 }
 
 .progress-promo .well{
@@ -286,20 +286,19 @@ left: 1px;
     padding: 0 10px !important;
 }
 .top-members{
-	margin-top: 30px;
     margin-bottom: 40px;
     display: block;
     overflow: hidden;
 }
 .top-members h4{
     text-align: center;
-    font: 20px 'Droid Arabic Kufi' ;
-    margin-top: 0px;
+    font: 20px GESSTwoMediumRegular ;
+    margin-top: 35px;
 	margin-bottom: 15px;
     color: #222;
 }
 .top-members h4 i{
-    margin-top: 14px;
+    margin-top: 5px;
 }
 .top-members ul{
     margin: 0;
@@ -317,16 +316,16 @@ left: 1px;
 }
 .mosharakat_number{
     text-align: center;
-    font: bold 50px 'Droid Arabic Kufi' !important;
+    font: 60px/50px GESSTwoMediumRegular !important;
     color: #a11212;
     margin-top: 15px;
     margin-bottom: 0px;
 	text-shadow: 1px 1px 1px #FFF;
-	line-height: 60px !important;
+
 }
 .mosharakat_number span{
     text-align: center;
-    font: 12px 'Droid Arabic Kufi' !important;
+    font: 12px GESSTwoMediumRegular !important;
     color: #666 !important;
     margin-top: 0px;
     display: block;
@@ -341,7 +340,7 @@ left: 1px;
     left: -218px;
     width: 150px;
     text-align: center;
-    font: 20px 'Droid Arabic Kufi' !important;
+    font: 20px GESSTwoMediumRegular !important;
     color: #999;
 }
 .circleText p.sec {
@@ -359,7 +358,7 @@ left: 1px;
 }
 .circleText p strong{
     color: #a11212;
-    font: 40px 'Droid Arabic Kufi' !important;
+    font: 40px GESSTwoMediumRegular !important;
 
 }
  */
@@ -394,10 +393,10 @@ left: 1px;
     text-align: right;
     padding: 10px 0 0 0 ;
     margin-bottom: 40px;
-    font-size: 12px;
-    font-weight: bold;
+    font-size: 14px;
+    font-weight: 400;
     color: #333 !important;
-    font-family: 'Droid Arabic Kufi';
+    font-family: GESSTwoMediumRegular;
     line-height: 30px;
     -webkit-border-radius: 0 !important;
        -moz-border-radius: 0 !important;
@@ -468,7 +467,7 @@ left: 1px;
 .edit-date,
 .edit-date-article {
     float: right;
-    font: 10px 'Droid Arabic Kufi';
+    font-size: 10px;
     color: #999;
     width: 100%;
     margin-right: 87px;
@@ -478,11 +477,12 @@ left: 1px;
 	margin-right: 0px;
 	margin-bottom: 10px;
 	width: auto;
-	font-family: 'Droid Arabic Kufi';
 }
 
 .edit-date strong{
-    font:11px Tahoma;
+    color: #444;
+    font:11px GESSTwoMediumRegular;
+    letter-spacing: 2px;
     font-weight: normal;
 
 }
@@ -538,10 +538,11 @@ left: 1px;
 
 .sidebar .nav li a{
     height: 40px;
-    padding: 15px 0 ;
+    padding: 15px 0  ;
+    font-size: 14px;
     color: #b8babb !important;
     line-height: 18px;
-    font: bold 12px 'Droid Arabic Kufi';
+    font-family: GESSTwoMediumRegular;
     -webkit-border-radius:0 !important;
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;
@@ -710,7 +711,7 @@ background-position: -142px -9px !important;
 .headsubtitle a{
     color: #111;
     /*display: block;*/
-    font: bold 26px 'Droid Arabic Kufi',"Trebuchet MS",Arial,Helvetica,sans-serif;
+    font: bold 26px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
 /*  margin-top: 30px;
 */    margin-bottom: 0px;
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
@@ -778,13 +779,15 @@ background-position: -142px -9px !important;
     margin-top: 32px;
 }
 .download-pdf{
-   background: url("../images/pdf.png") right 0 no-repeat ;
-   padding-right: 20px;
+    background: url(http://cdn1.iconfinder.com/data/icons/Momentum_MatteEntireSet/16/pdf.png) right 0 no-repeat ;
+    padding-right: 20px;
    float: right;
-   font: normal 12px Tahoma !important;
+   font-size: 12px !important;
    text-shadow:0 0 0 !important;
    margin-top: 15px;
    color: #0088CC !important;
+   font-family: tahoma,Geneva !important;
+   font-weight: normal !important; 
 
 }
 
@@ -824,13 +827,9 @@ background-position: -142px -9px !important;
     margin-left: 15px;
     border-radius: 5px;
 }
-.topic-paging {
-    margin: 0 20px 0 35px;
-}
 .topic-paging li{
     list-style-type: none;
     margin: 5px 0;
-	font: 14px 'Droid Arabic Kufi';
 }
 .topic-paging li.prev{
     float: right;
@@ -840,7 +839,7 @@ background-position: -142px -9px !important;
 }
 .mada-title{
     color:#000;
-    font-size: 20px;
+    font-size: 24px;
     font-family: 'Droid Arabic Kufi';
 }
 .mada-title a{
@@ -851,13 +850,14 @@ background-position: -142px -9px !important;
     top: 0px;
     right: 140px;
     position: absolute;
-	width: 180px;
-	font: 10px 'Droid Arabic Kufi';
+	width: 165px;
 }
 .topic span.new{
     color: #fff;
     padding:0 10px;
     background:#BA4242;
+    font-size: 9px;
+    font-family: tahoma;
 	margin-left: 3px;
     line-height: 18px;
     float: right;
@@ -866,8 +866,10 @@ background-position: -142px -9px !important;
 
 .topic .old{
     color: #333;
-    background:#DDD;
     padding:0 10px;
+    background:#DDD;
+    font-size: 9px;
+    font-family: tahoma;
     margin-left: 3px;
     line-height: 18px;
     float: right;
@@ -894,7 +896,7 @@ background-position: -142px -9px !important;
     margin-top: 20px;
 }
 .tags{
-    font-family: 'Droid Arabic Kufi';
+    font-family: GESSTwoMediumRegular;
     margin-top: 20px;
 
 }
@@ -955,7 +957,7 @@ background-position: -142px -9px !important;
      background:url(../images/thumb-up.png) no-repeat right 9px;
      color: #007939;
      text-shadow:0 0 1px #79af01;
-     font-weight: bold;
+     font-weight: normal;
 }
 .most-liked .headtitle span{
      padding-right: 30px;
@@ -969,7 +971,7 @@ background-position: -142px -9px !important;
     /*padding-right: 25px;*/
     font-size: 11px;
     color: #999;
-    font-family: 'Droid Arabic Kufi';
+    font-family: GESSTwoMediumRegular;
     text-align: left;
     font-weight: normal;
 	padding-right: 25px;
@@ -1008,7 +1010,7 @@ background-position: -142px -9px !important;
     padding-right: 25px;
     font-size: 12px;
     color: #999;
-    font-family: 'Droid Arabic Kufi';
+    font-family: GESSTwoMediumRegular;
     text-align: left;
 
 }
@@ -1030,7 +1032,7 @@ background-position: -142px -9px !important;
      /*background:url(../images/thumb-up.png) no-repeat right 9px;*/
      color: #333;
      text-shadow:0 0 1px #333;
-          font-weight: bold;
+          font-weight: normal;
 }
 .most-argued .headtitle .icon-fire{
 
@@ -1049,7 +1051,7 @@ background-position: -142px -9px !important;
     padding-right: 25px;*/
     font-size: 11px;
     color: #999;
-    font-family: 'Droid Arabic Kufi';
+    font-family: GESSTwoMediumRegular;
     text-align: left;
     min-width: 30px;
     width: auto;
@@ -1312,7 +1314,7 @@ span.divider{
 }
 
 .comment-entry .btn-danger{
-    font-family: 'Droid Arabic Kufi';
+    font-family: GESSTwoMediumRegular;
     font-size: 14px;
 }
 .top{
@@ -1341,7 +1343,8 @@ span.divider{
     cursor: default;
 }
 .comment-entry.not-logged{
-    font: bold 14px 'Droid Arabic Kufi';
+    font-family: GESSTwoMediumRegular;
+    font-size: 14px;
     padding-top: 10px
 
 }
@@ -1736,15 +1739,16 @@ span.divider{
     min-width: auto;
     height: 12px;
     text-align: center;
+    font-size: 11px;
     text-indent: 1px;
     color: rgba(0,0,0,1);
     opacity: 0.5;
     margin-right: 5px;
-    font: 11px 'Droid Arabic Kufi'
+
 
 }
 .delete-group .icon-comment ,.delete-group .icon-plus{
-    margin: 4px 5px;
+    margin: auto 5px;
 }
 
 .delete-group a:hover{
@@ -1912,7 +1916,7 @@ span.divider{
     float: left; 
     font-size: 12px;
     color: #999;
-    font-family: 'Droid Arabic Kufi';
+    font-family: GESSTwoMediumRegular;
     font-weight: normal;
     text-align: left;
     min-width: 30px;
@@ -1941,7 +1945,7 @@ span.divider{
 }
 .map-container .top-members h4{
     text-align: center;
-    font: 25px 'Droid Arabic Kufi' ;
+    font: 25px GESSTwoMediumRegular ;
 	font-weight: bold;
     margin-top: 35px;
     margin-bottom: 15px;
@@ -2050,7 +2054,7 @@ span.divider{
 .footer .copyrights{
     margin: 20px 0;
     color: #bbb;
-    font: 12px 'Droid Arabic Kufi';
+    font: 12px GESSTwoMediumRegular;
 }
 
 .footer .socials{
@@ -2086,7 +2090,7 @@ span.divider{
 	display:none;
 	color:#777;
 	border-radius: 7px;
-	font: 12px 'Droid Arabic Kufi';
+	font: 12px GESSTwoMediumRegular;
 }
 
 #loading-image {
