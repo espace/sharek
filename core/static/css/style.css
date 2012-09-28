@@ -286,7 +286,7 @@ left: 1px;
     padding: 0 10px !important;
 }
 .top-members{
-	margin-top: 20px;
+	margin-top: 30px;
     margin-bottom: 40px;
     display: block;
     overflow: hidden;
@@ -322,7 +322,7 @@ left: 1px;
     margin-top: 15px;
     margin-bottom: 0px;
 	text-shadow: 1px 1px 1px #FFF;
-	line-height: 70px !important;
+	line-height: 60px !important;
 }
 .mosharakat_number span{
     text-align: center;
@@ -538,11 +538,10 @@ left: 1px;
 
 .sidebar .nav li a{
     height: 40px;
-    padding: 15px 0  ;
-    font-size: 14px;
+    padding: 15px 0 ;
     color: #b8babb !important;
     line-height: 18px;
-    font-family: 'Droid Arabic Kufi';
+    font: bold 12 'Droid Arabic Kufi';
     -webkit-border-radius:0 !important;
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;
