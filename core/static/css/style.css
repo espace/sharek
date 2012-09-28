@@ -393,8 +393,8 @@ left: 1px;
     text-align: right;
     padding: 10px 0 0 0 ;
     margin-bottom: 40px;
-    font-size: 14px;
-    font-weight: 400;
+    font-size: 12px;
+    font-weight: bold;
     color: #333 !important;
     font-family: 'Droid Arabic Kufi';
     line-height: 30px;
@@ -467,7 +467,7 @@ left: 1px;
 .edit-date,
 .edit-date-article {
     float: right;
-    font-size: 10px;
+    font: 10px 'Droid Arabic Kufi';
     color: #999;
     width: 100%;
     margin-right: 87px;
@@ -481,9 +481,7 @@ left: 1px;
 }
 
 .edit-date strong{
-    color: #444;
-    font:11px 'Droid Arabic Kufi';
-    letter-spacing: 2px;
+    font:11px Tahoma;
     font-weight: normal;
 
 }
