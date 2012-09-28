@@ -272,7 +272,7 @@ left: 1px;
 }
 
 .map img{
-    margin-right: 40px;
+    margin-right: 0px;
 }
 .bar{
     text-align: center;
@@ -737,7 +737,7 @@ background-position: -142px -9px !important;
 }
 .headsubtitle,
 .headsubtitle a{
-    font: bold 25px 'Droid Arabic Kufi',"Trebuchet MS",Arial,Helvetica,sans-serif;
+    font: bold 25px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
 }
 
 .headtitle a,
@@ -840,7 +840,7 @@ background-position: -142px -9px !important;
 .mada-title{
     color:#000;
     font-size: 24px;
-    font-family: 'Droid Arabic Kufi';
+    font-family: GESSTwoMediumRegular;
 }
 .mada-title a{
     color:#000;
@@ -1142,7 +1142,7 @@ background-position: -142px -9px !important;
     left:130px;
     top: 10px;
     /*color:#9d9d9d;*/
-    font: 10px 'Droid Arabic Kufi';
+    font: 10px GESSTwoMediumRegular;
 
 }
 .comment-block.child-reply{
@@ -1326,7 +1326,6 @@ span.divider{
 }
 .top a{
     color: #a6a6a6 !important;
-	font-family: 'Droid Arabic Kufi';
 }
 .top a.selected:hover{
     color: #333 !important;
@@ -1354,7 +1353,7 @@ span.divider{
 }
 
 .comment-entry legend{
-    font: bold 16px 'Droid Arabic Kufi',"Trebuchet MS",Arial,Helvetica,sans-serif;
+    font: bold 16px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
 
 }
 .comment-count{
