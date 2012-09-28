@@ -851,14 +851,13 @@ background-position: -142px -9px !important;
     top: 0px;
     right: 140px;
     position: absolute;
-	width: 165px;
+	width: 180px;
+	font: 10px 'Droid Arabic Kufi';
 }
 .topic span.new{
     color: #fff;
     padding:0 10px;
     background:#BA4242;
-    font-size: 9px;
-    font-family: tahoma;
 	margin-left: 3px;
     line-height: 18px;
     float: right;
@@ -867,10 +866,8 @@ background-position: -142px -9px !important;
 
 .topic .old{
     color: #333;
-    padding:0 10px;
     background:#DDD;
-    font-size: 9px;
-    font-family: tahoma;
+    padding:0 10px;
     margin-left: 3px;
     line-height: 18px;
     float: right;
