@@ -286,6 +286,7 @@ left: 1px;
     padding: 0 10px !important;
 }
 .top-members{
+	margin-top: 20px;
     margin-bottom: 40px;
     display: block;
     overflow: hidden;
@@ -293,7 +294,7 @@ left: 1px;
 .top-members h4{
     text-align: center;
     font: 20px 'Droid Arabic Kufi' ;
-    margin-top: 55px;
+    margin-top: 0px;
 	margin-bottom: 15px;
     color: #222;
 }
@@ -321,7 +322,7 @@ left: 1px;
     margin-top: 15px;
     margin-bottom: 0px;
 	text-shadow: 1px 1px 1px #FFF;
-
+	line-height: 70px !important;
 }
 .mosharakat_number span{
     text-align: center;
