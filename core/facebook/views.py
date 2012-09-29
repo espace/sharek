@@ -78,7 +78,7 @@ def auto_post(request):
     # GraphAPI is the main class from facebook_sdp.py
     graph = facebook_sdk.GraphAPI(settings.FACEBOOK_PAGE_TOKEN)
 
-    articles = ArticleDetails.objects.order_by('?')[:1]
+    articles = ArticleDetails.objects.filter(current = True).order_by('?')[:1]
 
     for article in articles:
 
