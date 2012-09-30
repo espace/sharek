@@ -72,9 +72,11 @@ class Topic(models.Model):
     
     def __unicode__(self):
         if self.parent:
+            if self.parent.parent:
+                return "%s - %s - %s" % (self.parent.parent.name ,self.parent.name, self.name)
             return "%s - %s" % (self.parent.name, self.name)
         else:
-            return "%s - " % (self.name)
+            return "%s" % (self.name)
 
     def get_absolute_url(self):
         return self.slug
@@ -105,6 +107,18 @@ class Topic(models.Model):
         articles = sorted(articles, key=lambda article: article.mod_date, reverse=True)
         return articles[0]
 
+    def get_topic_children(self):
+        return Topic.objects.filter(parent_id = self.id)
+
+    def draw_me(self):
+        if len(self.get_articles()) > 0:
+            return True
+        elif len(self.get_topic_children()) > 0:
+            for child in self.get_topic_children():
+                if child.draw_me():
+                    return True
+        else:
+            return False
 
 class ArticleHeader(models.Model):
     tags = models.ManyToManyField(Tag)
@@ -193,6 +207,8 @@ class Feedback(models.Model):
     order = models.IntegerField(default=0)
     user = models.CharField(max_length=200,default='')
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
 
     def get_children(self):
         inactive_users = User.get_inactive

@@ -3,7 +3,7 @@
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
 		@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
-		 h1, h2, h5, p {
+		 h1, h2,h3,h4, h5, p {
 			font-family: 'Droid Arabic Kufi', serif;
 		 }
 		 body {
@@ -12,7 +12,7 @@
 			font: 12px tahoma;
 			line-height: 16px;
 		 }
-		 h1, h2 {
+		 h1, h2, h3 {
 			color: #111111;
 			font-size: 20px;
 			margin: 25px 0px 25px 0px;
@@ -23,10 +23,14 @@
 		h2 {
 			font-size: 16px;
 			margin: 45px 0px 10px 0px;
-			text-align: right;
 		}
-		 
-		h5 {
+		
+    h3 {
+      font-size: 13px;
+      margin: 45px 0px 10px 0px;
+    }
+ 
+		h4 {
 			text-align: center;
 		}
         </style>
@@ -36,19 +40,34 @@
     	<h1>بسم الله الرحمن الرحيم</h1>
         <h1>جمهورية مصر العربية</h1>
         <h1>الجمعية التأسيسية لوضع مشروع الدستور</h1>
-        
-        <h1>{{ topic.name }}</h1>
-        
-        
-		{% for topic in topics %}
-        	{% if topic.get_articles %}
-                <br><br><br><br>
-                <h1>{{ topic.name }}</h1>
-                {% for article in topic.get_articles %}
-                    <h2>{{article.header.name}}</h2>
-                    <p>{{article.summary}}</p>
+            
+    		{% for topic in topics %}
+        	{% if topic.draw_me %}
+            <br><br><br><br>
+            <h1>{{ topic.name }}</h1>
+            {% for article in topic.get_articles %}
+              <h4>{{article.header.name}}</h4>
+              <p>{{article.summary}}</p>
+            {% endfor %}
+            {% for chapter in topic.get_topic_children %}
+              {% if chapter.draw_me %}
+                <h2>{{chapter.name}}</h2>
+                {% for art in chapter.get_articles %}
+                  <h4>{{art.header.name}}</h4>
+                  <p>{{art.summary}}</p>
                 {% endfor %}
-            {% endif %}
+                {% for branch in chapter.get_topic_children %}
+                  {% if branch.draw_me %}
+                    <h3>{{branch.name}}</h3>
+                    {% for art in branch.get_articles %}
+                      <h4>{{art.header.name}}</h4>
+                      <p>{{art.summary}}</p>
+                    {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}  
+            {% endfor %}
+          {% endif %}
         {% endfor %} 
         
     </body>
