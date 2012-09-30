@@ -2947,7 +2947,7 @@ button.close {
 .btn-green {
   text-shadow:0 -1px 0px rgba(0, 0, 0, 0.25);
   color: #fff;
-  font: 18px 'Droid Arabic Kufi' !important;
+  font: 18px GESSTwoMediumRegular !important;
   background-color: #5bb75b;
   *background-color: #51a351;
   background-image: -ms-linear-gradient(top, #87c000, #598602);

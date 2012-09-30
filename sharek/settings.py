@@ -120,9 +120,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
-	#'sugar.middleware.speedtracer.SpeedTracerMiddleware',
+    'sugar.middleware.speedtracer.SpeedTracerMiddleware',
 )
 
 ROOT_URLCONF = 'sharek.urls'
@@ -151,12 +149,7 @@ INSTALLED_APPS = (
     'template_utils',
     'django.contrib.humanize',
     'social_auth',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
-    #'sugar',
-    #'mptt',
+    'sugar',
 )
 
 # A sample logging configuration. The only tangible logging
