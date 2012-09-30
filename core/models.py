@@ -82,7 +82,6 @@ class Topic(models.Model):
     order = models.IntegerField(blank = True, null = True)
 
     def __unicode__(self):
-        #return u'%s - %s' % (self.topic.name, self.name)
         return self.name
 
     def get_absolute_url(self):
@@ -98,7 +97,6 @@ class Topic(models.Model):
         return article_details
     
     def get_articles_limit(self, offset, limit):
-        # the new tech of article " header and details "
         article_headers = self.articleheader_set.all().order_by('order')[offset:limit]
         article_details = []
         for article_header in article_headers:
@@ -108,7 +106,7 @@ class Topic(models.Model):
         return article_details
 
     def articles_count(self):
-       return len(self.articleheader_set.filter(canceled=False))
+       return len(self.get_articles())
    
     def get_mod_date(self):
         articles = self.get_articles()
@@ -117,9 +115,12 @@ class Topic(models.Model):
     
     class Meta:
        ordering = ["order"]
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
        
 class ArticleHeader(models.Model):
-    canceled = models.BooleanField(default=False)
+    #canceled = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)
     name = models.CharField(max_length=40)
