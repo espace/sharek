@@ -39,11 +39,11 @@ class ArticleHeaderAdmin(admin.ModelAdmin):
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', 'js/admin-current-article.js')
 
+        
 class FeedbackAdmin(admin.ModelAdmin):
     list_filter = ('articledetails',)
     search_fields = ['suggestion']
     list_display = ('name', 'articledetails','user', 'email', 'suggestion')
-    
 
 class TagAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}

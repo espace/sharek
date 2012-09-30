@@ -10,6 +10,7 @@ from django.db.models.signals import post_save
 from django.db.models.aggregates import Max
 from core.actions import exclusive_boolean_fields
 
+
 @classmethod
 def get_inactive(self):
     all_result = User.objects.filter(is_active=False).values('username')
@@ -20,7 +21,7 @@ def get_inactive(self):
     return inactive
 
 User.add_to_class('get_inactive', get_inactive)
-    
+
 class Tag(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
@@ -57,27 +58,30 @@ class Tag(models.Model):
                 article_details.append(ad[0])
         return article_details
         
-        #return self.article_set.filter(current = True)
         
     class Meta:
        ordering = ["order"]
 
 class Topic(models.Model):
+    parent = models.ForeignKey('self', null=True, blank=True)
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
     order = models.IntegerField(blank = True, null = True)
-
+    
     def __unicode__(self):
-        #return u'%s - %s' % (self.topic.name, self.name)
-        return self.name
+        if self.parent:
+            if self.parent.parent:
+                return "%s - %s - %s" % (self.parent.parent.name ,self.parent.name, self.name)
+            return "%s - %s" % (self.parent.name, self.name)
+        else:
+            return "%s" % (self.name)
 
     def get_absolute_url(self):
         return self.slug
     
     def get_articles(self):
-        # the new tech of article " header and details "
         article_headers = self.articleheader_set.all().order_by('order')
         article_details = []
         for article_header in article_headers:
@@ -87,7 +91,6 @@ class Topic(models.Model):
         return article_details
     
     def get_articles_limit(self, offset, limit):
-        # the new tech of article " header and details "
         article_headers = self.articleheader_set.all().order_by('order')[offset:limit]
         article_details = []
         for article_header in article_headers:
@@ -103,18 +106,25 @@ class Topic(models.Model):
         articles = self.get_articles()
         articles = sorted(articles, key=lambda article: article.mod_date, reverse=True)
         return articles[0]
-    
-    class Meta:
-       ordering = ["order"]
-       
+
+    def get_topic_children(self):
+        return Topic.objects.filter(parent_id = self.id)
+
+    def draw_me(self):
+        if len(self.get_articles()) > 0:
+            return True
+        elif len(self.get_topic_children()) > 0:
+            for child in self.get_topic_children():
+                if child.draw_me():
+                    return True
+        else:
+            return False
+
 class ArticleHeader(models.Model):
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)
     name = models.CharField(max_length=40)
     order = models.IntegerField(blank = True, null = True)
-
-    def __unicode__(self):
-        return self.name
 
     def clean(self):
         if len(self.name) >= 40:
