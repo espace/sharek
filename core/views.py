@@ -420,9 +420,9 @@ def vote(request):
             else:
                 Rating(user = user, vote = vote, feedback_id = feedback,articledetails_id = request.POST.get("article")).save()
                 if vote == True:
-                p += 1
-              else:
-                n += 1
+                  p += 1
+                else:
+                  n += 1
 
             mod.likes = p
             mod.dislikes = n
@@ -462,9 +462,9 @@ def article_vote(request):
             else:
                 ArticleRating(user = user, vote = vote,articledetails_id = article).save()
                 if vote == True:
-                p += 1
-              else:
-                n += 1
+                  p += 1
+                else:
+                  n += 1
 
             art.likes = p
             art.dislikes = n
