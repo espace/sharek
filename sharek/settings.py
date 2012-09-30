@@ -116,13 +116,15 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
+	'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-	'snippetscream.ProfileMiddleware',
     #'sugar.middleware.speedtracer.SpeedTracerMiddleware',
 )
+
+INTERNAL_IPS = ('192.168.1.106',)
 
 ROOT_URLCONF = 'sharek.urls'
 
@@ -151,8 +153,19 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'social_auth',
     #'sugar',
+	'debug_toolbar',
 
 )
+
+def custom_show_toolbar(request):
+    return True # Always show toolbar, for example purposes only.
+
+DEBUG_TOOLBAR_CONFIG = {
+    'INTERCEPT_REDIRECTS': False,
+    'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
+    'HIDE_DJANGO_SQL': False,
+    'TAG': 'div',
+}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
