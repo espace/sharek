@@ -284,26 +284,11 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         feedbacks = paginator.page(paginator.num_pages)
-    
-    votes = article.get_votes()
-    p_votes = {}
-    n_votes = {}
-    for vote in votes:
-      if vote.vote == True:
-        if p_votes.__contains__(vote.feedback_id):
-          p_votes[vote.feedback_id] += 1
-        else:
-          p_votes[vote.feedback_id] = 1
-      else:
-        if n_votes.__contains__(vote.feedback_id):
-          n_votes[vote.feedback_id] += 1
-        else:
-          n_votes[vote.feedback_id] = 1
 
     if classified_by == "tags":  
-        template_context = {'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+        template_context = {'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
     elif classified_by == "topics":
-        template_context = {'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+        template_context = {'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
@@ -323,21 +308,6 @@ def latest_comments(request):
 
         inactive_users = User.get_inactive
         obj_article = get_object_or_404( ArticleDetails, id=article )
-
-        votes = obj_article.get_votes()
-        p_votes = {}
-        n_votes = {}
-        for vote in votes:
-          if vote.vote == True:
-            if p_votes.__contains__(vote.feedback_id):
-              p_votes[vote.feedback_id] += 1
-            else:
-              p_votes[vote.feedback_id] = 1
-          else:
-            if n_votes.__contains__(vote.feedback_id):
-              n_votes[vote.feedback_id] += 1
-            else:
-              n_votes[vote.feedback_id] = 1
 
         top_ranked = []
         inactive_users = User.get_inactive
@@ -364,7 +334,7 @@ def latest_comments(request):
         paginator = Paginator(feedbacks, settings.paginator)
         try:
             feedbacks = paginator.page(page)
-            return render_to_response('include/latest_comments.html',{'voted_fb':voted_fb,'voted_articles':voted_article,'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
+            return render_to_response('include/latest_comments.html',{'voted_fb':voted_fb,'voted_articles':voted_article,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
         except PageNotAnInteger:
             return HttpResponse('')
         except EmptyPage:
@@ -432,25 +402,33 @@ def vote(request):
             if request.POST.get("type") == "1" :
               vote = True
             
+            mod = Feedback.objects.get(id=feedback)
+
+            p = mod.likes
+            n = mod.dislikes
+            
             if record:
+                if record[0].vote != vote:
+                    if vote == True:
+                      p += 1
+                      n -= 1
+                    else:
+                      n += 1
+                      p -= 1
                 record[0].vote = vote
                 record[0].save()
             else:
                 Rating(user = user, vote = vote, feedback_id = feedback,articledetails_id = request.POST.get("article")).save()
-            
-            mod = Feedback.objects.get(id=feedback)
+                if vote == True:
+                  p += 1
+                else:
+                  n += 1
 
-            votes = Rating.objects.filter(feedback_id = feedback)
-            p = 0
-            n = 0
-            for v in votes:
-              if v.vote == True:
-                p += 1
-              else:
-                n += 1
-
-            mod.order = p - n
+            mod.likes = p
+            mod.dislikes = n
+            mod.order = mod.likes - mod.dislikes
             mod.save()
+
             return HttpResponse(simplejson.dumps({'modification':request.POST.get("modification"),'p':p,'n':n,'vote':request.POST.get("type")}))
 
 def article_vote(request):
@@ -713,3 +691,21 @@ def top_users_map(request):
             top_users.append(top_user)
 
     return render_to_response('map.html', {'counter':counter,'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
+
+def migrate(request):
+    return render_to_response('migrate.html',{},RequestContext(request))
+
+def migrate_comments(request):
+
+    all_comments = Feedback.objects.all()
+
+    for comment in all_comments:
+        likes_num    = comment.rating_set.filter(vote = True).count()
+        dislikes_num = comment.rating_set.filter(vote = False).count()
+
+        comment.likes    = likes_num
+        comment.dislikes = dislikes_num
+
+        comment.save()
+
+    return HttpResponse(simplejson.dumps({'done':"done"}))

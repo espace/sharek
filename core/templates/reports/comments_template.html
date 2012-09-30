@@ -3,6 +3,10 @@
 	<head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
+		@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+		 h1, h2, h5, p {
+			font-family: 'Droid Arabic Kufi', serif;
+		 }
 		body {
 			direction: rtl;
 			text-align: right;
@@ -31,7 +35,6 @@
     <body>
         <h1>تعليقات "{{ article.header.name }}"</h1>
         <h1>{{ article.header.topic.name }}</h1>
-        <h5>{{ date_display }}</h5>
         
         <h2>{{ article.header.name }}</h2>
         <p>{{ article.summary }}</p>

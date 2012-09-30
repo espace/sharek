@@ -1,6 +1,6 @@
 from core.models import Tag
 from core.models import Topic
-from core.models import Info, Feedback, ArticleDetails, ArticleHeader,Temp
+from core.models import Info, Feedback, ArticleDetails, ArticleHeader
 from core.models import ReadOnlyAdminFields
 from django.contrib.auth.models import User
 from django import forms
@@ -39,12 +39,7 @@ class ArticleHeaderAdmin(admin.ModelAdmin):
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', 'js/admin-current-article.js')
 
-class TempAdmin(admin.ModelAdmin):
-    list_filter = ('name',)
-    list_display = ('name','parent')
-    search_fields = ['name']
-    
-    
+        
 class FeedbackAdmin(admin.ModelAdmin):
     list_filter = ('articledetails',)
     search_fields = ['suggestion']

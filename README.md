@@ -48,6 +48,10 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine
 	cd django-sugar
 	python setup.py install
 	
+	download wkhtmltopdf from http://wkhtmltopdf.googlecode.com/files/wkhtmltopdf-0.11.0_rc1-static-i386.tar.bz2
+	extract the downloaded file tar xjvf "downloaded_file"
+	move the extracted file to the bin folder mv "extracted_file" /usr/local/bin/wkhtmltopdf
+	
 	
   ```
 
