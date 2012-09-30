@@ -68,21 +68,23 @@ class Tag(models.Model):
                 article_details.append(ad[0])
         return article_details
         
-        #return self.article_set.filter(current = True)
         
     class Meta:
        ordering = ["order"]
 
 class Topic(models.Model):
-    #parent = TreeForeignKey('self', null=True, blank=True, related_name='children')
+    parent = models.ForeignKey('self', null=True, blank=True)
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
     order = models.IntegerField(blank = True, null = True)
-
+    
     def __unicode__(self):
-        return self.name
+        if self.parent:
+            return "%s - %s" % (self.parent.name, self.name)
+        else:
+            return "%s - " % (self.name)
 
     def get_absolute_url(self):
         return self.slug
@@ -112,15 +114,9 @@ class Topic(models.Model):
         articles = self.get_articles()
         articles = sorted(articles, key=lambda article: article.mod_date, reverse=True)
         return articles[0]
-    
-    class Meta:
-       ordering = ["order"]
 
-    class MPTTMeta:
-        order_insertion_by = ['name']
-       
+
 class ArticleHeader(models.Model):
-    #canceled = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)
     name = models.CharField(max_length=40)
