@@ -16,7 +16,7 @@
         {% for article in articles %}
         	{% include "include/article_block.html" %}
         {% endfor %}
-
+      <div id="last_articles_loader"></div>
       {%else%}
         <div class="topic">
           <h3>
@@ -24,7 +24,7 @@
                 لا توجد نتائج لهذا البحث
             </p>
           </h3>  
-        </div><!-- topic end -->
+      </div>
       {% endif %}
     </div>
   </div>

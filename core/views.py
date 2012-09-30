@@ -692,20 +692,3 @@ def top_users_map(request):
 
     return render_to_response('map.html', {'counter':counter,'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
 
-def migrate(request):
-    return render_to_response('migrate.html',{},RequestContext(request))
-
-def migrate_comments(request):
-
-    all_comments = Feedback.objects.all()
-
-    for comment in all_comments:
-        likes_num    = comment.rating_set.filter(vote = True).count()
-        dislikes_num = comment.rating_set.filter(vote = False).count()
-
-        comment.likes    = likes_num
-        comment.dislikes = dislikes_num
-
-        comment.save()
-
-    return HttpResponse(simplejson.dumps({'done':"done"}))

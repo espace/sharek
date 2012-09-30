@@ -837,6 +837,9 @@ background-position: -142px -9px !important;
     margin-left: 15px;
     border-radius: 5px;
 }
+.topic-paging {
+    margin: 0 20px 0 35px;
+}
 .topic-paging li{
     list-style-type: none;
     margin: 5px 0;
