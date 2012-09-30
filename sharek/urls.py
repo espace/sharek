@@ -10,6 +10,9 @@ urlpatterns = patterns('',
 
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
+    url(r'sharek/migrate/$', 'core.views.migrate', name='migrate'),
+    url(r'sharek/migrate_comments/$', 'core.views.migrate_comments', name='migrate_comments'),
+	
 	#Generate PDF
     url(r'^sharek/pdf/topics/$', 'core.reports.views.topics_pdf', name='topics_pdf'),
 	url(r'^sharek/pdf/topic/(?P<topic_slug>[-\w]+)/$', 'core.reports.views.topic_pdf', name='topic_pdf'),
@@ -31,6 +34,7 @@ urlpatterns = patterns('',
 
     url(r'^sharek/slider/$', 'core.views.slider', name='slider'),
     url(r'^sharek/search/$', 'core.views.search', name='search'),
+    url(r'^sharek/ajx_search/$', 'core.views.ajx_search', name='ajx_search'),
     
     url(r'^sharek/vote/', 'core.views.vote', name='vote'),
     url(r'^sharek/article_vote/', 'core.views.article_vote', name='article_vote'),
