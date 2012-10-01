@@ -124,8 +124,6 @@ MIDDLEWARE_CLASSES = (
     #'sugar.middleware.speedtracer.SpeedTracerMiddleware',
 )
 
-INTERNAL_IPS = ('192.168.1.106',)
-
 ROOT_URLCONF = 'sharek.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
@@ -156,16 +154,6 @@ INSTALLED_APPS = (
 	'debug_toolbar',
 
 )
-
-def custom_show_toolbar(request):
-    return True # Always show toolbar, for example purposes only.
-
-DEBUG_TOOLBAR_CONFIG = {
-    'INTERCEPT_REDIRECTS': False,
-    'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
-    'HIDE_DJANGO_SQL': False,
-    'TAG': 'div',
-}
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

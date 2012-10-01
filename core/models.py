@@ -1,5 +1,4 @@
 from django import forms
-from django.db import models
 from django.utils import timezone
 from datetime import datetime
 from markitup.fields import MarkupField
@@ -9,7 +8,7 @@ from django.db.models import Count
 from django.db.models.signals import post_save
 from django.db.models.aggregates import Max
 from core.actions import exclusive_boolean_fields
-
+from django.db import connection, models
 
 @classmethod
 def get_inactive(self):
@@ -62,6 +61,20 @@ class Tag(models.Model):
     class Meta:
        ordering = ["order"]
 
+class TopicManager(models.Manager):
+    def with_counts(self):
+       query = "SELECT core_topic.id, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered, ( SELECT MAX(core_articledetails.mod_date) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ), ( SELECT COUNT(core_articledetails.*) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ) as headers FROM core_topic"
+       cursor = connection.cursor()
+       cursor.execute(query)
+
+       topic_list = []
+       for row in cursor.fetchall():
+           p = self.model(id=row[0], name=row[1], slug=row[2], order=row[3], summary=row[4], _summary_rendered=row[5])
+           p.date_articles = row[6]
+           p.count_articles = row[7]
+           topic_list.append(p)
+       return topic_list
+
 class Topic(models.Model):
     parent = models.ForeignKey('self', null=True, blank=True)
     name = models.CharField(max_length=100)
@@ -69,6 +82,7 @@ class Topic(models.Model):
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
     order = models.IntegerField(blank = True, null = True)
+    objects = TopicManager()
     
     def __unicode__(self):
         if self.parent:
@@ -80,6 +94,14 @@ class Topic(models.Model):
 
     def get_absolute_url(self):
         return self.slug
+
+    @classmethod
+    def total_contributions(self):
+       query = "SELECT SUM(count) FROM ( SELECT COUNT(*) as count FROM core_feedback UNION SELECT COUNT(*) FROM core_rating UNION SELECT COUNT(*) FROM core_articlerating ) total_count"
+       cursor = connection.cursor()
+       cursor.execute(query)
+       row = cursor.fetchone()
+       return row[0]
     
     def get_articles(self):
         article_headers = self.articleheader_set.all().order_by('order')
@@ -100,12 +122,22 @@ class Topic(models.Model):
         return article_details
 
     def articles_count(self):
-       return len(self.get_articles())
+       #return len(self.get_articles())
+       query = "SELECT core_topic.id, COUNT(core_articledetails.*) as articles_count FROM core_topic INNER JOIN core_articleheader on core_topic.id = core_articleheader.topic_id INNER JOIN core_articledetails on core_articledetails.header_id = core_articleheader.id WHERE core_articledetails.current is true GROUP BY core_topic.id HAVING core_topic.id = %s"
+       cursor = connection.cursor()
+       cursor.execute(query, [self.id])
+       row = cursor.fetchone()
+       return row[1]
    
     def get_mod_date(self):
-        articles = self.get_articles()
-        articles = sorted(articles, key=lambda article: article.mod_date, reverse=True)
-        return articles[0]
+       #articles = self.get_articles()
+       #articles = sorted(articles, key=lambda article: article.mod_date, reverse=True)
+       #return articles[0]
+       query = "SELECT core_topic.id, MAX(core_articledetails.mod_date) as mod_date FROM core_topic INNER JOIN core_articleheader on core_topic.id = core_articleheader.topic_id INNER JOIN core_articledetails on core_articledetails.header_id = core_articleheader.id WHERE core_articledetails.current is true GROUP BY core_topic.id HAVING core_topic.id = %s"
+       cursor = connection.cursor()
+       cursor.execute(query, [self.id])
+       row = cursor.fetchone()
+       return row[1]
 
     def get_topic_children(self):
         return Topic.objects.filter(parent_id = self.id)
@@ -151,7 +183,7 @@ class ArticleDetails(models.Model):
 
     def feedback_count(self):
         inactive_users = User.get_inactive
-        return len(Feedback.objects.filter(articledetails_id = self.id).exclude(user__in=inactive_users))
+        return Feedback.objects.filter(articledetails_id = self.id).exclude(user__in=inactive_users).count()
 
     def get_votes(self):
         return Rating.objects.filter(articledetails_id= self.id)
