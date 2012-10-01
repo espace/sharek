@@ -12,12 +12,16 @@
           <div class="span4 pull-left facebook_log_in">
             <div class="">
                 {% if user %}
-                
                   <div class="attrs">
                     <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
-                    <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                    <a href="{% url logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
                   </div>
-                  <img src="{{STATIC_URL}}photos/profile/{{user}}" class="user_img" />
+                  
+                  {% if request.session.social_auth_last_login_backend = 'google' %}
+                    google image
+                  {% else %}
+                    <img src="{{STATIC_URL}}photos/profile/{{user}}" class="user_img" />
+                  {% endif %}
                   
                 {% else %}  
                   {% if error %}
@@ -33,10 +37,10 @@
                       {% endif %}
                     {% endif %}
                   {% else %}
-                  <a href="#" onclick="login();return false;">
-                    <img style="float: left; padding-top: 25px;" src="http://egynda.com/resource/images/fb_sign.png"/>
-                  </a>
-                  
+                    <a href="{% url socialauth_begin 'twitter' %}">Twitter</a><br />
+                    <a href="{% url socialauth_begin 'facebook' %}">Facebook</a><br />
+                    <a href="{% url socialauth_begin 'google' %}">Google openID</a><br />
+                    <a href="{% url socialauth_begin 'yahoo' %}">Yahoo openID</a>
                   {% endif %}
                 {% endif %}         
             </div>
