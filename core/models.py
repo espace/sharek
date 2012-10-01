@@ -104,6 +104,7 @@ class Topic(models.Model):
        return row[0]
     
     def get_articles(self):
+        # the new tech of article " header and details "
         article_headers = self.articleheader_set.all().order_by('order')
         article_details = []
         for article_header in article_headers:
@@ -113,6 +114,7 @@ class Topic(models.Model):
         return article_details
     
     def get_articles_limit(self, offset, limit):
+        # the new tech of article " header and details "
         article_headers = self.articleheader_set.all().order_by('order')[offset:limit]
         article_details = []
         for article_header in article_headers:

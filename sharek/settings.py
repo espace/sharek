@@ -116,12 +116,11 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
-	'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    #'sugar.middleware.speedtracer.SpeedTracerMiddleware',
 )
 
 ROOT_URLCONF = 'sharek.urls'
@@ -150,8 +149,7 @@ INSTALLED_APPS = (
     'template_utils',
     'django.contrib.humanize',
     'social_auth',
-    #'sugar',
-	'debug_toolbar',
+    'debug_toolbar',
 
 )
 
