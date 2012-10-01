@@ -42,7 +42,8 @@ def index(request):
     home = True
     if request.user.is_authenticated():
       user = request.user
-    topics = Topic.objects.all
+	  
+    topics = Topic.objects.with_counts
     
     top_users = []
     inactive_users = User.get_inactive
@@ -58,23 +59,15 @@ def index(request):
             top_users.append(top_user)
 
 
-    target = 500000
-    
-    feedback = Feedback.objects.all().exclude(user__in=inactive_users).count()
-    feedback_ratings = Rating.objects.all().count()
-    article_ratings = ArticleRating.objects.all().count()
-
-    total = feedback + feedback_ratings + article_ratings
+    total = Topic.total_contributions
 	
     top_liked = ArticleDetails.get_top_liked(5)
     top_disliked = ArticleDetails.get_top_disliked(5)
     top_commented = ArticleDetails.get_top_commented(5)
+
     tags = Tag.objects.all
     
-    percent = int((float(total)/target)*100)
-    percent_draw = (float(total)/target)*10
-
-    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics,'settings': settings,'user':user,'total':total,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
         

@@ -44,7 +44,6 @@ class FeedbackAdmin(admin.ModelAdmin):
     search_fields = ['suggestion']
     list_display = ('name', 'articledetails','user', 'email', 'suggestion')
     
-
 class TagAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
     list_display = ('short_name','name','order')
