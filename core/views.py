@@ -125,7 +125,7 @@ def topic_detail(request, topic_slug=None):
     if request.user.is_authenticated():
       user = request.user
     if topic_slug:
-        topics = Topic.objects.all
+        topics = Topic.objects.filter(parent_id = None)
         topic = get_object_or_404( Topic, slug=topic_slug )
         all_articles = topic.get_articles()
     else:
