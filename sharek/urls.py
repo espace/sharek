@@ -31,6 +31,7 @@ urlpatterns = patterns('',
 
     url(r'^sharek/slider/$', 'core.views.slider', name='slider'),
     url(r'^sharek/search/$', 'core.views.search', name='search'),
+    url(r'^sharek/ajx_search/$', 'core.views.ajx_search', name='ajx_search'),
     
     url(r'^sharek/vote/', 'core.views.vote', name='vote'),
     url(r'^sharek/article_vote/', 'core.views.article_vote', name='article_vote'),
@@ -66,7 +67,7 @@ urlpatterns = patterns('',
     
     url(r'^sharek/$', 'core.views.index', name='index'),
 	
-	url(r'^sharek/', include('social_auth.urls')),
+	url(r'^sharek/', include('core.social_auth.urls')),
 	
     url(r'$', 'core.views.tmp'),
       

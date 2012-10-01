@@ -1,0 +1,31 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script>
+function subst() {
+  var vars={};
+  var x=document.location.search.substring(1).split('&');
+  for(var i in x) {var z=x[i].split('=',2);vars[z[0]] = unescape(z[1]);}
+  var x=['frompage','topage','page','webpage','section','subsection','subsubsection'];
+  for(var i in x) {
+    var y = document.getElementsByClassName(x[i]);
+    for(var j=0; j<y.length; ++j) y[j].textContent = vars[x[i]];
+  }
+}
+
+var today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; //January is 0!
+
+var yyyy = today.getFullYear();
+if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm} today = yyyy+'-'+mm+'-'+dd;
+
+</script></head><body style="border:0; margin: 10px 0 10px 0;" onload="subst()">
+<table style="border-top: 30px solid white; width: 100%">
+  <tr>
+    <td style="font-size: 8px;">الجمعية التأسيسية لوضع مشروع الدستور - بتاريخ: <script type="text/javascript">document.write(today);</script></td>
+    <td style="font-size: 8px; text-align:right;">
+      صفحة <span class="page"></span> من <span class="topage"></span>
+    </td>
+  </tr>
+</table>
+</body></html>

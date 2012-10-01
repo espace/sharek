@@ -59,7 +59,7 @@ def topics_pdf(request):
     if request.user.is_authenticated():
       user = request.user
 
-    topics = Topic.objects.all
+    topics = Topic.objects.filter(parent_id = None)
 
     dt_obj = datetime.now()
     date_str = dt_obj.strftime("%Y%m%d_%H%M%S")
@@ -134,7 +134,7 @@ def render_to_pdf(template_html, template_prefix, context, pdf_filename):
      file.write(rendered.encode('utf8'))
      file.close( )
 
-     command_args = 'wkhtmltopdf ' + full_temp_html_file_name + ' -'
+     command_args = 'wkhtmltopdf -L 10 -R 10 -T 20 -B 20 --footer-html ' + core.__path__[0] + '/static/footer.html ' + full_temp_html_file_name + ' -'
      popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
      pdf_contents = popen.stdout.read()
      popen.terminate()

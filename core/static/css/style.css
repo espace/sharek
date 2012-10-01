@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+
 @font-face {
     font-family: 'FrutigerBold';
     src: url('../fonts/FrutigerLTArabic-65Bold.ttf');
@@ -7,19 +9,6 @@
     font-weight: normal;
     font-style: normal;
     }
-
-
-
- @font-face {
-    font-family: 'FrutigerLight';
-    src: url('../fonts/frutigerltarabic-45light.eot');
-    src: url('../fonts/frutigerltarabic-45light.eot?#iefix') format('embedded-opentype'),
-         url('../fonts/frutigerltarabic-45light.ttf') format('truetype'),
-         url('../fonts/frutigerltarabic-45light.svg#frutigerltarabic-45light') format('svg');
-    font-weight: normal;
-    font-style: normal;
-    }
-
 
 @font-face {
     font-family: 'GESSTwoBoldRegular';
@@ -336,7 +325,7 @@ left: 1px;
 }
 
 .map img{
-    margin-right: 40px;
+    margin-right: 0px;
 }
 .bar{
     text-align: center;
@@ -801,7 +790,7 @@ background-position: -142px -9px !important;
 }
 .headsubtitle,
 .headsubtitle a{
-    font: bold 25px FrutigerBold,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    font: bold 25px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
 }
 
 .headtitle a,
@@ -842,7 +831,7 @@ background-position: -142px -9px !important;
 .inner-article{
     margin-top: 32px;
 }
-.donload-pdf{
+.download-pdf{
     background: url(http://cdn1.iconfinder.com/data/icons/Momentum_MatteEntireSet/16/pdf.png) right 0 no-repeat ;
     padding-right: 20px;
    float: right;
@@ -891,6 +880,9 @@ background-position: -142px -9px !important;
     margin-left: 15px;
     border-radius: 5px;
 }
+.topic-paging {
+    margin: 0 20px 0 35px;
+}
 .topic-paging li{
     list-style-type: none;
     margin: 5px 0;
@@ -914,6 +906,7 @@ background-position: -142px -9px !important;
     top: 0px;
     right: 140px;
     position: absolute;
+	width: 165px;
 }
 .topic span.new{
     color: #fff;
@@ -1456,7 +1449,7 @@ span.divider{
 }
 
 .comment-entry legend{
-    font: bold 16px FrutigerBold,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    font: bold 16px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
 
 }
 .comment-count{

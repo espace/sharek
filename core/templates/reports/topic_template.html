@@ -2,13 +2,17 @@
 	<head>
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
+		@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+		 h1, h2,h3,h4, h5, p {
+			font-family: 'Droid Arabic Kufi', serif;
+		 }
 		body {
 			direction: rtl;
 			text-align: right;
 			font: 12px tahoma;
 			line-height: 16px;
 		 }
-		 h1, h2 {
+     h1, h2, h3, h4 {
 			color: #111111;
 			font-size: 20px;
 			margin: 25px 0px 25px 0px;
@@ -16,15 +20,25 @@
 			text-align: center;
 		}
 		 
-		h2 {
-			font-size: 16px;
-			margin: 45px 0px 10px 0px;
-			text-align: right;
-		}
-		 
-		h5 {
-			text-align: center;
-		}
+    h2 {
+      font-size: 18px;
+      margin: 45px 0px 10px 0px;
+    }
+    
+    h3 {
+      font-size: 14px;
+      margin: 45px 0px 10px 0px;
+    }
+ 
+    h4 {
+      font-size: 12px;
+      margin: 30px 0px 10px 0px;
+      text-align: center;
+    }
+    p{
+      font-size: 10px;
+      line-height: 14px;
+    }
         </style>
     </head>
     <body>
@@ -32,11 +46,29 @@
         <h1>جمهورية مصر العربية</h1>
         <h1>الجمعية التأسيسية لوضع مشروع الدستور</h1>
         <h1>{{ topic.name }}</h1>
-        <h5>{{ date_display }}</h5>
-		{% for article in articles %}
-            <h2>{{article.header.name}}</h2>
-            <p>{{article.summary}}</p>
-        {% endfor %} 
+        {% for article in articles %}
+          <h4>{{article.header.name}}</h2>
+          <p>{{article.summary}}</p>
+        {% endfor %}
+        {% for chapter in topic.get_topic_children %}
+          {% if chapter.draw_me %}
+            <h2>{{chapter.name}}</h2>
+            {% for art in chapter.get_articles %}
+              <h4>{{art.header.name}}</h3>
+              <p>{{art.summary}}</p>
+            {% endfor %}
+            {% for branch in chapter.get_topic_children %}
+              {% if branch.draw_me %}
+                <h3>{{branch.name}}</h3>
+                {% for art in branch.get_articles %}
+                  <h4>{{art.header.name}}</h4>
+                  <p>{{art.summary}}</p>
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+ 
         
     </body>
 </html>

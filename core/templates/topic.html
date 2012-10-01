@@ -21,7 +21,7 @@
                 <h1>{{topic.name}}</h1> 
                 
                 {% if articles %}
-                <a target="_blank" href="{% url topic_pdf topic_slug=topic.get_absolute_url %}" class="donload-pdf ">
+                <a target="_blank" href="{% url topic_pdf topic_slug=topic.get_absolute_url %}" class="download-pdf ">
                 	تحميل مسودة باب {{ topic.name }}
                 </a>
 
@@ -31,18 +31,26 @@
                     <option value="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</option>
                     {% endfor %} 
                 </select>
+                
                 {% endif %}
             </div>
 
             <div id="headtitle" class="headtitle innerpage hidden-desktop">
                 <h1>{{topic.name}}</h1>
-                <a target="_blank" href="{% url topic_pdf topic_slug=topic.get_absolute_url %}" class="donload-pdf ">تحميل المواد</a>
+                
+                {% if articles %}
+                <a target="_blank" href="{% url topic_pdf topic_slug=topic.get_absolute_url %}" class="download-pdf ">
+                	تحميل مسودة باب {{ topic.name }}
+                </a>
+
                 <select class="span2" onchange="window.open(this.options[this.selectedIndex].value,'_top')"> 
                     <option>-- اذهب للمادة --</option>
                     {% for article in all_articles %}
                     <option value="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</option>
                     {% endfor %} 
                 </select>
+                
+                {% endif %}
             </div>
             
         </div>

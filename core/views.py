@@ -30,6 +30,9 @@ import random
 import urllib2
 import core
 import os.path
+from operator import attrgetter
+
+from core.social_auth.models import UserSocialAuth
 
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
@@ -41,7 +44,8 @@ def index(request):
     home = True
     if request.user.is_authenticated():
       user = request.user
-    topics = Topic.objects.all
+	  
+    topics = Topic.objects.with_counts
     
     top_users = []
     inactive_users = User.get_inactive
@@ -57,23 +61,15 @@ def index(request):
             top_users.append(top_user)
 
 
-    target = 500000
-    
-    feedback = Feedback.objects.all().exclude(user__in=inactive_users).count()
-    feedback_ratings = Rating.objects.all().count()
-    article_ratings = ArticleRating.objects.all().count()
+    total = Topic.total_contributions
 
-    total = feedback + feedback_ratings + article_ratings
-	
     top_liked = ArticleDetails.get_top_liked(5)
     top_disliked = ArticleDetails.get_top_disliked(5)
     top_commented = ArticleDetails.get_top_commented(5)
-    tags = Tag.objects.all
-    
-    percent = int((float(total)/target)*100)
-    percent_draw = (float(total)/target)*10
 
-    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics,'target':target,'settings': settings,'user':user,'total':total,'percent_draw':percent_draw, 'percent':percent, 'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+    tags = Tag.objects.all
+
+    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics,'settings': settings,'user':user,'total':total,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
         
@@ -283,26 +279,11 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         feedbacks = paginator.page(paginator.num_pages)
-    
-    votes = article.get_votes()
-    p_votes = {}
-    n_votes = {}
-    for vote in votes:
-      if vote.vote == True:
-        if p_votes.__contains__(vote.feedback_id):
-          p_votes[vote.feedback_id] += 1
-        else:
-          p_votes[vote.feedback_id] = 1
-      else:
-        if n_votes.__contains__(vote.feedback_id):
-          n_votes[vote.feedback_id] += 1
-        else:
-          n_votes[vote.feedback_id] = 1
 
     if classified_by == "tags":  
-        template_context = {'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'tags':tags,'tag':tag}
+        template_context = {'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
     elif classified_by == "topics":
-        template_context = {'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'p_votes': p_votes,'n_votes': n_votes,'topics':topics,'topic':topic}      
+        template_context = {'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
     
     return render_to_response('article.html',template_context ,RequestContext(request))
 
@@ -322,21 +303,6 @@ def latest_comments(request):
 
         inactive_users = User.get_inactive
         obj_article = get_object_or_404( ArticleDetails, id=article )
-
-        votes = obj_article.get_votes()
-        p_votes = {}
-        n_votes = {}
-        for vote in votes:
-          if vote.vote == True:
-            if p_votes.__contains__(vote.feedback_id):
-              p_votes[vote.feedback_id] += 1
-            else:
-              p_votes[vote.feedback_id] = 1
-          else:
-            if n_votes.__contains__(vote.feedback_id):
-              n_votes[vote.feedback_id] += 1
-            else:
-              n_votes[vote.feedback_id] = 1
 
         top_ranked = []
         inactive_users = User.get_inactive
@@ -363,7 +329,7 @@ def latest_comments(request):
         paginator = Paginator(feedbacks, settings.paginator)
         try:
             feedbacks = paginator.page(page)
-            return render_to_response('include/latest_comments.html',{'voted_fb':voted_fb,'voted_articles':voted_article,'p_votes': p_votes,'n_votes': n_votes,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
+            return render_to_response('include/latest_comments.html',{'voted_fb':voted_fb,'voted_articles':voted_article,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
         except PageNotAnInteger:
             return HttpResponse('')
         except EmptyPage:
@@ -396,15 +362,20 @@ def modify(request):
                 feedback = Feedback.objects.filter(articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
             
             if request.user.username != "admin":
-                 fb_user = FacebookSession.objects.get(user = request.user)
-                 # GraphAPI is the main class from facebook_sdp.py
-                 graph = facebook_sdk.GraphAPI(fb_user.access_token)
-                 attachment = {}
-                 attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
-                 attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook.png"
-                 message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
-                 graph.put_wall_post(message, attachment)
-            
+                # post on twitter or facebook
+                if UserSocialAuth.auth_provider(request.user.username) == 'facebook':
+                    fb_user = FacebookSession.objects.get(user = request.user)
+                    # GraphAPI is the main class from facebook_sdp.py
+                    graph = facebook_sdk.GraphAPI(fb_user.access_token)
+                    attachment = {}
+                    attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
+                    attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook.png"
+                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
+                    graph.put_wall_post(message, attachment)
+                
+                if UserSocialAuth.auth_provider(request.user.username) == 'twitter':
+                    print 'posting to twitter ....'
+                    
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
 def reply_feedback(request):
@@ -431,25 +402,33 @@ def vote(request):
             if request.POST.get("type") == "1" :
               vote = True
             
+            mod = Feedback.objects.get(id=feedback)
+
+            p = mod.likes
+            n = mod.dislikes
+            
             if record:
+                if record[0].vote != vote:
+                    if vote == True:
+                      p += 1
+                      n -= 1
+                    else:
+                      n += 1
+                      p -= 1
                 record[0].vote = vote
                 record[0].save()
             else:
                 Rating(user = user, vote = vote, feedback_id = feedback,articledetails_id = request.POST.get("article")).save()
-            
-            mod = Feedback.objects.get(id=feedback)
+                if vote == True:
+                  p += 1
+                else:
+                  n += 1
 
-            votes = Rating.objects.filter(feedback_id = feedback)
-            p = 0
-            n = 0
-            for v in votes:
-              if v.vote == True:
-                p += 1
-              else:
-                n += 1
-
-            mod.order = p - n
+            mod.likes = p
+            mod.dislikes = n
+            mod.order = mod.likes - mod.dislikes
             mod.save()
+
             return HttpResponse(simplejson.dumps({'modification':request.POST.get("modification"),'p':p,'n':n,'vote':request.POST.get("type")}))
 
 def article_vote(request):
@@ -556,7 +535,7 @@ def search(request):
         return HttpResponseRedirect(reverse('index'))
 
     arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-
+    arts = sorted(arts,  key=attrgetter('header.topic.id','header.order','id'))
     voted_articles = ArticleRating.objects.filter(user = user)
 
     count = len(arts)
@@ -573,6 +552,23 @@ def search(request):
         arts = paginator.page(paginator.num_pages)
 
     return render_to_response('search.html',{'voted_articles':voted_articles, 'search':search,'request':request,'user':user,"articles":arts,'settings': settings,"query":query.strip(),"count":count},RequestContext(request))
+
+def ajx_search(request):
+    if request.method == 'GET':
+        page =  request.GET.get("page")
+        query = request.GET.get("q")
+
+        articles = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
+        articles =  sorted(articles,  key=attrgetter('header.topic.id','header.order','id'))
+
+        paginator = Paginator(articles, settings.paginator)
+        try:
+            articles = paginator.page(page)
+            return render_to_response('include/next_articles.html',{'articles':articles} ,RequestContext(request))
+        except PageNotAnInteger:
+            return HttpResponse('')
+        except EmptyPage:
+            return HttpResponse('')
 
 def info_detail(request, info_slug):
     user = None
@@ -695,3 +691,4 @@ def top_users_map(request):
             top_users.append(top_user)
 
     return render_to_response('map.html', {'counter':counter,'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
+
