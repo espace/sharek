@@ -73,13 +73,21 @@
     .navbar-search .search-query{
         margin-top: -45px;    
       }
-
+.top-nav  ul{
+    padding: 10px !important;
+}
 .btn-group button{
     margin-top:7px;
     margin-bottom: 7px;
 }
 .btn-group li a{
     color: #222;
+}
+.top-nav .btn-group li a:hover{
+    color: #fff !important;
+    background-color:#222 !important;
+    border-radius: 5px;
+
 }
 .home-sections-icon {
     margin: 0;

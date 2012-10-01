@@ -18,13 +18,13 @@
 
   <div class="row promo">
     <div class="">
-      <div class="span6 progress-promo">
+      <div class="span7 progress-promo">
         <p>{{settings.new_domain}}هذا هو الموقع الرسمي للجمعية التأسيسية لوضع مشروع الدستور, والمواد المعلنة هنا هي الوحيدة المعتمدة من الجمعية وسيتم الأخذ بالملاحظات والمقترحات الموجودة هنا فقط ولا يوجد أي موقع آخر يمثل الجمعية.</p>
         <a href="{% url topics %}" class="btn btn-green">شارك برأيك فى الدستور!</a>
         <br />
-        <a href="{% url topics_pdf %}" target="_blank" class="donload-pdf">تحميل المسودة الأولى من الدستور</a>
+        <a href="{% url topics_pdf %}" target="_blank" class="download-pdf">تحميل المسودة الأولى من الدستور</a>
       </div>
-      <div class="span6 map hidden-phone">
+      <div class="span5 map hidden-phone">
         <!-- <iframe width="460" height="230" src="http://www.youtube.com/embed/2ddxz5o_e18" frameborder="0" allowfullscreen></iframe> -->
         <a href="{% url top_users_map %}" ><img src="{{ STATIC_URL }}images/map.jpg" alt=""></a>
       </div>
@@ -52,16 +52,16 @@
         </a>
         {% if topic_item.articles_count > 0 %}
         	{% if topic_item.articles_count < 11 %}
-	        <div class="articles-count-new">{{ topic_item.articles_count }} مواد</div>
+	        <div class="articles-count-new">{{ topic_item.count_articles }} مواد</div>
     	    {% elif topic_item.articles_count >= 11 %}
-        	<div class="articles-count-new">{{ topic_item.articles_count }} مادة</div>
+        	<div class="articles-count-new">{{ topic_item.count_articles }} مادة</div>
             {% endif %}
         {% endif %}
         
-        {% if topic_item.get_mod_date and topic_item.get_mod_date.mod_date %}
-        <span class="edit-date"><i class=" icon-time"></i>   آخر تحديث  <strong>{{topic_item.get_mod_date.mod_date|date:"Y/m/d"}} </strong> <strong>{{topic_item.get_mod_date.mod_date|time:"G:i"}} </strong>{% if topic_item.get_mod_date.mod_date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}</span>
+        {% if topic_item.date_articles %}
+        <span class="edit-date"><i class=" icon-time"></i>   آخر تحديث  <strong>{{topic_item.date_articles|date:"Y/m/d"}} </strong> <strong>{{topic_item.date_articles|time:"G:i"}} </strong>{% if topic_item.date_articles|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}</span>
         {% else %}
-        <span class="edit-date"><i class=" icon-time"></i> لم يتم التحديث من قبل</span>
+        <span class="edit-date"><i class=" icon-time"></i>لم يتم التحديث من قبل</span>
         {% endif %}
       </li>
       {% endfor %}

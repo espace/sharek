@@ -36,8 +36,8 @@
   {% endif %}
              
   <div class="like-group">
-     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == -1 %} active {% elif voted_fb|vote:feedback.id == 1 %} disabled {% endif %}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{n_votes|key:feedback.id }}</small></a>
-     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == 1 %} active {% elif voted_fb|vote:feedback.id == -1 %} disabled {% endif %}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{p_votes|key:feedback.id }}</small></a>
+     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == -1 %} active {% elif voted_fb|vote:feedback.id == 1 %} disabled {% endif %}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{feedback.dislikes}}</small></a>
+     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == 1 %} active {% elif voted_fb|vote:feedback.id == -1 %} disabled {% endif %}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{feedback.likes}}</small></a>
   </div>
   <span class="date">{{feedback.date|format}}</span>
   {{feedback.suggestion}}
@@ -88,8 +88,8 @@
           {% endif %}
             
           <div class="like-group">
-           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {% if voted_fb|vote:reply.id == -1 %} active {% elif voted_fb|vote:reply.id == 1 %} disabled {% endif %} {{reply.id}}" id="{{reply.id}}" vote="0"><small class="dislike {{reply.id}}">{{n_votes|key:reply.id }}</small></a>
-           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {% if voted_fb|vote:reply.id == 1 %} active {% elif voted_fb|vote:reply.id == -1 %} disabled {% endif %} {{reply.id}}" id="{{reply.id}}" vote="1"><small class="like {{reply.id}}">{{p_votes|key:reply.id }}</small></a>
+           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {% if voted_fb|vote:reply.id == -1 %} active {% elif voted_fb|vote:reply.id == 1 %} disabled {% endif %} {{reply.id}}" id="{{reply.id}}" vote="0"><small class="dislike {{reply.id}}">{{reply.dislikes}}</small></a>
+           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {% if voted_fb|vote:reply.id == 1 %} active {% elif voted_fb|vote:reply.id == -1 %} disabled {% endif %} {{reply.id}}" id="{{reply.id}}" vote="1"><small class="like {{reply.id}}">{{reply.likes}}</small></a>
           </div>
           <span class="date">{{reply.date|format}}</span>
           <p>{{reply.suggestion}}</p>
