@@ -100,7 +100,50 @@ body {
     margin: 80px 0 0 0;
 }
 
-
+.social_login{
+    margin-top: 10px;
+    min-height: 40px;
+    width: 90%;
+    float: left;
+    height: auto;
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow:inset 0px 1px 1px rgba(255,255,255,1), 0 1px 1px 0px rgba(0,0,0,0.3) ;
+    border:solid 1px #e1e3ec ; 
+    background:-ms-linear-gradient(top, #fbfbfb, #e7e7e7);
+    background:-webkit-gradient(linear, 0 0, 0 100%, from(#fbfbfb), to(#e7e7e7));
+    background:-webkit-linear-gradient(top, #fbfbfb, #e7e7e7);
+    background:-o-linear-gradient(top, #fbfbfb, #e7e7e7);
+    background:linear-gradient(top, #fbfbfb, #e7e7e7);
+    background:-moz-linear-gradient(top, #fbfbfb, #e7e7e7);
+    opacity: 0.7;
+    -webkit-transition: opacity 200ms linear;
+    -moz-transition: opacity 200ms linear;
+    -ms-transition: opacity 200ms linear;
+    -o-transition: opacity 200ms linear;
+    transition: opacity 200ms linear;
+}
+.social_login:hover{
+    opacity: 1;
+}
+.social_login p{
+    font: 11px GESSTwoMediumRegular;
+    text-shadow: 0px 1px 0px rgba(255,255,255,1) ;
+    color: #333;
+    margin: 15px 12px 0 0;
+    float: right;
+}
+.social_login p a{
+    width: auto;
+    margin: 0;
+    color: inherit;
+}
+.social_login a{
+    width: 24px;
+    height: 24px;
+    float: right;
+    margin: 10px 10px 0 0;
+}
 /*------------   Navigation    ------ */
 /*.top-nav{
    background-image: -ms-linear-gradient(top, #262626, #000);
@@ -898,6 +941,46 @@ background-position: -142px -9px !important;
 
 }
 
+.floatingSocial{
+      z-index: 10000;
+      width: 100%;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      top: 10px;
+      padding: 10px 10px;
+      border: solid 1px #ccc;
+          opacity: 0.98;
+
+    background: -ms-linear-gradient(top, #f8f8f8, #dedede);
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#f8f8f8), to(#dedede));
+    background: -webkit-linear-gradient(top, #f8f8f8, #dedede);
+    background: -o-linear-gradient(top, #f8f8f8, #dedede);
+    background: linear-gradient(top, #f8f8f8, #dedede);
+    background: -moz-linear-gradient(top, #f8f8f8, #dedede);
+    box-shadow: 0 3px 4px -3px rgba(0,0,0,0.6) ;
+     display:none;
+
+    }
+    .floatingSocial p{
+    float: right;
+    margin-right: 5px;
+    margin-bottom: 0;
+    color: #7c0b0b;
+    }
+
+    .floatingSocial p span{
+      color: #ccc;  
+    }
+
+    .block_con{
+       left: 0;
+        margin: 0 auto;
+        position: absolute;
+        right: 0;
+        margin-right: 35%;
+        /*width: 50%;*/
+    }
 .comments-number {
     background: url("../images/small-ribbon.png") no-repeat  right top transparent;
     color:#fff !important;
