@@ -15,6 +15,9 @@ from core.social_auth.utils import sanitize_redirect, setting, \
                               backend_setting, clean_partial_pipeline
 from core.social_auth.decorators import dsa_view
 import urllib2
+import urllib2
+import core
+import os.path
 
 
 DEFAULT_REDIRECT = setting('SOCIAL_AUTH_LOGIN_REDIRECT_URL') or \
@@ -121,7 +124,7 @@ def complete_process(request, backend, *args, **kwargs):
             opener1 = urllib2.build_opener()
             page1 = opener1.open(picture_page)
             my_picture = page1.read()
-            filename = '/home/amr/dj_sites/sharek/core/static/photos/profile/'+ user.username
+            filename = core.__path__[0] + '/static/photos/profile/'+ user.username
             fout = open(filename, "wb")
             fout.write(my_picture)
             fout.close()
