@@ -45,25 +45,11 @@ def index(request):
 	  
     topics = Topic.objects.with_counts
     
-    top_users = []
-    inactive_users = User.get_inactive
-    temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('-user_count').exclude(user__in=inactive_users)[:12]
-
-    for temp in temp_users:
-        try:
-            top_user = User.objects.get(username=temp['user'])
-        except Exception:
-            top_user = None
-        
-        if top_user:
-            top_users.append(top_user)
-
-
+    top_users = User.get_top_users(12)
     total = Topic.total_contributions
 	
-    top_liked = ArticleDetails.get_top_liked(5)
-    top_disliked = ArticleDetails.get_top_disliked(5)
-    top_commented = ArticleDetails.get_top_commented(5)
+    top_liked 	  = ArticleDetails.objects.get_top_liked(5)
+    top_commented = ArticleDetails.objects.get_top_commented(5)
 
     tags = Tag.objects.all
     
@@ -123,7 +109,7 @@ def topic_detail(request, topic_slug=None):
         all_articles = topic.get_articles()
     else:
         topics = Topic.objects.filter()
-        if len(topics) > 0:
+        if topics.count() > 0:
             topic = topics[0]
             all_articles = topic.get_articles()
         else:
@@ -208,20 +194,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
 
     article = get_object_or_404( ArticleDetails, slug=article_slug )
     topic = get_object_or_404( Topic, slug=article.header.topic.slug )
-    prev = None
-    next = None
-    if article.current == True:
-        articles = topic.get_articles()
-        index = articles.index(article)
-        if len(articles) == 1:
-            next = None
-        elif index == 0:
-            next = articles[index+1]
-        elif index == len(articles)-1:
-            prev = articles[index-1]
-        else:
-            prev = articles[index-1]
-            next = articles[index+1]           
+
+    next = ArticleHeader.objects.get_next(article.header.topic.id, article.header.order)
+    prev = ArticleHeader.objects.get_prev(article.header.topic.id, article.header.order)
 
     if classified_by == "tags":  
         tags = Tag.objects.all
@@ -344,6 +319,8 @@ def remove_feedback(request):
                 reply_ids.append(reply.id)
             #the user has to be the feedback owner to be able to remove it
             if feedback.user == request.user.username or request.user.is_staff:
+                feedback.articledetails.feedback_count = feedback.articledetails.feedback_count - 1
+                feedback.articledetails.save()
                 feedback.delete()
                 return HttpResponse(simplejson.dumps({'feedback_id':request.POST.get("feedback"),'reply_ids':reply_ids}))
 
@@ -351,13 +328,17 @@ def modify(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
             sug = str(request.POST.get("suggestion").encode('utf-8'))
+            article = get_object_or_404( ArticleDetails, id=request.POST.get("article"))
             feedbacks = Feedback.objects.filter(articledetails_id = request.POST.get("article"), email= request.POST.get("email"), name = request.POST.get("name"))
             for feedback in feedbacks:
-                if feedback.suggestion.raw.encode('utf-8') in sug:
+                if feedback.suggestion.raw.encode('utf-8') == sug:
                     return HttpResponse(simplejson.dumps({'duplicate':True,'name':request.POST.get("name")}))
-            else:
+
                 Feedback(user = request.POST.get("user_id"),articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name")).save()
                 feedback = Feedback.objects.filter(articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
+            article.feedback_count = article.feedback_count + 1
+            article.save()
+                    
             
             if request.user.username != "admin":
                  fb_user = FacebookSession.objects.get(user = request.user)
@@ -377,7 +358,7 @@ def reply_feedback(request):
             sug = str(request.POST.get("suggestion").encode('utf-8'))
             feedbacks = Feedback.objects.filter(articledetails_id = request.POST.get("article"), email= request.POST.get("email"), name = request.POST.get("name"))
             for feedback in feedbacks:
-                if feedback.suggestion.raw.encode('utf-8') in sug:
+                if feedback.suggestion.raw.encode('utf-8') == sug:
                     return HttpResponse(simplejson.dumps({'duplicate':True,'name':request.POST.get("name")}))
             Feedback(user = request.POST.get("user_id"),articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email = request.POST.get("email"), name = request.POST.get("name"), parent_id = request.POST.get("parent")).save()
             reply = Feedback.objects.filter(user = request.POST.get("user_id"),articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"), parent_id= request.POST.get("parent"))
@@ -596,7 +577,7 @@ def top_liked(request):
 
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
-    articles = ArticleDetails.get_top_liked(settings.paginator)
+    articles = ArticleDetails.objects.get_top_liked(settings.paginator)
     title = 'الأكثر قبولا'
     return render_to_response('statistics.html', {'type':"likes",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
@@ -608,7 +589,7 @@ def top_disliked(request):
 
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
-    articles = ArticleDetails.get_top_disliked(settings.paginator)
+    articles = ArticleDetails.objects.get_top_disliked(settings.paginator)
     title = 'الأكثر رفضا'
     return render_to_response('statistics.html', {'type':"dislikes",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
