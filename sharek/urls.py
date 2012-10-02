@@ -65,9 +65,11 @@ urlpatterns = patterns('',
     url(r'^sharek/top_commented/', 'core.views.top_commented', name='top_commented'),
     url(r'sharek/statistics/$', 'core.views.statistics', name='statistics'),
     
+    url(r'^sharek/profile/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.profile', name='profile'),
+
     url(r'^sharek/$', 'core.views.index', name='index'),
 	
-	url(r'^sharek/', include('social_auth.urls')),
+	url(r'^sharek/', include('core.social_auth.urls')),
 	
     url(r'$', 'core.views.tmp'),
       

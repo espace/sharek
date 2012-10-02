@@ -4,17 +4,35 @@
 
 {% if user %}
   <div class="comment-block comment-entry">
-    <div class="facebook_user_img">
-        <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+    {% if user.username != 'admin' %}
+      <div class="facebook_user_img">
+        {% if request.session.social_auth_last_login_backend == 'facebook' %}
+          <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
             <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-        </a>
-    </div>
+          </a>
+        {% elif request.session.social_auth_last_login_backend == 'twitter' %}
+          <a href="http://www.twitter.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          </a>
+        {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
+          <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+        {% else %} <!-- google -->
+          google image
+        {% endif %}
+      </div>
+    {% endif %}
           
-          {% if user.username == 'admin' %}
-	        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
-          {% else %}
-    <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
-          {% endif %}
+    {% if user.username == 'admin' %}
+	    <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+    {% else %}
+      {% if request.session.social_auth_last_login_backend == 'facebook' %}
+        <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% elif request.session.social_auth_last_login_backend == 'twitter' %}
+        <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% else %} <!-- yahoo and google -->
+        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% endif %}
+    {% endif %}
             
     <p >
        <textarea rows="3" class="input-xlarge span7" id="suggestion"></textarea>
@@ -73,49 +91,47 @@
 <div id="lastPostsLoader"></div>
 
 <script type="text/javascript">
+  $(document).ready(function(){
+  	
+  	var page = 1;
+  	var fetching = false;
+  	
+  	function get_latest_comments() 
+  	{ 
+  		fetching = true;
+  		
+  		$('div#lastPostsLoader').html('<img src="{{STATIC_URL}}images/loading.gif">');
+  		
+  		$.ajax({
+  		  type:"POST",
+  		  url :"/sharek/latest-comments/",
+  		  data:{
+  			  'page': ++page, 'article': {{article.id}}, 'order_by': '{{order_by}}',
+  			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
+  		  dataType:"html",
+  		  error:function(data){},
+  		  success:function(data){
+  			if (data != "") {
+  				$(".last-comment:last").after(data);
+  				setTimeout(function(){ fetching = false; },300);
+  				$('div#lastPostsLoader').empty();
+  			} else{
+  				$('div#lastPostsLoader').html('');
+  			}
+  			
+  		  },
+  	  	});
 
-$(document).ready(function(){
-	
-	var page = 1;
-	var fetching = false;
-	
-	function get_latest_comments() 
-	{ 
-		fetching = true;
-		
-		$('div#lastPostsLoader').html('<img src="{{STATIC_URL}}images/loading.gif">');
-		
-		$.ajax({
-		  type:"POST",
-		  url :"/sharek/latest-comments/",
-		  data:{
-			  'page': ++page, 'article': {{article.id}}, 'order_by': '{{order_by}}',
-			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
-		  dataType:"html",
-		  error:function(data){},
-		  success:function(data){
-			if (data != "") {
-				$(".last-comment:last").after(data);
-				setTimeout(function(){ fetching = false; },300);
-				$('div#lastPostsLoader').empty();
-			} else{
-				$('div#lastPostsLoader').html('');
-			}
-			
-		  },
-	  	});
-
-	}
-	
-	$(window).scroll(function(){
-		var bufferzone = $(window).scrollTop() * 0.20;
-		if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
-			get_latest_comments();
-		}
-	});
-	
-});
-
+  	}
+  	
+  	$(window).scroll(function(){
+  		var bufferzone = $(window).scrollTop() * 0.20;
+  		if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
+  			get_latest_comments();
+  		}
+  	});
+  	
+  });
 </script>
   
 {% endif %}
@@ -307,19 +323,35 @@ $(document).ready(function(){
 
 <script id="modification_temp" type="text/x-jquery-tmpl">
   <div class="comment-block L_${id} alt">
-  
-    <div class="facebook_user_img">
-		
-        <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+    {% if user.username != 'admin' %}
+      <div class="facebook_user_img">
+        {% if request.session.social_auth_last_login_backend == 'facebook' %}
+          <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
             <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-        </a>
-    </div>
+          </a>
+        {% elif request.session.social_auth_last_login_backend == 'twitter' %}
+          <a href="http://www.twitter.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          </a>
+        {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
+          <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+        {% else %} <!-- google -->
+          google image
+        {% endif %}
+      </div>
+    {% endif %}
           
-          {% if user.username == 'admin' %}
-	        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
-          {% else %}
-    <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{user.first_name}} {{ user.last_name }}</a></p></h3> 
-          {% endif %}
+    {% if user.username == 'admin' %}
+	    <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+    {% else %}
+      {% if request.session.social_auth_last_login_backend == 'facebook' %}
+        <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% elif request.session.social_auth_last_login_backend == 'twitter' %}
+        <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% else %} <!-- yahoo and google -->
+        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% endif %} 
+    {% endif %}
              
     <div class="like-group">
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote  ${id}" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
@@ -335,17 +367,36 @@ $(document).ready(function(){
 
 <script id="reply_temp" type="text/x-jquery-tmpl">
   <div class="comment-block child-reply L_${id}">
-    <div class="facebook_user_img">
-			<a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
-				<img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-			</a>
-    </div>
-          
-          {% if user == 'admin' %}
-	        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
-          {% else %}
-      <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-          {% endif %}
+    
+    {% if user.username != 'admin' %}
+      <div class="facebook_user_img">
+        {% if request.session.social_auth_last_login_backend == 'facebook' %}
+          <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          </a>
+        {% elif request.session.social_auth_last_login_backend == 'twitter' %}
+          <a href="http://www.twitter.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          </a>
+        {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
+          <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+        {% else %} <!-- google -->
+          google image
+        {% endif %}
+      </div>
+    {% endif %}
+    
+    {% if user == 'admin' %}
+      <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+    {% else %}
+      {% if request.session.social_auth_last_login_backend == 'facebook' %}
+        <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% elif request.session.social_auth_last_login_backend == 'twitter' %}
+        <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% else %} <!-- yahoo and google -->
+        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% endif %}
+    {% endif %}
 
     <div class="like-group">
          <a {% if user %} href="javascript:;" {% else %} href="#not-logged" rel="facebox"{% endif %}  class="dislike vote L_vote ${id}" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
