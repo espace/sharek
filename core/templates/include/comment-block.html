@@ -17,8 +17,12 @@
         </a>
       {% elif feedback.user|get_auth_provider == 'yahoo' %}
         <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ feedback.user }}">
-      {% else %} <!-- google -->
-        google image
+      {% elif feedback.user|get_auth_provider == 'google' %}
+        <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
+      {% else %}
+        <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.name }}">
+          <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ feedback.user }}">
+        </a>
       {% endif %}
     {% endif %}
   </div>
@@ -30,9 +34,13 @@
       <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
     {% elif feedback.user|get_auth_provider == 'twitter' %}
       <h3><p class="name"><a href="http://www.twitter.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
-    {% else %} <!-- yahoo and google -->
+    {% elif feedback.user|get_auth_provider == 'yahoo' %}
       <h3><p class="name"><a>{{ feedback.name }}</a></p></h3>
-    {% endif %} 
+    {% elif feedback.user|get_auth_provider == 'google' %}
+      <h3><p class="name"><a>{{ feedback.name }}</a></p></h3>
+    {% else %}
+      <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
+    {% endif %}
   {% endif %}
              
   <div class="like-group">
@@ -69,8 +77,12 @@
                 </a>
               {% elif reply.user|get_auth_provider == 'yahoo' %}
                 <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ reply.user }}">
-              {% else %} <!-- google -->
-                google image
+              {% elif reply.user|get_auth_provider == 'google' %}
+                <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
+              {% else %}
+                <a href="http://www.facebook.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.name }}">
+                  <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ reply.user }}">
+                </a>
               {% endif %}
             {% endif %}
           </div>
@@ -82,8 +94,12 @@
               <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{ reply.name }}</a></p></h3>
             {% elif reply.user|get_auth_provider == 'twitter' %}
               <h3><p class="name"><a href="http://www.twitter.com/{{ reply.user }}" target="_blank">{{ reply.name }}</a></p></h3>
-            {% else %} <!-- yahoo and google -->
+            {% elif reply.user|get_auth_provider == 'yahoo' %}
               <h3><p class="name"><a>{{ reply.name }}</a></p></h3>
+            {% elif reply.user|get_auth_provider == 'google' %}
+              <h3><p class="name"><a>{{ reply.name }}</a></p></h3>
+            {% else %}
+              <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{ reply.name }}</a></p></h3>
             {% endif %}
           {% endif %}
             
@@ -116,8 +132,12 @@
             </a>
           {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
             <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-          {% else %} <!-- google -->
-            google image
+          {% elif request.session.social_auth_last_login_backend == 'google' %}
+            <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
+          {% else %}
+            <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+              <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+            </a>
           {% endif %}
         </div>
       {% endif %}
@@ -129,8 +149,12 @@
           <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
         {% elif request.session.social_auth_last_login_backend == 'twitter' %}
           <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-        {% else %} <!-- yahoo and google -->
+        {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
           <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+        {% elif request.session.social_auth_last_login_backend == 'google' %}
+          <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+        {% else %}
+          <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
         {% endif %}
       {% endif %}
              
