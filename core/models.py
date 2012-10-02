@@ -117,7 +117,7 @@ class Topic(models.Model):
 
        articles_list = []
        for row in cursor.fetchall():
-           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], feedback_count=row[11])
+           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12])
            p.topic_id = row[0]
            p.name = row[1]
            p.topic_slug = row[2]
