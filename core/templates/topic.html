@@ -28,7 +28,7 @@
                 <select class="span2" onchange="window.open(this.options[this.selectedIndex].value,'_top')"> 
                     <option>-- اذهب للمادة --</option>
                     {% for article in all_articles %}
-                    <option value="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</option>
+                    <option value="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}">{{article.name}}</option>
                     {% endfor %} 
                 </select>
                 
@@ -46,7 +46,7 @@
                 <select class="span2" onchange="window.open(this.options[this.selectedIndex].value,'_top')"> 
                     <option>-- اذهب للمادة --</option>
                     {% for article in all_articles %}
-                    <option value="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</option>
+                    <option value="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}">{{article.name}}</option>
                     {% endfor %} 
                 </select>
                 

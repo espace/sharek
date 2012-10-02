@@ -10,17 +10,6 @@ from django.db.models.aggregates import Max
 from core.actions import exclusive_boolean_fields
 from django.db import connection, models
 
-@classmethod
-def get_inactive(self):
-    all_result = User.objects.filter(is_active=False).values('username')
-    inactive = []
-    for result in all_result:
-        inactive.append(str(result['username']))
-    
-    return inactive
-
-User.add_to_class('get_inactive', get_inactive)
-
 class Tag(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
@@ -63,7 +52,10 @@ class Tag(models.Model):
 
 class TopicManager(models.Manager):
     def with_counts(self):
-       query = "SELECT core_topic.id, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered, ( SELECT MAX(core_articledetails.mod_date) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ), ( SELECT COUNT(core_articledetails.*) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ) as headers FROM core_topic"
+       query = '''SELECT core_topic.id, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered,
+	   				( SELECT MAX(core_articledetails.mod_date) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ),
+					( SELECT COUNT(core_articledetails.*) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ) as headers
+				  FROM core_topic'''
        cursor = connection.cursor()
        cursor.execute(query)
 
@@ -97,45 +89,57 @@ class Topic(models.Model):
 
     @classmethod
     def total_contributions(self):
-       query = "SELECT SUM(count) FROM ( SELECT COUNT(*) as count FROM core_feedback UNION SELECT COUNT(*) FROM core_rating UNION SELECT COUNT(*) FROM core_articlerating ) total_count"
+       query = '''SELECT SUM(count) FROM (
+	   				SELECT COUNT(*) as count FROM core_feedback
+					UNION
+					SELECT COUNT(*) FROM core_rating
+					UNION
+					SELECT COUNT(*) FROM core_articlerating
+				  ) total_count'''
        cursor = connection.cursor()
        cursor.execute(query)
        row = cursor.fetchone()
        return row[0]
     
-    def get_articles(self):
-        # the new tech of article " header and details "
-        article_headers = self.articleheader_set.all().order_by('order')
-        article_details = []
-        for article_header in article_headers:
-            ad = article_header.articledetails_set.filter(current = True)
-            if len(ad) == 1:
-                article_details.append(ad[0])
-        return article_details
+    def get_articles(self, offset = None, limit = None):
+       return self.get_articles_limit()
     
-    def get_articles_limit(self, offset, limit):
-        # the new tech of article " header and details "
-        article_headers = self.articleheader_set.all().order_by('order')[offset:limit]
-        article_details = []
-        for article_header in article_headers:
-            ad = article_header.articledetails_set.filter(current = True)
-            if len(ad) == 1:
-                article_details.append(ad[0])
-        return article_details
+    def get_articles_limit(self, offset = None, limit = None):
+       query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
+						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count
+					FROM core_articleheader
+					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
+					WHERE core_articledetails.current IS TRUE AND topic_id = %s
+					ORDER BY core_articleheader.order'''
 
-    def articles_count(self):
-       #return len(self.get_articles())
-       query = "SELECT core_topic.id, COUNT(core_articledetails.*) as articles_count FROM core_topic INNER JOIN core_articleheader on core_topic.id = core_articleheader.topic_id INNER JOIN core_articledetails on core_articledetails.header_id = core_articleheader.id WHERE core_articledetails.current is true GROUP BY core_topic.id HAVING core_topic.id = %s"
+       if offset != None and limit != None:
+           query = query + ' OFFSET ' + str(offset) + ' LIMIT ' + str(limit)
+
        cursor = connection.cursor()
        cursor.execute(query, [self.id])
-       row = cursor.fetchone()
-       return row[1]
-   
+
+       articles_list = []
+       for row in cursor.fetchall():
+           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12])
+           p.topic_id = row[0]
+           p.name = row[1]
+           p.topic_slug = row[2]
+           p.order = row[3]
+           articles_list.append(p)
+       return articles_list
+
     def get_mod_date(self):
        #articles = self.get_articles()
        #articles = sorted(articles, key=lambda article: article.mod_date, reverse=True)
        #return articles[0]
-       query = "SELECT core_topic.id, MAX(core_articledetails.mod_date) as mod_date FROM core_topic INNER JOIN core_articleheader on core_topic.id = core_articleheader.topic_id INNER JOIN core_articledetails on core_articledetails.header_id = core_articleheader.id WHERE core_articledetails.current is true GROUP BY core_topic.id HAVING core_topic.id = %s"
+       query = '''SELECT core_topic.id, MAX(core_articledetails.mod_date) as mod_date
+	   			  FROM core_topic INNER JOIN core_articleheader on core_topic.id = core_articleheader.topic_id
+				  INNER JOIN core_articledetails on core_articledetails.header_id = core_articleheader.id
+				  WHERE core_articledetails.current is true
+				  GROUP BY core_topic.id
+				  HAVING core_topic.id = %s'''
        cursor = connection.cursor()
        cursor.execute(query, [self.id])
        row = cursor.fetchone()
@@ -154,11 +158,49 @@ class Topic(models.Model):
         else:
             return False
 
+class ArticleHeaderManager(models.Manager):
+    def get_next(self, topic, order):
+       query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.slug, core_articledetails.slug
+					FROM core_articleheader inner join core_articledetails
+					ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_topic ON core_topic.id = core_articleheader.topic_id
+					WHERE core_articleheader.order > %s AND core_articleheader.topic_id = %s AND core_articledetails.current is true
+					ORDER BY core_articleheader.order LIMIT 1'''
+       cursor = connection.cursor()
+       cursor.execute(query, [order, topic])
+       row = cursor.fetchone()
+       if(row):
+           p = self.model(id=row[0], name=row[1])
+           p.slug = row[3]
+           p.topic_slug = row[2]
+           return p
+       else:
+           return None
+    
+    def get_prev(self, topic, order):
+       query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.slug, core_articledetails.slug
+					FROM core_articleheader inner join core_articledetails
+					ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_topic ON core_topic.id = core_articleheader.topic_id
+					WHERE core_articleheader.order < %s AND core_articleheader.topic_id = %s AND core_articledetails.current is true
+					ORDER BY core_articleheader.order Desc LIMIT 1'''
+       cursor = connection.cursor()
+       cursor.execute(query, [order, topic])
+       row = cursor.fetchone()
+       if(row):
+           p = self.model(id=row[0], name=row[1])
+           p.slug = row[3]
+           p.topic_slug = row[2]
+           return p
+       else:
+           return None
+
 class ArticleHeader(models.Model):
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)
     name = models.CharField(max_length=40)
     order = models.IntegerField(blank = True, null = True)
+    objects = ArticleHeaderManager()
 
     def clean(self):
         if len(self.name) >= 40:
@@ -174,18 +216,74 @@ class ArticleHeader(models.Model):
        verbose_name_plural = "Articles"
        ordering = ["order"]
 
+class ArticleManager(models.Manager):
+    def get_top_liked(self, limit):
+       query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug, max(core_articledetails.likes) likes
+					FROM core_articleheader
+					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
+					WHERE core_articledetails.current IS TRUE
+					GROUP BY core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug
+					ORDER BY likes DESC LIMIT %s'''
+       cursor = connection.cursor()
+       cursor.execute(query, [limit])
+
+       article_list = []
+       for row in cursor.fetchall():
+           p = self.model(slug=row[5], likes=row[6])
+           p.header = ArticleHeader.objects.get(id=row[0])
+           p.topic = Topic.objects.get(id=row[2])
+           article_list.append(p)
+       return article_list
+
+    def get_top_disliked(self, limit):
+       query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug, max(core_articledetails.dislikes) dislikes
+					FROM core_articleheader
+					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
+					WHERE core_articledetails.current IS TRUE
+					GROUP BY core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug
+					ORDER BY dislikes DESC LIMIT %s'''
+       cursor = connection.cursor()
+       cursor.execute(query, [limit])
+
+       article_list = []
+       for row in cursor.fetchall():
+           p = self.model(slug=row[5], dislikes=row[6])
+           p.header = ArticleHeader.objects.get(id=row[0])
+           p.topic = Topic.objects.get(id=row[2])
+           article_list.append(p)
+       return article_list
+
+    def get_top_commented(self, limit):
+       query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug, max(core_articledetails.feedback_count) feedback_count
+					FROM core_articleheader
+					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
+					WHERE core_articledetails.current IS TRUE
+					GROUP BY core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug
+					ORDER BY feedback_count DESC LIMIT %s'''
+       cursor = connection.cursor()
+       cursor.execute(query, [limit])
+
+       article_list = []
+       for row in cursor.fetchall():
+           p = self.model(slug=row[5], feedback_count=row[6])
+           p.header = ArticleHeader.objects.get(id=row[0])
+           p.topic = Topic.objects.get(id=row[2])
+           article_list.append(p)
+       return article_list
+
 class ArticleDetails(models.Model):
     header =  models.ForeignKey(ArticleHeader, null = True, blank = True)
     slug   = models.SlugField(max_length=40, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
+    feedback_count = models.IntegerField(default=0)
     current = models.BooleanField(default=False)
     mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Modification Date')
-
-    def feedback_count(self):
-        inactive_users = User.get_inactive
-        return Feedback.objects.filter(articledetails_id = self.id).exclude(user__in=inactive_users).count()
+    objects = ArticleManager()
 
     def get_votes(self):
         return Rating.objects.filter(articledetails_id= self.id)
@@ -213,18 +311,6 @@ class ArticleDetails(models.Model):
 
     def get_current_version(self):
         return self.header.articledetails_set.get(current = True)
-
-    @classmethod
-    def get_top_liked(self, limit):
-      return ArticleDetails.objects.filter(current = True).order_by('-likes')[:limit]
-    
-    @classmethod
-    def get_top_disliked(self, limit):
-      return ArticleDetails.objects.filter(current = True).order_by('-dislikes')[:limit]
-    
-    @classmethod
-    def get_top_commented(self, limit):
-      return ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')[:limit]
 
     class Meta:
        verbose_name = "Article Text"
@@ -307,3 +393,34 @@ class ReadOnlyAdminFields(object):
                     form.base_fields[field_name].required = False
 
         return form
+
+
+@classmethod
+def get_top_users(self, limit):
+    query = '''SELECT username, first_name, last_name, count(core_feedback.*) contribution
+				FROM auth_user INNER JOIN core_feedback ON auth_user.username = core_feedback.user
+				GROUP BY username, first_name, last_name, is_active
+				HAVING is_active IS TRUE ORDER BY contribution DESC LIMIT %s'''
+    cursor = connection.cursor()
+    cursor.execute(query, [limit])
+
+    users_list = []
+    for row in cursor.fetchall():
+        p = User(username=row[0], first_name=row[1], last_name=row[2])
+        p.contribution = row[3]
+        users_list.append(p)
+    return users_list
+
+
+@classmethod
+def get_inactive(self):
+    all_result = User.objects.filter(is_active=False).values('username')
+    inactive = []
+    for result in all_result:
+        inactive.append(str(result['username']))
+    
+    return inactive
+
+
+User.add_to_class('get_inactive', get_inactive)
+User.add_to_class('get_top_users', get_top_users)

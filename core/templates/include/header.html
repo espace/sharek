@@ -72,7 +72,11 @@
                 <li class="">
                   <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
                 </li>
-
+                {% if user %}
+                <li>
+                  <a href="{% url profile browsing_data='likes' %}">الملف الشخصي</a>
+                </li>
+                {% endif %}
               </ul>
               
 
