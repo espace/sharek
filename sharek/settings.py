@@ -24,13 +24,13 @@ SESSION_COOKIE_NAME = "dostorid"
 AUTHENTICATION_BACKENDS = (
 	'django.contrib.auth.backends.ModelBackend',
     'core.facebook.backends.FacebookBackend',
-    'social_auth.backends.twitter.TwitterBackend',
-    'social_auth.backends.facebook.FacebookBackend',
-    'social_auth.backends.google.GoogleOAuthBackend',
-    'social_auth.backends.google.GoogleOAuth2Backend',
-    'social_auth.backends.google.GoogleBackend',
-    'social_auth.backends.yahoo.YahooBackend',
-    'social_auth.backends.OpenIDBackend',
+    'core.social_auth.backends.twitter.TwitterBackend',
+    'core.social_auth.backends.facebook.FacebookBackend',
+    'core.social_auth.backends.google.GoogleOAuthBackend',
+    'core.social_auth.backends.google.GoogleOAuth2Backend',
+    'core.social_auth.backends.google.GoogleBackend',
+    'core.social_auth.backends.yahoo.YahooBackend',
+    'core.social_auth.backends.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -148,9 +148,13 @@ INSTALLED_APPS = (
     'django_evolution',
     'template_utils',
     'django.contrib.humanize',
-    'social_auth',
+    'core.social_auth',
+    # Uncomment the next line to enable the admin:
+    # 'django.contrib.admin',
+    # Uncomment the next line to enable admin documentation:
+    # 'django.contrib.admindocs',
+    'sugar',
     'debug_toolbar',
-
 )
 
 # A sample logging configuration. The only tangible logging

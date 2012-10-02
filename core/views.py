@@ -32,6 +32,8 @@ import core
 import os.path
 from operator import attrgetter
 
+from core.social_auth.models import UserSocialAuth
+
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
 
@@ -360,15 +362,20 @@ def modify(request):
                 feedback = Feedback.objects.filter(articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
             
             if request.user.username != "admin":
-                 fb_user = FacebookSession.objects.get(user = request.user)
-                 # GraphAPI is the main class from facebook_sdp.py
-                 graph = facebook_sdk.GraphAPI(fb_user.access_token)
-                 attachment = {}
-                 attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
-                 attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook.png"
-                 message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
-                 graph.put_wall_post(message, attachment)
-            
+                # post on twitter or facebook
+                if UserSocialAuth.auth_provider(request.user.username) == 'facebook':
+                    fb_user = FacebookSession.objects.get(user = request.user)
+                    # GraphAPI is the main class from facebook_sdp.py
+                    graph = facebook_sdk.GraphAPI(fb_user.access_token)
+                    attachment = {}
+                    attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
+                    attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook.png"
+                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
+                    graph.put_wall_post(message, attachment)
+                
+                if UserSocialAuth.auth_provider(request.user.username) == 'twitter':
+                    print 'posting to twitter ....'
+                    
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
 def reply_feedback(request):

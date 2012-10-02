@@ -69,7 +69,7 @@ urlpatterns = patterns('',
 
     url(r'^sharek/$', 'core.views.index', name='index'),
 	
-	url(r'^sharek/', include('social_auth.urls')),
+	url(r'^sharek/', include('core.social_auth.urls')),
 	
     url(r'$', 'core.views.tmp'),
       
