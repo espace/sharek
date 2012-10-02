@@ -96,7 +96,10 @@ class Topic(models.Model):
        row = cursor.fetchone()
        return row[0]
     
-    def get_articles(self):
+    def get_articles(self, offset = None, limit = None):
+       return self.get_articles_limit()
+    
+    def get_articles_limit(self, offset = None, limit = None):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
 						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
 						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count
@@ -105,6 +108,10 @@ class Topic(models.Model):
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
 					WHERE core_articledetails.current IS TRUE AND topic_id = %s
 					ORDER BY core_articleheader.order'''
+
+       if offset != None and limit != None:
+           query = query + ' OFFSET ' + str(offset) + ' LIMIT ' + str(limit)
+
        cursor = connection.cursor()
        cursor.execute(query, [self.id])
 
@@ -117,26 +124,6 @@ class Topic(models.Model):
            p.order = row[3]
            articles_list.append(p)
        return articles_list
-       '''
-       # the new tech of article " header and details "
-       article_headers = self.articleheader_set.all().order_by('order')
-       article_details = []
-       for article_header in article_headers:
-           ad = article_header.articledetails_set.filter(current = True)
-           if len(ad) == 1:
-               article_details.append(ad[0])
-       return article_details
-       '''
-
-    def get_articles_limit(self, offset, limit):
-        # the new tech of article " header and details "
-        article_headers = self.articleheader_set.all().order_by('order')[offset:limit]
-        article_details = []
-        for article_header in article_headers:
-            ad = article_header.articledetails_set.filter(current = True)
-            if len(ad) == 1:
-                article_details.append(ad[0])
-        return article_details
    
     def get_mod_date(self):
        #articles = self.get_articles()

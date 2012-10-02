@@ -138,7 +138,7 @@ def topic_next_articles(request):
         limit = settings.paginator
 
         topic = get_object_or_404( Topic, slug=topic_slug )
-        articles = topic.get_articles_limit(offset, offset + limit)
+        articles = topic.get_articles_limit(offset, limit)
         
         if(len(articles) > 0):
              return render_to_response('include/next_articles.html',{'articles':articles} ,RequestContext(request))
