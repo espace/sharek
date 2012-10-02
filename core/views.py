@@ -646,7 +646,6 @@ def statistics(request):
             except EmptyPage:
                 return HttpResponse('')
 
-
 def logout(request):
     template_context = {}
     auth.logout(request)
@@ -684,4 +683,3 @@ def top_users_map(request):
             top_users.append(top_user)
 
     return render_to_response('map.html', {'counter':counter,'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
-

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load settings %}
+{% load hash %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+
+  {% for comment in commented_articles %}
+    <p>{{comment.name}}</p>
+    {% for feedback in comment.feedbacks %}
+      <p>{{feedback.suggestion}}</p>
+    {% endfor %}
+  {% endfor %}
+
+
+{% endblock %}

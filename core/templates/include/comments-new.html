@@ -73,49 +73,47 @@
 <div id="lastPostsLoader"></div>
 
 <script type="text/javascript">
+  $(document).ready(function(){
+  	
+  	var page = 1;
+  	var fetching = false;
+  	
+  	function get_latest_comments() 
+  	{ 
+  		fetching = true;
+  		
+  		$('div#lastPostsLoader').html('<img src="{{STATIC_URL}}images/loading.gif">');
+  		
+  		$.ajax({
+  		  type:"POST",
+  		  url :"/sharek/latest-comments/",
+  		  data:{
+  			  'page': ++page, 'article': {{article.id}}, 'order_by': '{{order_by}}',
+  			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
+  		  dataType:"html",
+  		  error:function(data){},
+  		  success:function(data){
+  			if (data != "") {
+  				$(".last-comment:last").after(data);
+  				setTimeout(function(){ fetching = false; },300);
+  				$('div#lastPostsLoader').empty();
+  			} else{
+  				$('div#lastPostsLoader').html('');
+  			}
+  			
+  		  },
+  	  	});
 
-$(document).ready(function(){
-	
-	var page = 1;
-	var fetching = false;
-	
-	function get_latest_comments() 
-	{ 
-		fetching = true;
-		
-		$('div#lastPostsLoader').html('<img src="{{STATIC_URL}}images/loading.gif">');
-		
-		$.ajax({
-		  type:"POST",
-		  url :"/sharek/latest-comments/",
-		  data:{
-			  'page': ++page, 'article': {{article.id}}, 'order_by': '{{order_by}}',
-			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
-		  dataType:"html",
-		  error:function(data){},
-		  success:function(data){
-			if (data != "") {
-				$(".last-comment:last").after(data);
-				setTimeout(function(){ fetching = false; },300);
-				$('div#lastPostsLoader').empty();
-			} else{
-				$('div#lastPostsLoader').html('');
-			}
-			
-		  },
-	  	});
-
-	}
-	
-	$(window).scroll(function(){
-		var bufferzone = $(window).scrollTop() * 0.20;
-		if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
-			get_latest_comments();
-		}
-	});
-	
-});
-
+  	}
+  	
+  	$(window).scroll(function(){
+  		var bufferzone = $(window).scrollTop() * 0.20;
+  		if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
+  			get_latest_comments();
+  		}
+  	});
+  	
+  });
 </script>
   
 {% endif %}
