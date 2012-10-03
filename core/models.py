@@ -130,9 +130,7 @@ class Topic(models.Model):
        return articles_list
 
     def get_mod_date(self):
-       #articles = self.get_articles()
-       #articles = sorted(articles, key=lambda article: article.mod_date, reverse=True)
-       #return articles[0]
+
        query = '''SELECT core_topic.id, MAX(core_articledetails.mod_date) as mod_date
 	   			  FROM core_topic INNER JOIN core_articleheader on core_topic.id = core_articleheader.topic_id
 				  INNER JOIN core_articledetails on core_articledetails.header_id = core_articleheader.id
