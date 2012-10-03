@@ -109,6 +109,7 @@ def topic_detail(request, topic_slug=None):
         topics = Topic.objects.filter(parent_id = None)
         topic = get_object_or_404( Topic, slug=topic_slug )
         all_articles = topic.get_articles()
+        print all_articles
     else:
         topics = Topic.objects.filter()
         if topics.count() > 0:
@@ -120,10 +121,12 @@ def topic_detail(request, topic_slug=None):
 
     voted_articles = ArticleRating.objects.filter(user = user)
 
-    paginator = Paginator(all_articles, settings.paginator) 
-    articles = paginator.page(1)
+    #paginator = Paginator(all_articles, settings.paginator) 
+    #articles = paginator.page(1)
 
-    template_context = {'topic_page':True, 'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
+
+
+    template_context = {'topic_page':True, 'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
     return render_to_response('topic.html',template_context ,RequestContext(request))
 
 def topic_next_articles(request):
@@ -136,12 +139,23 @@ def topic_next_articles(request):
         page =  request.POST.get("page")
         topic_slug =  request.POST.get("topic")
 
-        offset = settings.paginator * int(page)
-        limit = settings.paginator
+        #offset = settings.paginator * int(page)
+        #limit = settings.paginator
 
         topic = get_object_or_404( Topic, slug=topic_slug )
-        articles = topic.get_articles_limit(offset, limit)
+        articles = topic.get_articles()#_limit(offset, limit)
         
+        paginator = Paginator(articles, settings.paginator) 
+
+        try:
+            articles = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            articles = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            articles = []
+
         if(len(articles) > 0):
              return render_to_response('include/next_articles.html',{'articles':articles} ,RequestContext(request))
         else: 

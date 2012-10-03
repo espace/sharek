@@ -56,72 +56,65 @@
             </div>
             
         </div>
-
     </div><!-- row -end -->
     <div class="row">
         <div class="span3">
             {% include "include/sidebar.html" %}   
         </div><!-- span3 -->
         <div id="ajax-container" class="span9">
-            {% if articles %}    
-                {% for article in articles %}
-                	{% include "include/article_block.html" %}
-                {% endfor %}    
-                <div id="last_articles_loader"></div>
-				<script type="text/javascript">
-                    $(document).ready(function(){ 
-                        var page = 0;
-                        var fetching = false;
-                        function next_articles() 
-                        { 
-                            fetching = true;
-                            $('div#last_articles_loader').html('<img src="{{STATIC_URL}}images/loading.gif">');
-                            $.ajax({
-                              type:"POST",
-                              url :"/sharek/topic_next_articles/",
-                              data:{
-                                  'page': ++page, 'topic': '{{ topic.slug }}',
-                                  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
-                              dataType:"html",
-                              error:function(data){},
-                              success:function(data){
-                                if (data != "") {
-                                    $(".article-block:last").after(data);
-                                    setTimeout(function(){ fetching = false; },300);
-                                    $('div#last_articles_loader').empty();
-                                    $.waypoints('refresh');
-
-
-                                      $('.mada-title a:first-child').waypoint(function(event) {
-                                        var faslText = $(this).html()
-                                        // alert(faslText);
-                                         $('.chapter-s').stop().fadeIn("slow").html(faslText);
-                                          $('.topic').live()
-
-
-                      }, {
-                        // triggerOnce: true,
-                        offset: 'bottom-in-view'
-                        // offset: '50%'
-                      });
-
-                                } else{
-                                    $('div#last_articles_loader').html('');
-                                }
-                              },
-                            });
-                        }
-                        
-                        $(window).scroll(function(){
-                            var bufferzone = $(window).scrollTop() * 0.20;
-                            if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
-                                next_articles();
+        {% if all_articles %}    
+            {% for article in all_articles %}
+                {% ifchanged article.header.topic %}
+                    {{article.header.topic}}
+                {% endifchanged %}
+            	{% include "include/article_block.html" %}
+            {% endfor %}    
+            <div id="last_articles_loader"></div>
+			<script type="text/javascript">
+                $(document).ready(function(){ 
+                    var page = 1;
+                    var fetching = false;
+                    function next_articles() 
+                    { 
+                        fetching = true;
+                        $('div#last_articles_loader').html('<img src="{{STATIC_URL}}images/loading.gif">');
+                        $.ajax({
+                          type:"POST",
+                          url :"/sharek/topic_next_articles/",
+                          data:{
+                              'page': ++page, 'topic': '{{ topic.slug }}',
+                              'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
+                          dataType:"html",
+                          error:function(data){},
+                          success:function(data){
+                            if (data != ""){
+                                $(".article-block:last").after(data);
+                                setTimeout(function(){ fetching = false; },300);
+                                $('div#last_articles_loader').empty();
+                                $.waypoints('refresh');
+                                $('.mada-title a:first-child').waypoint(function(event) {
+                                    var faslText = $(this).html()
+                                    $('.chapter-s').stop().fadeIn("slow").html(faslText);
+                                    $('.topic').live()},
+                                    {offset: 'bottom-in-view'});
+                            } 
+                            else{
+                                $('div#last_articles_loader').html('');
                             }
+                          },
                         });
-                        
-                    }); 
-                </script>   
-            {% else %}
+                    }
+                    
+                    $(window).scroll(function(){
+                        var bufferzone = $(window).scrollTop() * 0.20;
+                        if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
+                            next_articles();
+                        }
+                    });
+                    
+                }); 
+            </script>   
+        {% else %}
                 <div class="topic no-mada">
 
                     <h3>
@@ -130,7 +123,7 @@
                         </p>
                     </h3>  
                 </div><!-- topic end -->
-            {% endif %}    
+        {% endif %}    
         </div>
     </div><!-- row end -->
 {% else %}
