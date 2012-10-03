@@ -16,8 +16,12 @@
           </a>
         {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
           <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-        {% else %} <!-- google -->
-          google image
+        {% elif request.session.social_auth_last_login_backend == 'google' %}
+          <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
+        {% else %}
+          <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          </a>
         {% endif %}
       </div>
     {% endif %}
@@ -29,8 +33,12 @@
         <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
       {% elif request.session.social_auth_last_login_backend == 'twitter' %}
         <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% else %} <!-- yahoo and google -->
+      {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
         <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% elif request.session.social_auth_last_login_backend == 'google' %}
+        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% else %}
+        <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
       {% endif %}
     {% endif %}
             
@@ -47,10 +55,15 @@
 <br /> 
 لكى تتمكن من تسجيل مقترحاتك لابد من تسجيل دخولك أولا
 <br />
-      <a href="#" onclick="login();return false;">
-        <img width="150" src="http://egynda.com/resource/images/fb_sign.png"/>
-</a>
     </p>
+    <div class='span4'>
+      <div class="social_login">
+        <a href="{% url socialauth_begin 'facebook' %}" class="facebook" title="سجل دخول"><img src="{{STATIC_URL}}images/facebook.png" alt=""></a>
+        <a href="{% url socialauth_begin 'twitter' %}" class="twitter" title="سجل دخول"><img src="{{STATIC_URL}}images/twitter.png" alt=""></a>
+        <a href="{% url socialauth_begin 'google' %}" class="google" title="سجل دخول"><img src="{{STATIC_URL}}images/google.png" alt=""></a>
+        <a href="{% url socialauth_begin 'yahoo' %}" class="yahoo" title="سجل دخول"><img src="{{STATIC_URL}}images/yahoo.png" alt=""></a>
+      </div>
+    </div>
   </div><!-- comment end -->
 {% endif %}
 
@@ -91,49 +104,47 @@
 <div id="lastPostsLoader"></div>
 
 <script type="text/javascript">
+  $(document).ready(function(){
+  	
+  	var page = 1;
+  	var fetching = false;
+  	
+  	function get_latest_comments() 
+  	{ 
+  		fetching = true;
+  		
+  		$('div#lastPostsLoader').html('<img src="{{STATIC_URL}}images/loading.gif">');
+  		
+  		$.ajax({
+  		  type:"POST",
+  		  url :"/sharek/latest-comments/",
+  		  data:{
+  			  'page': ++page, 'article': {{article.id}}, 'order_by': '{{order_by}}',
+  			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
+  		  dataType:"html",
+  		  error:function(data){},
+  		  success:function(data){
+  			if (data != "") {
+  				$(".last-comment:last").after(data);
+  				setTimeout(function(){ fetching = false; },300);
+  				$('div#lastPostsLoader').empty();
+  			} else{
+  				$('div#lastPostsLoader').html('');
+  			}
+  			
+  		  },
+  	  	});
 
-$(document).ready(function(){
-	
-	var page = 1;
-	var fetching = false;
-	
-	function get_latest_comments() 
-	{ 
-		fetching = true;
-		
-		$('div#lastPostsLoader').html('<img src="{{STATIC_URL}}images/loading.gif">');
-		
-		$.ajax({
-		  type:"POST",
-		  url :"/sharek/latest-comments/",
-		  data:{
-			  'page': ++page, 'article': {{article.id}}, 'order_by': '{{order_by}}',
-			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
-		  dataType:"html",
-		  error:function(data){},
-		  success:function(data){
-			if (data != "") {
-				$(".last-comment:last").after(data);
-				setTimeout(function(){ fetching = false; },300);
-				$('div#lastPostsLoader').empty();
-			} else{
-				$('div#lastPostsLoader').html('');
-			}
-			
-		  },
-	  	});
-
-	}
-	
-	$(window).scroll(function(){
-		var bufferzone = $(window).scrollTop() * 0.20;
-		if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
-			get_latest_comments();
-		}
-	});
-	
-});
-
+  	}
+  	
+  	$(window).scroll(function(){
+  		var bufferzone = $(window).scrollTop() * 0.20;
+  		if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
+  			get_latest_comments();
+  		}
+  	});
+  	
+  });
 </script>
   
 {% endif %}
@@ -277,17 +288,17 @@ $(document).ready(function(){
               success:function(data){
                 if (data.duplicate == true)
                 {
-                  alert ("أ/"+data.name+" يرجى مراعاة تغيير محتوي تعليقك للوصول لأقصى إستفاده من مشاركاتك");
+                  alert("عفوا, نص المشاركة موجود بالفعل.");
                   $("#suggestion").val("");
                   $("#load-img").remove();
                 }
                 else
                 {
-              $("#suggestion").val("");
-              $("#count").attr("value",parseInt($("#count").attr("value"))+1);
-              $("#feedback_counter").text($("#count").attr("value")+" تعليق");
-              $(".comment-block.well.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
-              $("#load-img").remove();
+				  $("#suggestion").val("");
+				  $("#count").attr("value",parseInt($("#count").attr("value"))+1);
+				  $("#feedback_counter").text($("#count").attr("value")+" تعليق");
+				  $(".comment-block.well.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
+				  $("#load-img").remove();
                 }
 
               },
@@ -337,8 +348,12 @@ $(document).ready(function(){
           </a>
         {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
           <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-        {% else %} <!-- google -->
-          google image
+        {% elif request.session.social_auth_last_login_backend == 'google' %}
+          <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
+        {% else %}
+          <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          </a>
         {% endif %}
       </div>
     {% endif %}
@@ -350,8 +365,12 @@ $(document).ready(function(){
         <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
       {% elif request.session.social_auth_last_login_backend == 'twitter' %}
         <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% else %} <!-- yahoo and google -->
+      {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
         <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% elif request.session.social_auth_last_login_backend == 'google' %}
+        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% else %}
+        <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
       {% endif %} 
     {% endif %}
              
@@ -382,8 +401,12 @@ $(document).ready(function(){
           </a>
         {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
           <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-        {% else %} <!-- google -->
-          google image
+        {% elif request.session.social_auth_last_login_backend == 'google' %}
+          <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
+        {% else %}
+          <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          </a>
         {% endif %}
       </div>
     {% endif %}
@@ -395,8 +418,12 @@ $(document).ready(function(){
         <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
       {% elif request.session.social_auth_last_login_backend == 'twitter' %}
         <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% else %} <!-- yahoo and google -->
+      {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
         <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% elif request.session.social_auth_last_login_backend == 'google' %}
+        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% else %}
+        <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
       {% endif %}
     {% endif %}
 
