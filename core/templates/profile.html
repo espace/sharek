@@ -5,6 +5,8 @@
 
 {% block content %}
 
+
+
   {% for comment in commented_articles %}
     <p>{{comment.name}}</p>
     {% for feedback in comment.feedbacks %}
