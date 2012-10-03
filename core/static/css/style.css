@@ -81,6 +81,9 @@ body {
     font-weight: bold;
     float: right;
     margin: 14px 10px 0 0;
+    height: 50px;
+    width: 50px;
+
 }
 .log_out{
     float: right;
@@ -938,11 +941,9 @@ background-position: -142px -9px !important;
 
 .floatingSocial{
       z-index: 10000;
-      width: 100%;
-      left: 0;
-      right: 0;
-      margin: 0 auto;
-      top: 10px;
+      width: 160px;
+      left: 20px;
+      bottom: 20px;
       padding: 10px 10px;
       border: solid 1px #ccc;
           opacity: 0.98;
@@ -961,11 +962,11 @@ background-position: -142px -9px !important;
     float: right;
     margin-right: 5px;
     margin-bottom: 0;
-    color: #7c0b0b;
+    color: #444;
     }
 
     .floatingSocial p span{
-      color: #ccc;  
+      color: #222;  
     }
 
     .block_con{
@@ -995,7 +996,7 @@ background-position: -142px -9px !important;
 }
 .tags{
     font-family: GESSTwoMediumRegular;
-    margin-top: 20px;
+    margin-top: 60px;
 
 }
 .tags p{
@@ -1216,8 +1217,8 @@ background-position: -142px -9px !important;
 }
 .facebook_user_img img{
     border-radius: 5px;
-    width: 50px;
     height: 50px;
+    width: 50px;
 }
 .comment-block .name a{
     font-size:12px;
