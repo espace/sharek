@@ -176,7 +176,8 @@ def complete_process(request, backend, *args, **kwargs):
         if msg:
             messages.error(request, msg)
         url = backend_setting(backend, 'LOGIN_ERROR_URL', LOGIN_ERROR_URL)
-    return HttpResponseRedirect(url)
+    return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
+    #return HttpResponseRedirect(url)
 
 
 def auth_complete(request, backend, user=None, *args, **kwargs):
