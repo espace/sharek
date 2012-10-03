@@ -331,8 +331,12 @@ class Feedback(models.Model):
     dislikes = models.IntegerField(default=0)
 
     def get_children(self):
-        inactive_users = User.get_inactive
-        return Feedback.objects.filter(parent_id = self.id).order_by('id').exclude(user__in=inactive_users)
+        query = '''SELECT core_feedback.*
+					FROM core_feedback INNER JOIN auth_user ON core_feedback.user = auth_user.username
+					WHERE core_feedback.parent_id = %s AND auth_user.is_active IS TRUE ORDER BY core_feedback.id'''
+        cursor = connection.cursor()
+        cursor.execute(query, [self.id])
+        return [Feedback(*i) for i in cursor.fetchall()]
 
 class Rating(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
