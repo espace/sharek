@@ -150,12 +150,10 @@ class Topic(models.Model):
     def draw_me(self):
         if len(self.get_articles()) > 0:
             return True
-        elif len(self.get_topic_children()) > 0:
-            for child in self.get_topic_children():
-                if child.draw_me():
-                    return True
-        else:
-            return False
+        for child in self.get_topic_children():
+          if child.draw_me():
+            return True
+        return False
 
 class ArticleHeaderManager(models.Manager):
     def get_next(self, topic, order):
