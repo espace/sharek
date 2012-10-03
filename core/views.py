@@ -122,8 +122,7 @@ def topic_detail(request, topic_slug=None):
     voted_articles = ArticleRating.objects.filter(user = user)
 
     paginator = Paginator(all_articles, settings.paginator) 
-    #test new presentation
-    articles = ArticleDetails.objects.all() #paginator.page(1)
+    articles = paginator.page(1)
 
 
 
