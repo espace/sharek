@@ -2120,3 +2120,15 @@ span.divider{
 .no-mada .mada-title {
     margin-top: 0;
 }
+
+.content{
+position: relative;
+}
+
+.addthis_toolbox{
+background: none;
+position: absolute;
+left: -80px !important;
+top: 0px !important;
+
+}
