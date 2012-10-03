@@ -21,6 +21,7 @@
           </a>
       </p>
   </h3>
+  
   {% ifnotequal topic_page 1 %}
     <a href="{% url topic topic_slug=article.header.topic.slug %}">{{ article.header.topic }}</a>
   {% endifnotequal %}
