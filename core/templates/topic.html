@@ -7,16 +7,18 @@
 {% block content %}
 
 {% if topic %}
+
     <div class="row">
         <div class="span12 ">
-             <div class="well  floatingSocial span12">
-                <div class="block_con">
-                      <p> أنت فى :</p>
-                      <p class="section">الحقوق والواجبات</p>
-                      <p class="chapter-s"><span>/</span> الفصل الأول</p>
-                      <p class="branch"><span>/</span> الفرع الأول</p>
-                </div>                
-            </div><!-- floatingSocial -->
+           
+              <div class="well  floatingSocial">
+                  <p> أنت فى :</p>
+                  <p class="section">الحقوق والواجبات</p>
+                  <p class="chapter-s"><span>/</span> الفصل الأول</p>
+        <!--           <p class="branch"><span>/</span> الفرع الأول</p>
+         -->        
+                </div>
+             
             <div id="headtitle" class="headtitle innerpage offset3 visible-desktop">
                 <h1>{{topic.name}}</h1> 
                 
@@ -54,6 +56,7 @@
             </div>
             
         </div>
+
     </div><!-- row -end -->
     <div class="row">
         <div class="span3">
@@ -86,6 +89,22 @@
                                     $(".article-block:last").after(data);
                                     setTimeout(function(){ fetching = false; },300);
                                     $('div#last_articles_loader').empty();
+                                    $.waypoints('refresh');
+
+
+                                      $('.mada-title a:first-child').waypoint(function(event) {
+                                        var faslText = $(this).html()
+                                        // alert(faslText);
+                                         $('.chapter-s').stop().fadeIn("slow").html(faslText);
+                                          $('.topic').live()
+
+
+                      }, {
+                        // triggerOnce: true,
+                        offset: 'bottom-in-view'
+                        // offset: '50%'
+                      });
+
                                 } else{
                                     $('div#last_articles_loader').html('');
                                 }

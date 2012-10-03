@@ -19,6 +19,7 @@
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.min.js" ></script>
   <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.cookie.js" ></script>
   <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js" ></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/waypoints.js" ></script>
 
   <script type="text/javascript" src="{{ STATIC_URL }}js/topic-nav.js" ></script>
 
@@ -79,7 +80,7 @@
   
 </head>
 
-<body>
+<body  data-spy="scroll" data-target=".navbar">
 
     	
     {% include "include/header.html" %}

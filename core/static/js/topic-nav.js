@@ -1,5 +1,40 @@
               $(document).ready(function() {
-                var $postShare = $('.floatingSocial');
+                
+               // $(".topic").live("change",function(){
+    
+               //       $('.mada-title a:first-child').waypoint(function(event) {
+               //              var faslText = $(this).html()
+               //              // alert(faslText);
+               //               $('.chapter-s').stop().fadeIn("slow").html(faslText);
+               //                $('.topic').live()
+
+
+               //        }, {
+               //          // triggerOnce: true,
+               //          offset: 'bottom-in-view'
+               //          // offset: '50%'
+               //        });
+
+
+               //   });
+
+               /// fasl detection 
+              
+              $('.mada-title a:first-child').waypoint(function(event) {
+                            var faslText = $(this).html()
+                            // alert(faslText);
+                             $('.chapter-s').stop().fadeIn("slow").html(faslText);
+                              $('.topic').live()
+
+
+                      }, {
+                        // triggerOnce: true,
+                        offset: 'bottom-in-view'
+                        // offset: '50%'
+                      });
+
+              /// floating note
+               var $postShare = $('.floatingSocial');
                 var descripY = parseInt($('.content').offset().top);
         
         
@@ -8,13 +43,13 @@
                     var fixedShare = $postShare.css('position') == 'fixed';
                     if ($('.floatingSocial').length > 0) {
                         if (scrollY > descripY && !fixedShare) {
-                            $postShare.stop().css({
+                            $postShare.stop().fadeIn("slow").css({
                                 position: 'fixed',
-                                top: 0,
+                                bottom: 20,
                                 display:'block'
                             });
                         } else if (scrollY < descripY && fixedShare) {
-                            $postShare.css({
+                            $postShare.stop().fadeOut("slow").css({
                                 position: 'relative',
                                 display:'none'
                             });
