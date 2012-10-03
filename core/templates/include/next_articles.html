@@ -1,6 +1,3 @@
 {% for article in articles %}
-    {% ifchanged article.header.topic %}
-      {{article.header.topic}}
-    {% endifchanged %}
     {% include "include/article_block.html" %}
 {% endfor %}

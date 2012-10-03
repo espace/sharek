@@ -25,27 +25,14 @@ class Tag(models.Model):
         return self.slug
     
     def get_articles(self):
-        # the new tech of article " header and details "
-        print "I'm heeeeeeeeeeeeeeeeeeeeeeeeer"
-        article_headers = self.articleheader_set.all()
-        article_details = []
-        for article_header in article_headers:
-            ad = article_header.articledetails_set.filter(current = True)
-            if len(ad) == 1:
-                article_details.append(ad[0])
-
-        print "children"
-        children = Topic.objects.filter(parent_id = self.id)
-        print "kajhlajskdhasdkjah"
-        print children
-
-        for child in children:
-          article_headers = child.articleheader_set.all()
-          for article_header in article_headers:
-            ad = article_header.articledetails_set.filter(current = True)
-            if len(ad) == 1:
-                article_details.append(ad[0])
-        return article_details
+      # the new tech of article " header and details "
+      article_headers = self.articleheader_set.all()
+      article_details = []
+      for article_header in article_headers:
+          ad = article_header.articledetails_set.filter(current = True)
+          if len(ad) == 1:
+              article_details.append(ad[0])
+      return article_details
 
     
     def get_articles_limit(self, offset, limit):

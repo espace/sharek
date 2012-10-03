@@ -63,17 +63,14 @@
         </div><!-- span3 -->
         <div id="ajax-container" class="span9">
 
-        {% if all_articles %}    
-            {% for article in all_articles %}
-                {% ifchanged article.header.topic %}
-                    {{article.header.topic}}
-                {% endifchanged %}
+        {% if articles %}    
+            {% for article in articles %}
             	{% include "include/article_block.html" %}
             {% endfor %}    
             <div id="last_articles_loader"></div>
 			<script type="text/javascript">
                 $(document).ready(function(){ 
-                    var page = 1;
+                    var page = 0;
                     var fetching = false;
                     function next_articles() 
                     { 
