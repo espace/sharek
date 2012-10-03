@@ -60,10 +60,12 @@
             {% include "include/sidebar.html" %}   
         </div><!-- span3 -->
         <div id="ajax-container" class="span9">
-            {% if articles %}    
+            {% if articles %}  
+              
                 {% for article in articles %}
                 	{% include "include/article_block.html" %}
-                {% endfor %}    
+                {% endfor %}
+                
                 <div id="last_articles_loader"></div>
 				<script type="text/javascript">
                     $(document).ready(function(){ 
