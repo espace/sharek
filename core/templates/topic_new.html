@@ -66,18 +66,16 @@
         {% for article in all_articles %}
             {% include "include/article_block.html" %}
         {% endfor %}
-        ddddddd
-        ddddddd
         {% for chapter in topic.get_topic_children %}
           {% if chapter.draw_me %}
             <h2>{{chapter.name}}</h2>
-            {% for art in chapter.get_articles %}
+            {% for article in chapter.get_articles %}
                 {% include "include/article_block.html" %}
             {% endfor %}
             {% for branch in chapter.get_topic_children %}
               {% if branch.draw_me %}
                 <h3>{{branch.name}}</h3>
-                {% for art in branch.get_articles %}
+                {% for article in branch.get_articles %}
                     {% include "include/article_block.html" %}
                 {% endfor %}
               {% endif %}
