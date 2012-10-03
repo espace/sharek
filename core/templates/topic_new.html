@@ -63,28 +63,28 @@
         </div><!-- span3 -->
         <div id="ajax-container" class="span9">
 
-        {% if articles %}    
-            {% for article in articles %}
-                {% ifchanged article.header.topic %}
-                    {% ifnotequal article.header.topic.parent topic %}
-                        {% ifnotequal article.header.topic topic %}
-                            {{article.header.topic.parent.name}} - {{article.header.topic.name}}
-                        {% endifnotequal %}
-                    {% else %}
-                        {{article.header.topic.name}}
-                    {% endifnotequal %}
-                {% endifchanged %}
-              {% include "include/article_block.html" %}
-            {% endfor %}      
-        {% else %}
-                <div class="topic no-mada">
-                    <h3>
-                        <p class="mada-title">
-                            لا توجد مواد متعلقة ب " <span  STYLE="font-size: x-large; color: #B66B5E"> {{topic.name}} </span> "
-                        </p>
-                    </h3>  
-                </div><!-- topic end -->
-        {% endif %}    
+        {% for article in all_articles %}
+            {% include "include/article_block.html" %}
+        {% endfor %}
+        ddddddd
+        ddddddd
+        {% for chapter in topic.get_topic_children %}
+          {% if chapter.draw_me %}
+            <h2>{{chapter.name}}</h2>
+            {% for art in chapter.get_articles %}
+                {% include "include/article_block.html" %}
+            {% endfor %}
+            {% for branch in chapter.get_topic_children %}
+              {% if branch.draw_me %}
+                <h3>{{branch.name}}</h3>
+                {% for art in branch.get_articles %}
+                    {% include "include/article_block.html" %}
+                {% endfor %}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+   
         </div>
     </div><!-- row end -->
 {% else %}

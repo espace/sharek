@@ -110,7 +110,7 @@ class Topic(models.Model):
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
-					WHERE core_articledetails.current IS TRUE AND topic_id = %s
+					WHERE core_articledetails.current IS TRUE AND topic_id IN (3,4)
 					ORDER BY core_articleheader.order'''
 
        if offset != None and limit != None:
