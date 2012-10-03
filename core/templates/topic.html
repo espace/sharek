@@ -62,6 +62,7 @@
             {% include "include/sidebar.html" %}   
         </div><!-- span3 -->
         <div id="ajax-container" class="span9">
+
         {% if all_articles %}    
             {% for article in all_articles %}
                 {% ifchanged article.header.topic %}
