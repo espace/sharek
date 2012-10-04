@@ -26,26 +26,44 @@ class Tag(models.Model):
     def get_absolute_url(self):
         return self.slug
     
-    def get_articles(self):
-        # the new tech of article " header and details "
-        article_headers = self.articleheader_set.all()
-        article_details = []
-        for article_header in article_headers:
-            ad = article_header.articledetails_set.filter(current = True)
-            if len(ad) == 1:
-                article_details.append(ad[0])
-        return article_details
-        
+    def get_articles(self, offset = None, limit = None):
+       return self.get_articles_limit()
     
-    def get_articles_limit(self, offset, limit):
-        # the new tech of article " header and details "
-        article_headers = self.articleheader_set.all()[offset:limit]
-        article_details = []
-        for article_header in article_headers:
-            ad = article_header.articledetails_set.filter(current = True)
-            if len(ad) == 1:
-                article_details.append(ad[0])
-        return article_details
+    def get_articles_limit(self, offset = None, limit = None):
+       query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
+						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name
+					FROM core_articleheader
+					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_articleheader_tags ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_tag ON core_tag.id = core_articleheader_tags.tag_id
+					INNER JOIN core_topic ON core_articleheader.id = core_articleheader_tags.articleheader_id
+					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+					WHERE core_articledetails.current IS TRUE AND core_tag.id = %s
+					ORDER BY coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
+
+       if offset != None and limit != None:
+           query = query + ' OFFSET ' + str(offset) + ' LIMIT ' + str(limit)
+
+       cursor = connection.cursor()
+       cursor.execute(query, [self.id])
+
+       articles_list = []
+       for row in cursor.fetchall():
+           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12])
+           p.topic_id = row[0]
+           p.name = row[1]
+           p.topic_slug = row[2]
+           p.order = row[3]
+           p.chapter_id = row[13]
+           p.chapter_name = row[14]
+           p.branch_id = row[15]
+           p.branch_name = row[16]
+           p.topic_name = row[17]
+           articles_list.append(p)
+       return articles_list
         
         
     class Meta:
@@ -103,7 +121,7 @@ class Topic(models.Model):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
 						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
 						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
-						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
@@ -129,6 +147,7 @@ class Topic(models.Model):
            p.chapter_name = row[14]
            p.branch_id = row[15]
            p.branch_name = row[16]
+           p.topic_name = row[17]
            articles_list.append(p)
        return articles_list
    
