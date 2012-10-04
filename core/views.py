@@ -604,7 +604,7 @@ def top_commented(request):
 
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
-    articles = ArticleDetails.get_top_commented(settings.paginator)
+    articles = ArticleDetails.objects.get_top_commented(settings.paginator)
     title = 'الأكثر مناقشة'
     return render_to_response('statistics.html', {'type':"comments",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
