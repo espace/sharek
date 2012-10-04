@@ -10,14 +10,6 @@
 
     <div class="row">
         <div class="span12 ">
-           
-              <div class="well  floatingSocial">
-                  <p> أنت فى :</p>
-                  <p class="section">الحقوق والواجبات</p>
-                  <p class="chapter-s"><span>/</span> الفصل الأول</p>
-        <!--           <p class="branch"><span>/</span> الفرع الأول</p>
-         -->        
-                </div>
              
             <div id="headtitle" class="headtitle innerpage offset3 visible-desktop">
                 <h1>{{topic.name}}</h1> 
@@ -66,6 +58,7 @@
         {% for article in all_articles %}
             {% include "include/article_block.html" %}
         {% endfor %}
+        
         {% for chapter in topic.get_topic_children %}
           {% if chapter.draw_me %}
             <h2>{{chapter.name}}</h2>

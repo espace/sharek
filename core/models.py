@@ -10,6 +10,8 @@ from django.db.models.aggregates import Max
 from core.actions import exclusive_boolean_fields
 from django.db import connection, models
 
+from smart_selects.db_fields import ChainedForeignKey 
+
 class Tag(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
@@ -153,6 +155,26 @@ class Topic(models.Model):
             return True
         return False
 
+class Chapter(models.Model):
+    name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=30, default='')
+    slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
+    topic = models.ForeignKey(Topic,null = True)
+    order = models.IntegerField(blank = True, null = True)
+
+    def __unicode__(self):
+        return self.name
+
+class Branch(models.Model):
+    name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=30, default='')
+    slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
+    chapter = models.ForeignKey(Chapter,null = True)
+    order = models.IntegerField(blank = True, null = True)
+
+    def __unicode__(self):
+        return self.name
+
 class ArticleHeaderManager(models.Manager):
     def get_next(self, topic, order):
        query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.slug, core_articledetails.slug
@@ -193,6 +215,24 @@ class ArticleHeaderManager(models.Manager):
 class ArticleHeader(models.Model):
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)
+    chapter = ChainedForeignKey(
+        Chapter, 
+        chained_field="topic",
+        chained_model_field="topic", 
+        show_all=False, 
+        auto_choose=False,
+        blank=True,
+        null=True
+    )
+    branch = ChainedForeignKey(
+        Branch, 
+        chained_field="chapter",
+        chained_model_field="chapter", 
+        show_all=False, 
+        auto_choose=False,
+        blank=True,
+        null=True
+    )
     name = models.CharField(max_length=40)
     order = models.IntegerField(blank = True, null = True)
     objects = ArticleHeaderManager()
