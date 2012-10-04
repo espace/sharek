@@ -33,6 +33,8 @@
                         // offset: '50%'
                       });
 
+
+
               /// floating note
                var $postShare = $('.floatingSocial');
                 var descripY = parseInt($('.content').offset().top);
@@ -55,5 +57,42 @@
                             });
                         }
                     }
+
+
+
                 });
+               
+
+               // var $postShare2 = $('.addthis_toolbox');
+
+
+               //    $(window).scroll(function() { 
+               //      var scrollY = $(window).scrollTop();
+               //      var fixedShare = $postShare2.css('position') == 'fixed';
+               //      if ($('.addthis_toolbox').length > 0) {
+               //          if (scrollY > descripY && !fixedShare) {
+               //              $postShare2.css({
+               //                  position: 'fixed'
+               //              });
+               //          } else if (scrollY < descripY && fixedShare) {
+               //              $postShare2.css({
+               //                  position: 'absolute'
+               //              });
+               //          }
+               //      }
+
+
+
+               //  });
+                  
+
+
+
+
+
+
+
+
+
+
               });

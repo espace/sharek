@@ -59,7 +59,7 @@ def topics_pdf(request):
     if request.user.is_authenticated():
       user = request.user
 
-    topics = Topic.objects.filter(parent_id = None)
+    topics = Topic.objects.all()
 
     dt_obj = datetime.now()
     date_str = dt_obj.strftime("%Y%m%d_%H%M%S")

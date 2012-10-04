@@ -14,7 +14,7 @@
             <div id="headtitle" class="headtitle innerpage offset3 visible-desktop">
                 <h1>{{topic.name}}</h1> 
                 
-                {% if articles %}
+                {% if all_articles %}
                 <a target="_blank" href="{% url topic_pdf topic_slug=topic.get_absolute_url %}" class="download-pdf ">
                   تحميل مسودة باب {{ topic.name }}
                 </a>
@@ -56,25 +56,25 @@
         <div id="ajax-container" class="span9">
 
         {% for article in all_articles %}
+            {% ifchanged article.chapter_id %}
+                {% ifnotequal article.chapter_name None %}
+                    <div class="headtitle innerpage visible-desktop" id="headtitle">
+                        <h1 class="fasl">{{article.chapter_name}}</h1>
+                    </div>
+                    <br>
+                {% endifnotequal %}
+            {% endifchanged %}
+            {% ifchanged article.branch_id %}
+                {% ifnotequal article.branch_name None %}
+                    <div class="headtitle innerpage visible-desktop" id="headtitle">
+                        <h1 class="fasl">{{article.branch_name}}</h1>
+                    </div>
+                {% endifnotequal %}
+            {% endifchanged %}
             {% include "include/article_block.html" %}
         {% endfor %}
         
-        {% for chapter in topic.get_topic_children %}
-          {% if chapter.draw_me %}
-            <h2>{{chapter.name}}</h2>
-            {% for article in chapter.get_articles %}
-                {% include "include/article_block.html" %}
-            {% endfor %}
-            {% for branch in chapter.get_topic_children %}
-              {% if branch.draw_me %}
-                <h3>{{branch.name}}</h3>
-                {% for article in branch.get_articles %}
-                    {% include "include/article_block.html" %}
-                {% endfor %}
-              {% endif %}
-            {% endfor %}
-          {% endif %}
-        {% endfor %}
+
    
         </div>
     </div><!-- row end -->

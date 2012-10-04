@@ -49,32 +49,21 @@
         <h1>الجمعية التأسيسية لوضع مشروع الدستور</h1>
             
     		{% for topic in topics %}
-        	{% if topic.draw_me %}
-            <br><br><br><br>
-            <h1>{{ topic.name }}</h1>
-            {% for article in topic.get_articles %}
-              <h4>{{article.header.name}}</h4>
+          <h1>{{topic.name}}</h1>  
+          {% for article in topic.get_articles %}
+            {% ifchanged article.chapter_id %}
+                {% ifnotequal article.chapter_name None %}
+                  <h2>{{article.chapter_name}}</h2>
+                {% endifnotequal %}
+            {% endifchanged %}
+            {% ifchanged article.branch_id %}
+                {% ifnotequal article.branch_name None %}
+                  <h3>{{article.branch_name}}</h3>
+                {% endifnotequal %}
+            {% endifchanged %}
+              <h4>{{article.header.name}}</h3>
               <p>{{article.summary}}</p>
-            {% endfor %}
-            {% for chapter in topic.get_topic_children %}
-              {% if chapter.draw_me %}
-                <h2>{{chapter.name}}</h2>
-                {% for art in chapter.get_articles %}
-                  <h4>{{art.header.name}}</h4>
-                  <p>{{art.summary}}</p>
-                {% endfor %}
-                {% for branch in chapter.get_topic_children %}
-                  {% if branch.draw_me %}
-                    <h3>{{branch.name}}</h3>
-                    {% for art in branch.get_articles %}
-                      <h4>{{art.header.name}}</h4>
-                      <p>{{art.summary}}</p>
-                    {% endfor %}
-                  {% endif %}
-                {% endfor %}
-              {% endif %}  
-            {% endfor %}
-          {% endif %}
+          {% endfor %} 
         {% endfor %} 
         
     </body>

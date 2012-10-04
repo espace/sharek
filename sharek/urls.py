@@ -68,6 +68,7 @@ urlpatterns = patterns('',
     url(r'sharek/statistics/$', 'core.views.statistics', name='statistics'),
     
     url(r'^sharek/profile/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.profile', name='profile'),
+    url(r'^sharek/user_profile/$', 'core.profiles.views.user_profile', name='user_profile'),
 
     url(r'^sharek/$', 'core.views.index', name='index'),
 	
