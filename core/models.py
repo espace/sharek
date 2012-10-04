@@ -116,7 +116,7 @@ class Topic(models.Model):
 					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
 					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
 					WHERE core_articledetails.current IS TRUE AND core_articleheader.topic_id = %s
-					ORDER BY core_chapter.order, core_branch.order, core_articleheader.order'''
+					ORDER BY coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
 
        if offset != None and limit != None:
            query = query + ' OFFSET ' + str(offset) + ' LIMIT ' + str(limit)
