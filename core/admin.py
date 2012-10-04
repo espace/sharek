@@ -64,7 +64,7 @@ class BranchInlineAdmin(admin.TabularInline):
     model      = Branch
     extra      = 0
     can_delete = True
-    fields     = ['name','short_name','order']
+    fields     = ['name','short_name','slug','order']
 
 class ChapterAdmin(admin.ModelAdmin):
     inlines = [BranchInlineAdmin,]
