@@ -509,8 +509,9 @@ def search(request):
     if len(query.strip()) == 0:
         return HttpResponseRedirect(reverse('index'))
 
-    arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-    arts = sorted(arts,  key=attrgetter('header.topic.id','header.order','id'))
+    #arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
+    #arts = sorted(arts,  key=attrgetter('header.topic.id','header.order','id'))
+    arts = ArticleHeader.objects.search_articles('%'+query.strip()+'%')
     voted_articles = ArticleRating.objects.filter(user = user)
 
     count = len(arts)

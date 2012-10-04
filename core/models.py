@@ -186,6 +186,38 @@ class Branch(models.Model):
         return self.name
 
 class ArticleHeaderManager(models.Manager):
+    
+    def search_articles(self, str_query):
+       query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
+						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name
+					FROM core_articleheader
+					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
+					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+					WHERE core_articledetails.current IS TRUE AND core_articleheader.name like %s OR core_articledetails.summary like %s
+					ORDER BY coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
+       print(query)
+       cursor = connection.cursor()
+       cursor.execute(query, [str_query, str_query])
+
+       articles_list = []
+       for row in cursor.fetchall():
+           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12])
+           p.topic_id = row[0]
+           p.name = row[1]
+           p.topic_slug = row[2]
+           p.order = row[3]
+           p.chapter_id = row[13]
+           p.chapter_name = row[14]
+           p.branch_id = row[15]
+           p.branch_name = row[16]
+           p.topic_name = row[17]
+           articles_list.append(p)
+       return articles_list
+
     def get_article(self, slug):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
 						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
