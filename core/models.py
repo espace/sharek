@@ -56,7 +56,7 @@ class TopicManager(models.Manager):
        query = '''SELECT core_topic.id, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered,
 	   				( SELECT MAX(core_articledetails.mod_date) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ),
 					( SELECT COUNT(core_articledetails.*) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ) as headers
-				  FROM core_topic WHERE core_topic.parent_id IS NULL'''
+				  FROM core_topic '''
        cursor = connection.cursor()
        cursor.execute(query)
 
@@ -69,7 +69,6 @@ class TopicManager(models.Manager):
        return topic_list
 
 class Topic(models.Model):
-    parent = models.ForeignKey('self', null=True, blank=True)
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
@@ -78,12 +77,7 @@ class Topic(models.Model):
     objects = TopicManager()
     
     def __unicode__(self):
-        if self.parent:
-            if self.parent.parent:
-                return "%s - %s - %s" % (self.parent.parent.name ,self.parent.name, self.name)
-            return "%s - %s" % (self.parent.name, self.name)
-        else:
-            return "%s" % (self.name)
+        return "%s" % (self.name)
 
     def get_absolute_url(self):
         return self.slug
@@ -109,7 +103,7 @@ class Topic(models.Model):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
 						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
 						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
-						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name,
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
@@ -151,16 +145,6 @@ class Topic(models.Model):
        row = cursor.fetchone()
        return row[1]
 
-    def get_topic_children(self):
-        return Topic.objects.filter(parent_id = self.id)
-
-    def draw_me(self):
-        if len(self.get_articles()) > 0:
-            return True
-        for child in self.get_topic_children():
-          if child.draw_me():
-            return True
-        return False
 
 class Chapter(models.Model):
     name = models.CharField(max_length=100)
