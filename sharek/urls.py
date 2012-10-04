@@ -70,7 +70,7 @@ urlpatterns = patterns('',
     url(r'^sharek/profile/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.profile', name='profile'),
     url(r'^sharek/user_profile/$', 'core.profiles.views.user_profile', name='user_profile'),
 
-    url(r'^sharek/', 'core.views.index', name='index'),
+    url(r'^sharek/$', 'core.views.index', name='index'),
 	
     url(r'^sharek/', include('core.social_auth.urls')),
 	
