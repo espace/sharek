@@ -49,7 +49,7 @@ class Tag(models.Model):
 
        cursor = connection.cursor()
        cursor.execute(query, [self.id])
-    
+
        articles_list = []
        for row in cursor.fetchall():
            p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12])
@@ -93,7 +93,7 @@ class Topic(models.Model):
     summary = MarkupField(blank=True, default='')
     order = models.IntegerField(blank = True, null = True)
     objects = TopicManager()
-    
+
     def __unicode__(self):
         return "%s" % (self.name)
 
@@ -113,7 +113,21 @@ class Topic(models.Model):
        cursor.execute(query)
        row = cursor.fetchone()
        return row[0]
-    
+
+    @classmethod
+    def total_contributions(self):
+       query = '''SELECT SUM(count) FROM (
+	   				SELECT COUNT(*) as count FROM core_feedback
+					UNION
+					SELECT COUNT(*) FROM core_rating
+					UNION
+					SELECT COUNT(*) FROM core_articlerating
+				  ) total_count'''
+       cursor = connection.cursor()
+       cursor.execute(query)
+       row = cursor.fetchone()
+       return row[0]
+
     def get_articles(self, offset = None, limit = None):
        return self.get_articles_limit()
     
@@ -337,7 +351,7 @@ class ArticleManager(models.Manager):
 					GROUP BY core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug,
 						core_articledetails.slug, core_topic.slug,
 						core_articleheader.name, core_articledetails.summary, core_articledetails._summary_rendered,
-						core_articledetails.mod_date					ORDER BY likes DESC LIMIT %s'''
+						core_articledetails.mod_date ORDER BY likes DESC LIMIT %s'''
        cursor = connection.cursor()
        cursor.execute(query, [limit])
 

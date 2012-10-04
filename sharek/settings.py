@@ -1,4 +1,4 @@
-# Django settings for sharek project.
+# Django settings for sharek project. 
 
 try:
     from settings_local import *
