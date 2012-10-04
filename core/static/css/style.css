@@ -67,6 +67,8 @@ body {
     border-radius: 10px;
     vertical-align: middle;
     float: left;
+    height: 50px;
+    width: 50px;
 }
 .attrs{
     float: left;
@@ -79,6 +81,9 @@ body {
     font-weight: bold;
     float: right;
     margin: 14px 10px 0 0;
+    height: 50px;
+    width: 50px;
+
 }
 .log_out{
     float: right;
@@ -89,7 +94,50 @@ body {
     margin: 80px 0 0 0;
 }
 
-
+.social_login{
+    margin-top: 10px;
+    min-height: 40px;
+    width: 90%;
+    float: left;
+    height: auto;
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow:inset 0px 1px 1px rgba(255,255,255,1), 0 1px 1px 0px rgba(0,0,0,0.3) ;
+    border:solid 1px #e1e3ec ; 
+    background:-ms-linear-gradient(top, #fbfbfb, #e7e7e7);
+    background:-webkit-gradient(linear, 0 0, 0 100%, from(#fbfbfb), to(#e7e7e7));
+    background:-webkit-linear-gradient(top, #fbfbfb, #e7e7e7);
+    background:-o-linear-gradient(top, #fbfbfb, #e7e7e7);
+    background:linear-gradient(top, #fbfbfb, #e7e7e7);
+    background:-moz-linear-gradient(top, #fbfbfb, #e7e7e7);
+    opacity: 0.7;
+    -webkit-transition: opacity 200ms linear;
+    -moz-transition: opacity 200ms linear;
+    -ms-transition: opacity 200ms linear;
+    -o-transition: opacity 200ms linear;
+    transition: opacity 200ms linear;
+}
+.social_login:hover{
+    opacity: 1;
+}
+.social_login p{
+    font: 11px GESSTwoMediumRegular;
+    text-shadow: 0px 1px 0px rgba(255,255,255,1) ;
+    color: #333;
+    margin: 15px 12px 0 0;
+    float: right;
+}
+.social_login p a{
+    width: auto;
+    margin: 0;
+    color: inherit;
+}
+.social_login a{
+    width: 24px;
+    height: 24px;
+    float: right;
+    margin: 10px 10px 0 0;
+}
 /*------------   Navigation    ------ */
 /*.top-nav{
    background-image: -ms-linear-gradient(top, #262626, #000);
@@ -768,6 +816,29 @@ background-position: -142px -9px !important;
     border-radius: 5px;
 	text-shadow: 1px 1px 1px #FFFFFF;
 }
+.chapter-head {
+    margin-bottom: 20px;
+    height: 25px;
+}
+.chapter-head h3{
+    font: normal 25px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    padding: 5px 0;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    display: block;
+    text-align: center;
+
+}
+
+.chapter-head h6{
+    font: normal 20px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    padding: 5px 0px;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    display: block;
+    color: #555;
+    text-align: center;
+
+}
+
 .headtitle span{
     background: url("../images/pattern.png") repeat;
     padding: 5px 10px;
@@ -891,6 +962,56 @@ background-position: -142px -9px !important;
 
 }
 
+.floatingSocial{
+      z-index: 10000;
+      width: 160px;
+      left: 20px;
+      bottom: 20px;
+      padding: 10px 10px;
+      border: solid 1px #ccc;
+          opacity: 0.98;
+
+    background: -ms-linear-gradient(top, #fff, #f4f4f4);
+    background: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#f4f4f4));
+    background: -webkit-linear-gradient(top, #fff, #f4f4f4);
+    background: -o-linear-gradient(top, #fff, #f4f4f4);
+    background: linear-gradient(top, #fff, #f4f4f4);
+    background: -moz-linear-gradient(top, #fff, #f4f4f4);
+    box-shadow: 0 3px 4px -4px rgba(0,0,0,1) ;
+     display:none;
+
+    }
+
+
+.floatingSocial:after {
+    content: " ";
+    width: 0; 
+    height: 0; 
+    right: -6px;
+    position: absolute;
+    border-top: 7px solid transparent;
+    border-bottom:7px solid transparent;
+    border-left: 7px solid #fff;
+}
+    .floatingSocial p{
+    float: right;
+    margin-right: 5px;
+    margin-bottom: 0;
+    color: #444;
+    }
+
+    .floatingSocial p span{
+      color: #222;  
+    }
+
+    .block_con{
+       left: 0;
+        margin: 0 auto;
+        position: absolute;
+        right: 0;
+        margin-right: 35%;
+        /*width: 50%;*/
+    }
 .comments-number {
     background: url("../images/small-ribbon.png") no-repeat  right top transparent;
     color:#fff !important;
@@ -1131,9 +1252,8 @@ background-position: -142px -9px !important;
 }
 .facebook_user_img img{
     border-radius: 5px;
+    height: 50px;
 	width: 50px;
-	height: 50px;
-	background: url(../images/user.png) no-repeat;
 }
 .comment-block .name a{
     font-size:12px;
@@ -2083,6 +2203,47 @@ span.divider{
 .footer-nav {
     /*margin-top:24px;*/
 }
+
+
+
+/* ----------- profile-tabs ----------------------*/
+.profile-tabs ul{
+
+    margin-top: 20px;
+}
+.profile-tabs ul li a{
+    color: #a11212;
+    font: 14px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+}
+.profile-tabs ul li.active a{
+    color: #111;
+    background: #fafafa;
+}
+.profile-tabs .headtitle {
+    min-height: 20px !important;
+}
+.profile-tabs .headtitle h4{
+    font-size: 18px;
+    font-weight: normal !important;
+    text-shadow: 0 0 0;
+    min-height: 20px !important;
+}
+.profile-tabs .headtitle h4 span{
+    font-size: 18px;
+    font-weight: normal !important;
+    text-shadow: 0 0 0;
+    display: inline;
+    float: none !important;
+    background: none;
+    color: #a11212;
+}
+
+.profile-tabs .comment-block {
+    margin-right: 20px;
+    width: 90%;
+}
+
+
 .sawty{
     background: url(../images/sawty.png) no-repeat;
     width: 100px;
@@ -2120,7 +2281,6 @@ span.divider{
 .no-mada .mada-title {
     margin-top: 0;
 }
-
 .content{
 position: relative;
 }

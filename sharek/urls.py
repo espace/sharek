@@ -10,6 +10,8 @@ urlpatterns = patterns('',
 
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
+	url(r'^sharek/chaining/', include('smart_selects.urls')),
+	
 	#Generate PDF
     url(r'^sharek/pdf/topics/$', 'core.reports.views.topics_pdf', name='topics_pdf'),
 	url(r'^sharek/pdf/topic/(?P<topic_slug>[-\w]+)/$', 'core.reports.views.topic_pdf', name='topic_pdf'),
@@ -65,9 +67,12 @@ urlpatterns = patterns('',
     url(r'^sharek/top_commented/', 'core.views.top_commented', name='top_commented'),
     url(r'sharek/statistics/$', 'core.views.statistics', name='statistics'),
     
+    url(r'^sharek/profile/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.profile', name='profile'),
+    url(r'^sharek/user_profile/$', 'core.profiles.views.user_profile', name='user_profile'),
+
     url(r'^sharek/$', 'core.views.index', name='index'),
 	
-	url(r'^sharek/', include('social_auth.urls')),
+    url(r'^sharek/', include('core.social_auth.urls')),
 	
     url(r'$', 'core.views.tmp'),
       

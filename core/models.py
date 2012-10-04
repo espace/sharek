@@ -10,6 +10,8 @@ from django.db.models.aggregates import Max
 from core.actions import exclusive_boolean_fields
 from django.db import connection, models
 
+from smart_selects.db_fields import ChainedForeignKey 
+
 class Tag(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
@@ -34,7 +36,6 @@ class Tag(models.Model):
                 article_details.append(ad[0])
         return article_details
         
-        #return self.article_set.filter(current = True)
     
     def get_articles_limit(self, offset, limit):
         # the new tech of article " header and details "
@@ -76,8 +77,7 @@ class Topic(models.Model):
     objects = TopicManager()
 
     def __unicode__(self):
-        #return u'%s - %s' % (self.topic.name, self.name)
-        return self.name
+        return "%s" % (self.name)
 
     def get_absolute_url(self):
         return self.slug
@@ -102,12 +102,15 @@ class Topic(models.Model):
     def get_articles_limit(self, offset = None, limit = None):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
 						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
-						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count
+						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
-					WHERE core_articledetails.current IS TRUE AND topic_id = %s
-					ORDER BY core_articleheader.order'''
+					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+					WHERE core_articledetails.current IS TRUE AND core_articleheader.topic_id = %s
+					ORDER BY coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
 
        if offset != None and limit != None:
            query = query + ' OFFSET ' + str(offset) + ' LIMIT ' + str(limit)
@@ -122,13 +125,15 @@ class Topic(models.Model):
            p.name = row[1]
            p.topic_slug = row[2]
            p.order = row[3]
+           p.chapter_id = row[13]
+           p.chapter_name = row[14]
+           p.branch_id = row[15]
+           p.branch_name = row[16]
            articles_list.append(p)
        return articles_list
    
     def get_mod_date(self):
-       #articles = self.get_articles()
-       #articles = sorted(articles, key=lambda article: article.mod_date, reverse=True)
-       #return articles[0]
+
        query = '''SELECT core_topic.id, MAX(core_articledetails.mod_date) as mod_date
 	   			  FROM core_topic INNER JOIN core_articleheader on core_topic.id = core_articleheader.topic_id
 				  INNER JOIN core_articledetails on core_articledetails.header_id = core_articleheader.id
@@ -140,7 +145,56 @@ class Topic(models.Model):
        row = cursor.fetchone()
        return row[1]
 
+
+class Chapter(models.Model):
+    name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=30, default='')
+    slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
+    topic = models.ForeignKey(Topic,null = True)
+    order = models.IntegerField(blank = True, null = True)
+
+    def __unicode__(self):
+        return self.name
+
+class Branch(models.Model):
+    name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=30, default='')
+    slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
+    chapter = models.ForeignKey(Chapter,null = True)
+    order = models.IntegerField(blank = True, null = True)
+
+    def __unicode__(self):
+        return self.name
+
 class ArticleHeaderManager(models.Manager):
+    def get_article(self, slug):
+       query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
+						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name
+					FROM core_articleheader
+					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
+					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+					WHERE core_articledetails.slug = %s AND core_articledetails.current is true'''
+       cursor = connection.cursor()
+       cursor.execute(query, [slug])
+       row = cursor.fetchone()
+       if(row):
+           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12])
+           p.topic_id = row[0]
+           p.name = row[1]
+           p.topic_slug = row[2]
+           p.order = row[3]
+           p.chapter_id = row[13]
+           p.chapter_name = row[14]
+           p.branch_id = row[15]
+           p.branch_name = row[16]
+           return p
+       else:
+           return None
+
     def get_next(self, topic, order):
        query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.slug, core_articledetails.slug
 					FROM core_articleheader inner join core_articledetails
@@ -180,6 +234,24 @@ class ArticleHeaderManager(models.Manager):
 class ArticleHeader(models.Model):
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)
+    chapter = ChainedForeignKey(
+        Chapter, 
+        chained_field="topic",
+        chained_model_field="topic", 
+        show_all=False, 
+        auto_choose=False,
+        blank=True,
+        null=True
+    )
+    branch = ChainedForeignKey(
+        Branch, 
+        chained_field="chapter",
+        chained_model_field="chapter", 
+        show_all=False, 
+        auto_choose=False,
+        blank=True,
+        null=True
+    )
     name = models.CharField(max_length=40)
     order = models.IntegerField(blank = True, null = True)
     objects = ArticleHeaderManager()

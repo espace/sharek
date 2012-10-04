@@ -3,7 +3,7 @@
     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <style>
 		@import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
-		 h1, h2, h5, p {
+		 h1, h2,h3,h4, h5, p {
 			font-family: 'Droid Arabic Kufi', serif;
 		 }
 		body {
@@ -12,7 +12,7 @@
 			font: 12px tahoma;
 			line-height: 16px;
 		 }
-		 h1, h2 {
+     h1, h2, h3, h4 {
 			color: #111111;
 			font-size: 20px;
 			margin: 25px 0px 25px 0px;
@@ -20,15 +20,25 @@
 			text-align: center;
 		}
 		 
-		h2 {
-			font-size: 16px;
-			margin: 45px 0px 10px 0px;
-			text-align: right;
-		}
-		 
-		h5 {
-			text-align: center;
-		}
+    h2 {
+      font-size: 18px;
+      margin: 45px 0px 10px 0px;
+    }
+    
+    h3 {
+      font-size: 14px;
+      margin: 45px 0px 10px 0px;
+    }
+ 
+    h4 {
+      font-size: 12px;
+      margin: 30px 0px 10px 0px;
+      text-align: center;
+    }
+    p{
+      font-size: 10px;
+      line-height: 14px;
+    }
         </style>
     </head>
     <body>
@@ -36,11 +46,20 @@
         <h1>جمهورية مصر العربية</h1>
         <h1>الجمعية التأسيسية لوضع مشروع الدستور</h1>
         <h1>{{ topic.name }}</h1>
-        
-		{% for article in articles %}
-            <h2>{{article.header.name}}</h2>
-            <p>{{article.summary}}</p>
-        {% endfor %} 
-        
+
+        {% for article in articles %}
+            {% ifchanged article.chapter_id %}
+                {% ifnotequal article.chapter_name None %}
+                  <h2>{{article.chapter_name}}</h2>
+                {% endifnotequal %}
+            {% endifchanged %}
+            {% ifchanged article.branch_id %}
+                {% ifnotequal article.branch_name None %}
+                  <h3>{{article.branch_name}}</h3>
+                {% endifnotequal %}
+            {% endifchanged %}
+              <h4>{{article.header.name}}</h3>
+              <p>{{article.summary}}</p>
+        {% endfor %}        
     </body>
 </html>

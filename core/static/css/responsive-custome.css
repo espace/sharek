@@ -4,6 +4,17 @@
 
 /* home page - icons*/
  
+.social_login p{
+    width: 100%;
+}
+.social_login a{
+    margin: 5px 10px;
+}
+.social_login a.facebook{
+    margin-right:50px;
+}
+
+
 .home-sections-icon {
     margin: 0 54px;
 
@@ -62,6 +73,23 @@
 @media (max-width: 767px) {
  
 /*body{background:green }*/
+
+
+.social_login p{
+    width: auto;
+}
+.social_login p a{
+    width: auto;
+    margin: 0;
+    color: inherit;
+}
+.social_login a{
+    width: 24px;
+    height: 24px;
+    float: right;
+    margin: 10px 5px 0 5px;
+}
+
 .progress-promo{
     margin-bottom: 20px;
 }
