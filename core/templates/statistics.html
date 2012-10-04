@@ -86,6 +86,8 @@
 {% endif %}
 
 <script type="text/javascript">
+$(document).ready(function(){
+
     var page = 1;
     var fetching = false;
     
@@ -99,7 +101,8 @@
           data:{
               'type': "{{type}}",
               'page': ++page,
-              'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
+              'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
+            },
           dataType:"html",
           error:function(data){},
           success:function(data){
@@ -120,9 +123,8 @@
             next_articles();
         }
     });
-
-
  });
+
 </script>
 
 {% endblock %}
