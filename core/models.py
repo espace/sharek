@@ -228,7 +228,7 @@ class ArticleHeaderManager(models.Manager):
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
 					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
 					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
-					WHERE core_articledetails.slug = %s AND core_articledetails.current is true'''
+					WHERE core_articledetails.slug = %s'''
        cursor = connection.cursor()
        cursor.execute(query, [slug])
        row = cursor.fetchone()

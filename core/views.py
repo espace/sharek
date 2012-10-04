@@ -194,10 +194,11 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
       user = request.user
 
     article = ArticleHeader.objects.get_article(article_slug) #get_object_or_404( ArticleDetails, slug=article_slug )
-    topic = get_object_or_404( Topic, slug=article.header.topic.slug )
+    print(article_slug)
+    topic = None #get_object_or_404( Topic, slug = article.topic_slug )
 
-    next = ArticleHeader.objects.get_next(article.header.topic.id, article.header.order)
-    prev = ArticleHeader.objects.get_prev(article.header.topic.id, article.header.order)
+    next = ArticleHeader.objects.get_next(article.topic_id, article.order)
+    prev = ArticleHeader.objects.get_prev(article.topic_id, article.order)
 
     if classified_by == "tags":  
         tags = Tag.objects.all
