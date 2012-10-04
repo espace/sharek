@@ -108,12 +108,15 @@ class Topic(models.Model):
     def get_articles_limit(self, offset = None, limit = None):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
 						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
-						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count
+						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name,
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
-					WHERE core_articledetails.current IS TRUE AND topic_id = %s
-					ORDER BY core_articleheader.order'''
+					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+					WHERE core_articledetails.current IS TRUE AND core_articleheader.topic_id = %s
+					ORDER BY core_chapter.order, core_branch.order, core_articleheader.order'''
 
        if offset != None and limit != None:
            query = query + ' OFFSET ' + str(offset) + ' LIMIT ' + str(limit)
@@ -128,6 +131,10 @@ class Topic(models.Model):
            p.name = row[1]
            p.topic_slug = row[2]
            p.order = row[3]
+           p.chapter_id = row[13]
+           p.chapter_name = row[14]
+           p.branch_id = row[15]
+           p.branch_name = row[16]
            articles_list.append(p)
        return articles_list
 
