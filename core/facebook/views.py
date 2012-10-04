@@ -86,7 +86,7 @@ def auto_post(request):
 
         attachment = {}
         attachment['name'] = article.header.topic.name.encode('utf-8') + " - " + article.header.name.encode('utf-8')
-        attachment['link'] = settings.domain + "topics/" + article.header.topic.slug + "/" + article.slug + "/"
+        attachment['link'] = settings.domain + "sharek/topics/" + article.header.topic.slug + "/" + article.slug + "/"
         attachment['description'] = article.summary.raw.encode('utf-8')
         attachment['picture'] = "http://dostour.eg/sharek/static/images/facebook.png"
 

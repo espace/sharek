@@ -193,11 +193,11 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if request.user.is_authenticated():
       user = request.user
 
-    article = get_object_or_404( ArticleDetails, slug=article_slug )
-    topic = get_object_or_404( Topic, slug=article.header.topic.slug )
+    article = ArticleHeader.objects.get_article(article_slug) #get_object_or_404( ArticleDetails, slug=article_slug )
+    topic = get_object_or_404( Topic, slug = article.topic_slug )
 
-    next = ArticleHeader.objects.get_next(article.header.topic.id, article.header.order)
-    prev = ArticleHeader.objects.get_prev(article.header.topic.id, article.header.order)
+    next = ArticleHeader.objects.get_next(article.topic_id, article.order)
+    prev = ArticleHeader.objects.get_prev(article.topic_id, article.order)
 
     if classified_by == "tags":  
         tags = Tag.objects.all
@@ -514,8 +514,9 @@ def search(request):
     if len(query.strip()) == 0:
         return HttpResponseRedirect(reverse('index'))
 
-    arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-    arts = sorted(arts,  key=attrgetter('header.topic.id','header.order','id'))
+    #arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
+    #arts = sorted(arts,  key=attrgetter('header.topic.id','header.order','id'))
+    arts = ArticleHeader.objects.search_articles('%'+query.strip()+'%')
     voted_articles = ArticleRating.objects.filter(user = user)
 
     count = len(arts)
@@ -607,7 +608,7 @@ def top_commented(request):
 
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
-    articles = ArticleDetails.get_top_commented(settings.paginator)
+    articles = ArticleDetails.objects.get_top_commented(settings.paginator)
     title = 'الأكثر مناقشة'
     return render_to_response('statistics.html', {'type':"comments",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
@@ -670,3 +671,4 @@ def top_users_map(request):
             top_users.append(top_user)
 
     return render_to_response('map.html', {'counter':counter,'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
+

@@ -11,8 +11,8 @@
     
   <h3>
       <p class="mada-title">
-          <a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}">{{article.header.name}}</a>
-          <a href="{% url article_detail classified_by='topics' class_slug=article.header.topic.get_absolute_url article_slug=article.slug %}" class="comments-number pull-left">
+          <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}">{{article.name}}</a>
+          <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}" class="comments-number pull-left">
             <i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i>
               {% if article.feedback_count > 0 %}
                   {{article.feedback_count}}
@@ -23,7 +23,7 @@
   </h3>
   
   {% ifnotequal topic_page 1 %}
-    <a href="{% url topic topic_slug=article.header.topic.slug %}">{{ article.header.topic }}</a>
+    <a href="{% url topic topic_slug=article.header.topic.slug %}">{{ article.topic_name }}</a>
   {% endifnotequal %}
   <div class="like-group">
   	<a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{article.id}} {% if voted_articles|vote_art:article.id == -1 %} active {% elif voted_articles|vote_art:article.id == 1 %} disabled {% endif %}" id="{{article.id}} " vote="0"><small class="dislike article {{article.id}}">{{article.dislikes}}</small></a>
