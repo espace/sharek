@@ -56,12 +56,13 @@
 لكى تتمكن من تسجيل مقترحاتك لابد من تسجيل دخولك أولا
 <br />
     </p>
-    <div class=''  style="margin:0 auto; width:110px;">
-      <div style="margin-right:-35px;">
-        <a href="{% url socialauth_begin 'facebook' %}" class="facebook" title="سجل دخول"><img src="{{STATIC_URL}}images/facebook.png" alt=""></a>
-        <a href="{% url socialauth_begin 'twitter' %}" class="twitter" title="سجل دخول"><img src="{{STATIC_URL}}images/twitter.png" alt=""></a>
-        <a href="{% url socialauth_begin 'google' %}" class="google" title="سجل دخول"><img src="{{STATIC_URL}}images/google.png" alt=""></a>
-        <a href="{% url socialauth_begin 'yahoo' %}" class="yahoo" title="سجل دخول"><img src="{{STATIC_URL}}images/yahoo.png" alt=""></a>
+    <div class='span4'>
+      <div class="social_login">
+        <p> يمكنك الآن تسجيل الدخول بواسطة</p>
+        <a href="#" onclick="login('facebook'); return false;" class="facebook" title="سجل دخول"><img src="{{STATIC_URL}}images/facebook.png" alt=""></a>
+        <a href="#" onclick="login('twitter'); return false;" class="twitter" title="سجل دخول"><img src="{{STATIC_URL}}images/twitter.png" alt=""></a>
+        <a href="#" onclick="login('google'); return false;" class="google" title="سجل دخول"><img src="{{STATIC_URL}}images/google.png" alt=""></a>
+        <a href="#" onclick="login('yahoo'); return false;" class="yahoo" title="سجل دخول"><img src="{{STATIC_URL}}images/yahoo.png" alt=""></a>
       </div>
     </div>
   </div><!-- comment end -->

@@ -34,7 +34,7 @@ def profile(request, browsing_data="def"):
         for id in disliked_ids:
             ids.append(id['articledetails'])
         disliked_articles = ArticleDetails.objects.filter(id__in=ids)
-    else:
+    elif browsing_data == "comments":
         commented_ids = Feedback.objects.filter(user = user).values('articledetails').distinct()
         for id in commented_ids:
             if id['articledetails'] != None:
@@ -43,4 +43,4 @@ def profile(request, browsing_data="def"):
                 commented_articles.append({'name':temp.header.name,'url':"#",'feedbacks':feedbacks})
                 
 
-    return render_to_response('profile.html', {'commented_articles':commented_articles,'disliked_articles':disliked_articles,'liked_articles':liked_articles,'settings': settings,'user':user} ,RequestContext(request))
+    return render_to_response('profile.html', {'profile':True,'browsing_data':browsing_data,'commented_articles':commented_articles,'disliked_articles':disliked_articles,'liked_articles':liked_articles,'settings': settings,'user':user} ,RequestContext(request))

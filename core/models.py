@@ -10,6 +10,8 @@ from django.db.models.aggregates import Max
 from core.actions import exclusive_boolean_fields
 from django.db import connection, models
 
+from smart_selects.db_fields import ChainedForeignKey 
+
 class Tag(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
@@ -25,16 +27,15 @@ class Tag(models.Model):
         return self.slug
     
     def get_articles(self):
-        # the new tech of article " header and details "
-        article_headers = self.articleheader_set.all()
-        article_details = []
-        for article_header in article_headers:
-            ad = article_header.articledetails_set.filter(current = True)
-            if len(ad) == 1:
-                article_details.append(ad[0])
-        return article_details
-        
-        #return self.article_set.filter(current = True)
+      # the new tech of article " header and details "
+      article_headers = self.articleheader_set.all()
+      article_details = []
+      for article_header in article_headers:
+          ad = article_header.articledetails_set.filter(current = True)
+          if len(ad) == 1:
+              article_details.append(ad[0])
+      return article_details
+
     
     def get_articles_limit(self, offset, limit):
         # the new tech of article " header and details "
@@ -55,7 +56,7 @@ class TopicManager(models.Manager):
        query = '''SELECT core_topic.id, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered,
 	   				( SELECT MAX(core_articledetails.mod_date) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ),
 					( SELECT COUNT(core_articledetails.*) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ) as headers
-				  FROM core_topic'''
+				  FROM core_topic '''
        cursor = connection.cursor()
        cursor.execute(query)
 
@@ -68,7 +69,6 @@ class TopicManager(models.Manager):
        return topic_list
 
 class Topic(models.Model):
-    parent = models.ForeignKey('self', null=True, blank=True)
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
@@ -77,12 +77,7 @@ class Topic(models.Model):
     objects = TopicManager()
     
     def __unicode__(self):
-        if self.parent:
-            if self.parent.parent:
-                return "%s - %s - %s" % (self.parent.parent.name ,self.parent.name, self.name)
-            return "%s - %s" % (self.parent.name, self.name)
-        else:
-            return "%s" % (self.name)
+        return "%s" % (self.name)
 
     def get_absolute_url(self):
         return self.slug
@@ -107,12 +102,15 @@ class Topic(models.Model):
     def get_articles_limit(self, offset = None, limit = None):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
 						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
-						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count
+						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
-					WHERE core_articledetails.current IS TRUE AND topic_id = %s
-					ORDER BY core_articleheader.order'''
+					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+					WHERE core_articledetails.current IS TRUE AND core_articleheader.topic_id = %s
+					ORDER BY coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
 
        if offset != None and limit != None:
            query = query + ' OFFSET ' + str(offset) + ' LIMIT ' + str(limit)
@@ -127,13 +125,15 @@ class Topic(models.Model):
            p.name = row[1]
            p.topic_slug = row[2]
            p.order = row[3]
+           p.chapter_id = row[13]
+           p.chapter_name = row[14]
+           p.branch_id = row[15]
+           p.branch_name = row[16]
            articles_list.append(p)
        return articles_list
 
     def get_mod_date(self):
-       #articles = self.get_articles()
-       #articles = sorted(articles, key=lambda article: article.mod_date, reverse=True)
-       #return articles[0]
+
        query = '''SELECT core_topic.id, MAX(core_articledetails.mod_date) as mod_date
 	   			  FROM core_topic INNER JOIN core_articleheader on core_topic.id = core_articleheader.topic_id
 				  INNER JOIN core_articledetails on core_articledetails.header_id = core_articleheader.id
@@ -145,18 +145,26 @@ class Topic(models.Model):
        row = cursor.fetchone()
        return row[1]
 
-    def get_topic_children(self):
-        return Topic.objects.filter(parent_id = self.id)
 
-    def draw_me(self):
-        if len(self.get_articles()) > 0:
-            return True
-        elif len(self.get_topic_children()) > 0:
-            for child in self.get_topic_children():
-                if child.draw_me():
-                    return True
-        else:
-            return False
+class Chapter(models.Model):
+    name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=30, default='')
+    slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
+    topic = models.ForeignKey(Topic,null = True)
+    order = models.IntegerField(blank = True, null = True)
+
+    def __unicode__(self):
+        return self.name
+
+class Branch(models.Model):
+    name = models.CharField(max_length=100)
+    short_name = models.CharField(max_length=30, default='')
+    slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
+    chapter = models.ForeignKey(Chapter,null = True)
+    order = models.IntegerField(blank = True, null = True)
+
+    def __unicode__(self):
+        return self.name
 
 class ArticleHeaderManager(models.Manager):
     def get_next(self, topic, order):
@@ -198,6 +206,24 @@ class ArticleHeaderManager(models.Manager):
 class ArticleHeader(models.Model):
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)
+    chapter = ChainedForeignKey(
+        Chapter, 
+        chained_field="topic",
+        chained_model_field="topic", 
+        show_all=False, 
+        auto_choose=False,
+        blank=True,
+        null=True
+    )
+    branch = ChainedForeignKey(
+        Branch, 
+        chained_field="chapter",
+        chained_model_field="chapter", 
+        show_all=False, 
+        auto_choose=False,
+        blank=True,
+        null=True
+    )
     name = models.CharField(max_length=40)
     order = models.IntegerField(blank = True, null = True)
     objects = ArticleHeaderManager()
@@ -331,8 +357,12 @@ class Feedback(models.Model):
     dislikes = models.IntegerField(default=0)
 
     def get_children(self):
-        inactive_users = User.get_inactive
-        return Feedback.objects.filter(parent_id = self.id).order_by('id').exclude(user__in=inactive_users)
+        query = '''SELECT core_feedback.*
+					FROM core_feedback INNER JOIN auth_user ON core_feedback.user = auth_user.username
+					WHERE core_feedback.parent_id = %s AND auth_user.is_active IS TRUE ORDER BY core_feedback.id'''
+        cursor = connection.cursor()
+        cursor.execute(query, [self.id])
+        return [Feedback(*i) for i in cursor.fetchall()]
 
 class Rating(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)

@@ -106,9 +106,10 @@ def topic_detail(request, topic_slug=None):
     if request.user.is_authenticated():
       user = request.user
     if topic_slug:
-        topics = Topic.objects.filter(parent_id = None)
+        topics = Topic.objects.all()
         topic = get_object_or_404( Topic, slug=topic_slug )
         all_articles = topic.get_articles()
+
     else:
         topics = Topic.objects.filter()
         if topics.count() > 0:
@@ -120,11 +121,8 @@ def topic_detail(request, topic_slug=None):
 
     voted_articles = ArticleRating.objects.filter(user = user)
 
-    paginator = Paginator(all_articles, settings.paginator) 
-    articles = paginator.page(1)
-
-    template_context = {'topic_page':True, 'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'articles': articles,'settings': settings,'user':user,'voted_articles':voted_articles}
-    return render_to_response('topic.html',template_context ,RequestContext(request))
+    template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
+    return render_to_response('topic_new.html',template_context ,RequestContext(request))
 
 def topic_next_articles(request):
 
@@ -142,6 +140,7 @@ def topic_next_articles(request):
         topic = get_object_or_404( Topic, slug=topic_slug )
         articles = topic.get_articles_limit(offset, limit)
         
+
         if(len(articles) > 0):
              return render_to_response('include/next_articles.html',{'articles':articles} ,RequestContext(request))
         else: 

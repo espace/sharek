@@ -1,5 +1,5 @@
 from core.models import Tag
-from core.models import Topic
+from core.models import Topic, Chapter, Branch
 from core.models import Info, Feedback, ArticleDetails, ArticleHeader
 from core.models import ReadOnlyAdminFields
 from django.contrib.auth.models import User
@@ -30,7 +30,7 @@ class ArticleForm(forms.ModelForm):
 
 class ArticleHeaderAdmin(admin.ModelAdmin):
     inlines = [ArticleDetailsInlineAdmin,]
-    list_display = ('name','topic','order')
+    list_display = ('name','topic','chapter','branch','order')
     list_filter = ('topic',)
     list_editable = ['order']
     search_fields = ['name']
@@ -56,6 +56,22 @@ class TopicAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
     list_display = ('name','short_name','order')
     list_editable = ['order']
+
+    class Media:
+        js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
+
+class BranchInlineAdmin(admin.TabularInline):
+    model      = Branch
+    extra      = 0
+    can_delete = True
+    fields     = ['name','short_name','slug','order']
+
+class ChapterAdmin(admin.ModelAdmin):
+    inlines = [BranchInlineAdmin,]
+    prepopulated_fields = {"slug": ["name"]}
+    list_display = ('name','topic','short_name','order')
+    list_editable = ['order']
+    list_filter = ('topic',)
 
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
@@ -88,6 +104,7 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(ArticleHeader, ArticleHeaderAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Topic, TopicAdmin)
+admin.site.register(Chapter, ChapterAdmin)
 admin.site.register(Info, InfoAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
 admin.site.unregister(User)
