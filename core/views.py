@@ -194,8 +194,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
       user = request.user
 
     article = ArticleHeader.objects.get_article(article_slug) #get_object_or_404( ArticleDetails, slug=article_slug )
-    print(article_slug)
-    topic = None #get_object_or_404( Topic, slug = article.topic_slug )
+    topic = get_object_or_404( Topic, slug = article.topic_slug )
 
     next = ArticleHeader.objects.get_next(article.topic_id, article.order)
     prev = ArticleHeader.objects.get_prev(article.topic_id, article.order)
@@ -614,11 +613,11 @@ def statistics(request):
             stat_type = request.POST.get("type")
 
             if stat_type == "likes":
-                articles = ArticleDetails.objects.filter(current = True).order_by('-likes')
+                articles = ArticleDetails.objects.get_top_liked(1000) #ArticleDetails.objects.filter(current = True).order_by('-likes')
             elif stat_type == "dislikes":
-                articles = ArticleDetails.objects.filter(current = True).order_by('-dislikes')
+                articles = ArticleDetails.objects.get_top_disliked(1000) #ArticleDetails.objects.filter(current = True).order_by('-dislikes')
             elif stat_type == "comments":
-                articles = ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')
+                articles = ArticleDetails.objects.get_top_commented(1000) #ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')
             
 
             paginator = Paginator(articles, settings.paginator)
