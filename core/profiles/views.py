@@ -12,6 +12,9 @@ from core.models import ArticleRating, ArticleDetails, Feedback
 
 from sharek import settings
 
+def user_profile(request):
+    return render_to_response('user-profile.html', {} ,RequestContext(request))
+
 def profile(request, browsing_data="def"):
     #browsing_data will represent the type of data the user want to see " likes, dislikes ,or comments"
     user = None
