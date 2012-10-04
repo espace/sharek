@@ -816,6 +816,29 @@ background-position: -142px -9px !important;
     border-radius: 5px;
 	text-shadow: 1px 1px 1px #FFFFFF;
 }
+.chapter-head {
+    margin-bottom: 20px;
+    height: 25px;
+}
+.chapter-head h3{
+    font: normal 25px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    padding: 5px 0;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    display: block;
+    text-align: center;
+
+}
+
+.chapter-head h6{
+    font: normal 20px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    padding: 5px 0px;
+    text-shadow: 1px 1px 1px #FFFFFF;
+    display: block;
+    color: #555;
+    text-align: center;
+
+}
+
 .headtitle span{
     background: url("../images/pattern.png") repeat;
     padding: 5px 10px;

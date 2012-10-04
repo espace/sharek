@@ -58,16 +58,16 @@
         {% for article in all_articles %}
             {% ifchanged article.chapter_id %}
                 {% ifnotequal article.chapter_name None %}
-                    <div class="headtitle innerpage visible-desktop" id="headtitle">
-                        <h1 class="fasl">{{article.chapter_name}}</h1>
+                   <div class="chapter-head">
+                            <h3 class="fasl">{{article.chapter_name}}</h1>
                     </div>
-                    <br>
+                    
                 {% endifnotequal %}
             {% endifchanged %}
             {% ifchanged article.branch_id %}
                 {% ifnotequal article.branch_name None %}
-                    <div class="headtitle innerpage visible-desktop" id="headtitle">
-                        <h1 class="fasl">{{article.branch_name}}</h1>
+                   <div class="chapter-head">
+                            <h6 class="fasl">{{article.branch_name}}</h1>
                     </div>
                 {% endifnotequal %}
             {% endifchanged %}
