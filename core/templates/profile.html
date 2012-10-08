@@ -4,30 +4,47 @@
 {% block title %}{{title}}{% endblock %}
 
 {% block content %}
-  <div class="comment-block well top">
-        <a class="{%if browsing_data = 'def' or browsing_data = 'likes' %}selected{%endif%}" href="{% url profile browsing_data="likes" %}" >المواد المقبوله</a>
-      <a> | </a>
-        <a class="{%if browsing_data = 'dislikes' %}selected{%endif%}" href="{% url profile browsing_data="dislikes" %}">المواد المرفوضه</a>
-      <a> | </a>
-        <a class="{%if browsing_data = 'comments' %}selected{%endif%}" href="{% url profile browsing_data="comments" %}">تعليقاتك</a>
-  </div>
-  <br><br><br>
-  {% for article in liked_articles %}
-    {% include "include/article_block.html" %}
-  {% endfor %}
 
-  {% for article in disliked_articles %}
-    {% include "include/article_block.html" %}
-  {% endfor %}
+  <div class="row">
+    <div class="span12">
+      <div class="headtitle innerpage" id="headtitle">
+          <h1>احصائيات مشاركاتك</h1> 
+      </div>
+      <script type="text/javascript">
+        $(document).ready(function(){
 
-  {% for article in commented_articles %}
-    <div class="comment-block ">
-      {{article.name}}
-    </div>
-    {% for feedback in article.feedbacks %}
-      {% include "include/comment-block.html" %}
-    {% endfor %}
-  {% endfor %}
+          $('#myTab a:first').tab('show'); // Select first tab
+
+        });
+      </script>
+    </div> 
+
+    <div class="span12 profile-tabs">
+      <ul class="nav nav-tabs " id="myTab">
+        <li class=""><a href="{% url profile browsing_data="likes" %}"><i class=" icon-thumbs-up"></i> المواد التى أعجبتك </a></li>
+        <li class=""><a href="{% url profile browsing_data="dislikes" %}"><i class=" icon-thumbs-down"></i>  المواد التى لم تعجبك</a></li>
+        <li class=""><a href="{% url profile browsing_data="comments" %}"> <i class=" icon-comment "></i> مشاركاتك</a></li>
+      </ul>
+
+
+      <div class="tab-content" id="myTabContent">
+        {% for article in liked_articles %}
+          {% include "include/article_block.html" %}
+        {% endfor %}
+
+        {% for article in disliked_articles %}
+          {% include "include/article_block.html" %}
+        {% endfor %}
+
+        {% for article in commented_articles %}
+          <div class="headtitle"> <h4>{{article.topic}} :<span>{{article.name}}</span></h4>  </div>
+          {% for feedback in article.feedbacks %}
+            {% include "include/comment-block.html" %}
+          {% endfor %}
+        {% endfor %}
+      </div>
+    </div> <!-- span12  --> 
+  </div><!-- roww -->
 
 
 {% endblock %}
