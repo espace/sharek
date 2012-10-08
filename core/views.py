@@ -31,8 +31,8 @@ import urllib2
 import core
 import os.path
 from operator import attrgetter
-
 from core.social_auth.models import UserSocialAuth
+from core.twitter import twitter
 
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
@@ -354,6 +354,16 @@ def modify(request):
                     graph.put_wall_post(message, attachment)
                 
                 if UserSocialAuth.auth_provider(request.user.username) == 'twitter':
+                    extra_data = UserSocialAuth.get_extra_data(request.user.username)
+                    twitter_api = twitter.Api(consumer_key=extra_data['id'],
+                                              consumer_secret=extra_data['access_token'],
+                                              access_token_key=settings.TWITTER_CONSUMER_KEY,
+                                              access_token_secret=settings.TWITTER_CONSUMER_SECRET)
+                    print twitter_api
+                    print '>>>>>>>>>>>>>>>>>>>>>>>>'
+                    status = twitter_api.PostUpdate('I love python-twitter!')
+                    print status.text
+                    print '>>>>>>>>>>>>>>>>>>>>>>>>'
                     print 'posting to twitter ....'
                     
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))

@@ -148,6 +148,7 @@ INSTALLED_APPS = (
     'core.social_auth',
     'debug_toolbar',
     'smart_selects',
+    'core.twitter',
 )
 
 # A sample logging configuration. The only tangible logging
