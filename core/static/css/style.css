@@ -138,6 +138,18 @@ body {
     float: right;
     margin: 10px 10px 0 0;
 }
+.social_icons_wrap{
+    width: 230px;
+    float: right;
+}
+.social_in_topic{
+    width: 270px;
+    text-align: center;
+    margin:  0 auto;
+    position: relative;
+    right: -22px;
+
+}
 /*------------   Navigation    ------ */
 /*.top-nav{
    background-image: -ms-linear-gradient(top, #262626, #000);

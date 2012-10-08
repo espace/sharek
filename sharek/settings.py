@@ -145,7 +145,7 @@ INSTALLED_APPS = (
     'django_evolution',
     'template_utils',
     'django.contrib.humanize',
-    'social_auth',
+    'core.social_auth',
     'debug_toolbar',
     'smart_selects',
 )
