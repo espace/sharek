@@ -355,16 +355,21 @@ def modify(request):
                 
                 if UserSocialAuth.auth_provider(request.user.username) == 'twitter':
                     extra_data = UserSocialAuth.get_extra_data(request.user.username)
-                    twitter_api = twitter.Api(consumer_key=extra_data['id'],
-                                              consumer_secret=extra_data['access_token'],
+                    access_token = extra_data['access_token']
+                    consumer_secret = access_token[access_token.find('=')+1 : access_token.find('&')]
+                    consumer_key = access_token[access_token.rfind('=')+1:]
+                    print access_token
+                    print consumer_key
+                    print consumer_secret
+                    print settings.TWITTER_CONSUMER_KEY
+                    print settings.TWITTER_CONSUMER_SECRET
+                    
+                    twitter_api = twitter.Api(consumer_key=consumer_key,
+                                              consumer_secret=consumer_secret,
                                               access_token_key=settings.TWITTER_CONSUMER_KEY,
                                               access_token_secret=settings.TWITTER_CONSUMER_SECRET)
-                    print twitter_api
-                    print '>>>>>>>>>>>>>>>>>>>>>>>>'
-                    status = twitter_api.PostUpdate('I love python-twitter!')
-                    print status.text
-                    print '>>>>>>>>>>>>>>>>>>>>>>>>'
-                    print 'posting to twitter ....'
+                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
+                    twitter_api.PostUpdate(message)                    
                     
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
