@@ -33,6 +33,7 @@
         {% for article in articles %}
         	{% include "include/article_block.html" %}
         {% endfor %}
+        <div id="last_articles_loader"></div>
       </div>
     </div><!-- row end -->
 {% else %}
@@ -86,8 +87,7 @@
 {% endif %}
 
 <script type="text/javascript">
-$(document).ready(function(){
-
+ $(document).ready(function() {
     var page = 1;
     var fetching = false;
     
@@ -101,8 +101,7 @@ $(document).ready(function(){
           data:{
               'type': "{{type}}",
               'page': ++page,
-              'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
-            },
+              'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
           dataType:"html",
           error:function(data){},
           success:function(data){

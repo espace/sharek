@@ -1,4 +1,4 @@
-# Django settings for sharek project.
+# Django settings for sharek project. 
 
 try:
     from settings_local import *
@@ -145,13 +145,9 @@ INSTALLED_APPS = (
     'django_evolution',
     'template_utils',
     'django.contrib.humanize',
-    'core.social_auth',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
+    'social_auth',
     'debug_toolbar',
-	'smart_selects',
+    'smart_selects',
 )
 
 # A sample logging configuration. The only tangible logging
