@@ -118,6 +118,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    #'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'sharek.urls'
@@ -149,6 +150,9 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'smart_selects',
     'core.twitter',
+    'tinymce',
+    #'django.contrib.flatpages',
+    #'flatpages_tinymce',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -186,3 +190,5 @@ MARKITUP_SET = 'markitup/sets/markdown'
 
 # Sphinx 0.9.9
 SPHINX_API_VERSION = 0x116
+
+

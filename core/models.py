@@ -10,6 +10,8 @@ from django.db.models.aggregates import Max
 from core.actions import exclusive_boolean_fields
 from django.db import connection, models
 
+from tinymce import models as tinymce_models
+
 from smart_selects.db_fields import ChainedForeignKey 
 
 class Tag(models.Model):
@@ -436,6 +438,7 @@ class ArticleDetails(models.Model):
     feedback_count = models.IntegerField(default=0)
     current = models.BooleanField(default=False)
     mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Modification Date')
+    content = tinymce_models.HTMLField( null = True, blank = True)
     objects = ArticleManager()
 
     def get_votes(self):
