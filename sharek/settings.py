@@ -150,7 +150,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'smart_selects',
     'core.twitter',
-    'tinymce',
+    #'tinymce',
     #'django.contrib.flatpages',
     #'flatpages_tinymce',
 )

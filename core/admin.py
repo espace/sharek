@@ -9,10 +9,10 @@ from core.actions import export_as_csv_action
 from django.contrib import admin
 from django import forms
 from django.core.urlresolvers import reverse
-from django.contrib.flatpages.admin import FlatPageAdmin
-from django.contrib.flatpages.models import FlatPage
-from tinymce.widgets import TinyMCE
-
+#from django.contrib.flatpages.admin import FlatPageAdmin
+#from django.contrib.flatpages.models import FlatPage
+#from tinymce.widgets import TinyMCE
+'''
 class TinyMCEFlatPageAdmin(FlatPageAdmin):
     def formfield_for_dbfield(self, db_field, **kwargs):
         if db_field.name == 'content':
@@ -26,12 +26,12 @@ class TinyMCEFlatPageAdmin(FlatPageAdmin):
 
 admin.site.unregister(FlatPage)
 admin.site.register(FlatPage, TinyMCEFlatPageAdmin)
-
+'''
 class ArticleDetailsInlineAdmin(admin.TabularInline):
     model      = ArticleDetails
     extra      = 0
     can_delete = True
-    fields     = ['current', 'slug','summary','mod_date','content']
+    fields     = ['current', 'slug','summary','mod_date']
 
 class ArticleForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField( queryset=Tag.objects.all(), widget=forms.CheckboxSelectMultiple)
