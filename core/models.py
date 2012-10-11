@@ -180,7 +180,6 @@ class Topic(models.Model):
        row = cursor.fetchone()
        return row[1]
 
-
 class Chapter(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
