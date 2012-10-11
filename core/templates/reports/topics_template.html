@@ -14,7 +14,7 @@
 		 }
 		 h1, h2, h3, h4 {
 			color: #111111;
-			font-size: 24px;
+			font-size: 42x;
 			margin: 25px 0px 25px 0px;
 			direction: rtl;
 			text-align: center;
@@ -22,19 +22,24 @@
 		}
 		 
 		h2 {
-			font-size: 22px;
+			font-size: 36px;
 			margin: 45px 0px 10px 0px;
+      font-weight: bold;
+      color: #444;
 		}
 		
     h3 {
-      font-size: 20px;
+      font-size: 30px;
       margin: 45px 0px 10px 0px;
+      color: #666;
+      font-weight: 900;
     }
  
 		h4 {
-      font-size: 16px;
+      font-size: 20px;
       margin: 30px 0px 10px 0px;
 			text-align: center;
+      font-style: italic; 
 		}
     p{
       font-size: 12px;
@@ -48,6 +53,7 @@
     	<h1>بسم الله الرحمن الرحيم</h1>
         <h1>جمهورية مصر العربية</h1>
         <h1>الجمعية التأسيسية لوضع مشروع الدستور</h1>
+        <br><br>
             
     		{% for topic in topics %}
           <h1>{{topic.name}}</h1>  
