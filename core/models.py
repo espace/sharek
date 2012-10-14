@@ -9,6 +9,9 @@ from django.db.models.signals import post_save
 from django.db.models.aggregates import Max
 from core.actions import exclusive_boolean_fields
 from django.db import connection, models
+from django import db
+
+#from tinymce import models as tinymce_models
 
 from smart_selects.db_fields import ChainedForeignKey 
 
@@ -63,6 +66,7 @@ class Tag(models.Model):
            p.branch_name = row[16]
            p.topic_name = row[17]
            articles_list.append(p)
+       db.reset_queries()
        return articles_list
         
         
@@ -84,6 +88,7 @@ class TopicManager(models.Manager):
            p.date_articles = row[6]
            p.count_articles = row[7]
            topic_list.append(p)
+       db.reset_queries()
        return topic_list
 
 class Topic(models.Model):
@@ -112,6 +117,7 @@ class Topic(models.Model):
        cursor = connection.cursor()
        cursor.execute(query)
        row = cursor.fetchone()
+       db.reset_queries()
        return row[0]
     
     def get_articles(self, offset = None, limit = None):
@@ -149,6 +155,7 @@ class Topic(models.Model):
            p.branch_name = row[16]
            p.topic_name = row[17]
            articles_list.append(p)
+       db.reset_queries()
        return articles_list
    
     def get_mod_date(self):
@@ -162,8 +169,8 @@ class Topic(models.Model):
        cursor = connection.cursor()
        cursor.execute(query, [self.id])
        row = cursor.fetchone()
+       db.reset_queries()
        return row[1]
-
 
 class Chapter(models.Model):
     name = models.CharField(max_length=100)
@@ -216,6 +223,7 @@ class ArticleHeaderManager(models.Manager):
            p.branch_name = row[16]
            p.topic_name = row[17]
            articles_list.append(p)
+       db.reset_queries()
        return articles_list
 
     def get_article(self, slug):
@@ -242,6 +250,7 @@ class ArticleHeaderManager(models.Manager):
            p.chapter_name = row[14]
            p.branch_id = row[15]
            p.branch_name = row[16]
+           db.reset_queries()
            return p
        else:
            return None
@@ -260,6 +269,7 @@ class ArticleHeaderManager(models.Manager):
            p = self.model(id=row[0], name=row[1])
            p.slug = row[3]
            p.topic_slug = row[2]
+           db.reset_queries()
            return p
        else:
            return None
@@ -278,6 +288,7 @@ class ArticleHeaderManager(models.Manager):
            p = self.model(id=row[0], name=row[1])
            p.slug = row[3]
            p.topic_slug = row[2]
+           db.reset_queries()
            return p
        else:
            return None
@@ -352,6 +363,7 @@ class ArticleManager(models.Manager):
            p._summary_rendered = row[10]
            p.mod_date = row[11]
            article_list.append(p)
+       db.reset_queries()    
        return article_list
 
     def get_top_disliked(self, limit):
@@ -381,6 +393,7 @@ class ArticleManager(models.Manager):
            p._summary_rendered = row[10]
            p.mod_date = row[11]
            article_list.append(p)
+       db.reset_queries()
        return article_list
 
     def get_top_commented(self, limit):
@@ -411,6 +424,7 @@ class ArticleManager(models.Manager):
            p._summary_rendered = row[10]
            p.mod_date = row[11]
            article_list.append(p)
+       db.reset_queries()
        return article_list
 
 class ArticleDetails(models.Model):
@@ -475,6 +489,7 @@ class Feedback(models.Model):
 					WHERE core_feedback.parent_id = %s AND auth_user.is_active IS TRUE ORDER BY core_feedback.id'''
         cursor = connection.cursor()
         cursor.execute(query, [self.id])
+        db.reset_queries()
         return [Feedback(*i) for i in cursor.fetchall()]
 
 class Rating(models.Model):
@@ -552,6 +567,7 @@ def get_top_users(self, limit):
         p = User(username=row[0], first_name=row[1], last_name=row[2])
         p.contribution = row[3]
         users_list.append(p)
+    db.reset_queries()
     return users_list
 
 
