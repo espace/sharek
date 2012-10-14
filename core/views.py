@@ -8,6 +8,7 @@ from django.utils import simplejson
 from datetime import datetime
 from django.db import connection
 
+
 from diff_match import diff_match_patch
 from django.contrib import auth
 
@@ -56,7 +57,7 @@ def index(request):
     tags = Tag.objects.all
 
     template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics,'settings': settings,'user':user,'total':total,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
-
+    
     return render_to_response('index.html', template_context ,RequestContext(request))
         
 def tag_detail(request, tag_slug):
@@ -122,6 +123,7 @@ def topic_detail(request, topic_slug=None):
     voted_articles = ArticleRating.objects.filter(user = user)
 
     template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
+
     return render_to_response('topic_new.html',template_context ,RequestContext(request))
 
 def topic_next_articles(request):
