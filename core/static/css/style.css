@@ -81,8 +81,6 @@ body {
     font-weight: bold;
     float: right;
     margin: 14px 10px 0 0;
-    /*height: 50px;
-    width: 50px;*/
 }
 .log_out{
     float: right;
@@ -136,6 +134,18 @@ body {
     height: 24px;
     float: right;
     margin: 10px 10px 0 0;
+}
+.social_icons_wrap{
+    width: 230px;
+    float: right;
+}
+.social_in_topic{
+    width: 270px;
+    text-align: center;
+    margin:  0 auto;
+    position: relative;
+    right: -22px;
+
 }
 /*------------   Navigation    ------ */
 /*.top-nav{

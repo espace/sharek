@@ -8,6 +8,7 @@ from django.utils import simplejson
 from datetime import datetime
 from django.db import connection
 
+
 from diff_match import diff_match_patch
 from django.contrib import auth
 
@@ -31,8 +32,8 @@ import urllib2
 import core
 import os.path
 from operator import attrgetter
-
 from core.social_auth.models import UserSocialAuth
+from core.twitter import twitter
 
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
@@ -56,7 +57,7 @@ def index(request):
     tags = Tag.objects.all
 
     template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics,'settings': settings,'user':user,'total':total,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
-
+    
     return render_to_response('index.html', template_context ,RequestContext(request))
         
 def tag_detail(request, tag_slug):
@@ -122,6 +123,7 @@ def topic_detail(request, topic_slug=None):
     voted_articles = ArticleRating.objects.filter(user = user)
 
     template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
+
     return render_to_response('topic_new.html',template_context ,RequestContext(request))
 
 def topic_next_articles(request):
@@ -354,7 +356,16 @@ def modify(request):
                     graph.put_wall_post(message, attachment)
                 
                 if UserSocialAuth.auth_provider(request.user.username) == 'twitter':
-                    print 'posting to twitter ....'
+                    extra_data = UserSocialAuth.get_extra_data(request.user.username)
+                    access_token = extra_data['access_token']
+                    access_token_secret = access_token[access_token.find('=')+1 : access_token.find('&')]
+                    access_token_key = access_token[access_token.rfind('=')+1:]
+                    api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
+                                      consumer_secret=settings.TWITTER_CONSUMER_SECRET,
+                                      access_token_key=access_token_key,
+                                      access_token_secret=access_token_secret)
+                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
+                    api.PostUpdate(message)
                     
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 

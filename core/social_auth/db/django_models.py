@@ -58,6 +58,12 @@ class UserSocialAuth(models.Model, UserSocialAuthMixin):
         social_user = cls.objects.get(user_id = user.id)
         return social_user.provider
 
+    @classmethod
+    def get_extra_data(cls, username):
+        user =  User.objects.get(username = username)
+        social_user = cls.objects.get(user_id = user.id)
+        return social_user.extra_data
+
 class Nonce(models.Model, NonceMixin):
     """One use numbers"""
     server_url = models.CharField(max_length=255)
