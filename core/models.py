@@ -142,7 +142,7 @@ class Topic(models.Model):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
 						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
 						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
-						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name,core_branch.slug,core_chapter.slug
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
@@ -169,6 +169,8 @@ class Topic(models.Model):
            p.branch_id = row[15]
            p.branch_name = row[16]
            p.topic_name = row[17]
+           p.branch_slug = row[18]
+           p.chapter_slug = row[19]
            articles_list.append(p)
        db.reset_queries()
        return articles_list
