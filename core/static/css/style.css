@@ -447,6 +447,8 @@ left: 1px;
     float: right;
     display: inline;
     margin-left: 5px;
+    font-weight: normal;
+    font-size: 12px;
 }
 .home-sections li{
     margin-bottom: 40px;
@@ -475,9 +477,14 @@ left: 1px;
 	font-size: 9px;
 }
 
-.home-sections .nav li .articles-count-new {
+.home-sections .articles-count-new {
 	background: #9D0D0B;
 	color: #FFF;
+    font-size: 9px;
+    border-radius: 4px;
+    padding: 3px;
+    top: -5px;
+    position: relative;
 }
 .home-sections .nav li a{
     min-height: 60px;
