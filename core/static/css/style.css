@@ -430,6 +430,30 @@ left: 1px;
 }
  */
 /*------------   home-sections    ------ */
+.home-sections h3  {
+    float: right;
+    font: 22px GESSTwoMediumRegular !important;
+     color: #A11212;
+     margin-bottom: 10px;
+
+
+}
+.home-sections h5  {
+    clear: both;
+    display: block;
+    opacity: 0.9;
+}
+.home-sections h6  {
+    float: right;
+    display: inline;
+    margin-left: 5px;
+}
+.home-sections li{
+    margin-bottom: 40px;
+    height: 150px;
+    margin-right: 0;
+    list-style: none;
+}
 
 .home-sections .nav{
     margin: 0 !important;
