@@ -33,6 +33,7 @@
         {% for article in articles %}
         	{% include "include/article_block.html" %}
         {% endfor %}
+        <div id="last_articles_loader"></div>
       </div>
     </div><!-- row end -->
 {% else %}
@@ -86,6 +87,7 @@
 {% endif %}
 
 <script type="text/javascript">
+ $(document).ready(function() {
     var page = 1;
     var fetching = false;
     
@@ -120,9 +122,8 @@
             next_articles();
         }
     });
-
-
  });
+
 </script>
 
 {% endblock %}

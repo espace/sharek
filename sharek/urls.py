@@ -8,6 +8,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
+    #url(r'^tinymce/', include('tinymce.urls')),    
+    
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
 	url(r'^sharek/chaining/', include('smart_selects.urls')),
@@ -72,7 +74,7 @@ urlpatterns = patterns('',
 
     url(r'^sharek/$', 'core.views.index', name='index'),
 	
-	url(r'^sharek/', include('core.social_auth.urls')),
+    url(r'^sharek/', include('core.social_auth.urls')),
 	
     url(r'$', 'core.views.tmp'),
       

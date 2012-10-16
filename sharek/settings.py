@@ -1,4 +1,4 @@
-# Django settings for sharek project.
+# Django settings for sharek project. 
 
 try:
     from settings_local import *
@@ -118,6 +118,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    #'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'sharek.urls'
@@ -146,12 +147,12 @@ INSTALLED_APPS = (
     'template_utils',
     'django.contrib.humanize',
     'core.social_auth',
-    # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    # 'django.contrib.admindocs',
     'debug_toolbar',
-	'smart_selects',
+    'smart_selects',
+    'core.twitter',
+    #'tinymce',
+    #'django.contrib.flatpages',
+    #'flatpages_tinymce',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -189,3 +190,5 @@ MARKITUP_SET = 'markitup/sets/markdown'
 
 # Sphinx 0.9.9
 SPHINX_API_VERSION = 0x116
+
+

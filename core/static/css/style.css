@@ -81,9 +81,6 @@ body {
     font-weight: bold;
     float: right;
     margin: 14px 10px 0 0;
-    height: 50px;
-    width: 50px;
-
 }
 .log_out{
     float: right;
@@ -1289,7 +1286,7 @@ background-position: -142px -9px !important;
 .facebook_user_img img{
     border-radius: 5px;
     height: 50px;
-    width: 50px;
+	width: 50px;
 }
 .comment-block .name a{
     font-size:12px;
@@ -2318,13 +2315,13 @@ span.divider{
     margin-top: 0;
 }
 .content{
-    position: relative;
+position: relative;
 }
 
 .addthis_toolbox{
-    background: none;
-    position: absolute;
-    left: -80px !important;
-    top: 0px  !important;
+background: none;
+position: absolute;
+left: -80px !important;
+top: 0px !important;
 
 }

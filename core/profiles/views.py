@@ -35,12 +35,12 @@ def profile(request, browsing_data="def"):
             ids.append(id['articledetails'])
         disliked_articles = ArticleDetails.objects.filter(id__in=ids)
     elif browsing_data == "comments":
-        commented_ids = Feedback.objects.filter(user = user).values('articledetails').distinct()
+        commented_ids = Feedback.objects.filter(user = user,parent_id = None).values('articledetails').distinct()
         for id in commented_ids:
             if id['articledetails'] != None:
                 temp = ArticleDetails.objects.get(id = id['articledetails'])
-                feedbacks = Feedback.objects.filter(articledetails_id = id['articledetails'], parent_id = None)
-                commented_articles.append({'name':temp.header.name,'url':"#",'feedbacks':feedbacks})
+                feedbacks = Feedback.objects.filter(articledetails_id = id['articledetails'], parent_id = None, user = user)
+                commented_articles.append({'topic':temp.header.topic,'name':temp.header.name,'url':"#",'feedbacks':feedbacks})
                 
 
     return render_to_response('profile.html', {'profile':True,'browsing_data':browsing_data,'commented_articles':commented_articles,'disliked_articles':disliked_articles,'liked_articles':liked_articles,'settings': settings,'user':user} ,RequestContext(request))

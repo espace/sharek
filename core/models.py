@@ -7,8 +7,12 @@ from django.contrib.auth.models import User
 from django.db.models import Count
 from django.db.models.signals import post_save
 from django.db.models.aggregates import Max
+from django.db.models import signals
 from core.actions import exclusive_boolean_fields
 from django.db import connection, models
+from django import db
+
+#from tinymce import models as tinymce_models
 
 from smart_selects.db_fields import ChainedForeignKey 
 
@@ -26,26 +30,48 @@ class Tag(models.Model):
     def get_absolute_url(self):
         return self.slug
     
-    def get_articles(self):
-      # the new tech of article " header and details "
-      article_headers = self.articleheader_set.all()
-      article_details = []
-      for article_header in article_headers:
-          ad = article_header.articledetails_set.filter(current = True)
-          if len(ad) == 1:
-              article_details.append(ad[0])
-      return article_details
-
+    def get_articles(self, offset = None, limit = None):
+       return self.get_articles_limit()
     
-    def get_articles_limit(self, offset, limit):
-        # the new tech of article " header and details "
-        article_headers = self.articleheader_set.all()[offset:limit]
-        article_details = []
-        for article_header in article_headers:
-            ad = article_header.articledetails_set.filter(current = True)
-            if len(ad) == 1:
-                article_details.append(ad[0])
-        return article_details
+    def get_articles_limit(self, offset = None, limit = None):
+       query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
+						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name,
+						core_articledetails.original, original_articledetails.slug
+					FROM core_articleheader
+					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_articledetails original_articledetails ON original_articledetails.id = core_articledetails.original
+					INNER JOIN core_articleheader_tags ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_tag ON core_tag.id = core_articleheader_tags.tag_id
+					INNER JOIN core_topic ON core_articleheader.id = core_articleheader_tags.articleheader_id
+					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+					WHERE core_articledetails.current IS TRUE AND core_tag.id = %s
+					ORDER BY coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
+
+       if offset != None and limit != None:
+           query = query + ' OFFSET ' + str(offset) + ' LIMIT ' + str(limit)
+
+       cursor = connection.cursor()
+       cursor.execute(query, [self.id])
+
+       articles_list = []
+       for row in cursor.fetchall():
+           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12], original = row[18])
+           p.topic_id = row[0]
+           p.name = row[1]
+           p.topic_slug = row[2]
+           p.order = row[3]
+           p.chapter_id = row[13]
+           p.chapter_name = row[14]
+           p.branch_id = row[15]
+           p.branch_name = row[16]
+           p.topic_name = row[17]
+           p.original_slug = row[19]
+           articles_list.append(p)
+       db.reset_queries()
+       return articles_list
         
         
     class Meta:
@@ -66,6 +92,7 @@ class TopicManager(models.Manager):
            p.date_articles = row[6]
            p.count_articles = row[7]
            topic_list.append(p)
+       db.reset_queries()
        return topic_list
 
 class Topic(models.Model):
@@ -75,7 +102,7 @@ class Topic(models.Model):
     summary = MarkupField(blank=True, default='')
     order = models.IntegerField(blank = True, null = True)
     objects = TopicManager()
-    
+
     def __unicode__(self):
         return "%s" % (self.name)
 
@@ -94,8 +121,9 @@ class Topic(models.Model):
        cursor = connection.cursor()
        cursor.execute(query)
        row = cursor.fetchone()
+       db.reset_queries()
        return row[0]
-    
+
     def get_articles(self, offset = None, limit = None):
        return self.get_articles_limit()
     
@@ -103,13 +131,17 @@ class Topic(models.Model):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
 						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
 						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
-						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name,
+						core_branch.slug, core_chapter.slug, core_articledetails.original, original_articledetails.slug
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
-					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
-					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
-					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
-					WHERE core_articledetails.current IS TRUE AND core_articleheader.topic_id = %s
+					INNER JOIN core_articledetails original_articledetails ON original_articledetails.id = core_articledetails.original
+					INNER JOIN core_articleheader_tags ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_tag ON core_tag.id = core_articleheader_tags.tag_id
+					INNER JOIN core_topic ON core_articleheader.id = core_articleheader_tags.articleheader_id
+					LEFT  JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+					LEFT  JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+					WHERE core_articledetails.current IS TRUE AND core_tag.id = %s
 					ORDER BY coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
 
        if offset != None and limit != None:
@@ -120,7 +152,7 @@ class Topic(models.Model):
 
        articles_list = []
        for row in cursor.fetchall():
-           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12])
+           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12], original=row[20])
            p.topic_id = row[0]
            p.name = row[1]
            p.topic_slug = row[2]
@@ -129,7 +161,12 @@ class Topic(models.Model):
            p.chapter_name = row[14]
            p.branch_id = row[15]
            p.branch_name = row[16]
+           p.topic_name = row[17]
+           p.branch_slug = row[18]
+           p.chapter_slug = row[19]
+           p.original_slug = row[21]
            articles_list.append(p)
+       db.reset_queries()
        return articles_list
 
     def get_mod_date(self):
@@ -143,8 +180,8 @@ class Topic(models.Model):
        cursor = connection.cursor()
        cursor.execute(query, [self.id])
        row = cursor.fetchone()
+       db.reset_queries()
        return row[1]
-
 
 class Chapter(models.Model):
     name = models.CharField(max_length=100)
@@ -167,6 +204,74 @@ class Branch(models.Model):
         return self.name
 
 class ArticleHeaderManager(models.Manager):
+    
+    def search_articles(self, str_query):
+       query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
+						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name
+					FROM core_articleheader
+					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
+					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+					WHERE core_articledetails.current IS TRUE AND core_articleheader.name like %s OR core_articledetails.summary like %s
+					ORDER BY coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
+       print(query)
+       cursor = connection.cursor()
+       cursor.execute(query, [str_query, str_query])
+
+       articles_list = []
+       for row in cursor.fetchall():
+           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12])
+           p.topic_id = row[0]
+           p.name = row[1]
+           p.topic_slug = row[2]
+           p.order = row[3]
+           p.chapter_id = row[13]
+           p.chapter_name = row[14]
+           p.branch_id = row[15]
+           p.branch_name = row[16]
+           p.topic_name = row[17]
+           articles_list.append(p)
+       db.reset_queries()
+       return articles_list
+
+    def get_article(self, slug):
+       query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
+						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name,
+						core_branch.slug, core_chapter.slug, core_articledetails.original, original_articledetails.slug
+					FROM core_articleheader
+					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_articledetails original_articledetails ON original_articledetails.id = core_articledetails.original
+					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
+					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+					WHERE core_articledetails.slug = %s'''
+       cursor = connection.cursor()
+       cursor.execute(query, [slug])
+       row = cursor.fetchone()
+       if(row):
+           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12], original=row[20])
+           p.topic_id = row[0]
+           p.name = row[1]
+           p.topic_slug = row[2]
+           p.order = row[3]
+           p.chapter_id = row[13]
+           p.chapter_name = row[14]
+           p.branch_id = row[15]
+           p.branch_name = row[16]
+           p.topic_name = row[17]
+           p.branch_slug = row[18]
+           p.chapter_slug = row[19]
+           p.original_slug = row[21]
+           db.reset_queries()
+           return p
+       else:
+           return None
+
     def get_next(self, topic, order):
        query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.slug, core_articledetails.slug
 					FROM core_articleheader inner join core_articledetails
@@ -181,6 +286,7 @@ class ArticleHeaderManager(models.Manager):
            p = self.model(id=row[0], name=row[1])
            p.slug = row[3]
            p.topic_slug = row[2]
+           db.reset_queries()
            return p
        else:
            return None
@@ -199,6 +305,7 @@ class ArticleHeaderManager(models.Manager):
            p = self.model(id=row[0], name=row[1])
            p.slug = row[3]
            p.topic_slug = row[2]
+           db.reset_queries()
            return p
        else:
            return None
@@ -228,14 +335,13 @@ class ArticleHeader(models.Model):
     order = models.IntegerField(blank = True, null = True)
     objects = ArticleHeaderManager()
 
+    def __unicode__(self):
+        return self.name
+
     def clean(self):
         if len(self.name) >= 40:
             raise exceptions.ValidationError('Too many characters ...')
         return self.name
-
-    def get_original(self):
-        versions = self.articledetails_set.all().order_by('id')
-        return versions[0]
 
     class Meta:
        verbose_name = "Article"
@@ -244,13 +350,18 @@ class ArticleHeader(models.Model):
 
 class ArticleManager(models.Manager):
     def get_top_liked(self, limit):
-       query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug, max(core_articledetails.likes) likes
+       query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug,
+	   					core_articledetails.slug, max(core_articledetails.likes) likes, core_topic.slug,
+						core_articleheader.name, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.mod_date
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
 					WHERE core_articledetails.current IS TRUE
-					GROUP BY core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug
-					ORDER BY likes DESC LIMIT %s'''
+					GROUP BY core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug,
+						core_articledetails.slug, core_topic.slug,
+						core_articleheader.name, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.mod_date ORDER BY likes DESC LIMIT %s'''
        cursor = connection.cursor()
        cursor.execute(query, [limit])
 
@@ -259,17 +370,28 @@ class ArticleManager(models.Manager):
            p = self.model(slug=row[5], likes=row[6])
            p.header = ArticleHeader.objects.get(id=row[0])
            p.topic = Topic.objects.get(id=row[2])
+           p.topic_slug = row[7]
+           p.name = row[8]
+           p.summary = row[9]
+           p._summary_rendered = row[10]
+           p.mod_date = row[11]
            article_list.append(p)
+       db.reset_queries()    
        return article_list
 
     def get_top_disliked(self, limit):
-       query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug, max(core_articledetails.dislikes) dislikes
+       query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug,
+	   					core_articledetails.slug, max(core_articledetails.dislikes) dislikes, core_topic.slug,
+						core_articleheader.name, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.mod_date
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
 					WHERE core_articledetails.current IS TRUE
-					GROUP BY core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug
-					ORDER BY dislikes DESC LIMIT %s'''
+					GROUP BY core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug,
+						core_articledetails.slug, core_topic.slug,
+						core_articleheader.name, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.mod_date					ORDER BY dislikes DESC LIMIT %s'''
        cursor = connection.cursor()
        cursor.execute(query, [limit])
 
@@ -278,16 +400,28 @@ class ArticleManager(models.Manager):
            p = self.model(slug=row[5], dislikes=row[6])
            p.header = ArticleHeader.objects.get(id=row[0])
            p.topic = Topic.objects.get(id=row[2])
+           p.topic_slug = row[7]
+           p.name = row[8]
+           p.summary = row[9]
+           p._summary_rendered = row[10]
+           p.mod_date = row[11]
            article_list.append(p)
+       db.reset_queries()
        return article_list
 
     def get_top_commented(self, limit):
-       query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug, max(core_articledetails.feedback_count) feedback_count
+       query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug,
+	   					core_articledetails.slug, max(core_articledetails.feedback_count) feedback_count, core_topic.slug,
+						core_articleheader.name, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.mod_date
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
 					WHERE core_articledetails.current IS TRUE
-					GROUP BY core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug, core_articledetails.slug
+					GROUP BY core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug,
+						core_articledetails.slug, core_topic.slug,
+						core_articleheader.name, core_articledetails.summary, core_articledetails._summary_rendered,
+						core_articledetails.mod_date
 					ORDER BY feedback_count DESC LIMIT %s'''
        cursor = connection.cursor()
        cursor.execute(query, [limit])
@@ -297,7 +431,13 @@ class ArticleManager(models.Manager):
            p = self.model(slug=row[5], feedback_count=row[6])
            p.header = ArticleHeader.objects.get(id=row[0])
            p.topic = Topic.objects.get(id=row[2])
+           p.topic_slug = row[7]
+           p.name = row[8]
+           p.summary = row[9]
+           p._summary_rendered = row[10]
+           p.mod_date = row[11]
            article_list.append(p)
+       db.reset_queries()
        return article_list
 
 class ArticleDetails(models.Model):
@@ -306,6 +446,7 @@ class ArticleDetails(models.Model):
     summary = MarkupField(blank=True, default='')
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
+    original = models.IntegerField(default=0)
     feedback_count = models.IntegerField(default=0)
     current = models.BooleanField(default=False)
     mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Modification Date')
@@ -342,6 +483,20 @@ class ArticleDetails(models.Model):
        verbose_name = "Article Text"
        verbose_name_plural = "Article Texts"
 
+def update_original(sender, instance, created, **kwargs):
+    if created:
+       query = '''UPDATE core_articledetails tt
+                    SET original = ( SELECT min(dd.id)
+                             FROM core_articledetails dd
+                             WHERE dd.header_id = tt.header_id
+                             GROUP BY dd.header_id
+                            )
+                  WHERE tt.id = %s'''
+       cursor = connection.cursor()
+       cursor.execute(query, [instance.id])
+
+signals.post_save.connect(update_original, sender = ArticleDetails)
+
 exclusive_boolean_fields(ArticleDetails, ('current',), ('header',))
 
 class Feedback(models.Model):
@@ -362,6 +517,7 @@ class Feedback(models.Model):
 					WHERE core_feedback.parent_id = %s AND auth_user.is_active IS TRUE ORDER BY core_feedback.id'''
         cursor = connection.cursor()
         cursor.execute(query, [self.id])
+        db.reset_queries()
         return [Feedback(*i) for i in cursor.fetchall()]
 
 class Rating(models.Model):
@@ -439,6 +595,7 @@ def get_top_users(self, limit):
         p = User(username=row[0], first_name=row[1], last_name=row[2])
         p.contribution = row[3]
         users_list.append(p)
+    db.reset_queries()
     return users_list
 
 

@@ -8,6 +8,7 @@ from django.utils import simplejson
 from datetime import datetime
 from django.db import connection
 
+
 from diff_match import diff_match_patch
 from django.contrib import auth
 
@@ -31,8 +32,8 @@ import urllib2
 import core
 import os.path
 from operator import attrgetter
-
 from core.social_auth.models import UserSocialAuth
+from core.twitter import twitter
 
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
@@ -56,7 +57,7 @@ def index(request):
     tags = Tag.objects.all
 
     template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics,'settings': settings,'user':user,'total':total,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
-
+    
     return render_to_response('index.html', template_context ,RequestContext(request))
         
 def tag_detail(request, tag_slug):
@@ -122,6 +123,7 @@ def topic_detail(request, topic_slug=None):
     voted_articles = ArticleRating.objects.filter(user = user)
 
     template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
+
     return render_to_response('topic_new.html',template_context ,RequestContext(request))
 
 def topic_next_articles(request):
@@ -193,11 +195,11 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if request.user.is_authenticated():
       user = request.user
 
-    article = get_object_or_404( ArticleDetails, slug=article_slug )
-    topic = get_object_or_404( Topic, slug=article.header.topic.slug )
+    article = ArticleHeader.objects.get_article(article_slug) #get_object_or_404( ArticleDetails, slug=article_slug )
+    topic = get_object_or_404( Topic, slug = article.topic_slug )
 
-    next = ArticleHeader.objects.get_next(article.header.topic.id, article.header.order)
-    prev = ArticleHeader.objects.get_prev(article.header.topic.id, article.header.order)
+    next = ArticleHeader.objects.get_next(article.topic_id, article.order)
+    prev = ArticleHeader.objects.get_prev(article.topic_id, article.order)
 
     if classified_by == "tags":  
         tags = Tag.objects.all
@@ -354,7 +356,16 @@ def modify(request):
                     graph.put_wall_post(message, attachment)
                 
                 if UserSocialAuth.auth_provider(request.user.username) == 'twitter':
-                    print 'posting to twitter ....'
+                    extra_data = UserSocialAuth.get_extra_data(request.user.username)
+                    access_token = extra_data['access_token']
+                    access_token_secret = access_token[access_token.find('=')+1 : access_token.find('&')]
+                    access_token_key = access_token[access_token.rfind('=')+1:]
+                    api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
+                                      consumer_secret=settings.TWITTER_CONSUMER_SECRET,
+                                      access_token_key=access_token_key,
+                                      access_token_secret=access_token_secret)
+                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
+                    api.PostUpdate(message)
                     
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
@@ -514,8 +525,9 @@ def search(request):
     if len(query.strip()) == 0:
         return HttpResponseRedirect(reverse('index'))
 
-    arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-    arts = sorted(arts,  key=attrgetter('header.topic.id','header.order','id'))
+    #arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
+    #arts = sorted(arts,  key=attrgetter('header.topic.id','header.order','id'))
+    arts = ArticleHeader.objects.search_articles('%'+query.strip()+'%')
     voted_articles = ArticleRating.objects.filter(user = user)
 
     count = len(arts)
@@ -607,7 +619,7 @@ def top_commented(request):
 
     if not request.user.is_staff:
         return HttpResponseRedirect(reverse('index'))
-    articles = ArticleDetails.get_top_commented(settings.paginator)
+    articles = ArticleDetails.objects.get_top_commented(settings.paginator)
     title = 'الأكثر مناقشة'
     return render_to_response('statistics.html', {'type':"comments",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
@@ -617,11 +629,11 @@ def statistics(request):
             stat_type = request.POST.get("type")
 
             if stat_type == "likes":
-                articles = ArticleDetails.objects.filter(current = True).order_by('-likes')
+                articles = ArticleDetails.objects.get_top_liked(1000) #ArticleDetails.objects.filter(current = True).order_by('-likes')
             elif stat_type == "dislikes":
-                articles = ArticleDetails.objects.filter(current = True).order_by('-dislikes')
+                articles = ArticleDetails.objects.get_top_disliked(1000) #ArticleDetails.objects.filter(current = True).order_by('-dislikes')
             elif stat_type == "comments":
-                articles = ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')
+                articles = ArticleDetails.objects.get_top_commented(1000) #ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')
             
 
             paginator = Paginator(articles, settings.paginator)
@@ -670,3 +682,4 @@ def top_users_map(request):
             top_users.append(top_user)
 
     return render_to_response('map.html', {'counter':counter,'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
+
