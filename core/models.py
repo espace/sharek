@@ -241,9 +241,11 @@ class ArticleHeaderManager(models.Manager):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
 						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
 						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
-						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name
+						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name,
+						core_branch.slug, core_chapter.slug, core_articledetails.original, original_articledetails.slug
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					INNER JOIN core_articledetails original_articledetails ON original_articledetails.id = core_articledetails.original
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
 					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
 					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
@@ -252,7 +254,7 @@ class ArticleHeaderManager(models.Manager):
        cursor.execute(query, [slug])
        row = cursor.fetchone()
        if(row):
-           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12])
+           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12], original=row[20])
            p.topic_id = row[0]
            p.name = row[1]
            p.topic_slug = row[2]
@@ -261,6 +263,10 @@ class ArticleHeaderManager(models.Manager):
            p.chapter_name = row[14]
            p.branch_id = row[15]
            p.branch_name = row[16]
+           p.topic_name = row[17]
+           p.branch_slug = row[18]
+           p.chapter_slug = row[19]
+           p.original_slug = row[21]
            db.reset_queries()
            return p
        else:
