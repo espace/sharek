@@ -535,8 +535,9 @@ def ajx_search(request):
         page =  request.GET.get("page")
         query = request.GET.get("q")
 
-        articles = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-        articles =  sorted(articles,  key=attrgetter('header.topic.id','header.order','id'))
+        #articles = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
+        #articles =  sorted(articles,  key=attrgetter('header.topic.id','header.order','id'))
+        articles = ArticleHeader.objects.search_articles('%'+query.strip()+'%')
 
         paginator = Paginator(articles, settings.paginator)
         try:
