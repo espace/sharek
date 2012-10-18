@@ -7,31 +7,26 @@ from django import forms
 from core.actions import export_as_csv_action
 
 from django.contrib import admin
-from django import forms
 from django.core.urlresolvers import reverse
-#from django.contrib.flatpages.admin import FlatPageAdmin
-#from django.contrib.flatpages.models import FlatPage
-#from tinymce.widgets import TinyMCE
 '''
-class TinyMCEFlatPageAdmin(FlatPageAdmin):
-    def formfield_for_dbfield(self, db_field, **kwargs):
-        if db_field.name == 'content':
-            return forms.CharField(widget=TinyMCE(
-                attrs={'cols': 80, 'rows': 30},
-                mce_attrs={'external_link_list_url': reverse('tinymce.views.flatpages_link_list')},
-            ))
-        return super(TinyMCEFlatPageAdmin, self).formfield_for_dbfield(db_field, **kwargs)
+from django.forms import *
+from django.db.models import *
+from tinymce.widgets import TinyMCE
 
-#somesite.register(FlatPage, TinyMCEFlatPageAdmin)
 
-admin.site.unregister(FlatPage)
-admin.site.register(FlatPage, TinyMCEFlatPageAdmin)
+
+class ArticleDetailsForm(forms.ModelForm):
+    summary = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 20}))
+
+    class Meta: 
+         model = ArticleDetails
 '''
 class ArticleDetailsInlineAdmin(admin.TabularInline):
     model      = ArticleDetails
     extra      = 0
     can_delete = True
     fields     = ['current', 'slug','summary','mod_date']
+    #form = ArticleDetailsForm
 
 class ArticleForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField( queryset=Tag.objects.all(), widget=forms.CheckboxSelectMultiple)
@@ -54,7 +49,7 @@ class ArticleHeaderAdmin(admin.ModelAdmin):
     form = ArticleForm
 
     class Media:
-        js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', 'js/admin-current-article.js','js/tiny_mce.js')
+        js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', 'js/admin-current-article.js')
 
 class FeedbackAdmin(admin.ModelAdmin):
     list_filter = ('articledetails',)
