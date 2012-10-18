@@ -16,7 +16,7 @@ from tinymce.widgets import TinyMCE
 
 
 class ArticleDetailsForm(forms.ModelForm):
-    content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 10}))
+    content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 20}))
 
     class Meta: 
          model = ArticleDetails
