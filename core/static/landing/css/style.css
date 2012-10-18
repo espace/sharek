@@ -64,7 +64,7 @@ body {
 
 /*------------   header    ------ */
 .logo{
-    margin-top:20px;
+    margin-top: 60px;
 }
 .search {
     margin:0px;
@@ -462,14 +462,15 @@ left: 1px;
     margin-left: 5px;
 }
 .home-sections li{
-    margin-bottom: 40px;
+    margin-top: 20px;
+    margin-bottom: 65px;
     height: 150px;
 }
 .home-sections .nav{
     margin: 0 !important;
 }
 .home-sections .nav li{
-    margin-right: 0 !important; 
+    margin-right: 15px !important; 
     position: relative;
 }
 
@@ -1295,8 +1296,8 @@ span.divider{
     float: right;
 }
 .divider-vert{  
-    box-shadow:-1px 0px 0px rgba(0,0,0,0.1);
-    border-left:solid 1px rgba(255,255,255,1);
+    /*box-shadow:-1px 0px 0px rgba(0,0,0,0.1);
+    border-left:solid 1px rgba(255,255,255,1);*/
 }
 .comment-info{
     float:right;
