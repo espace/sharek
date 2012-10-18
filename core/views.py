@@ -8,7 +8,6 @@ from django.utils import simplejson
 from datetime import datetime
 from django.db import connection
 
-
 from diff_match import diff_match_patch
 from django.contrib import auth
 

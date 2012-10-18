@@ -12,6 +12,7 @@
           <div class="span5 pull-left facebook_log_in">
             <div class="">
                 {% if user %}
+                
                   <div class="attrs">
                     <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
                     <a href="{% url logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
