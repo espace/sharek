@@ -34,10 +34,6 @@ def profile(request, browsing_data="def"):
         for id in disliked_ids:
             ids.append(id['articledetails'])
         disliked_articles = ArticleDetails.objects.filter(id__in=ids)
-        for article in disliked_articles:
-            original = ArticleDetails.objects.get(id=article.original)
-            print original.slug
-            article.original_slug = original.slug
     elif browsing_data == "comments":
         commented_ids = Feedback.objects.filter(user = user,parent_id = None).values('articledetails').distinct()
         for id in commented_ids:
