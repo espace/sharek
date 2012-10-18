@@ -448,7 +448,7 @@ class ArticleDetails(models.Model):
     header =  models.ForeignKey(ArticleHeader, null = True, blank = True)
     slug   = models.SlugField(max_length=40, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
-    content = models.TextField(default='  ',help_text="article")
+    #content = models.TextField(default='  ',help_text="article")
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
     feedback_count = models.IntegerField(default=0)

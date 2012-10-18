@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
-	url(r'^dowser/', include('django_dowser.urls')),
+	#url(r'^dowser/', include('django_dowser.urls')),
 	
 	url(r'^sharek/chaining/', include('smart_selects.urls')),
 	
