@@ -151,7 +151,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'smart_selects',
     'core.twitter',
-    'tinymce',
+    #'tinymce',
     #'django.contrib.flatpages',
     #'flatpages_tinymce',
 )
@@ -191,7 +191,7 @@ MARKITUP_SET = 'markitup/sets/markdown'
 
 # Sphinx 0.9.9
 SPHINX_API_VERSION = 0x116
-
+'''
 TINYMCE_JS_ROOT = '/static/tiny_mce/'
 TINYMCE_JS_URL = os.path.join(STATIC_URL, "tiny_mce/tiny_mce_src.js")
 TINYMCE_DEFAULT_CONFIG = {
@@ -202,4 +202,4 @@ TINYMCE_DEFAULT_CONFIG = {
     'custom_undo_redo_levels': 10,
 }
 #TINYMCE_SPELLCHECKER = True
-
+'''
