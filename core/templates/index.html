@@ -42,22 +42,51 @@
 <div class="row">
   <div class="home-sections span8">
     <div class="span8 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
-    {% for topic_item in topics %}
-      <li class="span4"> 
-          <a href="{% url topic topic_slug=topic_item.get_absolute_url %}"><h3>{{topic_item.name}}</h3></a>
-            {% for chapter in topic_item.chapters %}
-              <a href="{% url topic topic_slug=topic_item.get_absolute_url %}#{{chapter.slug}}">
-                <h5><i class="icon-book"></i> {{chapter.name}}</h5>
-              </a>
-                {% for branch in chapter.branchs %}
-                <a href="{% url topic topic_slug=topic_item.get_absolute_url %}#{{branch.slug}}">
-                  <h6>{{branch.name}}</h6>
-                </a>
-                {% endfor %}
-            {% endfor %}
+
+<li class="span4"> 
+     
+          <h3 >السلطات العامة <span class="articles-count-new">123 مادة</span></h3>
+            <h5><i class="icon-book"></i> السلطة التشريعية</h5>
+                <h6> أحكام مشتركة</h6><h6> مجلس النواب</h6><h6> أحكام الشيوخ </h6>
+            <h5><i class="icon-book"></i>  السلطة التنفيذية </h5>
+                <h6>  رئيس الجمهورية </h6><h6> الحكومة </h6>
+            <h5><i class="icon-book"></i> السلطة القضائية</h5>
+            <h5><i class="icon-book"></i> انظام الإدارة المحلية</h5>
+            <h5><i class="icon-book"></i> الأمن والدفاع</h5>
       </li>
-    {% endfor %}
-    
+      
+      <li class="span4"> 
+     
+          <h3 >الأجهزة الرقابية والهيئات المستقلة <span class="articles-count-new">123 مادة</span></h3>
+            <h5><i class="icon-book"></i> أحكام مشتركة</h5>
+            <h5><i class="icon-book"></i> الأجهزة الرقابية </h5>
+            <h5><i class="icon-book"></i> المجلس الاقتصادى والاجتماعى </h5>
+            <h5><i class="icon-book"></i> المفوضية الوطنية للانتخابات</h5>
+            <h5><i class="icon-book"></i>  الهيئات المستقلة</h5>
+      </li>
+      <li class="span4"> 
+     
+          <h3 >السلطات العامة <span class="articles-count-new">123 مادة</span></h3>
+            <h5><i class="icon-book"></i> السلطة التشريعية</h5>
+                <h6> أحكام مشتركة</h6><h6> مجلس النواب</h6><h6> أحكام الشيوخ </h6>
+            <h5><i class="icon-book"></i> السلطة التنفيذية </h5>
+                <h6>  رئيس الجمهورية </h6><h6> الحكومة </h6>
+            <h5><i class="icon-book"></i> السلطة القضائية</h5>
+            <h5><i class="icon-book"></i> انظام الإدارة المحلية</h5>
+            <h5><i class="icon-book"></i> الأمن والدفاع</h5>
+      </li>
+      <li class="span4"> 
+     
+          <h3 >السلطات العامة <span class="articles-count-new">123 مادة</span></h3>
+            <h5><i class="icon-book"></i> السلطة التشريعية</h5>
+                <h6> أحكام مشتركة</h6><h6> مجلس النواب</h6><h6> أحكام الشيوخ </h6>
+            <h5><i class="icon-book"></i> السلطة التنفيذية </h5>
+                <h6>  رئيس الجمهورية </h6><h6> الحكومة </h6>
+            <h5><i class="icon-book"></i> السلطة القضائية</h5>
+            <h5><i class="icon-book"></i> انظام الإدارة المحلية</h5>
+            <h5><i class="icon-book"></i> الأمن والدفاع</h5>
+      </li>
+
 	<!-- <ul class="nav nav-pills divider-vert ">
       {% for topic_item in topics %}
       <li class="span4"> 
