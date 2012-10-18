@@ -145,9 +145,13 @@ INSTALLED_APPS = (
     'django_evolution',
     'template_utils',
     'django.contrib.humanize',
-    'social_auth',
+    'core.social_auth',
     'debug_toolbar',
     'smart_selects',
+    'core.twitter',
+    #'tinymce',
+    #'django.contrib.flatpages',
+    #'flatpages_tinymce',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -185,3 +189,5 @@ MARKITUP_SET = 'markitup/sets/markdown'
 
 # Sphinx 0.9.9
 SPHINX_API_VERSION = 0x116
+
+

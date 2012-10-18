@@ -31,8 +31,8 @@ import urllib2
 import core
 import os.path
 from operator import attrgetter
-
 from core.social_auth.models import UserSocialAuth
+from core.twitter import twitter
 
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
@@ -122,6 +122,7 @@ def topic_detail(request, topic_slug=None):
     voted_articles = ArticleRating.objects.filter(user = user)
 
     template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
+
     return render_to_response('topic_new.html',template_context ,RequestContext(request))
 
 def topic_next_articles(request):

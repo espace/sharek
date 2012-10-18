@@ -4,14 +4,22 @@
 {% block title %}{{title}}{% endblock %}
 
 {% block content %}
-  <div class="comment-block well top">
-        <a class="{%if browsing_data = 'def' or browsing_data = 'likes' %}selected{%endif%}" href="{% url profile browsing_data="likes" %}" >المواد المقبوله</a>
-      <a> | </a>
-        <a class="{%if browsing_data = 'dislikes' %}selected{%endif%}" href="{% url profile browsing_data="dislikes" %}">المواد المرفوضه</a>
-      <a> | </a>
-        <a class="{%if browsing_data = 'comments' %}selected{%endif%}" href="{% url profile browsing_data="comments" %}">تعليقاتك</a>
+
+  <div class="row">
+    <div class="span12">
+      <div class="headtitle innerpage" id="headtitle">
+          <h1>احصائيات مشاركاتك</h1> 
+      </div>
   </div>
-  <br><br><br>
+
+    <div class="span12 profile-tabs">
+      <ul class="nav nav-tabs " id="myTab">
+        <li {% if browsing_data = "likes" %}class="active"{% endif %}><a href="{% url profile browsing_data="likes" %}"><i class=" icon-thumbs-up"></i> المواد التى أعجبتك </a></li>
+        <li {% if browsing_data = "dislikes" %}class="active"{% endif %}><a href="{% url profile browsing_data="dislikes" %}"><i class=" icon-thumbs-down"></i>  المواد التى لم تعجبك</a></li>
+        <li {% if browsing_data = "comments" %}class="active"{% endif %}><a href="{% url profile browsing_data="comments" %}"> <i class=" icon-comment "></i> مشاركاتك</a></li>
+      </ul>
+
+      <div class="tab-content" id="myTabContent">
   {% for article in liked_articles %}
     {% include "include/article_block.html" %}
   {% endfor %}
@@ -21,13 +29,153 @@
   {% endfor %}
 
   {% for article in commented_articles %}
-    <div class="comment-block ">
-      {{article.name}}
-    </div>
+          <div class="headtitle"> <h4>{{article.topic}} :<span>{{article.name}}</span></h4>  </div>
     {% for feedback in article.feedbacks %}
       {% include "include/comment-block.html" %}
     {% endfor %}
   {% endfor %}
+      </div>
+    </div> <!-- span12  --> 
+  </div><!-- roww -->
+
+<script type="text/javascript">
+  $(document).ready(function() {
+   $('a[rel*=facebox]').facebox()
+   
+   $(".L_vote").live("click",function(){
+    {% if user %}
+      $.ajax({
+              type:"POST",
+              url :"{% url vote %}",
+              data:{'article':{{article.id}},'modification': this.id ,'type': $(this).attr('vote') ,'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+              dataType:"json",
+              error:function(data){},
+              success:function(data){
+                $(".like"+"."+data.modification).text(data.p);  
+                $(".dislike"+"."+data.modification).text(data.n);
+                if (data.vote == 1)
+                {
+                  $(".like.vote.L_vote"+"."+data.modification).addClass("active")
+                  $(".dislike.vote.L_vote"+"."+data.modification).removeClass("active")
+          
+                  $(".like.vote.L_vote"+"."+data.modification).removeClass("disabled")
+                  $(".dislike.vote.L_vote"+"."+data.modification).addClass("disabled")
+                }
+                else
+                {
+                  $(".dislike.vote.L_vote"+"."+data.modification).addClass("active")
+                  $(".like.vote.L_vote"+"."+data.modification).removeClass("active")
+          
+                  $(".dislike.vote.L_vote"+"."+data.modification).removeClass("disabled")
+                  $(".like.vote.L_vote"+"."+data.modification).addClass("disabled")
+                }
+              },
+            });
+    {% endif %}
+    });
+
+   $(".L_reply").live("click",function(){
+    visible = $(".L_replies_block."+$(this).attr('id')).is(":visible")
+    if (visible)
+    {
+      $('.child-reply.'+this.id).show()
+    }
+    else
+    {
+      $(this).expand_effect()
+      $('.child-reply.'+this.id).show()
+    }
+    $('html,body').animate({ scrollTop: $('.child-reply.'+this.id).offset().top -100 },800);
+    });
+
+   $(".L_hide").live("click",function(){
+    $(".L_reply_txt."+$(this).attr('feedback_id')).val("");
+    $(".comment-entry.child-reply."+$(this).attr('feedback_id')).hide();
+    });
+
+   $(".L_reply_bt").live("click",function(){
+      if ($.trim($(".L_reply_txt."+$(this).attr('parent')).val()).length > 0)
+      {
+        $.ajax({
+              type:"POST",
+              url :"{% url reply_feedback %}",
+              data:{
+                  'link': document.URL,
+                  'user_id':"{{user}}",
+                  'name':"{{user.first_name}} {{ user.last_name }}",
+                  'article':"{{article.id}}",
+                  'email': "{{user.email}}",
+                  'parent': $(this).attr('parent') ,
+                  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),
+                  'suggestion': $(".L_reply_txt."+$(this).attr('parent')).val()},
+              dataType:"json",
+              error:function(data){},
+              success:function(data){
+                if (data.duplicate == true)
+                {
+                  alert ("أ/"+data.name+" يرجى مراعاة تغيير محتوي تعليقك للوصول لأقصى إستفاده من مشاركاتك");
+                  $(".L_reply_txt."+data.parent).val("");
+                }
+                else
+                {
+                  $(".child-reply."+data.parent).before($("#reply_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
+                  $(".L_reply_txt."+data.parent).val("")
+                  $(".comment-entry.child-reply."+data.parent).hide();
+                }
+
+              },
+          });
+      }
+    });   
+
+   $(".L_remove").live("click",function(){
+    {% if user %}
+      if (confirm('هل أنت متأكد من أنك تريد حذف تعليقك ؟'))
+      {
+        $.ajax({
+                type:"POST",
+                  url :"{% url remove_feedback %}",
+                data:{'feedback':$(this).attr('feedback_id'),
+                      'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+                dataType:"json",
+                error:function(data){},
+                success:function(data){
+                    for (var i=0; i<data.reply_ids.length; i++) 
+                    {
+                      $(".L_"+data.reply_ids[i]).remove();  
+                    }
+                $(".L_"+data.feedback_id).remove();  
+                },
+              });
+      }
+    {% endif %}
+    });
+
+
+    $(".L_show_more").live("click",function(){
+      $(this).expand_effect()
+    });
+
+    jQuery.fn.expand_effect = function() 
+    {
+      visible = $(".L_replies_block."+$(this[0]).attr('id')).is(":visible")
+      if (visible)
+      {
+        $(".L_show_more_icon."+$(this[0]).attr('id')).addClass("icon-plus")
+        $(".L_show_more_icon."+$(this[0]).attr('id')).removeClass("icon-minus")
+        $(".L_show_more_txt."+$(this[0]).attr('id')).text("إظهار باقي الردود")
+        $(".L_replies_block."+$(this[0]).attr('id')).hide();
+      }
+      else
+      {
+        $(".L_show_more_icon."+$(this[0]).attr('id')).removeClass("icon-plus")
+        $(".L_show_more_icon."+$(this[0]).attr('id')).addClass("icon-minus")
+        $(".L_show_more_txt."+$(this[0]).attr('id')).text("إخفاء باقي الردود")
+        $(".L_replies_block."+$(this[0]).attr('id')).show();
+      }
+    };
+  });
+</script>
 
 
 {% endblock %}

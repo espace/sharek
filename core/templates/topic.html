@@ -108,6 +108,15 @@
                             if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
                                 next_articles();
                             }
+                          },
+                        });
+                    }
+                    
+                    $(window).scroll(function(){
+                        var bufferzone = $(window).scrollTop() * 0.20;
+                        if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
+                            next_articles();
+                        }
                         });
                         
                     }); 

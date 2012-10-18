@@ -2,10 +2,11 @@
 {% load call %}
 {% load date_format %}
 <div class="topic article-block">
-  {% if article.id != article.header.get_original.id %}
+
+  {% if article.id != article.original %}
   <div class="editings-con">
       <span class="new">نسخة معدلة </span> 
-      <a class="old" href="{% url article_diff article_slug=article.header.get_original.slug %}" >التعديلات السابقة</a>
+      <a class="old" href="{% url article_diff article_slug=article.original_slug %}" >التعديلات السابقة</a>
   </div>
   {% endif %}
     
@@ -23,7 +24,7 @@
   </h3>
   
   {% ifnotequal topic_page 1 %}
-    <a href="{% url topic topic_slug=article.header.topic.slug %}">{{ article.topic_name }}</a>
+    <a href="{% url topic topic_slug=article.topic_slug %}">{{ article.topic_name }}</a>
   {% endifnotequal %}
   <div class="like-group">
   	<a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{article.id}} {% if voted_articles|vote_art:article.id == -1 %} active {% elif voted_articles|vote_art:article.id == 1 %} disabled {% endif %}" id="{{article.id}} " vote="0"><small class="dislike article {{article.id}}">{{article.dislikes}}</small></a>
