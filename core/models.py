@@ -521,7 +521,9 @@ class Feedback(models.Model):
     dislikes = models.IntegerField(default=0)
 
     def get_children(self):
-        query = '''SELECT core_feedback.*
+        query = '''SELECT core_feedback.id, core_feedback.parent_id, core_feedback.name, core_feedback.email, core_feedback.suggestion,
+					core_feedback.date, core_feedback.order, core_feedback.user, core_feedback.articledetails_id, core_feedback.likes,
+					core_feedback.dislikes, core_feedback._suggestion_rendered
 					FROM core_feedback INNER JOIN auth_user ON core_feedback.user = auth_user.username
 					WHERE core_feedback.parent_id = %s AND auth_user.is_active IS TRUE ORDER BY core_feedback.id'''
         cursor = connection.cursor()
