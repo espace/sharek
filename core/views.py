@@ -47,6 +47,7 @@ def index(request):
       user = request.user
 	  
     topics = Topic.objects.with_counts
+
     
     top_users = User.get_top_users(12)
     total = Topic.total_contributions
