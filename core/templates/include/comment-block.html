@@ -48,7 +48,7 @@
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == 1 %} active {% elif voted_fb|vote:feedback.id == -1 %} disabled {% endif %}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{feedback.likes}}</small></a>
   </div>
   <span class="date">{{feedback.date|format}}</span>
-  {{feedback.suggestion}}
+  <div class="more">{{feedback.suggestion|safe}}</div>
   <div class="delete-group">
     {% if user %}
       {% if user.username = feedback.user or user.is_staff %}

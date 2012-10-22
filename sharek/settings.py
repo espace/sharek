@@ -150,9 +150,6 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'smart_selects',
     'core.twitter',
-    #'tinymce',
-    #'django.contrib.flatpages',
-    #'flatpages_tinymce',
 )
 
 # A sample logging configuration. The only tangible logging
