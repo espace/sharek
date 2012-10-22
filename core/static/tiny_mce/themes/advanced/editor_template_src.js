@@ -86,7 +86,7 @@
 				theme_advanced_font_sizes : "1,2,3,4,5,6,7",
 				theme_advanced_font_selector : "span",
 				theme_advanced_show_current_color: 0,
-				//readonly : ed.settings.readonly
+				readonly : ed.settings.readonly
 			}, ed.settings);
 
 			// Setup default font_size_style_values
