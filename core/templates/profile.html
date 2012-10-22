@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load settings %}
 {% load hash %}
-{% block title %}{{title}}{% endblock %}
+{% block title %}الملف الشخصي{% endblock %}
 
 {% block content %}
 
   <div class="row">
     <div class="span12">
       <div class="headtitle innerpage" id="headtitle">
-          <h1>احصائيات مشاركاتك</h1> 
+          <h1 style="margin-right: 0px;">الملف الشخصي</h1> 
       </div>
     </div> 
 
@@ -37,42 +37,13 @@
       </div>
     </div> <!-- span12  --> 
   </div><!-- roww -->
+  
+<input type="hidden" id="csrf_token" value="{{csrf_token}}"/>
+<script src="{{STATIC_URL}}js/article_vote.js" type="text/javascript"></script>
 
 <script type="text/javascript">
   $(document).ready(function() {
    $('a[rel*=facebox]').facebox()
-   
-   $(".L_vote").live("click",function(){
-    {% if user %}
-      $.ajax({
-              type:"POST",
-              url :"{% url vote %}",
-              data:{'article':{{article.id}},'modification': this.id ,'type': $(this).attr('vote') ,'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
-              dataType:"json",
-              error:function(data){},
-              success:function(data){
-                $(".like"+"."+data.modification).text(data.p);  
-                $(".dislike"+"."+data.modification).text(data.n);
-                if (data.vote == 1)
-                {
-                  $(".like.vote.L_vote"+"."+data.modification).addClass("active")
-                  $(".dislike.vote.L_vote"+"."+data.modification).removeClass("active")
-          
-                  $(".like.vote.L_vote"+"."+data.modification).removeClass("disabled")
-                  $(".dislike.vote.L_vote"+"."+data.modification).addClass("disabled")
-                }
-                else
-                {
-                  $(".dislike.vote.L_vote"+"."+data.modification).addClass("active")
-                  $(".like.vote.L_vote"+"."+data.modification).removeClass("active")
-          
-                  $(".dislike.vote.L_vote"+"."+data.modification).removeClass("disabled")
-                  $(".like.vote.L_vote"+"."+data.modification).addClass("disabled")
-                }
-              },
-            });
-    {% endif %}
-    });
 
    $(".L_reply").live("click",function(){
     visible = $(".L_replies_block."+$(this).attr('id')).is(":visible")
