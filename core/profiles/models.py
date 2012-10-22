@@ -50,8 +50,7 @@ def profile_likes_dislikes(self, is_likes):
            p.original_slug = row[21]
            articles_list.append(p)
 
-       print len(articles_list)
-       db.reset_queries()
+       cursor.close()
        return articles_list
 
 User.add_to_class('profile_likes', profile_likes)

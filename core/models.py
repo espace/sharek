@@ -68,7 +68,7 @@ class Tag(models.Model):
            p.topic_name = row[17]
            p.original_slug = row[19]
            articles_list.append(p)
-       db.reset_queries()
+       cursor.close()
        return articles_list
         
         
@@ -90,7 +90,8 @@ class TopicManager(models.Manager):
            p.date_articles = row[6]
            p.count_articles = row[7]
            topic_list.append(p)
-       db.reset_queries()
+
+       cursor.close()
        return topic_list
 
 class Topic(models.Model):
@@ -119,7 +120,7 @@ class Topic(models.Model):
        cursor = connection.cursor()
        cursor.execute(query)
        row = cursor.fetchone()
-       db.reset_queries()
+       cursor.close()
        return row[0]
 
     def get_articles(self, offset = None, limit = None):
@@ -162,7 +163,7 @@ class Topic(models.Model):
            p.chapter_slug = row[19]
            p.original_slug = row[21]
            articles_list.append(p)
-       db.reset_queries()
+       cursor.close()
        return articles_list
 
     def get_mod_date(self):
@@ -176,7 +177,7 @@ class Topic(models.Model):
        cursor = connection.cursor()
        cursor.execute(query, [self.id])
        row = cursor.fetchone()
-       db.reset_queries()
+       cursor.close()
        return row[1]
 
 class Chapter(models.Model):
@@ -235,7 +236,7 @@ class ArticleHeaderManager(models.Manager):
            p.chapter_slug = row[19]
            p.original_slug = row[21]
            articles_list.append(p)
-       db.reset_queries()
+       cursor.close()
        return articles_list
 
     def get_article(self, slug):
@@ -254,6 +255,8 @@ class ArticleHeaderManager(models.Manager):
        cursor = connection.cursor()
        cursor.execute(query, [slug])
        row = cursor.fetchone()
+       cursor.close()
+
        if(row):
            p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12], original=row[20])
            p.topic_id = row[0]
@@ -268,7 +271,7 @@ class ArticleHeaderManager(models.Manager):
            p.branch_slug = row[18]
            p.chapter_slug = row[19]
            p.original_slug = row[21]
-           db.reset_queries()
+
            return p
        else:
            return None
@@ -283,11 +286,11 @@ class ArticleHeaderManager(models.Manager):
        cursor = connection.cursor()
        cursor.execute(query, [order, topic])
        row = cursor.fetchone()
+       cursor.close()
        if(row):
            p = self.model(id=row[0], name=row[1])
            p.slug = row[3]
            p.topic_slug = row[2]
-           db.reset_queries()
            return p
        else:
            return None
@@ -302,11 +305,11 @@ class ArticleHeaderManager(models.Manager):
        cursor = connection.cursor()
        cursor.execute(query, [order, topic])
        row = cursor.fetchone()
+       cursor.close()
        if(row):
            p = self.model(id=row[0], name=row[1])
            p.slug = row[3]
            p.topic_slug = row[2]
-           db.reset_queries()
            return p
        else:
            return None
@@ -379,7 +382,7 @@ class ArticleManager(models.Manager):
            p.mod_date = row[11]
            p.original_slug = row[12]
            article_list.append(p)
-       db.reset_queries()    
+       cursor.close()    
        return article_list
 
     def get_top_disliked(self, limit):
@@ -411,7 +414,7 @@ class ArticleManager(models.Manager):
            p.mod_date = row[11]
            p.original_slug = row[12]
            article_list.append(p)
-       db.reset_queries()
+       cursor.close()
        return article_list
 
     def get_top_commented(self, limit):
@@ -444,7 +447,7 @@ class ArticleManager(models.Manager):
            p.mod_date = row[11]
            p.original_slug = row[12]
            article_list.append(p)
-       db.reset_queries()
+       cursor.close()
        return article_list
 
 class ArticleDetails(models.Model):
@@ -527,7 +530,6 @@ class Feedback(models.Model):
 					WHERE core_feedback.parent_id = %s AND auth_user.is_active IS TRUE ORDER BY core_feedback.id'''
         cursor = connection.cursor()
         cursor.execute(query, [self.id])
-        db.reset_queries()
         return [Feedback(*i) for i in cursor.fetchall()]
 
 class Rating(models.Model):
@@ -605,7 +607,7 @@ def get_top_users(self, limit):
         p = User(username=row[0], first_name=row[1], last_name=row[2])
         p.contribution = row[3]
         users_list.append(p)
-    db.reset_queries()
+    cursor.close()
     return users_list
 
 
