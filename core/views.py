@@ -7,10 +7,11 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.utils import simplejson
 from datetime import datetime
 from django.db import connection
+from decimal import Decimal
 
 from diff_match import diff_match_patch
 from django.contrib import auth
-
+from django.core import serializers
 from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -31,6 +32,7 @@ import urllib2
 import core
 import os.path
 from operator import attrgetter
+from django.core.cache import cache
 from core.social_auth.models import UserSocialAuth
 from core.twitter import twitter
 
@@ -44,18 +46,35 @@ def index(request):
     home = True
     if request.user.is_authenticated():
       user = request.user
-	  
-    topics = Topic.objects.with_counts
+
+    topics_list = cache.get('topics_list')
+    if not topics_list:
+         topics_list = Topic.objects.with_counts()
+         cache.set('topics_list', topics_list)
+
+    contributions = cache.get('contributions')
+    if not contributions:
+         contributions = Topic.total_contributions()
+         cache.set('contributions', contributions)
     
-    top_users = User.get_top_users(12)
-    total = Topic.total_contributions
+    top_users = cache.get('top_users')
+    if not top_users:
+         top_users = User.get_top_users(12)
+         cache.set('top_users', top_users)
 	
-    top_liked 	  = ArticleDetails.objects.get_top_liked(5)
-    top_commented = ArticleDetails.objects.get_top_commented(5)
+    top_liked = cache.get('top_liked')
+    if not top_liked:
+         top_liked = ArticleDetails.objects.get_top_liked(5)
+         cache.set('top_liked', top_liked)
+
+    top_commented = cache.get('top_commented')
+    if not top_commented:
+         top_commented = ArticleDetails.objects.get_top_commented(5)
+         cache.set('top_commented', top_commented)
 
     tags = Tag.objects.all
     
-    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics,'settings': settings,'user':user,'total':total,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics_list,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
         

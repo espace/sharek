@@ -11,6 +11,7 @@ from django.db.models import signals
 from core.actions import exclusive_boolean_fields
 from django.db import connection, models
 from django import db
+from decimal import Decimal
 
 from smart_selects.db_fields import ChainedForeignKey 
 
@@ -121,7 +122,8 @@ class Topic(models.Model):
        cursor.execute(query)
        row = cursor.fetchone()
        cursor.close()
-       return row[0]
+       value = row[0]
+       return Decimal(value.to_eng_string())
     
     def get_articles(self, offset = None, limit = None):
        return self.get_articles_limit()
