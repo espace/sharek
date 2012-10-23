@@ -2327,3 +2327,11 @@ left: -80px !important;
 top: 0px !important;
 
 }
+
+a.morelink { 
+	text-decoration:none; 
+	outline: none; 
+} 
+.morecontent span { 
+	display: none; 
+} 

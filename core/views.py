@@ -124,21 +124,38 @@ def topic_detail(request, topic_slug=None):
     login(request)
     if request.user.is_authenticated():
       user = request.user
+
+    topics = cache.get('topics_list')
+    if not topics:
+         topics = Topic.objects.with_counts()
+         cache.set('topics_list', topics)
+
     if topic_slug:
-        topics = Topic.objects.all()
         topic = get_object_or_404( Topic, slug=topic_slug )
-        all_articles = topic.get_articles()
+    
+        all_articles = cache.get(topic_slug + '_articles')
+        if not all_articles:
+             all_articles = topic.get_articles()
+             cache.set(topic_slug + '_articles', all_articles)
 
     else:
-        topics = Topic.objects.filter()
-        if topics.count() > 0:
+
+        if len(topics) > 0:
+
             topic = topics[0]
-            all_articles = topic.get_articles()
+    
+            all_articles = cache.get(topic.slug + '_articles')
+            if not all_articles:
+                 all_articles = topic.get_articles()
+                 cache.set(topic.slug + '_articles', all_articles)
         else:
             topic = None
             all_articles = None
 
-    voted_articles = ArticleRating.objects.filter(user = user)
+    voted_articles = cache.get('voted_articles')
+    if not voted_articles:
+       voted_articles = ArticleRating.objects.filter(user = user)
+       cache.set('voted_articles', voted_articles, 600)
 
     template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
 
@@ -213,7 +230,11 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if request.user.is_authenticated():
       user = request.user
 
-    article = ArticleHeader.objects.get_article(article_slug) #get_object_or_404( ArticleDetails, slug=article_slug )
+    article = cache.get('article_' + article_slug)
+    if not article:
+         article = ArticleHeader.objects.get_article(article_slug)
+         cache.set('article_' + article_slug, article)
+
     topic = get_object_or_404( Topic, slug = article.topic_slug )
 
     next = ArticleHeader.objects.get_next(article.topic_id, article.order)
@@ -231,7 +252,10 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     versions = []
     arts = article.header.articledetails_set.all()
 
-    related_tags = article.header.tags.all
+    related_tags = cache.get('related_tags_' + article_slug)
+    if not related_tags:
+         related_tags = article.header.tags.all()
+         cache.set('related_tags_' + article_slug, related_tags)
 
     top_ranked = []
     inactive_users = User.get_inactive
