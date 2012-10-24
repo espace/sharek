@@ -689,17 +689,17 @@ background-position: -142px -9px !important;
         }
 
 .sidebar .local-councils{
-    background-position: -142px -593px ;
+    background-position: -142px -603px ;
 }
         .sidebar .nav li.active .local-councils{
-            background-position: -1px -593px ;
+            background-position: -1px -603px ;
         }
 
 .sidebar .transitional-subject{
-    background-position: -142px -492px ;
+    background-position: -142px -481px ;
 }
         .sidebar .nav li.active .transitional-subject{
-            background-position: -1px -492px ;
+            background-position: -7px -481px ;
         }
 
 .sidebar .sidebar-icon.chapter{
@@ -2264,19 +2264,20 @@ span.divider{
     min-height: 20px !important;
 }
 .profile-tabs .headtitle h4{
-    font-size: 18px;
+    font-size: 16px;
     font-weight: normal !important;
     text-shadow: 0 0 0;
     min-height: 20px !important;
 }
-.profile-tabs .headtitle h4 span{
-    font-size: 18px;
+.profile-tabs .headtitle h4 a{
+    font-size: 16px;
     font-weight: normal !important;
     text-shadow: 0 0 0;
     display: inline;
     float: none !important;
     background: none;
     color: #a11212;
+    margin-right: 5px;
 }
 
 .profile-tabs .comment-block {
@@ -2341,3 +2342,34 @@ a.morelink {
 .morecontent span { 
 	display: none; 
 } 
+
+
+#contributes {
+
+}
+#contributes  .date{
+    left: 10px;
+}
+#contributes .delete-group{
+    left: 140px !important;
+    top: 1px !important;
+    bottom: auto;
+    position: absolute;
+}
+#contributes .comment-block h3{
+    margin-top: 0px;
+}
+#contributes .comment-block p{
+    width: 98%;
+    margin-top: 0px;
+}
+#contributes .comment-block .reply{
+    box-shadow: 0 0 0 0;
+    border: solid 1px #ccc;
+    background: #fafafa;
+    font-style:italic;
+    color: #888;
+}
+#contributes .comment-block .reply a{
+    color: #777 !important;
+}
