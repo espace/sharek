@@ -80,25 +80,29 @@ class Tag(models.Model):
 class TopicManager(models.Manager):
     def topics_tree(self):
        query = '''WITH RECURSIVE q AS
-                  (
-                    SELECT  t.id, t.name, t.slug, t.order, 1 AS level, t.slug AS topic_slug, t.id::VARCHAR AS breadcrumb, 
-                    COUNT(core_articledetails.*) AS articles_count 
-                    FROM core_topic t inner join core_articleheader on t.id = core_articleheader.topic_id
-                    INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
-                    WHERE t.id = core_articleheader.topic_id AND core_articledetails.current is true
-                    GROUP BY t.id, t.name, t.slug, t.order
-                    UNION
-                    SELECT  c.id, c.name, c.slug, c.order, 2 AS level, t1.slug, c.topic_id::VARCHAR || '-' || c.id::VARCHAR ,0 FROM core_chapter c INNER JOIN core_topic t1 ON c.topic_id = t1.id
-                    inner join core_articleheader on c.id = core_articleheader.chapter_id
-                    INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
-                    WHERE c.id = core_articleheader.chapter_id AND core_articledetails.current is true
-                    UNION
-                    SELECT  b.id, b.name, b.slug, b.order, 3 AS level, t1.slug ,c1.topic_id::VARCHAR || '-' || b.chapter_id::VARCHAR || '-' || b.id::VARCHAR, 0 FROM core_branch b INNER JOIN core_chapter c1 ON b.chapter_id = c1.id INNER JOIN core_topic t1 ON c1.topic_id = t1.id
-                    inner join core_articleheader on b.id = core_articleheader.branch_id
-                    INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
-                    WHERE b.id = core_articleheader.branch_id AND core_articledetails.current is true
-                  )
-                  SELECT * FROM q ORDER BY breadcrumb, q.order'''
+					(
+						SELECT  t.id, t.name, t.slug, t.order, 1 AS level, t.slug AS topic_slug, t.order::VARCHAR AS breadcrumb, 
+						COUNT(core_articledetails.*) AS articles_count 
+						FROM core_topic t inner join core_articleheader on t.id = core_articleheader.topic_id
+						INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
+						WHERE t.id = core_articleheader.topic_id AND core_articledetails.current is true
+						GROUP BY t.id, t.name, t.slug, t.order
+						
+						UNION
+						
+						SELECT  c.id, c.name, c.slug, c.order, 2 AS level, t1.slug, t1.order::VARCHAR || '-' || c.order::VARCHAR ,0 FROM core_chapter c INNER JOIN core_topic t1 ON c.topic_id = t1.id
+						inner join core_articleheader on c.id = core_articleheader.chapter_id
+						INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
+						WHERE c.id = core_articleheader.chapter_id AND core_articledetails.current is true
+						
+						UNION
+						
+						SELECT  b.id, b.name, b.slug, b.order, 3 AS level, t1.slug ,t1.order::VARCHAR || '-' || c1.order::VARCHAR || '-' || b.order::VARCHAR, 0 FROM core_branch b INNER JOIN core_chapter c1 ON b.chapter_id = c1.id INNER JOIN core_topic t1 ON c1.topic_id = t1.id
+						inner join core_articleheader on b.id = core_articleheader.branch_id
+						INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
+						WHERE b.id = core_articleheader.branch_id AND core_articledetails.current is true
+					)
+					SELECT * FROM q ORDER BY breadcrumb, q.order'''
        cursor = connection.cursor()
        cursor.execute(query)
 
