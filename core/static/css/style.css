@@ -452,7 +452,7 @@ left: 1px;
 }
 .home-sections li{
     margin-bottom: 20px;
-    height: 150px;
+    /*height: 150px;*/
     margin-right: 10px;
     list-style: none;
 }
