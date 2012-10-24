@@ -1,22 +1,10 @@
  {% load date_format %}
 
- <div class="comment-block ">
-                                    
-                                  
-                                    
-                                      <h3><p class="name"><a target="_blank" href="http://www.facebook.com/740392655">{{ feedback.name }}</a></p></h3>
-                                    
-                                    
-                                  
-                                             
-                                 
-                                  <span class="date">{{feedback.date|format}}</span>
-                                  {{feedback.suggestion|safe}}
-                                  <div class="delete-group">
-                                    
-                                    <a id="6775" class="L_reply delete " rel="facebox" href="#not-logged"><span class="icon-trash"></span>حذف التعليق</a>
-                                    
-                                  </div>
-                                
-                              
-                                </div><!-- con comments -->
+ <div class="comment-block L_{{feedback.id}}">
+    <h3><p class="name"><a target="_blank" href="http://www.facebook.com/740392655">{{ feedback.name }}</a></p></h3>
+  <span class="date">{{feedback.date|format}}</span>
+  {{feedback.suggestion|safe}}
+  <div class="delete-group">
+    <a id="{{feedback.id}}" class="L_remove" href="#"><span class="icon-trash"></span>حذف التعليق</a>
+  </div>
+</div><!-- con comments -->
