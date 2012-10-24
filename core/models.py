@@ -11,6 +11,8 @@ from django.db.models import signals
 from core.actions import exclusive_boolean_fields
 from django.db import connection, models
 from django import db
+from decimal import Decimal
+from django.core.cache import cache
 
 from smart_selects.db_fields import ChainedForeignKey 
 
@@ -77,7 +79,7 @@ class Tag(models.Model):
 
 class TopicManager(models.Manager):
     def with_counts(self):
-       query = '''SELECT core_topic.id, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered,
+       query = '''SELECT core_topic.id, core_topic.short_name, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered,
 	   				( SELECT MAX(core_articledetails.mod_date) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ),
 					( SELECT COUNT(core_articledetails.*) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ) as headers
 				  FROM core_topic '''
@@ -86,9 +88,9 @@ class TopicManager(models.Manager):
 
        topic_list = []
        for row in cursor.fetchall():
-           p = self.model(id=row[0], name=row[1], slug=row[2], order=row[3], summary=row[4], _summary_rendered=row[5])
-           p.date_articles = row[6]
-           p.count_articles = row[7]
+           p = self.model(id=row[0], short_name=row[1], name=row[2], slug=row[3], order=row[4], summary=row[5], _summary_rendered=row[6])
+           p.date_articles = row[7]
+           p.count_articles = row[8]
            topic_list.append(p)
 
        cursor.close()
@@ -121,7 +123,8 @@ class Topic(models.Model):
        cursor.execute(query)
        row = cursor.fetchone()
        cursor.close()
-       return row[0]
+       value = row[0]
+       return Decimal(value.to_eng_string())
 
     def get_articles(self, offset = None, limit = None):
        return self.get_articles_limit()
@@ -454,7 +457,6 @@ class ArticleDetails(models.Model):
     header =  models.ForeignKey(ArticleHeader, null = True, blank = True)
     slug   = models.SlugField(max_length=40, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
-    #content = models.TextField(default='  ',help_text="article")
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
     original = models.IntegerField(default=0)
@@ -528,9 +530,17 @@ class Feedback(models.Model):
 					core_feedback.dislikes, core_feedback._suggestion_rendered
 					FROM core_feedback INNER JOIN auth_user ON core_feedback.user = auth_user.username
 					WHERE core_feedback.parent_id = %s AND auth_user.is_active IS TRUE ORDER BY core_feedback.id'''
+
+        #print "feedback_children_%i" % self.id
+        feedback_children = cache.get("feedback_children_%i" % self.id)
+
+        if not feedback_children:
         cursor = connection.cursor()
         cursor.execute(query, [self.id])
-        return [Feedback(*i) for i in cursor.fetchall()]
+             feedback_children = [Feedback(*i) for i in cursor.fetchall()]
+             cache.set("feedback_children_%i" % self.id, feedback_children, 200)
+
+        return feedback_children
 
 class Rating(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)

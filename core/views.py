@@ -7,11 +7,11 @@ from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.utils import simplejson
 from datetime import datetime
 from django.db import connection
-
+from decimal import Decimal
 
 from diff_match import diff_match_patch
 from django.contrib import auth
-
+from django.core import serializers
 from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -32,6 +32,7 @@ import urllib2
 import core
 import os.path
 from operator import attrgetter
+from django.core.cache import cache
 from core.social_auth.models import UserSocialAuth
 from core.twitter import twitter
 
@@ -64,25 +65,45 @@ def index(request):
         )
         SELECT * FROM q ORDER BY breadcrumb, q.order '''
 
-    cursor = connection.cursor()
-    cursor.execute(query)
-    struct_list = []
 
-    for row in cursor.fetchall():
-       p = {'name':row[1],'slug':row[2],'level':row[4], 'topic_slug':row[5], 'articles_count':row[7]}
+    home_list = cache.get('home_list')
 
-       struct_list.append(p)
+    if not home_list:
 
-    print len(struct_list)
-    top_users = User.get_top_users(12)
-    total = Topic.total_contributions
+        home_list = []
 
-    top_liked 	  = ArticleDetails.objects.get_top_liked(5)
-    top_commented = ArticleDetails.objects.get_top_commented(5)
+        cursor = connection.cursor()
+        cursor.execute(query)
+
+        for row in cursor.fetchall():
+            p = {'name':row[1], 'slug':row[2], 'level':row[4], 'topic_slug':row[5], 'articles_count':row[7]}
+            home_list.append(p)
+
+        cache.set('home_list', home_list)
+
+    contributions = cache.get('contributions')
+    if not contributions:
+         contributions = Topic.total_contributions()
+         cache.set('contributions', contributions, 3600)
+
+    top_users = cache.get('top_users')
+    if not top_users:
+         top_users = User.get_top_users(12)
+         cache.set('top_users', top_users)
+
+    top_liked = cache.get('top_liked')
+    if not top_liked:
+         top_liked = ArticleDetails.objects.get_top_liked(5)
+         cache.set('top_liked', top_liked)
+
+    top_commented = cache.get('top_commented')
+    if not top_commented:
+         top_commented = ArticleDetails.objects.get_top_commented(5)
+         cache.set('top_commented', top_commented)
 
     tags = Tag.objects.all
 
-    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'struct_list':struct_list,'settings': settings,'user':user,'total':total,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'struct_list':home_list,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
     
     return render_to_response('index.html', template_context ,RequestContext(request))
         
@@ -132,21 +153,38 @@ def topic_detail(request, topic_slug=None):
     login(request)
     if request.user.is_authenticated():
       user = request.user
+
+    topics = cache.get('topics_list')
+    if not topics:
+         topics = Topic.objects.with_counts()
+         cache.set('topics_list', topics)
+
     if topic_slug:
-        topics = Topic.objects.all()
         topic = get_object_or_404( Topic, slug=topic_slug )
+    
+        all_articles = cache.get(topic_slug + '_articles')
+        if not all_articles:
         all_articles = topic.get_articles()
+             cache.set(topic_slug + '_articles', all_articles)
 
     else:
-        topics = Topic.objects.filter()
-        if topics.count() > 0:
+
+        if len(topics) > 0:
+
             topic = topics[0]
+    
+            all_articles = cache.get(topic.slug + '_articles')
+            if not all_articles:
             all_articles = topic.get_articles()
+                 cache.set(topic.slug + '_articles', all_articles)
         else:
             topic = None
             all_articles = None
 
+    voted_articles = cache.get('voted_articles')
+    if not voted_articles:
     voted_articles = ArticleRating.objects.filter(user = user)
+       cache.set('voted_articles', voted_articles, 600)
 
     template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
 
@@ -221,7 +259,11 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if request.user.is_authenticated():
       user = request.user
 
-    article = ArticleHeader.objects.get_article(article_slug) #get_object_or_404( ArticleDetails, slug=article_slug )
+    article = cache.get('article_' + article_slug)
+    if not article:
+         article = ArticleHeader.objects.get_article(article_slug)
+         cache.set('article_' + article_slug, article)
+
     topic = get_object_or_404( Topic, slug = article.topic_slug )
 
     next = ArticleHeader.objects.get_next(article.topic_id, article.order)
@@ -239,7 +281,10 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     versions = []
     arts = article.header.articledetails_set.all()
 
-    related_tags = article.header.tags.all
+    related_tags = cache.get('related_tags_' + article_slug)
+    if not related_tags:
+         related_tags = article.header.tags.all()
+         cache.set('related_tags_' + article_slug, related_tags)
 
     top_ranked = []
     inactive_users = User.get_inactive
@@ -576,8 +621,7 @@ def ajx_search(request):
         page =  request.GET.get("page")
         query = request.GET.get("q")
 
-        articles = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-        articles =  sorted(articles,  key=attrgetter('header.topic.id','header.order','id'))
+        articles = ArticleHeader.objects.search_articles('%'+query.strip()+'%')
 
         paginator = Paginator(articles, settings.paginator)
         try:

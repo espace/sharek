@@ -22,6 +22,28 @@ SOCIAL_AUTH_SESSION_EXPIRATION = False
 
 SESSION_COOKIE_NAME = "dostorid"
 
+def get_cache():
+  try:
+    os.environ['MEMCACHE_SERVERS'] = os.environ['MEMCACHIER_SERVERS']
+    os.environ['MEMCACHE_USERNAME'] = os.environ['MEMCACHIER_USERNAME']
+    os.environ['MEMCACHE_PASSWORD'] = os.environ['MEMCACHIER_PASSWORD']
+    return {
+      'default': {
+        'BINARY': True,
+        'TIMEOUT': 86400,
+        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+        'LOCATION': os.environ['MEMCACHIER_SERVERS'],
+      }
+    }
+  except:
+    return {
+      'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+      }
+    }
+
+CACHES = get_cache()
+
 AUTHENTICATION_BACKENDS = (
 	'django.contrib.auth.backends.ModelBackend',
     'core.facebook.backends.FacebookBackend',
@@ -187,14 +209,5 @@ MARKITUP_SET = 'markitup/sets/markdown'
 
 # Sphinx 0.9.9
 SPHINX_API_VERSION = 0x116
-'''
-TINYMCE_JS_ROOT = '/static/tiny_mce/'
-TINYMCE_JS_URL = os.path.join(STATIC_URL, "tiny_mce/tiny_mce_src.js")
-TINYMCE_DEFAULT_CONFIG = {
-    'plugins': "table,spellchecker,searchreplace",
-    'theme': "advanced",
-    'theme_advanced_toolbar_location' : "top",
-    'custom_undo_redo_levels': 10,
-}
-#TINYMCE_SPELLCHECKER = True
-'''
+
+
