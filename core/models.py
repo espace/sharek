@@ -80,25 +80,25 @@ class Tag(models.Model):
 class TopicManager(models.Manager):
     def topics_tree(self):
        query = '''WITH RECURSIVE q AS
-                  (
-                    SELECT  t.id, t.name, t.slug, t.order, 1 AS level, t.slug AS topic_slug, t.id::VARCHAR AS breadcrumb, 
-                    COUNT(core_articledetails.*) AS articles_count 
-                    FROM core_topic t inner join core_articleheader on t.id = core_articleheader.topic_id
-                    INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
-                    WHERE t.id = core_articleheader.topic_id AND core_articledetails.current is true
-                    GROUP BY t.id, t.name, t.slug, t.order
-                    UNION
-                    SELECT  c.id, c.name, c.slug, c.order, 2 AS level, t1.slug, c.topic_id::VARCHAR || '-' || c.id::VARCHAR ,0 FROM core_chapter c INNER JOIN core_topic t1 ON c.topic_id = t1.id
-                    inner join core_articleheader on c.id = core_articleheader.chapter_id
-                    INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
-                    WHERE c.id = core_articleheader.chapter_id AND core_articledetails.current is true
-                    UNION
-                    SELECT  b.id, b.name, b.slug, b.order, 3 AS level, t1.slug ,c1.topic_id::VARCHAR || '-' || b.chapter_id::VARCHAR || '-' || b.id::VARCHAR, 0 FROM core_branch b INNER JOIN core_chapter c1 ON b.chapter_id = c1.id INNER JOIN core_topic t1 ON c1.topic_id = t1.id
-                    inner join core_articleheader on b.id = core_articleheader.branch_id
-                    INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
-                    WHERE b.id = core_articleheader.branch_id AND core_articledetails.current is true
-                  )
-                  SELECT * FROM q ORDER BY breadcrumb, q.order'''
+					(
+						SELECT  t.id, t.name, t.slug, t.order, 1 AS level, t.slug AS topic_slug, COALESCE(t.order, 0)::VARCHAR AS breadcrumb, 
+						COUNT(core_articledetails.*) AS articles_count 
+						FROM core_topic t inner join core_articleheader on t.id = core_articleheader.topic_id
+						INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
+						WHERE t.id = core_articleheader.topic_id AND core_articledetails.current is true
+						GROUP BY t.id, t.name, t.slug, t.order
+						UNION
+						SELECT  c.id, c.name, c.slug, c.order, 2 AS level, t1.slug, COALESCE(t1.order, 0)::VARCHAR || '-' || COALESCE(c.order, 0)::VARCHAR ,0 FROM core_chapter c INNER JOIN core_topic t1 ON c.topic_id = t1.id
+						inner join core_articleheader on c.id = core_articleheader.chapter_id
+						INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
+						WHERE c.id = core_articleheader.chapter_id AND core_articledetails.current is true
+						UNION
+						SELECT  b.id, b.name, b.slug, b.order, 3 AS level, t1.slug ,COALESCE(t1.order, 0)::VARCHAR || '-' || COALESCE(c1.order, 0)::VARCHAR || '-' || COALESCE(b.order, 0)::VARCHAR, 0 FROM core_branch b INNER JOIN core_chapter c1 ON b.chapter_id = c1.id INNER JOIN core_topic t1 ON c1.topic_id = t1.id
+						inner join core_articleheader on b.id = core_articleheader.branch_id
+						INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
+						WHERE b.id = core_articleheader.branch_id AND core_articledetails.current is true
+					)
+					SELECT * FROM q ORDER BY breadcrumb, q.order'''
        cursor = connection.cursor()
        cursor.execute(query)
 
@@ -636,9 +636,10 @@ class ReadOnlyAdminFields(object):
 
 @classmethod
 def get_top_users(self, limit):
-    query = '''SELECT username, first_name, last_name, count(core_feedback.*) contribution
+    query = '''SELECT username, first_name, last_name, count(core_feedback.*) contribution, COALESCE(social_auth_usersocialauth.provider, 'facebook') as provider
 				FROM auth_user INNER JOIN core_feedback ON auth_user.username = core_feedback.user
-				GROUP BY username, first_name, last_name, is_active
+				LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
+				GROUP BY username, first_name, last_name, is_active, social_auth_usersocialauth.provider
 				HAVING is_active IS TRUE ORDER BY contribution DESC LIMIT %s'''
     cursor = connection.cursor()
     cursor.execute(query, [limit])
