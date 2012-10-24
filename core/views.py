@@ -47,10 +47,15 @@ def index(request):
     if request.user.is_authenticated():
       user = request.user
 
-    topics_list = cache.get('topics_list')
-    if not topics_list:
-         topics_list = Topic.objects.with_counts()
-         cache.set('topics_list', topics_list)
+    topics_tree = cache.get('topics_tree')
+    if not topics_tree:
+         topics_tree = Topic.objects.topics_tree()
+         cache.set('topics_tree', topics_tree)
+
+    tags = cache.get('tags')
+    if not tags:
+         tags = Tag.objects.all()
+         cache.set('tags', tags)
 
     contributions = cache.get('contributions')
     if not contributions:
@@ -72,9 +77,7 @@ def index(request):
          top_commented = ArticleDetails.objects.get_top_commented(5)
          cache.set('top_commented', top_commented)
 
-    tags = Tag.objects.all
-    
-    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics':topics_list,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics_tree':topics_tree,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
         
@@ -257,30 +260,30 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
          related_tags = article.header.tags.all()
          cache.set('related_tags_' + article_slug, related_tags)
 
-    top_ranked = []
-    inactive_users = User.get_inactive
-    size = len(Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
-    if size > 3:
-        top_ranked = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[:3]
-    else:
-        top_ranked = []
+    top_ranked_count = 3
+
+    top_ranked = cache.get('top_ranked_' + str(article.id))
+    if not top_ranked:
+         top_ranked = Feedback.objects.top_ranked(article.id, top_ranked_count)
+         cache.set('top_ranked_' + str(article.id), top_ranked)
 
     if order_by == "latest" or order_by == "def":
-        if len(top_ranked) == 3:
-            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
-        else:
-            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
+        feedbacks = Feedback.objects.feedback_list(article.id, 'latest', top_ranked_count)
     elif order_by == "order":
-        if len(top_ranked) == 3:
-            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id).exclude(user__in=inactive_users)
-        else:
-            feedbacks = Feedback.objects.filter(articledetails_id = article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)
+        feedbacks = Feedback.objects.feedback_list(article.id, 'order', top_ranked_count)
 
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
 
+    voted_fb = cache.get('voted_fb_' + str(article.id) + '-' + str(user.id))
+    if not voted_fb:
     voted_fb = Rating.objects.filter(articledetails_id = article.id, user = user)
+         cache.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb)
+	
+    voted_article = cache.get('voted_article_' + str(article.id) + '-' + str(user.id))
+    if not voted_article:
     voted_article = ArticleRating.objects.filter(articledetails_id = article.id, user = user)
+         cache.set('voted_article_' + str(article.id) + '-' + str(user.id), voted_article)
 
     article_rate = None
     for art in voted_article:
@@ -319,27 +322,14 @@ def latest_comments(request):
         offset = settings.paginator * int(page)
         limit = settings.paginator
 
-        inactive_users = User.get_inactive
         obj_article = get_object_or_404( ArticleDetails, id=article )
 
-        top_ranked = []
-        inactive_users = User.get_inactive
-        size = len(Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users))
-        if size > 3:
-            top_ranked = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)[:3]
-        else:
-            top_ranked = []
+        top_ranked_count = 3
 
         if order_by == "latest" or order_by == "def":
-            if len(top_ranked) == 3:
-                feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users).exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
-            else:
-                feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-id').exclude(user__in=inactive_users)
+             feedbacks = Feedback.objects.feedback_list(obj_article.id, 'latest', top_ranked_count)
         elif order_by == "order":
-            if len(top_ranked) == 3:
-                feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users).exclude(id=top_ranked[0].id).exclude(id=top_ranked[1].id).exclude(id=top_ranked[2].id)
-            else:
-                feedbacks = Feedback.objects.filter(articledetails_id = obj_article.id, parent_id = None).order_by('-order').exclude(user__in=inactive_users)
+             feedbacks = Feedback.objects.feedback_list(obj_article.id, 'order', top_ranked_count)
 
         voted_fb = Rating.objects.filter(articledetails_id = obj_article.id, user = user)
         voted_article = ArticleRating.objects.filter(articledetails_id = obj_article.id, user = user)
@@ -386,6 +376,8 @@ def modify(request):
                     
             
             if request.user.username != "admin":
+                # post on twitter or facebook
+                if UserSocialAuth.auth_provider(request.user.username) == 'facebook':
                  fb_user = FacebookSession.objects.get(user = request.user)
                  # GraphAPI is the main class from facebook_sdp.py
                  graph = facebook_sdk.GraphAPI(fb_user.access_token)
@@ -395,6 +387,18 @@ def modify(request):
                  message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
                  graph.put_wall_post(message, attachment)
             
+                if UserSocialAuth.auth_provider(request.user.username) == 'twitter':
+                    extra_data = UserSocialAuth.get_extra_data(request.user.username)
+                    access_token = extra_data['access_token']
+                    access_token_secret = access_token[access_token.find('=')+1 : access_token.find('&')]
+                    access_token_key = access_token[access_token.rfind('=')+1:]
+                    api = twitter.Api(consumer_key=settings.TWITTER_CONSUMER_KEY,
+                                      consumer_secret=settings.TWITTER_CONSUMER_SECRET,
+                                      access_token_key=access_token_key,
+                                      access_token_secret=access_token_secret)
+                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
+                    api.PostUpdate(message)
+                    
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
 def reply_feedback(request):
@@ -578,8 +582,6 @@ def ajx_search(request):
         page =  request.GET.get("page")
         query = request.GET.get("q")
 
-        #articles = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-        #articles =  sorted(articles,  key=attrgetter('header.topic.id','header.order','id'))
         articles = ArticleHeader.objects.search_articles('%'+query.strip()+'%')
 
         paginator = Paginator(articles, settings.paginator)

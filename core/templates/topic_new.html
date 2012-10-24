@@ -61,7 +61,6 @@
                    <div class="chapter-head">
                             <h3 id="{{article.chapter_slug}}" class="fasl">{{article.chapter_name}}</h1>
                     </div>
-                    
                 {% endifnotequal %}
             {% endifchanged %}
             {% ifchanged article.branch_id %}
@@ -74,8 +73,6 @@
             {% include "include/article_block.html" %}
         {% endfor %}
         
-
-   
         </div>
     </div><!-- row end -->
 {% else %}

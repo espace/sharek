@@ -7,8 +7,7 @@ from django import forms
 from core.actions import export_as_csv_action
 
 from django.contrib import admin
-
-
+from django.core.urlresolvers import reverse
 
 class ArticleDetailsInlineAdmin(admin.TabularInline):
     model      = ArticleDetails

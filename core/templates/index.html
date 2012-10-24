@@ -2,6 +2,7 @@
 
 {% load humanize %}
 {% load settings %}
+{% load auth_provider %}
 
 {% block title %}الصفحة الرئيسية{% endblock %}
 
@@ -42,7 +43,26 @@
   <div class="home-sections span8">
     <div class="span8 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
 
-	<ul class="nav nav-pills divider-vert ">
+        {% for struct in topics_tree %}
+          {% if struct.level == 1 %}
+          </li>
+          <li class="span4"> 
+            <a href="{% url topic topic_slug=struct.topic_slug %}">
+            <h3>{{struct.name}} <span class="articles-count-new">{{struct.articles_count}} مادة</span></h3>
+            </a>
+          {% elif struct.level == 2 %}
+            <a href="{% url topic topic_slug=struct.topic_slug %}#{{struct.slug}}">
+              <h5><i class="icon-book"></i> {{struct.name}}</h5>
+            </a>
+          {% else %}
+            <a href="{% url topic topic_slug=struct.topic_slug %}#{{struct.slug}}"><h6>- {{struct.name}}</h6></a>
+          {% endif %}
+        {% endfor %}
+        </li>
+      
+
+
+	<!-- <ul class="nav nav-pills divider-vert ">
       {% for topic_item in topics %}
       <li class="span4"> 
         <a href="{% url topic topic_slug=topic_item.get_absolute_url %}">
@@ -65,7 +85,7 @@
         {% endif %}
       </li>
       {% endfor %}
-    </ul>
+    </ul> -->
     
     <div class="span12 "> <span style="margin-right:-20px;" class="divider"> </span> </div>
     
@@ -97,7 +117,6 @@
               {% endfor %}
               
            </div> <!--  Most liked -->
-
         </div>
     
   </div>
@@ -107,7 +126,7 @@
     <div class="span4 "> <h1 class="headtitle"><span>عدد مشاركات الزوار</span></h1> </div>
 
   <p class="mosharakat_number">
-    {{ contributions|intcomma }}
+    {{ total|intcomma }}
     <br />
     <span>مشاركة على مسودة الدستور المصرى</span>
   </p>
@@ -117,9 +136,23 @@
       <ul>
       	{% for top in top_users %}
         	<li>
+        	  {% if top.provider == 'facebook' %}
             	<a href="http://www.facebook.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
                 	<img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
                 </a>
+            {% elif top.provider == 'twitter' %}
+              <a href="http://www.twitter.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
+                <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
+              </a>
+            {% elif top.provider == 'yahoo' %}
+              <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}" title="{{ top.first_name }} {{ top.last_name }}">
+            {% elif top.provider == 'google' %}
+              <img class="loader" src="{{ STATIC_URL }}images/google_user.gif" title="{{ top.first_name }} {{ top.last_name }}">
+            {% else %}
+              <a href="http://www.facebook.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
+                <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
+              </a>
+            {% endif %}
             </li>
         {% endfor %}
       </ul>

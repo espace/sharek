@@ -4,11 +4,13 @@ import core
 import os.path
 import subprocess
 
+from core.profiles.models import *
+from django.core.urlresolvers import reverse
 from django.template import Context, loader, RequestContext
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
 
-from core.models import ArticleRating, ArticleDetails, Feedback
+from core.models import ArticleRating, ArticleDetails, Feedback, User
 
 from sharek import settings
 
@@ -17,23 +19,26 @@ def user_profile(request):
 
 def profile(request, browsing_data="def"):
     #browsing_data will represent the type of data the user want to see " likes, dislikes ,or comments"
+
     user = None
     if request.user.is_authenticated():
       user = request.user
+    else:
+      return HttpResponseRedirect(reverse('index'))
+
     ids = []
     liked_articles = []
     disliked_articles = []
     commented_articles = []
+
+    voted_articles = ArticleRating.objects.filter(user = user)
+
     if browsing_data == "likes" or browsing_data == "def":
-        liked_ids = ArticleRating.objects.filter(vote = True, user = user).values('articledetails').distinct()
-        for id in liked_ids:
-            ids.append(id['articledetails'])
-        liked_articles = ArticleDetails.objects.filter(id__in=ids)
+        liked_articles = User.profile_likes(user.username)
+
     elif browsing_data == "dislikes":
-        disliked_ids = ArticleRating.objects.filter(vote = False, user = user).values('articledetails').distinct()
-        for id in disliked_ids:
-            ids.append(id['articledetails'])
-        disliked_articles = ArticleDetails.objects.filter(id__in=ids)
+        disliked_articles = User.profile_dislikes(user.username)
+
     elif browsing_data == "comments":
         commented_ids = Feedback.objects.filter(user = user,parent_id = None).values('articledetails').distinct()
         for id in commented_ids:
@@ -43,4 +48,4 @@ def profile(request, browsing_data="def"):
                 commented_articles.append({'topic':temp.header.topic,'name':temp.header.name,'url':"#",'feedbacks':feedbacks})
                 
 
-    return render_to_response('profile.html', {'profile':True,'browsing_data':browsing_data,'commented_articles':commented_articles,'disliked_articles':disliked_articles,'liked_articles':liked_articles,'settings': settings,'user':user} ,RequestContext(request))
+    return render_to_response('profile.html', {'voted_articles': voted_articles, 'profile':True,'browsing_data':browsing_data,'commented_articles':commented_articles,'disliked_articles':disliked_articles,'liked_articles':liked_articles,'settings': settings,'user':user} ,RequestContext(request))

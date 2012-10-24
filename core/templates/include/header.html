@@ -15,9 +15,14 @@
                 
                   <div class="attrs">
                     <p class="user_name">{{ user.first_name }} {{ user.last_name }}</p>
-                    <a href="{% url facebook_logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                    <a href="{% url logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
                   </div>
+                  
+                  {% if request.session.social_auth_last_login_backend = 'google' %}
+                    <img src="{{STATIC_URL}}images/google_user.gif" class="user_img" />
+                  {% else %}
                   <img src="{{STATIC_URL}}photos/profile/{{user}}" class="user_img" />
+                  {% endif %}
                   
                 {% else %}  
                   {% if error %}
@@ -33,10 +38,13 @@
                       {% endif %}
                     {% endif %}
                   {% else %}
-                  <a href="#" onclick="login();return false;">
-                    <img style="float: left; padding-top: 25px;" src="http://egynda.com/resource/images/fb_sign.png"/>
-                  </a>
-                  
+                    <div class="social_login">
+                      <p> يمكنك الآن تسجيل الدخول بواسطة</p>
+                      <a href="#" onclick="login('facebook'); return false;" class="facebook" title="سجل دخول"><img src="{{STATIC_URL}}images/facebook.png" alt=""></a>
+                      <a href="#" onclick="login('twitter'); return false;" class="twitter" title="سجل دخول"><img src="{{STATIC_URL}}images/twitter.png" alt=""></a>
+                      <a href="#" onclick="login('google'); return false;" class="google" title="سجل دخول"><img src="{{STATIC_URL}}images/google.png" alt=""></a>
+                      <a href="#" onclick="login('yahoo'); return false;" class="yahoo" title="سجل دخول"><img src="{{STATIC_URL}}images/yahoo.png" alt=""></a>
+                    </div>
                   {% endif %}
                 {% endif %}         
             </div>
@@ -110,9 +118,13 @@
    <div id="not-logged" style="display:none;">  
     <p style=" color:#960d0d; text-align:center ;margin-top:20px;   font: 14px GESSTwoMediumRegular;
 ">للمشاركة فى التعليقات رجاءا قم بتسجيل الدخول
-      <a href="#" style=" margin-top: 10px; margin-bottom: 15px; display:block;" onclick="login();return false;">
-        <img width="150" src="http://egynda.com/resource/images/fb_sign.png"/>
-      </a>
+      <div class="social_login">
+        <p> يمكنك الآن تسجيل الدخول بواسطة</p>
+        <a href="#" onclick="login('facebook'); return false;" class="facebook" title="سجل دخول"><img src="{{STATIC_URL}}images/facebook.png" alt=""></a>
+        <a href="#" onclick="login('twitter'); return false;" class="twitter" title="سجل دخول"><img src="{{STATIC_URL}}images/twitter.png" alt=""></a>
+        <a href="#" onclick="login('google'); return false;" class="google" title="سجل دخول"><img src="{{STATIC_URL}}images/google.png" alt=""></a>
+        <a href="#" onclick="login('yahoo'); return false;" class="yahoo" title="سجل دخول"><img src="{{STATIC_URL}}images/yahoo.png" alt=""></a>
+      </div>
 
     </p>
   </div><!-- comment end -->       

@@ -78,6 +78,38 @@ class Tag(models.Model):
        ordering = ["order"]
 
 class TopicManager(models.Manager):
+    def topics_tree(self):
+       query = '''WITH RECURSIVE q AS
+					(
+						SELECT  t.id, t.name, t.slug, t.order, 1 AS level, t.slug AS topic_slug, COALESCE(t.order, 0)::VARCHAR AS breadcrumb, 
+						COUNT(core_articledetails.*) AS articles_count 
+						FROM core_topic t inner join core_articleheader on t.id = core_articleheader.topic_id
+						INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
+						WHERE t.id = core_articleheader.topic_id AND core_articledetails.current is true
+						GROUP BY t.id, t.name, t.slug, t.order
+						UNION
+						SELECT  c.id, c.name, c.slug, c.order, 2 AS level, t1.slug, COALESCE(t1.order, 0)::VARCHAR || '-' || COALESCE(c.order, 0)::VARCHAR ,0 FROM core_chapter c INNER JOIN core_topic t1 ON c.topic_id = t1.id
+						inner join core_articleheader on c.id = core_articleheader.chapter_id
+						INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
+						WHERE c.id = core_articleheader.chapter_id AND core_articledetails.current is true
+						UNION
+						SELECT  b.id, b.name, b.slug, b.order, 3 AS level, t1.slug ,COALESCE(t1.order, 0)::VARCHAR || '-' || COALESCE(c1.order, 0)::VARCHAR || '-' || COALESCE(b.order, 0)::VARCHAR, 0 FROM core_branch b INNER JOIN core_chapter c1 ON b.chapter_id = c1.id INNER JOIN core_topic t1 ON c1.topic_id = t1.id
+						inner join core_articleheader on b.id = core_articleheader.branch_id
+						INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
+						WHERE b.id = core_articleheader.branch_id AND core_articledetails.current is true
+					)
+					SELECT * FROM q ORDER BY breadcrumb, q.order'''
+       cursor = connection.cursor()
+       cursor.execute(query)
+
+       topic_list = []
+       for row in cursor.fetchall():
+            p = {'name':row[1], 'slug':row[2], 'level':row[4], 'topic_slug':row[5], 'articles_count':row[7]}
+            topic_list.append(p)
+
+       cursor.close()
+       return topic_list
+
     def with_counts(self):
        query = '''SELECT core_topic.id, core_topic.short_name, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered,
 	   				( SELECT MAX(core_articledetails.mod_date) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ),
@@ -512,6 +544,73 @@ signals.post_save.connect(update_original, sender = ArticleDetails)
 
 exclusive_boolean_fields(ArticleDetails, ('current',), ('header',))
 
+class FeedbackManager(models.Manager):
+    def top_ranked(self, article_id, limit):
+       query = '''SELECT core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
+						core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
+						core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook') provider,
+						count(reply.id)
+					FROM core_feedback
+					INNER JOIN auth_user on core_feedback.user = auth_user.username
+					LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
+					LEFT JOIN core_feedback reply on reply.parent_id = core_feedback.id
+					WHERE auth_user.is_active IS TRUE AND core_feedback.parent_id IS NULL AND core_feedback.articledetails_id = %s
+					GROUP BY core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
+						core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
+						core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook')
+					ORDER BY core_feedback.likes - core_feedback.dislikes DESC, id LIMIT %s'''
+       cursor = connection.cursor()
+       cursor.execute(query, [article_id, limit])
+
+       feedback_list = []
+
+       for row in cursor.fetchall():
+           p = self.model(id=row[0], name=row[1], email=row[2], date=row[3], order=row[4], user=row[5], suggestion=row[6], _suggestion_rendered=row[7], articledetails_id=row[8], likes=row[9], dislikes=row[10])
+           p.provider = row[11]
+           p.children = row[12]
+
+           feedback_list.append(p)
+
+       cursor.close()
+       return feedback_list
+
+    def feedback_list(self, article_id, order, offset):
+       query = '''SELECT core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
+						core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
+						core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook') provider,
+						count(reply.id)
+					FROM core_feedback
+					INNER JOIN auth_user on core_feedback.user = auth_user.username
+					LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
+					LEFT JOIN core_feedback reply on reply.parent_id = core_feedback.id
+					WHERE auth_user.is_active IS TRUE AND core_feedback.parent_id IS NULL AND core_feedback.articledetails_id = %s
+					GROUP BY core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
+						core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
+						core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook')
+					ORDER BY '''
+
+       if order == 'order':
+             query += "core_feedback.likes - core_feedback.dislikes DESC"
+       else:
+             query += "id DESC"
+
+       query += " , id OFFSET %s"
+
+       cursor = connection.cursor()
+       cursor.execute(query, [article_id, offset])
+
+       feedback_list = []
+
+       for row in cursor.fetchall():
+           p = self.model(id=row[0], name=row[1], email=row[2], date=row[3], order=row[4], user=row[5], suggestion=row[6], _suggestion_rendered=row[7], articledetails_id=row[8], likes=row[9], dislikes=row[10])
+           p.provider = row[11]
+           p.children = row[12]
+
+           feedback_list.append(p)
+
+       cursor.close()
+       return feedback_list
+
 class Feedback(models.Model):
     parent = models.ForeignKey("self",blank=True,null=True)
     name = models.CharField(max_length=200)
@@ -523,24 +622,31 @@ class Feedback(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
+    objects = FeedbackManager()
 
     def get_children(self):
-        query = '''SELECT core_feedback.id, core_feedback.parent_id, core_feedback.name, core_feedback.email, core_feedback.suggestion,
-					core_feedback.date, core_feedback.order, core_feedback.user, core_feedback.articledetails_id, core_feedback.likes,
-					core_feedback.dislikes, core_feedback._suggestion_rendered
-					FROM core_feedback INNER JOIN auth_user ON core_feedback.user = auth_user.username
-					WHERE core_feedback.parent_id = %s AND auth_user.is_active IS TRUE ORDER BY core_feedback.id'''
+        query = '''SELECT core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
+						core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
+						core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook') provider
+					FROM core_feedback
+					INNER JOIN auth_user on core_feedback.user = auth_user.username
+					LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
+					WHERE auth_user.is_active IS TRUE AND parent_id = %s
+					ORDER BY id DESC'''
 
-        #print "feedback_children_%i" % self.id
-        feedback_children = cache.get("feedback_children_%i" % self.id)
-
-        if not feedback_children:
              cursor = connection.cursor()
              cursor.execute(query, [self.id])
-             feedback_children = [Feedback(*i) for i in cursor.fetchall()]
-             cache.set("feedback_children_%i" % self.id, feedback_children, 200)
 
-        return feedback_children
+        replies_list = []
+
+        for row in cursor.fetchall():
+            p = Feedback(id=row[0], name=row[1], email=row[2], date=row[3], order=row[4], user=row[5], suggestion=row[6], _suggestion_rendered=row[7], articledetails_id=row[8], likes=row[9], dislikes=row[10])
+            p.provider = row[11]
+
+            replies_list.append(p)
+
+        cursor.close()
+        return replies_list
 
 class Rating(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
@@ -605,9 +711,10 @@ class ReadOnlyAdminFields(object):
 
 @classmethod
 def get_top_users(self, limit):
-    query = '''SELECT username, first_name, last_name, count(core_feedback.*) contribution
+    query = '''SELECT username, first_name, last_name, count(core_feedback.*) contribution, COALESCE(social_auth_usersocialauth.provider, 'facebook') as provider
 				FROM auth_user INNER JOIN core_feedback ON auth_user.username = core_feedback.user
-				GROUP BY username, first_name, last_name, is_active
+				LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
+				GROUP BY username, first_name, last_name, is_active, social_auth_usersocialauth.provider
 				HAVING is_active IS TRUE ORDER BY contribution DESC LIMIT %s'''
     cursor = connection.cursor()
     cursor.execute(query, [limit])

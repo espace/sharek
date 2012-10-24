@@ -1,17 +1,46 @@
 {% load replace %}
 {% load hash %} 
 {% load date_format %}
+{% load auth_provider %}
+
 <div class="last-comment comment-block {% if forloop.counter|divisibleby:2 %}alt{% endif %} L_{{feedback.id}}">
   <div class="facebook_user_img">
+    <!-- display an image if the logged was not admin -->
+    {% if feedback.user != 'admin' %}
+      {% if feedback.provider == 'facebook' %}
         <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.name }}">
             <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ feedback.user }}">
         </a>
+      {% elif feedback.provider == 'twitter' %}
+        <a href="http://www.twitter.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.name }}">
+          <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ feedback.user }}">
+        </a>
+      {% elif feedback.provider == 'yahoo' %}
+        <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ feedback.user }}">
+      {% elif feedback.provider == 'google' %}
+        <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
+      {% else %}
+        <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.name }}">
+          <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ feedback.user }}">
+        </a>
+      {% endif %}
+    {% endif %}
   </div>
           
   {% if feedback.user == 'admin' %}
     <h3><p class="name"><a>{{ feedback.name }}</a></p></h3> 
   {% else %}
+    {% if feedback.provider == 'facebook' %}
+      <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
+    {% elif feedback.provider == 'twitter' %}
+      <h3><p class="name"><a href="http://www.twitter.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
+    {% elif feedback.provider == 'yahoo' %}
+      <h3><p class="name"><a>{{ feedback.name }}</a></p></h3>
+    {% elif feedback.provider == 'google' %}
+      <h3><p class="name"><a>{{ feedback.name }}</a></p></h3>
+    {% else %}
     <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3> 
+  {% endif %}
   {% endif %}
              
   <div class="like-group">
@@ -28,24 +57,51 @@
     {% endif %}
     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete " id="{{feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
 
-    {% if feedback.get_children|length > 0 %}
+    {% if feedback.children > 0 %}
         <a href="javascript:;" class="L_show_more " id="{{feedback.id}}"><span class="L_show_more_icon {{feedback.id}} icon-plus"></span><span class="L_show_more_txt {{feedback.id}}">إظهار باقي الردود</span></a>
     {% endif %}
   </div>
     <div class="L_replies_block child-wrapper {{feedback.id}}" style="display:none;">
-    {% if feedback.get_children|length > 0 %}
+    {% if feedback.children > 0 %}
       {% for reply in feedback.get_children %}
         <div class="comment-block child-reply L_{{reply.id}}">
+          
           <div class="facebook_user_img">
+            {% if reply.user != 'admin' %}
+              {% if reply.provider == 'facebook' %}
             <a href="http://www.facebook.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.name }}">
               <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ reply.user }}">
             </a>
+              {% elif reply.provider == 'twitter' %}
+                <a href="http://www.twitter.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.name }}">
+                  <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ reply.user }}">
+                </a>
+              {% elif reply.provider == 'yahoo' %}
+                <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ reply.user }}">
+              {% elif reply.provider == 'google' %}
+                <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
+              {% else %}
+                <a href="http://www.facebook.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.name }}">
+                  <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ reply.user }}">
+                </a>
+              {% endif %}
+            {% endif %}
           </div>
           
           {% if reply.user == 'admin' %}
 	          <h3><p class="name"><a>{{ reply.name }}</a></p></h3> 
           {% else %}
+            {% if reply.provider == 'facebook' %}
+              <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{ reply.name }}</a></p></h3>
+            {% elif reply.provider == 'twitter' %}
+              <h3><p class="name"><a href="http://www.twitter.com/{{ reply.user }}" target="_blank">{{ reply.name }}</a></p></h3>
+            {% elif reply.provider == 'yahoo' %}
+              <h3><p class="name"><a>{{ reply.name }}</a></p></h3>
+            {% elif reply.provider == 'google' %}
+              <h3><p class="name"><a>{{ reply.name }}</a></p></h3>
+            {% else %}
     	      <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{ reply.name }}</a></p></h3> 
+          {% endif %}
           {% endif %}
             
           <div class="like-group">
@@ -65,15 +121,42 @@
       {% endfor %}
     {% endif %}
     <div class="comment-block comment-entry child-reply {{feedback.id}}" style="display:none;">
+      {% if user.username != 'admin' %}
       <div class="facebook_user_img">
-          <a href="http://www.facebook.com/{{ user.username }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+          {% if request.session.social_auth_last_login_backend == 'facebook' %}
+            <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
               <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
           </a>
+          {% elif request.session.social_auth_last_login_backend == 'twitter' %}
+            <a href="http://www.twitter.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+              <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+            </a>
+          {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          {% elif request.session.social_auth_last_login_backend == 'google' %}
+            <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
+          {% else %}
+            <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+              <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+            </a>
+          {% endif %}
       </div>
+      {% endif %}
+      
       {% if user == 'admin' %}
         <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
       {% else %}
+        {% if request.session.social_auth_last_login_backend == 'facebook' %}
         <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+        {% elif request.session.social_auth_last_login_backend == 'twitter' %}
+          <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+        {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
+          <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+        {% elif request.session.social_auth_last_login_backend == 'google' %}
+          <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+        {% else %}
+          <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+        {% endif %}
       {% endif %}
              
       <a href="javascript:;" class="L_hide close  " feedback_id="{{feedback.id}}" ><span>x</span></a>
