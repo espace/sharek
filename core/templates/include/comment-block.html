@@ -7,17 +7,17 @@
   <div class="facebook_user_img">
     <!-- display an image if the logged was not admin -->
     {% if feedback.user != 'admin' %}
-      {% if feedback.user|get_auth_provider == 'facebook' %}
+      {% if feedback.provider == 'facebook' %}
         <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.name }}">
           <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ feedback.user }}">
         </a>
-      {% elif feedback.user|get_auth_provider == 'twitter' %}
+      {% elif feedback.provider == 'twitter' %}
         <a href="http://www.twitter.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.name }}">
           <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ feedback.user }}">
         </a>
-      {% elif feedback.user|get_auth_provider == 'yahoo' %}
+      {% elif feedback.provider == 'yahoo' %}
         <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ feedback.user }}">
-      {% elif feedback.user|get_auth_provider == 'google' %}
+      {% elif feedback.provider == 'google' %}
         <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
       {% else %}
         <a href="http://www.facebook.com/{{ feedback.user }}" target="_blank" class="user-image" title="{{ feedback.name }}">
@@ -30,13 +30,13 @@
   {% if feedback.user == 'admin' %}
     <h3><p class="name"><a>{{ feedback.name }}</a></p></h3> 
   {% else %}
-    {% if feedback.user|get_auth_provider == 'facebook' %}
+    {% if feedback.provider == 'facebook' %}
       <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
-    {% elif feedback.user|get_auth_provider == 'twitter' %}
+    {% elif feedback.provider == 'twitter' %}
       <h3><p class="name"><a href="http://www.twitter.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
-    {% elif feedback.user|get_auth_provider == 'yahoo' %}
+    {% elif feedback.provider == 'yahoo' %}
       <h3><p class="name"><a>{{ feedback.name }}</a></p></h3>
-    {% elif feedback.user|get_auth_provider == 'google' %}
+    {% elif feedback.provider == 'google' %}
       <h3><p class="name"><a>{{ feedback.name }}</a></p></h3>
     {% else %}
       <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
@@ -68,17 +68,17 @@
           
           <div class="facebook_user_img">
             {% if reply.user != 'admin' %}
-              {% if reply.user|get_auth_provider == 'facebook' %}
+              {% if reply.provider == 'facebook' %}
                 <a href="http://www.facebook.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.name }}">
                   <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ reply.user }}">
                 </a>
-              {% elif reply.user|get_auth_provider == 'twitter' %}
+              {% elif reply.provider == 'twitter' %}
                 <a href="http://www.twitter.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.name }}">
                   <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ reply.user }}">
                 </a>
-              {% elif reply.user|get_auth_provider == 'yahoo' %}
+              {% elif reply.provider == 'yahoo' %}
                 <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ reply.user }}">
-              {% elif reply.user|get_auth_provider == 'google' %}
+              {% elif reply.provider == 'google' %}
                 <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
               {% else %}
                 <a href="http://www.facebook.com/{{ reply.user }}" target="_blank" class="user-image" title="{{ reply.name }}">
@@ -91,13 +91,13 @@
           {% if reply.user == 'admin' %}
 	          <h3><p class="name"><a>{{ reply.name }}</a></p></h3> 
           {% else %}
-            {% if reply.user|get_auth_provider == 'facebook' %}
+            {% if reply.provider == 'facebook' %}
               <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{ reply.name }}</a></p></h3>
-            {% elif reply.user|get_auth_provider == 'twitter' %}
+            {% elif reply.provider == 'twitter' %}
               <h3><p class="name"><a href="http://www.twitter.com/{{ reply.user }}" target="_blank">{{ reply.name }}</a></p></h3>
-            {% elif reply.user|get_auth_provider == 'yahoo' %}
+            {% elif reply.provider == 'yahoo' %}
               <h3><p class="name"><a>{{ reply.name }}</a></p></h3>
-            {% elif reply.user|get_auth_provider == 'google' %}
+            {% elif reply.provider == 'google' %}
               <h3><p class="name"><a>{{ reply.name }}</a></p></h3>
             {% else %}
               <h3><p class="name"><a href="http://www.facebook.com/{{ reply.user }}" target="_blank">{{ reply.name }}</a></p></h3>
