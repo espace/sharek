@@ -209,5 +209,14 @@ MARKITUP_SET = 'markitup/sets/markdown'
 
 # Sphinx 0.9.9
 SPHINX_API_VERSION = 0x116
-
+'''
+TINYMCE_JS_ROOT = '/static/tiny_mce/'
+TINYMCE_JS_URL = os.path.join(STATIC_URL, "tiny_mce/tiny_mce_src.js")
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "table,spellchecker,searchreplace",
+    'theme': "advanced",
+    'theme_advanced_toolbar_location' : "top",
+    'custom_undo_redo_levels': 10,
+}
+'''
 
