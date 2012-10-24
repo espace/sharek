@@ -535,8 +535,8 @@ class Feedback(models.Model):
         feedback_children = cache.get("feedback_children_%i" % self.id)
 
         if not feedback_children:
-        cursor = connection.cursor()
-        cursor.execute(query, [self.id])
+             cursor = connection.cursor()
+             cursor.execute(query, [self.id])
              feedback_children = [Feedback(*i) for i in cursor.fetchall()]
              cache.set("feedback_children_%i" % self.id, feedback_children, 200)
 
