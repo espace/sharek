@@ -22,6 +22,28 @@ SOCIAL_AUTH_SESSION_EXPIRATION = False
 
 SESSION_COOKIE_NAME = "dostorid"
 
+def get_cache():
+  try:
+    os.environ['MEMCACHE_SERVERS'] = os.environ['MEMCACHIER_SERVERS']
+    os.environ['MEMCACHE_USERNAME'] = os.environ['MEMCACHIER_USERNAME']
+    os.environ['MEMCACHE_PASSWORD'] = os.environ['MEMCACHIER_PASSWORD']
+    return {
+      'default': {
+        'BINARY': True,
+        'TIMEOUT': 86400,
+        'BACKEND': 'django_pylibmc.memcached.PyLibMCCache',
+        'LOCATION': os.environ['MEMCACHIER_SERVERS'],
+      }
+    }
+  except:
+    return {
+      'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache'
+      }
+    }
+
+CACHES = get_cache()
+
 AUTHENTICATION_BACKENDS = (
 	'django.contrib.auth.backends.ModelBackend',
     'core.facebook.backends.FacebookBackend',
@@ -150,9 +172,6 @@ INSTALLED_APPS = (
     'debug_toolbar',
     'smart_selects',
     'core.twitter',
-    #'tinymce',
-    #'django.contrib.flatpages',
-    #'flatpages_tinymce',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -199,5 +218,5 @@ TINYMCE_DEFAULT_CONFIG = {
     'theme_advanced_toolbar_location' : "top",
     'custom_undo_redo_levels': 10,
 }
-#TINYMCE_SPELLCHECKER = True
+
 

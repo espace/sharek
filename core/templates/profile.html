@@ -19,7 +19,7 @@
         <li {% if browsing_data = "comments" %}class="active"{% endif %}><a href="{% url profile browsing_data="comments" %}"> <i class=" icon-comment "></i> مشاركاتك</a></li>
       </ul>
 
-      <div class="tab-content" id="myTabContent">
+      <div class="tab-content" id="contributes">
         {% for article in liked_articles %}
           {% include "include/article_block.html" %}
         {% endfor %}
@@ -29,9 +29,9 @@
         {% endfor %}
 
         {% for article in commented_articles %}
-          <div class="headtitle"> <h4>{{article.topic}} :<span>{{article.name}}</span></h4>  </div>
+          <div class="headtitle"> <h4>{{article.topic}} :<a href="">{{article.name}}</a></h4>  </div>
           {% for feedback in article.feedbacks %}
-            {% include "include/comment-block.html" %}
+            {% include "include/comment-block-simple.html" %}
           {% endfor %}
         {% endfor %}
       </div>

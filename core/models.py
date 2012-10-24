@@ -11,6 +11,8 @@ from django.db.models import signals
 from core.actions import exclusive_boolean_fields
 from django.db import connection, models
 from django import db
+from decimal import Decimal
+from django.core.cache import cache
 
 from smart_selects.db_fields import ChainedForeignKey 
 
@@ -68,7 +70,7 @@ class Tag(models.Model):
            p.topic_name = row[17]
            p.original_slug = row[19]
            articles_list.append(p)
-       db.reset_queries()
+       cursor.close()
        return articles_list
         
         
@@ -76,8 +78,34 @@ class Tag(models.Model):
        ordering = ["order"]
 
 class TopicManager(models.Manager):
+    def topics_tree(self):
+       query = '''WITH RECURSIVE q AS
+					(
+						SELECT  t.id, t.name, t.slug, t.order, 1 AS level, t.slug AS topic_slug, t.id::VARCHAR AS breadcrumb, 
+						COUNT(core_articledetails.*) AS articles_count 
+						FROM core_topic t inner join core_articleheader on t.id = core_articleheader.topic_id
+						INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
+						WHERE t.id = core_articleheader.topic_id AND core_articledetails.current is true
+						GROUP BY t.id, t.name, t.slug, t.order
+						UNION
+						SELECT  c.id, c.name, c.slug, c.order, 2 AS level, t1.slug, topic_id::VARCHAR || '-' || c.id::VARCHAR ,0 FROM core_chapter c INNER JOIN core_topic t1 ON c.topic_id = t1.id
+						UNION
+						SELECT  b.id, b.name, b.slug, b.order, 3 AS level, t1.slug ,c1.topic_id::VARCHAR || '-' || chapter_id::VARCHAR || '-' || b.id::VARCHAR, 0 FROM core_branch b INNER JOIN core_chapter c1 ON b.chapter_id = c1.id INNER JOIN core_topic t1 ON c1.topic_id = t1.id
+					)
+					SELECT * FROM q ORDER BY breadcrumb, q.order'''
+       cursor = connection.cursor()
+       cursor.execute(query)
+
+       topic_list = []
+       for row in cursor.fetchall():
+            p = {'name':row[1], 'slug':row[2], 'level':row[4], 'topic_slug':row[5], 'articles_count':row[7]}
+            topic_list.append(p)
+
+       cursor.close()
+       return topic_list
+
     def with_counts(self):
-       query = '''SELECT core_topic.id, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered,
+       query = '''SELECT core_topic.id, core_topic.short_name, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered,
 	   				( SELECT MAX(core_articledetails.mod_date) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ),
 					( SELECT COUNT(core_articledetails.*) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ) as headers
 				  FROM core_topic '''
@@ -86,11 +114,12 @@ class TopicManager(models.Manager):
 
        topic_list = []
        for row in cursor.fetchall():
-           p = self.model(id=row[0], name=row[1], slug=row[2], order=row[3], summary=row[4], _summary_rendered=row[5])
-           p.date_articles = row[6]
-           p.count_articles = row[7]
+           p = self.model(id=row[0], short_name=row[1], name=row[2], slug=row[3], order=row[4], summary=row[5], _summary_rendered=row[6])
+           p.date_articles = row[7]
+           p.count_articles = row[8]
            topic_list.append(p)
-       db.reset_queries()
+
+       cursor.close()
        return topic_list
 
 class Topic(models.Model):
@@ -119,8 +148,9 @@ class Topic(models.Model):
        cursor = connection.cursor()
        cursor.execute(query)
        row = cursor.fetchone()
-       db.reset_queries()
-       return row[0]
+       cursor.close()
+       value = row[0]
+       return Decimal(value.to_eng_string())
 
     def get_articles(self, offset = None, limit = None):
        return self.get_articles_limit()
@@ -162,7 +192,7 @@ class Topic(models.Model):
            p.chapter_slug = row[19]
            p.original_slug = row[21]
            articles_list.append(p)
-       db.reset_queries()
+       cursor.close()
        return articles_list
 
     def get_mod_date(self):
@@ -176,7 +206,7 @@ class Topic(models.Model):
        cursor = connection.cursor()
        cursor.execute(query, [self.id])
        row = cursor.fetchone()
-       db.reset_queries()
+       cursor.close()
        return row[1]
 
 class Chapter(models.Model):
@@ -235,7 +265,7 @@ class ArticleHeaderManager(models.Manager):
            p.chapter_slug = row[19]
            p.original_slug = row[21]
            articles_list.append(p)
-       db.reset_queries()
+       cursor.close()
        return articles_list
 
     def get_article(self, slug):
@@ -254,6 +284,8 @@ class ArticleHeaderManager(models.Manager):
        cursor = connection.cursor()
        cursor.execute(query, [slug])
        row = cursor.fetchone()
+       cursor.close()
+
        if(row):
            p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12], original=row[20])
            p.topic_id = row[0]
@@ -268,7 +300,7 @@ class ArticleHeaderManager(models.Manager):
            p.branch_slug = row[18]
            p.chapter_slug = row[19]
            p.original_slug = row[21]
-           db.reset_queries()
+
            return p
        else:
            return None
@@ -283,11 +315,11 @@ class ArticleHeaderManager(models.Manager):
        cursor = connection.cursor()
        cursor.execute(query, [order, topic])
        row = cursor.fetchone()
+       cursor.close()
        if(row):
            p = self.model(id=row[0], name=row[1])
            p.slug = row[3]
            p.topic_slug = row[2]
-           db.reset_queries()
            return p
        else:
            return None
@@ -302,11 +334,11 @@ class ArticleHeaderManager(models.Manager):
        cursor = connection.cursor()
        cursor.execute(query, [order, topic])
        row = cursor.fetchone()
+       cursor.close()
        if(row):
            p = self.model(id=row[0], name=row[1])
            p.slug = row[3]
            p.topic_slug = row[2]
-           db.reset_queries()
            return p
        else:
            return None
@@ -379,7 +411,7 @@ class ArticleManager(models.Manager):
            p.mod_date = row[11]
            p.original_slug = row[12]
            article_list.append(p)
-       db.reset_queries()    
+       cursor.close()    
        return article_list
 
     def get_top_disliked(self, limit):
@@ -411,7 +443,7 @@ class ArticleManager(models.Manager):
            p.mod_date = row[11]
            p.original_slug = row[12]
            article_list.append(p)
-       db.reset_queries()
+       cursor.close()
        return article_list
 
     def get_top_commented(self, limit):
@@ -444,7 +476,7 @@ class ArticleManager(models.Manager):
            p.mod_date = row[11]
            p.original_slug = row[12]
            article_list.append(p)
-       db.reset_queries()
+       cursor.close()
        return article_list
 
 class ArticleDetails(models.Model):
@@ -523,10 +555,17 @@ class Feedback(models.Model):
         query = '''SELECT core_feedback.*
 					FROM core_feedback INNER JOIN auth_user ON core_feedback.user = auth_user.username
 					WHERE core_feedback.parent_id = %s AND auth_user.is_active IS TRUE ORDER BY core_feedback.id'''
-        cursor = connection.cursor()
-        cursor.execute(query, [self.id])
-        db.reset_queries()
-        return [Feedback(*i) for i in cursor.fetchall()]
+
+        #print "feedback_children_%i" % self.id
+        feedback_children = cache.get("feedback_children_%i" % self.id)
+
+        if not feedback_children:
+             cursor = connection.cursor()
+             cursor.execute(query, [self.id])
+             feedback_children = [Feedback(*i) for i in cursor.fetchall()]
+             cache.set("feedback_children_%i" % self.id, feedback_children, 200)
+
+        return feedback_children
 
 class Rating(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
@@ -603,7 +642,7 @@ def get_top_users(self, limit):
         p = User(username=row[0], first_name=row[1], last_name=row[2])
         p.contribution = row[3]
         users_list.append(p)
-    db.reset_queries()
+    cursor.close()
     return users_list
 
 

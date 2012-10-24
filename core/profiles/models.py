@@ -5,14 +5,14 @@ from django.db import connection, models
 from django import db
 
 @classmethod
-def profile_likes(self):
-       return profile_likes_dislikes(self, True)
+def profile_likes(self, user):
+       return profile_likes_dislikes(self, user, True)
 
 @classmethod
-def profile_dislikes(self):
-       return profile_likes_dislikes(self, False)
+def profile_dislikes(self, user):
+       return profile_likes_dislikes(self, user, False)
 
-def profile_likes_dislikes(self, is_likes):
+def profile_likes_dislikes(self, user, is_likes):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
 					core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
 					core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
@@ -21,7 +21,7 @@ def profile_likes_dislikes(self, is_likes):
 				FROM core_articleheader
 				INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
 				INNER JOIN core_articlerating ON core_articledetails.id = core_articlerating.articledetails_id
-					AND core_articlerating.user = 'admin' AND core_articlerating.vote IS %s
+					AND core_articlerating.user = %s AND core_articlerating.vote IS %s
 				INNER JOIN core_articledetails original_articledetails ON original_articledetails.id = core_articledetails.original
 				INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
 				LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
@@ -30,7 +30,7 @@ def profile_likes_dislikes(self, is_likes):
 				ORDER BY coalesce(core_topic.order, 0), coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
 
        cursor = connection.cursor()
-       cursor.execute(query, [is_likes])
+       cursor.execute(query, [user, is_likes])
 
        articles_list = []
 
@@ -50,10 +50,8 @@ def profile_likes_dislikes(self, is_likes):
            p.original_slug = row[21]
            articles_list.append(p)
 
-       print len(articles_list)
-       db.reset_queries()
+       cursor.close()
        return articles_list
 
 User.add_to_class('profile_likes', profile_likes)
 User.add_to_class('profile_dislikes', profile_dislikes)
-#User.add_to_class('profile_likes_dislikes', profile_likes_dislikes)
