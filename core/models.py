@@ -636,9 +636,10 @@ class ReadOnlyAdminFields(object):
 
 @classmethod
 def get_top_users(self, limit):
-    query = '''SELECT username, first_name, last_name, count(core_feedback.*) contribution
+    query = '''SELECT username, first_name, last_name, count(core_feedback.*) contribution, COALESCE(social_auth_usersocialauth.provider, 'facebook') as provider
 				FROM auth_user INNER JOIN core_feedback ON auth_user.username = core_feedback.user
-				GROUP BY username, first_name, last_name, is_active
+				LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
+				GROUP BY username, first_name, last_name, is_active, social_auth_usersocialauth.provider
 				HAVING is_active IS TRUE ORDER BY contribution DESC LIMIT %s'''
     cursor = connection.cursor()
     cursor.execute(query, [limit])

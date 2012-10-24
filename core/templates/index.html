@@ -136,17 +136,17 @@
       <ul>
       	{% for top in top_users %}
       	 <li>
-        	  {% if top|get_auth_provider == 'facebook' %}
+        	  {% if top.provider == 'facebook' %}
               <a href="http://www.facebook.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
                 <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
               </a>
-            {% elif top|get_auth_provider == 'twitter' %}
+            {% elif top.provider == 'twitter' %}
               <a href="http://www.twitter.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
                 <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
               </a>
-            {% elif top|get_auth_provider == 'yahoo' %}
+            {% elif top.provider == 'yahoo' %}
               <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}" title="{{ top.first_name }} {{ top.last_name }}">
-            {% elif top|get_auth_provider == 'google' %}
+            {% elif top.provider == 'google' %}
               <img class="loader" src="{{ STATIC_URL }}images/google_user.gif" title="{{ top.first_name }} {{ top.last_name }}">
             {% else %}
               <a href="http://www.facebook.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
