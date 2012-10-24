@@ -549,11 +549,16 @@ class FeedbackManager(models.Manager):
     def top_ranked(self, article_id, limit):
        query = '''SELECT core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
 						core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
-						core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook') provider
+						core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook') provider,
+						count(reply.id)
 					FROM core_feedback
 					INNER JOIN auth_user on core_feedback.user = auth_user.username
 					LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
-					WHERE auth_user.is_active IS TRUE AND parent_id IS NULL AND core_feedback.articledetails_id = %s
+					LEFT JOIN core_feedback reply on reply.parent_id = core_feedback.id
+					WHERE auth_user.is_active IS TRUE AND core_feedback.parent_id IS NULL AND core_feedback.articledetails_id = %s
+					GROUP BY core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
+						core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
+						core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook')
 					ORDER BY core_feedback.likes - core_feedback.dislikes DESC, id LIMIT %s'''
        cursor = connection.cursor()
        cursor.execute(query, [article_id, limit])
@@ -563,6 +568,7 @@ class FeedbackManager(models.Manager):
        for row in cursor.fetchall():
            p = self.model(id=row[0], name=row[1], email=row[2], date=row[3], order=row[4], user=row[5], suggestion=row[6], _suggestion_rendered=row[7], articledetails_id=row[8], likes=row[9], dislikes=row[10])
            p.provider = row[11]
+           p.children = row[12]
 
            feedback_list.append(p)
 
@@ -572,11 +578,16 @@ class FeedbackManager(models.Manager):
     def feedback_list(self, article_id, order, offset):
        query = '''SELECT core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
 						core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
-						core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook') provider
+						core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook') provider,
+						count(reply.id)
 					FROM core_feedback
 					INNER JOIN auth_user on core_feedback.user = auth_user.username
 					LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
-					WHERE auth_user.is_active IS TRUE AND parent_id IS NULL AND core_feedback.articledetails_id = %s
+					LEFT JOIN core_feedback reply on reply.parent_id = core_feedback.id
+					WHERE auth_user.is_active IS TRUE AND core_feedback.parent_id IS NULL AND core_feedback.articledetails_id = %s
+					GROUP BY core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
+						core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
+						core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook')
 					ORDER BY '''
 
        if order == 'order':
@@ -594,6 +605,7 @@ class FeedbackManager(models.Manager):
        for row in cursor.fetchall():
            p = self.model(id=row[0], name=row[1], email=row[2], date=row[3], order=row[4], user=row[5], suggestion=row[6], _suggestion_rendered=row[7], articledetails_id=row[8], likes=row[9], dislikes=row[10])
            p.provider = row[11]
+           p.children = row[12]
 
            feedback_list.append(p)
 
