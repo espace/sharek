@@ -52,6 +52,11 @@ def index(request):
          topics_tree = Topic.objects.topics_tree()
          cache.set('topics_tree', topics_tree)
 
+    tags = cache.get('tags')
+    if not tags:
+         tags = Tag.objects.all()
+         cache.set('tags', tags)
+
     contributions = cache.get('contributions')
     if not contributions:
          contributions = Topic.total_contributions()
@@ -71,8 +76,6 @@ def index(request):
     if not top_commented:
          top_commented = ArticleDetails.objects.get_top_commented(5)
          cache.set('top_commented', top_commented)
-
-    tags = Tag.objects.all
 
     template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics_tree':topics_tree,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
     
