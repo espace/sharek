@@ -451,7 +451,7 @@ class ArticleDetails(models.Model):
     header =  models.ForeignKey(ArticleHeader, null = True, blank = True)
     slug   = models.SlugField(max_length=40, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
-    #content = models.TextField(default='  ',help_text="article")
+    content = models.CharField(max_length=2000, null = True, blank = True)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
     original = models.IntegerField(default=0)
@@ -520,9 +520,7 @@ class Feedback(models.Model):
     dislikes = models.IntegerField(default=0)
 
     def get_children(self):
-        query = '''SELECT core_feedback.id, core_feedback.parent_id, core_feedback.name, core_feedback.email, core_feedback.suggestion,
-					core_feedback.date, core_feedback.order, core_feedback.user, core_feedback.articledetails_id, core_feedback.likes,
-					core_feedback.dislikes, core_feedback._suggestion_rendered
+        query = '''SELECT core_feedback.*
 					FROM core_feedback INNER JOIN auth_user ON core_feedback.user = auth_user.username
 					WHERE core_feedback.parent_id = %s AND auth_user.is_active IS TRUE ORDER BY core_feedback.id'''
         cursor = connection.cursor()

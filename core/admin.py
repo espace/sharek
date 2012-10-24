@@ -8,7 +8,7 @@ from core.actions import export_as_csv_action
 
 from django.contrib import admin
 from django.core.urlresolvers import reverse
-'''
+
 from django.forms import *
 from django.db.models import *
 from tinymce.widgets import TinyMCE
@@ -20,14 +20,13 @@ class ArticleDetailsForm(forms.ModelForm):
 
     class Meta: 
          model = ArticleDetails
-'''
 
 class ArticleDetailsInlineAdmin(admin.TabularInline):
     model      = ArticleDetails
     extra      = 0
     can_delete = True
-    fields     = ['current', 'slug','summary','mod_date']
-    #form = ArticleDetailsForm
+    fields     = ['current', 'slug','content','summary','mod_date']
+    form = ArticleDetailsForm
 
 class ArticleForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField( queryset=Tag.objects.all(), widget=forms.CheckboxSelectMultiple)

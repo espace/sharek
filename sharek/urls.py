@@ -8,7 +8,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
-    #url(r'^tinymce/', include('tinymce.urls')),    
+    url(r'^tinymce/', include('tinymce.urls')),    
     
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 		
