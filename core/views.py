@@ -60,7 +60,7 @@ def index(request):
     contributions = cache.get('contributions')
     if not contributions:
          contributions = Topic.total_contributions()
-         cache.set('contributions', contributions, 3600)
+         cache.set('contributions', contributions, 1800000)
 
     top_users = cache.get('top_users')
     if not top_users:
