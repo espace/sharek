@@ -78,6 +78,32 @@ class Tag(models.Model):
        ordering = ["order"]
 
 class TopicManager(models.Manager):
+    def topics_tree(self):
+       query = '''WITH RECURSIVE q AS
+					(
+						SELECT  t.id, t.name, t.slug, t.order, 1 AS level, t.slug AS topic_slug, t.id::VARCHAR AS breadcrumb, 
+						COUNT(core_articledetails.*) AS articles_count 
+						FROM core_topic t inner join core_articleheader on t.id = core_articleheader.topic_id
+						INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
+						WHERE t.id = core_articleheader.topic_id AND core_articledetails.current is true
+						GROUP BY t.id, t.name, t.slug, t.order
+						UNION
+						SELECT  c.id, c.name, c.slug, c.order, 2 AS level, t1.slug, topic_id::VARCHAR || '-' || c.id::VARCHAR ,0 FROM core_chapter c INNER JOIN core_topic t1 ON c.topic_id = t1.id
+						UNION
+						SELECT  b.id, b.name, b.slug, b.order, 3 AS level, t1.slug ,c1.topic_id::VARCHAR || '-' || chapter_id::VARCHAR || '-' || b.id::VARCHAR, 0 FROM core_branch b INNER JOIN core_chapter c1 ON b.chapter_id = c1.id INNER JOIN core_topic t1 ON c1.topic_id = t1.id
+					)
+					SELECT * FROM q ORDER BY breadcrumb, q.order'''
+       cursor = connection.cursor()
+       cursor.execute(query)
+
+       topic_list = []
+       for row in cursor.fetchall():
+            p = {'name':row[1], 'slug':row[2], 'level':row[4], 'topic_slug':row[5], 'articles_count':row[7]}
+            topic_list.append(p)
+
+       cursor.close()
+       return topic_list
+
     def with_counts(self):
        query = '''SELECT core_topic.id, core_topic.short_name, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered,
 	   				( SELECT MAX(core_articledetails.mod_date) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ),

@@ -47,39 +47,10 @@ def index(request):
     if request.user.is_authenticated():
       user = request.user
 	  
-    topics = Topic.objects.with_counts
-
-
-    query = ''' WITH RECURSIVE q AS
-        (
-        SELECT  t.id, t.name, t.slug, t.order, 1 AS level, t.slug AS topic_slug, t.id::VARCHAR AS breadcrumb, 
-        COUNT(core_articledetails.*) AS articles_count 
-        FROM core_topic t inner join core_articleheader on t.id = core_articleheader.topic_id
-        INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id
-        WHERE t.id = core_articleheader.topic_id AND core_articledetails.current is true
-        GROUP BY t.id, t.name, t.slug, t.order
-        UNION
-        SELECT  c.id, c.name, c.slug, c.order, 2 AS level, t1.slug, topic_id::VARCHAR || '-' || c.id::VARCHAR ,0 FROM core_chapter c INNER JOIN core_topic t1 ON c.topic_id = t1.id
-        UNION
-        SELECT  b.id, b.name, b.slug, b.order, 3 AS level, t1.slug ,c1.topic_id::VARCHAR || '-' || chapter_id::VARCHAR || '-' || b.id::VARCHAR, 0 FROM core_branch b INNER JOIN core_chapter c1 ON b.chapter_id = c1.id INNER JOIN core_topic t1 ON c1.topic_id = t1.id
-        )
-        SELECT * FROM q ORDER BY breadcrumb, q.order '''
-
-
-    home_list = cache.get('home_list')
-
-    if not home_list:
-
-        home_list = []
-
-        cursor = connection.cursor()
-        cursor.execute(query)
-
-        for row in cursor.fetchall():
-            p = {'name':row[1], 'slug':row[2], 'level':row[4], 'topic_slug':row[5], 'articles_count':row[7]}
-            home_list.append(p)
-
-        cache.set('home_list', home_list)
+    topics_tree = cache.get('topics_tree')
+    if not topics_tree:
+         topics_tree = Topic.objects.topics_tree()
+         cache.set('topics_tree', topics_tree)
 
     contributions = cache.get('contributions')
     if not contributions:
@@ -103,7 +74,7 @@ def index(request):
 
     tags = Tag.objects.all
 
-    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'struct_list':home_list,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics_tree':topics_tree,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
     
     return render_to_response('index.html', template_context ,RequestContext(request))
         
@@ -164,7 +135,7 @@ def topic_detail(request, topic_slug=None):
     
         all_articles = cache.get(topic_slug + '_articles')
         if not all_articles:
-        all_articles = topic.get_articles()
+             all_articles = topic.get_articles()
              cache.set(topic_slug + '_articles', all_articles)
 
     else:
@@ -175,7 +146,7 @@ def topic_detail(request, topic_slug=None):
     
             all_articles = cache.get(topic.slug + '_articles')
             if not all_articles:
-            all_articles = topic.get_articles()
+                 all_articles = topic.get_articles()
                  cache.set(topic.slug + '_articles', all_articles)
         else:
             topic = None
@@ -183,7 +154,7 @@ def topic_detail(request, topic_slug=None):
 
     voted_articles = cache.get('voted_articles')
     if not voted_articles:
-    voted_articles = ArticleRating.objects.filter(user = user)
+       voted_articles = ArticleRating.objects.filter(user = user)
        cache.set('voted_articles', voted_articles, 600)
 
     template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
