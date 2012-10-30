@@ -730,7 +730,13 @@ def members_map(request):
              new_y += width + margin
              gen_width = width + margin
 
-       image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/photos/profile/%s" % (user.username))
+       image_file = os.path.dirname(os.path.realpath(__file__)) + "/static/photos/profile/%s" % (user.username)
+
+       if os.path.exists(image_file):
+            image = Image.open(image_file)
+       else:
+            image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/images/google_user.gif")
+
        image.thumbnail(size, Image.ANTIALIAS)
 	   
        blank_image.paste(image, (new_x, new_y))
