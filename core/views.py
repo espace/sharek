@@ -161,10 +161,10 @@ def topic_detail(request, topic_slug=None):
 
             topic = topics[0]
     
-            all_articles = mc.get(topic.slug + '_articles')
+            all_articles = mc.get(str(topic.slug) + '_articles')
             if not all_articles:
                  all_articles = topic.get_articles()
-                 mc.set(topic.slug + '_articles', all_articles, settings.MEMCACHED_TIMEOUT)
+                 mc.set(str(topic.slug) + '_articles', all_articles, settings.MEMCACHED_TIMEOUT)
         else:
             topic = None
             all_articles = None
@@ -281,7 +281,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
 
     top_ranked = mc.get('top_ranked_' + str(article.id))
     if not top_ranked:
-         top_ranked = Feedback.objects.top_ranked(article.id, top_ranked_count, settings.MEMCACHED_TIMEOUT)
+         top_ranked = Feedback.objects.top_ranked(article.id, top_ranked_count)
          mc.set('top_ranked_' + str(article.id), top_ranked, settings.MEMCACHED_TIMEOUT)
 
     if order_by == "latest" or order_by == "def":
