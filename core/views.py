@@ -722,9 +722,9 @@ def members_map(request):
 
     size = width, height
 
-    out_image = os.path.dirname(os.path.realpath(__file__)) + "/static/photos/all.jpg"
+    out_image = os.path.dirname(os.path.realpath(__file__)) + "/static/all.jpg"
 
-    blank_image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/photos/blank.jpg")
+    blank_image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/blank.jpg")
 
     #print blank_image.size[0]
 
