@@ -728,7 +728,7 @@ def generate_members_map(request):
 
     top_users = User.get_top_users(1500)
 
-    for user in top_users:
+    for top_user in top_users:
 
        gen_width += width + margin
 
@@ -737,7 +737,7 @@ def generate_members_map(request):
              new_y += width + margin
              gen_width = width + margin
 
-       image_file = os.path.dirname(os.path.realpath(__file__)) + "/static/photos/profile/%s" % (user.username)
+       image_file = os.path.dirname(os.path.realpath(__file__)) + "/static/photos/profile/%s" % (top_user.username)
 
        if os.path.exists(image_file):
             image = Image.open(image_file)
