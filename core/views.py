@@ -703,35 +703,25 @@ def logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 def top_users_map(request):
-
     return render_to_response('map.html', {} ,RequestContext(request))
 
 def members_map(request):
 
     margin = 2
-    width = 23
-    height = 23
+    images = 38 # Images per Row
 
-    new_x = 0
-    new_y = 0
+    width = 23 # Image Width
+    height = 23 # Images Height
+    size = width, height # Images Size
 
-    gen_width = 0
-    gen_height = 0
+    new_x = new_y = gen_width = gen_height = 0
 
-    images = 6
-
-    size = width, height
-
-    out_image = os.path.dirname(os.path.realpath(__file__)) + "/static/all.jpg"
-
+    out_image = os.path.dirname(os.path.realpath(__file__)) + "/static/members_map.jpg"
     blank_image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/blank.jpg")
 
-    #print blank_image.size[0]
+    top_users = User.get_top_users(1500)
 
-    for num in range(0,9):
-
-       image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/photos/%d.jpg" % (num + 1))
-       image.thumbnail(size, Image.ANTIALIAS)
+    for user in top_users:
 
        gen_width += width + margin
 
@@ -740,6 +730,9 @@ def members_map(request):
              new_y += width + margin
              gen_width = width + margin
 
+       image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/photos/profile/%s" % (user.username))
+       image.thumbnail(size, Image.ANTIALIAS)
+	   
        blank_image.paste(image, (new_x, new_y))
 
        new_x += width + margin
