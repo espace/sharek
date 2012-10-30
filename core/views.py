@@ -704,6 +704,10 @@ def logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 def top_users_map(request):
+
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
 	  
     members_map = mc.get('members_map')
     if not members_map:
