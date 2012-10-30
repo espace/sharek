@@ -74,7 +74,7 @@ def index(request):
 
     top_users = mc.get('top_users')
     if not top_users:
-         top_users = User.get_top_users(12)
+         top_users = User.get_top_users(24)
          mc.set('top_users', top_users, settings.MEMCACHED_TIMEOUT)
 
     top_liked = mc.get('top_liked')
