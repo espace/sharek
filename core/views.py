@@ -2,6 +2,7 @@
 import os, sys
 
 import Image
+import logging
 
 from django.template import Context, loader, RequestContext
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
@@ -703,9 +704,15 @@ def logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 def top_users_map(request):
+	  
+    members_map = mc.get('members_map')
+    if not members_map:
+         generate_members_map(request)
+         mc.set('members_map', 'members_map_generated', 604800) # Cached for 7 Days
+    
     return render_to_response('map.html', {} ,RequestContext(request))
 
-def members_map(request):
+def generate_members_map(request):
 
     margin = 2
     images = 38 # Images per Row
@@ -718,19 +725,6 @@ def members_map(request):
 
     out_image = os.path.dirname(os.path.realpath(__file__)) + "/static/members_map.jpg"
     blank_image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/blank.jpg")
-
-    ##################################################
-
-    members_map = mc.get('members_map')
-    print members_map
-    if members_map:
-       image_to_response = HttpResponse(mimetype="image/jpg")
-       image = Image.open(out_image)
-       blank_image.paste(image, (0, 0))
-       blank_image.save(image_to_response,'png')
-       return image_to_response
-
-    ##################################################
 
     top_users = User.get_top_users(1500)
 
@@ -755,14 +749,6 @@ def members_map(request):
        blank_image.paste(image, (new_x, new_y))
 
        new_x += width + margin
-             
 	
     blank_image.save(out_image)
-
-    image_to_response = HttpResponse(mimetype="image/jpg")
-    blank_image.save(image_to_response,'png')
-
-    mc.set('members_map', 'members_map_generated', 604800) # Cached for 7 Days
-	
-    return image_to_response
 
