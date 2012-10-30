@@ -2333,7 +2333,7 @@ span.divider{
 	position: absolute;
 	left: -60px !important;
 	top: 25px !important;
-
+	overflow-x: hidden;
 }
 
 a.morelink { 
