@@ -6,6 +6,7 @@
 core/static/temp/
 core/static/photos/
 core/static/photos/profile/
+core/static/members_map.jpg
 sharek/settings_local.py
 .settings
 .project

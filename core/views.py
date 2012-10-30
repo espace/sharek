@@ -719,6 +719,18 @@ def members_map(request):
     out_image = os.path.dirname(os.path.realpath(__file__)) + "/static/members_map.jpg"
     blank_image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/blank.jpg")
 
+    ##################################################
+
+    members_map = mc.get('members_map')
+    if members_map:
+       image_to_response = HttpResponse(mimetype="image/jpg")
+       image = Image.open(out_image)
+       blank_image.paste(image, (0, 0))
+       blank_image.save(image_to_response,'png')
+       return image_to_response
+
+    ##################################################
+
     top_users = User.get_top_users(1500)
 
     for user in top_users:
@@ -746,5 +758,10 @@ def members_map(request):
 	
     blank_image.save(out_image)
 
-    return render_to_response('map.html', {} ,RequestContext(request))
+    image_to_response = HttpResponse(mimetype="image/jpg")
+    blank_image.save(image_to_response,'png')
+
+    mc.set('members_map', 'members_map_generated', 120)
+	
+    return image_to_response
 
