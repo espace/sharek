@@ -704,8 +704,9 @@ def logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 def top_users_map(request):
-
     user = None
+
+    login(request)
     if request.user.is_authenticated():
       user = request.user
 	  
@@ -714,7 +715,7 @@ def top_users_map(request):
          generate_members_map(request)
          mc.set('members_map', 'members_map_generated', 604800) # Cached for 7 Days
     
-    return render_to_response('map.html', {} ,RequestContext(request))
+    return render_to_response('map.html', {'request': request, 'user': user,} ,RequestContext(request))
 
 def generate_members_map(request):
 
