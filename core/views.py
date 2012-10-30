@@ -722,6 +722,7 @@ def members_map(request):
     ##################################################
 
     members_map = mc.get('members_map')
+    print members_map
     if members_map:
        image_to_response = HttpResponse(mimetype="image/jpg")
        image = Image.open(out_image)
@@ -761,7 +762,7 @@ def members_map(request):
     image_to_response = HttpResponse(mimetype="image/jpg")
     blank_image.save(image_to_response,'png')
 
-    mc.set('members_map', 'members_map_generated', 120)
+    mc.set('members_map', 'members_map_generated', 604800) # Cached for 7 Days
 	
     return image_to_response
 
