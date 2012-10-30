@@ -442,13 +442,14 @@ left: 1px;
     clear: both;
     display: block;
     opacity: 0.9;
+    font-size: 11px;
 }
 .home-sections h6  {
     float: right;
     display: inline;
     margin-left: 5px;
     font-weight: normal;
-    font-size: 12px;
+    font-size: 11px;
 }
 .home-sections li{
     margin-bottom: 20px;
