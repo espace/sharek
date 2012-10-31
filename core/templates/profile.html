@@ -29,14 +29,14 @@
         {% endfor %}
 
         {% for article in commented_articles %}
-          <div class="headtitle"> <h4>{{article.topic}} :<a href="">{{article.name}}</a></h4>  </div>
+          <div class="headtitle" counter="{{article.feedbacks.count}}" > <h4>{{article.topic}} :<a href="">{{article.name}}</a></h4> </div>
           {% for feedback in article.feedbacks %}
             {% include "include/comment-block-simple.html" %}
           {% endfor %}
         {% endfor %}
       </div>
     </div> <!-- span12  --> 
-  </div><!-- roww -->
+  </div> <!-- roww -->
   
 <input type="hidden" id="csrf_token" value="{{csrf_token}}"/>
 <script src="{{STATIC_URL}}js/article_vote.js" type="text/javascript"></script>
@@ -64,16 +64,16 @@
       if (confirm('هل أنت متأكد من أنك تريد حذف تعليقك ؟'))
       {
         $.ajax({
-                type:"POST",
-                  url :"{% url remove_feedback %}",
-                data:{'feedback':$(this).attr('id'),
-                      'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
-                dataType:"json",
-                error:function(data){},
-                success:function(data){
-                  $(".L_"+data.feedback_id).remove();  
-                },
-              });
+            type:"POST",
+              url :"{% url remove_feedback %}",
+            data:{'feedback':$(this).attr('id'),
+                  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
+            dataType:"json",
+            error:function(data){},
+            success:function(data){
+              $(".L_"+data.feedback_id).remove();  
+            },
+          });
       }
     {% endif %}
     });
