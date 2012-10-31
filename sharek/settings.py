@@ -53,7 +53,7 @@ DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.request_vars.RequestVarsDebugPanel',
     'debug_toolbar.panels.template.TemplateDebugPanel',
     'debug_toolbar.panels.sql.SQLDebugPanel',
-    'memcache_toolbar.panels.memcache.MemcachePanel',
+    #'memcache_toolbar.panels.memcache.MemcachePanel',
     #'debug_toolbar.panels.signals.SignalDebugPanel',
     #'debug_toolbar.panels.logger.LoggingPanel',
 )
@@ -186,7 +186,7 @@ INSTALLED_APPS = (
     'django.contrib.humanize',
     'core.social_auth',
     'debug_toolbar',
-	'cache_toolbar',
+	#'cache_toolbar',
     'smart_selects',
     'core.twitter',
 )

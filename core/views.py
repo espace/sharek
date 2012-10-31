@@ -399,8 +399,8 @@ def modify(request):
             
             if request.user.username != "admin":
                 # post on twitter or facebook
-                if UserSocialAuth.auth_provider(request.user) == 'facebook':
-                    fb_user = FacebookSession.objects.get(user_id = request.user.id)
+                if UserSocialAuth.auth_provider(request.user.username) == 'facebook':
+                    fb_user = FacebookSession.objects.get(user = request.user)
                     # GraphAPI is the main class from facebook_sdp.py
                     graph = facebook_sdk.GraphAPI(fb_user.access_token)
                     attachment = {}
@@ -409,8 +409,8 @@ def modify(request):
                     message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
                     graph.put_wall_post(message, attachment)
                 
-                if UserSocialAuth.auth_provider(request.user.id) == 'twitter':
-                    extra_data = UserSocialAuth.get_extra_data(request.user.id)
+                if UserSocialAuth.auth_provider(request.user.username) == 'twitter':
+                    extra_data = UserSocialAuth.get_extra_data(request.user.username)
                     access_token = extra_data['access_token']
                     access_token_secret = access_token[access_token.find('=')+1 : access_token.find('&')]
                     access_token_key = access_token[access_token.rfind('=')+1:]
