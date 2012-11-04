@@ -634,8 +634,8 @@ class Feedback(models.Model):
 					WHERE auth_user.is_active IS TRUE AND parent_id = %s
 					ORDER BY id DESC'''
 
-             cursor = connection.cursor()
-             cursor.execute(query, [self.id])
+        cursor = connection.cursor()
+        cursor.execute(query, [self.id])
 
         replies_list = []
 
