@@ -746,7 +746,7 @@ def generate_members_map(request):
 
        if os.path.exists(image_file):
             image = Image.open(image_file)
-    else:
+       else:
             image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/images/google_user.gif")
 
        image.thumbnail(size, Image.ANTIALIAS)
