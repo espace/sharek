@@ -302,10 +302,10 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
             voted_fb = Rating.objects.filter(articledetails_id = article.id, user = user)
             mc.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb, settings.MEMCACHED_TIMEOUT)
 	
-    voted_article = mc.get('voted_article_' + str(article.id) + '-' + str(user.id))
-    if not voted_article:
-        voted_article = ArticleRating.objects.filter(articledetails_id = article.id, user = user)
-        mc.set('voted_article_' + str(article.id) + '-' + str(user.id), voted_article, settings.MEMCACHED_TIMEOUT)
+        voted_article = mc.get('voted_article_' + str(article.id) + '-' + str(user.id))
+        if not voted_article:
+            voted_article = ArticleRating.objects.filter(articledetails_id = article.id, user = user)
+            mc.set('voted_article_' + str(article.id) + '-' + str(user.id), voted_article, settings.MEMCACHED_TIMEOUT)
 
     article_rate = None
     for art in voted_article:
