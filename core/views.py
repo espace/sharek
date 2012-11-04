@@ -400,9 +400,11 @@ def modify(request):
             if request.user.username != "admin":
                 # post on twitter or facebook
                 if UserSocialAuth.auth_provider(request.user.username) == 'facebook':
-                    fb_user = FacebookSession.objects.get(user = request.user)
+                    #fb_user = FacebookSession.objects.get(user = request.user)
+                    extra_data = UserSocialAuth.get_extra_data(request.user.username)
+                    access_token = extra_data['access_token']
                     # GraphAPI is the main class from facebook_sdp.py
-                    graph = facebook_sdk.GraphAPI(fb_user.access_token)
+                    graph = facebook_sdk.GraphAPI(access_token)
                     attachment = {}
                     attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
                     attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook.png"
