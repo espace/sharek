@@ -286,7 +286,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
          mc.set('top_ranked_' + str(article.id), top_ranked, settings.MEMCACHED_TIMEOUT)
 
     if order_by == "latest" or order_by == "def":
-        feedbacks = Feedback.objects.feedback_list(article.id, 'latest', top_ranked_count)
+        feedbacks = Feedback.objects.feedback_list(article.id, 'latest', 0)
     elif order_by == "order":
         feedbacks = Feedback.objects.feedback_list(article.id, 'order', top_ranked_count)
 
