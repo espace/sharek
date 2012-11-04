@@ -8,7 +8,7 @@ except ImportError:
 import os
 
 LOGIN_URL          = '/sharek/login-form/'
-LOGIN_REDIRECT_URL = '/sharek/logged-in/'
+LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL    = '/sharek/login-error/'
 
 SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
