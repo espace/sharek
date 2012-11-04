@@ -396,7 +396,7 @@ def modify(request):
             article.feedback_count = article.feedback_count + 1
             article.save()
                     
-            
+            '''
             if request.user.username != "admin":
                 # post on twitter or facebook
                 if UserSocialAuth.auth_provider(request.user.username) == 'facebook':
@@ -420,6 +420,7 @@ def modify(request):
                                       access_token_secret=access_token_secret)
                     message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
                     api.PostUpdate(message)
+            '''
                     
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
