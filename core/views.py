@@ -1,7 +1,7 @@
 # This Python file uses the following encoding: utf-8
 import os, sys
 
-import Image
+from PIL import Image
 import logging
 
 from django.template import Context, loader, RequestContext
