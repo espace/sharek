@@ -2374,3 +2374,18 @@ a.morelink {
 #contributes .comment-block .reply a{
     color: #777 !important;
 }
+
+    .floatLtr{
+      direction: ltr;
+      width: 100%;
+
+    }
+    .floatingSocial{
+      background:red;
+      width: 30px;
+      height: 200px;
+      position:fixed;
+      top: 160px;
+      margin-left: -44px;
+
+    }
