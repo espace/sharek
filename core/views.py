@@ -149,7 +149,7 @@ def topic_detail(request, topic_slug=None):
         topic = mc.get('topic_' + str(topic_slug))
         if not topic:
         topic = get_object_or_404( Topic, slug=topic_slug )
-             mc.set('topic_' + str(topic_slug), topic, settings.MEMCACHED_TIMEOUT)
+        mc.set('topic_' + str(topic_slug), topic, settings.MEMCACHED_TIMEOUT)
     
         all_articles = mc.get(str(topic_slug) + '_articles')
         if not all_articles:
