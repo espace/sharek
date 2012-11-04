@@ -29,10 +29,12 @@
   {% endfor %}
 
   {% for article in commented_articles %}
+          <div counter="{{article.feedbacks.count}}" >
           <div class="headtitle"> <h4>{{article.topic}} :<a href="">{{article.name}}</a></h4>  </div>
     {% for feedback in article.feedbacks %}
             {% include "include/comment-block-simple.html" %}
     {% endfor %}
+        </div>
   {% endfor %}
       </div>
     </div> <!-- span12  --> 
@@ -71,6 +73,15 @@
                 dataType:"json",
                 error:function(data){},
                 success:function(data){
+              if (parseInt($(".L_"+data.feedback_id).parent().attr("counter")) == 1)
+              {
+                $(".L_"+data.feedback_id).parent().remove();
+              }
+              else
+              {
+                counter =  parseInt($(".L_"+data.feedback_id).parent().attr("counter"))-1
+                $(".L_"+data.feedback_id).parent().attr("counter",counter);
+              }
                 $(".L_"+data.feedback_id).remove();  
                 },
               });

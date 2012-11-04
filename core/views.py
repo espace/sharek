@@ -1,6 +1,9 @@
 # This Python file uses the following encoding: utf-8
 import os, sys
 
+import Image
+import logging
+
 from django.template import Context, loader, RequestContext
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
@@ -29,12 +32,19 @@ import simplejson
 import urllib
 import random
 import urllib2
-import core
+import core, re
 import os.path
 from operator import attrgetter
 from django.core.cache import cache
+import memcache
 from core.social_auth.models import UserSocialAuth
 from core.twitter import twitter
+
+from random import randint
+
+
+# get first memcached URI
+mc = memcache.Client([settings.MEMCACHED_BACKEND])
 
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
@@ -47,35 +57,35 @@ def index(request):
     if request.user.is_authenticated():
       user = request.user
 
-    topics_tree = cache.get('topics_tree')
+    topics_tree = mc.get('topics_tree')
     if not topics_tree:
          topics_tree = Topic.objects.topics_tree()
-         cache.set('topics_tree', topics_tree)
+         mc.set('topics_tree', topics_tree, settings.MEMCACHED_TIMEOUT)
 
-    tags = cache.get('tags')
+    tags = mc.get('tags')
     if not tags:
          tags = Tag.objects.all()
-         cache.set('tags', tags)
+         mc.set('tags', tags, settings.MEMCACHED_TIMEOUT)
 
-    contributions = cache.get('contributions')
+    contributions = mc.get('contributions')
     if not contributions:
          contributions = Topic.total_contributions()
-         cache.set('contributions', contributions, 1800000)
+         mc.set('contributions', contributions, 900) # 15 Minutes
     
-    top_users = cache.get('top_users')
+    top_users = mc.get('top_users')
     if not top_users:
-         top_users = User.get_top_users(12)
-         cache.set('top_users', top_users)
+         top_users = User.get_top_users(24)
+         mc.set('top_users', top_users, settings.MEMCACHED_TIMEOUT)
 	
-    top_liked = cache.get('top_liked')
+    top_liked = mc.get('top_liked')
     if not top_liked:
          top_liked = ArticleDetails.objects.get_top_liked(5)
-         cache.set('top_liked', top_liked)
+         mc.set('top_liked', top_liked, settings.MEMCACHED_TIMEOUT)
 
-    top_commented = cache.get('top_commented')
+    top_commented = mc.get('top_commented')
     if not top_commented:
          top_commented = ArticleDetails.objects.get_top_commented(5)
-         cache.set('top_commented', top_commented)
+         mc.set('top_commented', top_commented, settings.MEMCACHED_TIMEOUT)
 
     template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics_tree':topics_tree,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
 
@@ -128,18 +138,23 @@ def topic_detail(request, topic_slug=None):
     if request.user.is_authenticated():
       user = request.user
 
-    topics = cache.get('topics_list')
+    topics = mc.get('topics_list')
     if not topics:
          topics = Topic.objects.with_counts()
-         cache.set('topics_list', topics)
+         mc.set('topics_list', topics, settings.MEMCACHED_TIMEOUT)
+
 
     if topic_slug:
-        topic = get_object_or_404( Topic, slug=topic_slug )
     
-        all_articles = cache.get(topic_slug + '_articles')
+        topic = mc.get('topic_' + str(topic_slug))
+        if not topic:
+        topic = get_object_or_404( Topic, slug=topic_slug )
+             mc.set('topic_' + str(topic_slug), topic, settings.MEMCACHED_TIMEOUT)
+    
+        all_articles = mc.get(str(topic_slug) + '_articles')
         if not all_articles:
              all_articles = topic.get_articles()
-             cache.set(topic_slug + '_articles', all_articles)
+             mc.set(str(topic_slug) + '_articles', all_articles, settings.MEMCACHED_TIMEOUT)
 
     else:
 
@@ -147,18 +162,21 @@ def topic_detail(request, topic_slug=None):
 
             topic = topics[0]
     
-            all_articles = cache.get(topic.slug + '_articles')
+            all_articles = mc.get(str(topic.slug) + '_articles')
             if not all_articles:
                  all_articles = topic.get_articles()
-                 cache.set(topic.slug + '_articles', all_articles)
+                 mc.set(str(topic.slug) + '_articles', all_articles, settings.MEMCACHED_TIMEOUT)
         else:
             topic = None
             all_articles = None
 
-    voted_articles = cache.get('voted_articles')
+    voted_articles = []
+
+    if user:
+        voted_articles = mc.get('voted_articles')
     if not voted_articles:
        voted_articles = ArticleRating.objects.filter(user = user)
-       cache.set('voted_articles', voted_articles, 600)
+           mc.set('voted_articles', voted_articles, 900) # 15 Minutes
 
     template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
 
@@ -233,10 +251,10 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if request.user.is_authenticated():
       user = request.user
 
-    article = cache.get('article_' + article_slug)
+    article = mc.get('article_' + str(article_slug))
     if not article:
          article = ArticleHeader.objects.get_article(article_slug)
-         cache.set('article_' + article_slug, article)
+         mc.set('article_' + str(article_slug), article, settings.MEMCACHED_TIMEOUT)
 
     topic = get_object_or_404( Topic, slug = article.topic_slug )
 
@@ -255,17 +273,17 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     versions = []
     arts = article.header.articledetails_set.all()
 
-    related_tags = cache.get('related_tags_' + article_slug)
+    related_tags = mc.get('related_tags_' + str(article_slug))
     if not related_tags:
          related_tags = article.header.tags.all()
-         cache.set('related_tags_' + article_slug, related_tags)
+         mc.set('related_tags_' + str(article_slug), related_tags, settings.MEMCACHED_TIMEOUT)
 
     top_ranked_count = 3
 
-    top_ranked = cache.get('top_ranked_' + str(article.id))
+    top_ranked = mc.get('top_ranked_' + str(article.id))
     if not top_ranked:
          top_ranked = Feedback.objects.top_ranked(article.id, top_ranked_count)
-         cache.set('top_ranked_' + str(article.id), top_ranked)
+         mc.set('top_ranked_' + str(article.id), top_ranked, settings.MEMCACHED_TIMEOUT)
 
     if order_by == "latest" or order_by == "def":
         feedbacks = Feedback.objects.feedback_list(article.id, 'latest', top_ranked_count)
@@ -275,15 +293,19 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     paginator = Paginator(feedbacks, settings.paginator) 
     page = request.GET.get('page')
 
-    voted_fb = cache.get('voted_fb_' + str(article.id) + '-' + str(user.id))
+    voted_fb = []
+    voted_article = []
+
+    if user:
+        voted_fb = mc.get('voted_fb_' + str(article.id) + '-' + str(user.id))
     if not voted_fb:
     voted_fb = Rating.objects.filter(articledetails_id = article.id, user = user)
-         cache.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb)
+             mc.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb, settings.MEMCACHED_TIMEOUT)
 	
-    voted_article = cache.get('voted_article_' + str(article.id) + '-' + str(user.id))
+        voted_article = mc.get('voted_article_' + str(article.id) + '-' + str(user.id))
     if not voted_article:
     voted_article = ArticleRating.objects.filter(articledetails_id = article.id, user = user)
-         cache.set('voted_article_' + str(article.id) + '-' + str(user.id), voted_article)
+             mc.set('voted_article_' + str(article.id) + '-' + str(user.id), voted_article, settings.MEMCACHED_TIMEOUT)
 
     article_rate = None
     for art in voted_article:
@@ -682,35 +704,56 @@ def logout(request):
     return HttpResponseRedirect(reverse('index'))
 
 def top_users_map(request):
-
     user = None
+
+    login(request)
     if request.user.is_authenticated():
       user = request.user
 
-    top_users = []
-    inactive_users = User.get_inactive
-    counter = 0
-    if user == None:
-        temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('?').exclude(user__in=inactive_users)[:2000]
+    members_map = mc.get('members_map')
+    if not members_map:
+         generate_members_map(request)
+         mc.set('members_map', 'members_map_generated', 604800) # Cached for 7 Days
+    
+    return render_to_response('map.html', {'request': request, 'user': user,} ,RequestContext(request))
+
+def generate_members_map(request):
+
+    margin = 2
+    images = 38 # Images per Row
+
+    width = 23 # Image Width
+    height = 23 # Images Height
+    size = width, height # Images Size
+
+    new_x = new_y = gen_width = gen_height = 0
+
+    out_image = os.path.dirname(os.path.realpath(__file__)) + "/static/members_map.jpg"
+    blank_image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/blank.jpg")
+
+    top_users = User.get_top_users(1500)
+
+    for top_user in top_users:
+
+       gen_width += width + margin
+
+       if gen_width > (images * (width + margin)):
+             new_x = 0
+             new_y += width + margin
+             gen_width = width + margin
+
+       image_file = os.path.dirname(os.path.realpath(__file__)) + "/static/photos/profile/%s" % (top_user.username)
+
+       if os.path.exists(image_file):
+            image = Image.open(image_file)
     else:
-        temp_users = Feedback.objects.values('user').annotate(user_count=Count('user')).order_by('?').exclude(user__in=inactive_users).exclude(user__in=inactive_users).exclude(user=user.username)[:2000]
-        feedback = Feedback.objects.filter(user = user).count()
-        feedback_ratings = Rating.objects.filter(user = user).count()
-        article_ratings = ArticleRating.objects.filter(user = user).count()
-        counter = feedback + feedback_ratings + article_ratings
+            image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/images/google_user.gif")
 
-    bound_h = random.randint(210,235)
-    bound_v = random.randint(1,25)*41
-    bound = bound_h+bound_v
+       image.thumbnail(size, Image.ANTIALIAS)
 
-    for temp in temp_users:
-        try:
-            top_user = User.objects.get(username=temp['user'])
-        except Exception:
-            top_user = None
+       blank_image.paste(image, (new_x, new_y))
         
-        if top_user:
-            top_users.append(top_user)
+       new_x += width + margin
 
-    return render_to_response('map.html', {'counter':counter,'bound':bound,'settings': settings,'user':user,'top_users': top_users} ,RequestContext(request))
+    blank_image.save(out_image)
 

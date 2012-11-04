@@ -52,6 +52,15 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine
 	extract the downloaded file tar xjvf "downloaded_file"
 	move the extracted file to the bin folder mv "extracted_file" /usr/local/bin/wkhtmltopdf
 	
+	download git://github.com/django-debug-toolbar/django-debug-toolbar.git
+	cd django-debug-toolbar/
+	sudo python setup.py install
+	
+	download git://github.com/ross/memcache-debug-panel.git
+	cd memcache-debug-panel/
+	sudo python setup.py install
+	sudo cp -r  memcache_toolbar/templates/*  /usr/local/lib/python2.6/dist-packages/debug_toolbar/templates/
+	
 	
   ```
 

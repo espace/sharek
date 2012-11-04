@@ -442,13 +442,14 @@ left: 1px;
     clear: both;
     display: block;
     opacity: 0.9;
+    font-size: 11px;
 }
 .home-sections h6  {
     float: right;
     display: inline;
     margin-left: 5px;
     font-weight: normal;
-    font-size: 12px;
+    font-size: 11px;
 }
 .home-sections li{
     margin-bottom: 20px;
@@ -1072,7 +1073,7 @@ background-position: -142px -9px !important;
 }
 .tags{
     font-family: GESSTwoMediumRegular;
-    margin-top: 20px;
+    margin-top: 55px;
 
 }
 .tags p{
@@ -2330,9 +2331,9 @@ position: relative;
 .addthis_toolbox{
 background: none;
 position: absolute;
-left: -80px !important;
-top: 0px !important;
-
+	left: -60px !important;
+	top: 25px !important;
+	overflow-x: hidden;
 }
 
 a.morelink { 
@@ -2373,3 +2374,18 @@ a.morelink {
 #contributes .comment-block .reply a{
     color: #777 !important;
 }
+
+    .floatLtr{
+      direction: ltr;
+      width: 100%;
+
+    }
+    .floatingSocial{
+      background:red;
+      width: 30px;
+      height: 200px;
+      position:fixed;
+      top: 160px;
+      margin-left: -44px;
+
+    }
