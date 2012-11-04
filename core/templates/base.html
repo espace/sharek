@@ -79,32 +79,6 @@
       })();
     </script>
     
-    <script type="text/javascript">
-		 $(document).ready(function() {
-			var $postShare2 = $('.floatingSocial');
-	
-			var descripY = parseInt($('.content').offset().top);
-	
-	
-			$(window).scroll(function() { 
-				var scrollY = $(window).scrollTop();
-				var fixedShare = $postShare.css('position') == 'fixed';
-	
-				 if ($('.floatingSocial').length > 0) {
-					if (scrollY > descripY && !fixedShare) {
-						$postShare2.css({
-							top: 20,
-						});
-					} else if (scrollY < descripY && fixedShare) {
-						$postShare2.css({
-							top: 160,
-						});
-					}
-				}
-			});
-		  });
-	  </script>
-  
 </head>
 
 <body  data-spy="scroll" data-target=".navbar">

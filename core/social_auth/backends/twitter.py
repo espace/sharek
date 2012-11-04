@@ -28,7 +28,6 @@ TWITTER_AUTHORIZATION_URL = 'http://%s/oauth/authenticate' % TWITTER_SERVER
 TWITTER_CHECK_AUTH = 'https://%s/1.1/account/verify_credentials.json' % \
                                     TWITTER_SERVER
 
-
 class TwitterBackend(OAuthBackend):
     """Twitter OAuth authentication backend"""
     name = 'twitter'
