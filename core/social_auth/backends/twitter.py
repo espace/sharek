@@ -13,8 +13,8 @@ class for details on how to extend it.
 """
 from django.utils import simplejson
 
-from core.social_auth.backends import ConsumerBasedOAuth, OAuthBackend, USERNAME
-from core.social_auth.backends.exceptions import AuthCanceled
+from social_auth.backends import ConsumerBasedOAuth, OAuthBackend, USERNAME
+from social_auth.backends.exceptions import AuthCanceled
 
 
 # Twitter configuration
@@ -24,9 +24,8 @@ TWITTER_ACCESS_TOKEN_URL = 'https://%s/oauth/access_token' % TWITTER_SERVER
 # Note: oauth/authorize forces the user to authorize every time.
 #       oauth/authenticate uses their previous selection, barring revocation.
 TWITTER_AUTHORIZATION_URL = 'http://%s/oauth/authenticate' % TWITTER_SERVER
-#TWITTER_CHECK_AUTH = 'https://twitter.com/account/verify_credentials.json'
-TWITTER_CHECK_AUTH = 'https://%s/1.1/account/verify_credentials.json' % \
-                                    TWITTER_SERVER
+TWITTER_CHECK_AUTH = 'https://twitter.com/account/verify_credentials.json'
+
 
 class TwitterBackend(OAuthBackend):
     """Twitter OAuth authentication backend"""
