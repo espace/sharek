@@ -196,5 +196,5 @@ def auth_complete(request, backend, user=None, *args, **kwargs):
            xkwargs['backend'].name == backend.AUTH_BACKEND.name:
             return backend.continue_pipeline(pipeline_index=idx,
                                              *xargs, **xkwargs)
-    print 'as'
-    return backend.auth_complete(user=user, request=request, *args, **kwargs)
+
+    return core.backend.auth_complete(user=user, request=request, *args, **kwargs)
