@@ -186,7 +186,6 @@ def auth_complete(request, backend, user=None, *args, **kwargs):
     """Complete auth process. Return authenticated user or None."""
     if user and not user.is_authenticated():
         user = None
-    print 'asde'
 
     if request.session.get(PIPELINE_KEY):
         data = request.session.pop(PIPELINE_KEY)
@@ -197,4 +196,5 @@ def auth_complete(request, backend, user=None, *args, **kwargs):
            xkwargs['backend'].name == backend.AUTH_BACKEND.name:
             return backend.continue_pipeline(pipeline_index=idx,
                                              *xargs, **xkwargs)
+    print 'as'
     return backend.auth_complete(user=user, request=request, *args, **kwargs)
