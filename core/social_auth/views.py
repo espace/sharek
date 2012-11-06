@@ -100,7 +100,6 @@ def complete_process(request, backend, *args, **kwargs):
     # pop redirect value before the session is trashed on login()
     redirect_value = request.session.get(REDIRECT_FIELD_NAME, '')
 
-    print 'asd'
     user = auth_complete(request, backend, *args, **kwargs)
 
     if isinstance(user, HttpResponse):
@@ -187,6 +186,7 @@ def auth_complete(request, backend, user=None, *args, **kwargs):
     """Complete auth process. Return authenticated user or None."""
     if user and not user.is_authenticated():
         user = None
+    print 'asde'
 
     if request.session.get(PIPELINE_KEY):
         data = request.session.pop(PIPELINE_KEY)
