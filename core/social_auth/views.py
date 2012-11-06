@@ -5,6 +5,11 @@ Notes:
       on third party providers that (if using POST) won't be sending csrf
       token back.
 """
+
+import urllib2
+import core
+import os.path
+
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required
@@ -14,10 +19,6 @@ from django.views.decorators.csrf import csrf_exempt
 from core.social_auth.utils import sanitize_redirect, setting, \
                               backend_setting, clean_partial_pipeline
 from core.social_auth.decorators import dsa_view
-import urllib2
-import urllib2
-import core
-import os.path
 
 
 DEFAULT_REDIRECT = setting('SOCIAL_AUTH_LOGIN_REDIRECT_URL') or \
@@ -37,6 +38,7 @@ def auth(request, backend):
 def complete(request, backend, *args, **kwargs):
     """Authentication complete view, override this view if transaction
     management doesn't suit your needs."""
+    print request.user.is_authenticated()
     if request.user.is_authenticated():
         return associate_complete(request, backend, *args, **kwargs)
     else:
