@@ -100,7 +100,7 @@ def complete_process(request, backend, *args, **kwargs):
     # pop redirect value before the session is trashed on login()
     redirect_value = request.session.get(REDIRECT_FIELD_NAME, '')
 
-    print redirect_value
+    print 'asd'
     user = auth_complete(request, backend, *args, **kwargs)
 
     if isinstance(user, HttpResponse):
