@@ -19,6 +19,7 @@ from openid.extensions import sreg, ax, pape
 from oauth2 import Consumer as OAuthConsumer, Token, Request as OAuthRequest
 
 from django.contrib.auth import authenticate
+from django.contrib.auth.backends import ModelBackend
 from django.utils import simplejson
 from django.utils.importlib import import_module
 
@@ -33,8 +34,7 @@ from core.social_auth.backends.exceptions import StopPipeline, AuthException, \
                                             AuthUnknownError, AuthTokenError, \
                                             AuthMissingParameter, \
                                             AuthStateMissing, \
-                                            AuthStateForbidden, \
-                                            NotAllowedToDisconnect
+                                            AuthStateForbidden
 from core.social_auth.backends.utils import build_consumer_oauth_request
 
 
@@ -78,11 +78,10 @@ PIPELINE = setting('SOCIAL_AUTH_PIPELINE', (
            ))
 
 
-class SocialAuthBackend(object):
+class SocialAuthBackend(ModelBackend):
     """A django.contrib.auth backend that authenticates the user based on
     a authentication provider response"""
     name = ''  # provider name, it's stored in database
-    supports_inactive_user = False
 
     def authenticate(self, *args, **kwargs):
         """Authenticate user using social credentials
@@ -187,8 +186,7 @@ class SocialAuthBackend(object):
 
     def get_user(self, user_id):
         """
-        Return user with given ID from the User model used by this backend.
-        This is called by django.contrib.auth.middleware.
+        Return user with given ID from the User model used by this backend
         """
         return UserSocialAuth.get_user(user_id)
 
@@ -303,7 +301,6 @@ class OpenIDBackend(SocialAuthBackend):
         stored on extra_data field. Setting name is created from current
         backend name (all uppercase) plus _SREG_EXTRA_DATA and
         _AX_EXTRA_DATA because values can be returned by SimpleRegistration
-
         or AttributeExchange schemas.
 
         Both list must be a value name and an alias mapping similar to
@@ -360,11 +357,9 @@ class BaseAuth(object):
         args = args[:] + tuple(map(ctype_to_model, session_data['args']))
 
         kwargs = kwargs.copy()
-        saved_kwargs = dict((key, ctype_to_model(val))
+        kwargs.update((key, ctype_to_model(val))
                             for key, val in session_data['kwargs'].iteritems())
-        saved_kwargs.update((key, val)
-                            for key, val in kwargs.iteritems())
-        return (session_data['next'], args, saved_kwargs)
+        return (session_data['next'], args, kwargs)
 
     def continue_pipeline(self, *args, **kwargs):
         """Continue previous halted pipeline"""
@@ -386,14 +381,9 @@ class BaseAuth(object):
         """Return extra arguments needed on auth process, setting is per
         backend and defined by:
             <backend name in uppercase>_AUTH_EXTRA_ARGUMENTS.
-        The defaults can be overriden by GET parameters.
         """
         backend_name = self.AUTH_BACKEND.name.upper().replace('-', '_')
-        extra_arguments = setting(backend_name + '_AUTH_EXTRA_ARGUMENTS', {})
-        for key in extra_arguments:
-            if key in self.data:
-                extra_arguments[key] = self.data[key]
-        return extra_arguments
+        return setting(backend_name + '_AUTH_EXTRA_ARGUMENTS', {})
 
     @property
     def uses_redirect(self):
@@ -410,17 +400,12 @@ class BaseAuth(object):
         """Deletes current backend from user if associated.
         Override if extra operations are needed.
         """
-        name = self.AUTH_BACKEND.name
-        if UserSocialAuth.allowed_to_disconnect(user, name, association_id):
             if association_id:
                 UserSocialAuth.get_social_auth_for_user(user)\
                             .get(id=association_id).delete()
             else:
                 UserSocialAuth.get_social_auth_for_user(user)\
-                             .filter(provider=name)\
-                             .delete()
-        else:
-            raise NotAllowedToDisconnect()
+                            .filter(provider=self.AUTH_BACKEND.name).delete()
 
     def build_absolute_uri(self, path=None):
         """Build absolute URI for given path. Replace http:// schema with
@@ -501,27 +486,6 @@ class OpenIdAuth(BaseAuth):
             fetch_request = sreg.SRegRequest(optional=dict(SREG_ATTR).keys())
         openid_request.addExtension(fetch_request)
 
-        # Add PAPE Extension for if configured
-        preferred_policies = setting(
-            'SOCIAL_AUTH_OPENID_PAPE_PREFERRED_AUTH_POLICIES')
-        preferred_level_types = setting(
-            'SOCIAL_AUTH_OPENID_PAPE_PREFERRED_AUTH_LEVEL_TYPES')
-        max_age = setting('SOCIAL_AUTH_OPENID_PAPE_MAX_AUTH_AGE')
-        if max_age is not None:
-            try:
-                max_age = int(max_age)
-            except (ValueError, TypeError):
-                max_age = None
-
-        if (max_age is not None or preferred_policies is not None
-            or preferred_level_types is not None):
-            pape_request = pape.Request(
-                preferred_auth_policies=preferred_policies,
-                max_auth_age=max_age,
-                preferred_auth_level_types=preferred_level_types
-                )
-            openid_request.addExtension(pape_request)
-
         return openid_request
 
     def consumer(self):
@@ -538,14 +502,11 @@ class OpenIdAuth(BaseAuth):
 
     def openid_request(self, extra_params=None):
         """Return openid request"""
-        if not hasattr(self, '_openid_request'):
             try:
-                self._openid_request = self.consumer().begin(
-                    url_add_parameters(self.openid_url(), extra_params)
-                )
+            return self.consumer().begin(url_add_parameters(self.openid_url(),
+                                                            extra_params))
             except DiscoveryFailure, err:
                 raise AuthException(self, 'OpenID discovery error: %s' % err)
-        return self._openid_request
 
     def openid_url(self):
         """Return service provider URL.
@@ -560,10 +521,6 @@ class BaseOAuth(BaseAuth):
     """OAuth base class"""
     SETTINGS_KEY_NAME = ''
     SETTINGS_SECRET_NAME = ''
-    SCOPE_VAR_NAME = None
-    SCOPE_PARAMETER_NAME = 'scope'
-    DEFAULT_SCOPE = None
-    SCOPE_SEPARATOR = ' '
 
     def __init__(self, request, redirect):
         """Init method"""
@@ -584,20 +541,6 @@ class BaseOAuth(BaseAuth):
         return setting(cls.SETTINGS_KEY_NAME) and \
                setting(cls.SETTINGS_SECRET_NAME)
 
-    def get_scope(self):
-        """Return list with needed access scope"""
-        scope = self.DEFAULT_SCOPE or []
-        if self.SCOPE_VAR_NAME:
-            scope = scope + setting(self.SCOPE_VAR_NAME, [])
-        return scope
-
-    def get_scope_argument(self):
-        param = {}
-        scope = self.get_scope()
-        if scope:
-            param[self.SCOPE_PARAMETER_NAME] = self.SCOPE_SEPARATOR.join(scope)
-        return param
-
 
 class ConsumerBasedOAuth(BaseOAuth):
     """Consumer based mechanism OAuth authentication, fill the needed
@@ -606,10 +549,12 @@ class ConsumerBasedOAuth(BaseOAuth):
         AUTHORIZATION_URL       Authorization service url
         REQUEST_TOKEN_URL       Request token URL
         ACCESS_TOKEN_URL        Access token URL
+        SERVER_URL              Authorization server URL
     """
     AUTHORIZATION_URL = ''
     REQUEST_TOKEN_URL = ''
     ACCESS_TOKEN_URL = ''
+    SERVER_URL = ''
 
     def auth_url(self):
         """Return redirect url"""
@@ -657,14 +602,10 @@ class ConsumerBasedOAuth(BaseOAuth):
 
     def oauth_authorization_request(self, token):
         """Generate OAuth request to authorize token."""
-        params = self.auth_extra_arguments() or {}
-        params.update(self.get_scope_argument())
-        return OAuthRequest.from_token_and_callback(
-            token=token,
+        return OAuthRequest.from_token_and_callback(token=token,
                                         callback=self.redirect_uri,
                                         http_url=self.AUTHORIZATION_URL,
-            parameters=params
-        )
+                                        parameters=self.auth_extra_arguments())
 
     def oauth_request(self, token, url, extra_params=None):
         """Generate OAuth request, setups callback url"""
@@ -705,7 +646,10 @@ class BaseOAuth2(BaseOAuth):
     """
     AUTHORIZATION_URL = None
     ACCESS_TOKEN_URL = None
+    SCOPE_SEPARATOR = ' '
     RESPONSE_TYPE = 'code'
+    SCOPE_VAR_NAME = None
+    DEFAULT_SCOPE = None
     REDIRECT_STATE = True
 
     def state_token(self):
@@ -734,7 +678,9 @@ class BaseOAuth2(BaseOAuth):
             'redirect_uri': self.get_redirect_uri(state)
         }
 
-        args.update(self.get_scope_argument())
+        scope = self.get_scope()
+        if scope:
+            args['scope'] = self.SCOPE_SEPARATOR.join(self.get_scope())
         if self.RESPONSE_TYPE:
             args['response_type'] = self.RESPONSE_TYPE
 
@@ -801,6 +747,13 @@ class BaseOAuth2(BaseOAuth):
                 self.AUTH_BACKEND.name: True
             })
             return authenticate(*args, **kwargs)
+
+    def get_scope(self):
+        """Return list with needed access scope"""
+        scope = self.DEFAULT_SCOPE or []
+        if self.SCOPE_VAR_NAME:
+            scope = scope + setting(self.SCOPE_VAR_NAME, [])
+        return scope
 
 
 # Backend loading was previously performed via the

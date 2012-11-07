@@ -24,7 +24,9 @@ TWITTER_ACCESS_TOKEN_URL = 'https://%s/oauth/access_token' % TWITTER_SERVER
 # Note: oauth/authorize forces the user to authorize every time.
 #       oauth/authenticate uses their previous selection, barring revocation.
 TWITTER_AUTHORIZATION_URL = 'http://%s/oauth/authenticate' % TWITTER_SERVER
-TWITTER_CHECK_AUTH = 'https://%s/1.1/account/verify_credentials.json' % TWITTER_SERVER
+#TWITTER_CHECK_AUTH = 'https://twitter.com/account/verify_credentials.json'
+TWITTER_CHECK_AUTH = 'https://%s/1.1/account/verify_credentials.json' % \
+                                    TWITTER_SERVER
 
 class TwitterBackend(OAuthBackend):
     """Twitter OAuth authentication backend"""
@@ -83,7 +85,6 @@ class TwitterAuth(ConsumerBasedOAuth):
         if 'denied' in self.data:
             raise AuthCanceled(self)
         else:
-            print "auth"
             return super(TwitterAuth, self).auth_complete(*args, **kwargs)
 
 

@@ -54,9 +54,9 @@ def associate_complete(request, backend, *args, **kwargs):
     elif isinstance(user, HttpResponse):
         return user
     else:
-        url = redirect_value or \
-              backend_setting(backend,
+        url = backend_setting(backend,
                               'SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL') or \
+              redirect_value or \
               DEFAULT_REDIRECT
     return HttpResponseRedirect(url)
 
@@ -96,7 +96,6 @@ def auth_process(request, backend):
 def complete_process(request, backend, *args, **kwargs):
     """Authentication complete process"""
     # pop redirect value before the session is trashed on login()
-
     redirect_value = request.session.get(REDIRECT_FIELD_NAME, '')
     user = auth_complete(request, backend, *args, **kwargs)
 
