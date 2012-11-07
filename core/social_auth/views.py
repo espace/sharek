@@ -97,9 +97,6 @@ def complete_process(request, backend, *args, **kwargs):
     """Authentication complete process"""
     # pop redirect value before the session is trashed on login()
 
-    from core.social_auth.backends.twitter import TWITTER_CHECK_AUTH
-    print TWITTER_CHECK_AUTH
-
     redirect_value = request.session.get(REDIRECT_FIELD_NAME, '')
     user = auth_complete(request, backend, *args, **kwargs)
 
