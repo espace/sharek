@@ -37,6 +37,9 @@ def complete(request, backend, *args, **kwargs):
     """Authentication complete view, override this view if transaction
     management doesn't suit your needs."""
     if request.user.is_authenticated():
+
+        #from core.social_auth.backends.twitter import TWITTER_CHECK_AUTH
+        print TWITTER_CHECK_AUTH
         return associate_complete(request, backend, *args, **kwargs)
     else:
         return complete_process(request, backend, *args, **kwargs)
