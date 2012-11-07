@@ -48,6 +48,7 @@ DEBUG_TOOLBAR_CONFIG = {
 TEMPLATE_CONTEXT_PROCESSORS = (
     'core.social_auth.context_processors.social_auth_by_name_backends',
     'core.social_auth.context_processors.social_auth_by_type_backends',
+	'django.contrib.auth.context_processors.auth',
 )
 
 DEBUG_TOOLBAR_PANELS = (
