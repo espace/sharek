@@ -412,13 +412,13 @@ class BaseAuth(object):
         """
         name = self.AUTH_BACKEND.name
         if UserSocialAuth.allowed_to_disconnect(user, name, association_id):
-        if association_id:
-            UserSocialAuth.get_social_auth_for_user(user)\
+            if association_id:
+                UserSocialAuth.get_social_auth_for_user(user)\
                             .get(id=association_id).delete()
-        else:
-            UserSocialAuth.get_social_auth_for_user(user)\
-                                .filter(provider=name)\
-                                .delete()
+            else:
+                UserSocialAuth.get_social_auth_for_user(user)\
+                             .filter(provider=name)\
+                             .delete()
         else:
             raise NotAllowedToDisconnect()
 
