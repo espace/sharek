@@ -581,6 +581,7 @@ class BaseOAuth(BaseAuth):
     @classmethod
     def enabled(cls):
         """Return backend enabled status by checking basic settings"""
+        print cls.SETTINGS_KEY_NAME
         return setting(cls.SETTINGS_KEY_NAME) and \
                setting(cls.SETTINGS_SECRET_NAME)
 
