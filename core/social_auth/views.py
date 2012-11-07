@@ -47,7 +47,7 @@ def associate_complete(request, backend, *args, **kwargs):
     """Authentication complete process"""
     # pop redirect value before the session is trashed on login()
     redirect_value = request.session.get(REDIRECT_FIELD_NAME, '')
-    print backend
+    print request.user
     user = auth_complete(request, backend, request.user, *args, **kwargs)
 
     if not user:
