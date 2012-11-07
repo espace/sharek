@@ -8,7 +8,7 @@ except ImportError:
 import os
 
 LOGIN_URL          = '/sharek/login-form/'
-LOGIN_REDIRECT_URL = '/sharek/logged-in/'
+LOGIN_REDIRECT_URL = '/'
 LOGIN_ERROR_URL    = '/sharek/login-error/'
 
 SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
@@ -44,12 +44,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'HIDE_DJANGO_SQL': False,
     'TAG': 'div',
 }
-
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'core.social_auth.context_processors.social_auth_by_name_backends',
-    'core.social_auth.context_processors.social_auth_by_type_backends',
-	'django.contrib.auth.context_processors.auth',
-)
 
 DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.version.VersionDebugPanel',
