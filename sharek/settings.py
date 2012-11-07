@@ -71,6 +71,7 @@ MIDDLEWARE_CLASSES = (
 
 AUTHENTICATION_BACKENDS = (
     #'core.facebook.backends.FacebookBackend',
+	'django.contrib.auth.backends.ModelBackend',
     'core.social_auth.backends.twitter.TwitterBackend',
     'core.social_auth.backends.facebook.FacebookBackend',
     'core.social_auth.backends.google.GoogleOAuthBackend',
@@ -78,7 +79,6 @@ AUTHENTICATION_BACKENDS = (
     'core.social_auth.backends.google.GoogleBackend',
     'core.social_auth.backends.yahoo.YahooBackend',
     'core.social_auth.backends.OpenIDBackend',
-	'django.contrib.auth.backends.ModelBackend',
 )
 
 ADMINS = (
