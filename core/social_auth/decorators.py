@@ -10,7 +10,7 @@ from core.social_auth.utils import setting, log, backend_setting
 
 LOGIN_ERROR_URL = setting('LOGIN_ERROR_URL', setting('LOGIN_URL'))
 PROCESS_EXCEPTIONS = setting('SOCIAL_AUTH_PROCESS_EXCEPTIONS',
-                             'social_auth.utils.log_exceptions_to_messages')
+                             'core.social_auth.utils.log_exceptions_to_messages')
 
 
 def dsa_view(redirect_name=None):
@@ -55,8 +55,11 @@ def dsa_view(redirect_name=None):
                     url = process(request, backend, e)
 
                 if not url:
-                    url = backend_setting(backend, 'SOCIAL_AUTH_BACKEND_ERROR_URL',
-                                        LOGIN_ERROR_URL)
+                    url = backend_setting(
+                        backend,
+                        'SOCIAL_AUTH_BACKEND_ERROR_URL',
+                        LOGIN_ERROR_URL
+                    )
                 return HttpResponseRedirect(url)
         return wrapper
     return dec

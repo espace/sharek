@@ -35,7 +35,7 @@
                outerWidth  = typeof window.outerWidth  != 'undefined' ? window.outerWidth  : document.body.clientWidth,
                outerHeight = typeof window.outerHeight != 'undefined' ? window.outerHeight : (document.body.clientHeight - 22),
                width    = 500,
-               height   = 270,
+               height   = 350,
                left     = parseInt(screenX + ((outerWidth - width) / 2), 10),
                top      = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
                features = (
@@ -79,32 +79,6 @@
       })();
     </script>
     
-    <script type="text/javascript">
-		 $(document).ready(function() {
-			var $postShare2 = $('.floatingSocial');
-	
-			var descripY = parseInt($('.content').offset().top);
-	
-	
-			$(window).scroll(function() { 
-				var scrollY = $(window).scrollTop();
-				var fixedShare = $postShare.css('position') == 'fixed';
-	
-				 if ($('.floatingSocial').length > 0) {
-					if (scrollY > descripY && !fixedShare) {
-						$postShare2.css({
-							top: 20,
-						});
-					} else if (scrollY < descripY && fixedShare) {
-						$postShare2.css({
-							top: 160,
-						});
-					}
-				}
-			});
-		  });
-	  </script>
-  
 </head>
 
 <body  data-spy="scroll" data-target=".navbar">
@@ -112,17 +86,42 @@
     {% include "include/header.html" %}
     
     <div id="target_container" class="container content">
-    
-    	<!-- AddThis Button BEGIN -->
-        <div class="addthis_toolbox addthis_floating_style addthis_32x32_style" style="left:50px;top:50px;">
-        <a class="addthis_button_preferred_1"></a>
-        <a class="addthis_button_preferred_2"></a>
-        <a class="addthis_button_preferred_3"></a>
-        <a class="addthis_button_preferred_4"></a>
-        <a class="addthis_button_compact"></a>
-        </div>
-        <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=xa-508fada025dd4764"></script>
-        <!-- AddThis Button END -->
+    	<div class="floatLtr">
+        	<div id="floatingSocial">
+                <!-- AddThis Button BEGIN -->
+                <div class="addthis_toolbox addthis_floating_style addthis_32x32_style" style="left:50px;top:50px;">
+                <a class="addthis_button_preferred_1"></a>
+                <a class="addthis_button_preferred_2"></a>
+                <a class="addthis_button_preferred_3"></a>
+                <a class="addthis_button_preferred_4"></a>
+                <a class="addthis_button_compact"></a>
+                </div>
+                <script type="text/javascript" src="http://s7.addthis.com/js/300/addthis_widget.js#pubid=xa-508fada025dd4764"></script>
+                <!-- AddThis Button END -->  
+            </div>
+     </div>  
+        <script type="text/javascript">
+			 $(function() {
+ 
+				var sticky_navigation_offset_top = $('#floatingSocial').offset().top;
+				 
+				var sticky_navigation = function(){
+					var scroll_top = $(window).scrollTop();
+					if (scroll_top > sticky_navigation_offset_top) {
+						$('#floatingSocial').css({ 'position': 'fixed', 'top': '15px' });
+					} else {
+						$('#floatingSocial').css({ 'position': 'relative', 'top': '20px' });
+					}  
+				};
+				
+				sticky_navigation();
+				 
+				$(window).scroll(function() {
+					 sticky_navigation();
+				});
+			 
+			});
+		</script>
         
         {% block content %}{% endblock %}
         

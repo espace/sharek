@@ -966,7 +966,7 @@ background-position: -142px -9px !important;
 .mada-title{
     color:#000;
     font-size: 24px;
-    font-family: FrutigerBold;
+    font-family: 'GESSTwoMediumRegular';
 }
 .mada-title a{
     color:#000;
@@ -1004,56 +1004,6 @@ background-position: -142px -9px !important;
 
 }
 
-.floatingSocial{
-      z-index: 10000;
-      width: 160px;
-      left: 20px;
-      bottom: 20px;
-      padding: 10px 10px;
-      border: solid 1px #ccc;
-          opacity: 0.98;
-
-    background: -ms-linear-gradient(top, #fff, #f4f4f4);
-    background: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#f4f4f4));
-    background: -webkit-linear-gradient(top, #fff, #f4f4f4);
-    background: -o-linear-gradient(top, #fff, #f4f4f4);
-    background: linear-gradient(top, #fff, #f4f4f4);
-    background: -moz-linear-gradient(top, #fff, #f4f4f4);
-    box-shadow: 0 3px 4px -4px rgba(0,0,0,1) ;
-     display:none;
-
-    }
-
-
-.floatingSocial:after {
-    content: " ";
-    width: 0; 
-    height: 0; 
-    right: -6px;
-    position: absolute;
-    border-top: 7px solid transparent;
-    border-bottom:7px solid transparent;
-    border-left: 7px solid #fff;
-}
-    .floatingSocial p{
-    float: right;
-    margin-right: 5px;
-    margin-bottom: 0;
-    color: #444;
-    }
-
-    .floatingSocial p span{
-      color: #222;  
-    }
-
-    .block_con{
-       left: 0;
-        margin: 0 auto;
-        position: absolute;
-        right: 0;
-        margin-right: 35%;
-        /*width: 50%;*/
-    }
 .comments-number {
     background: url("../images/small-ribbon.png") no-repeat  right top transparent;
     color:#fff !important;
@@ -2375,17 +2325,16 @@ a.morelink {
     color: #777 !important;
 }
 
-    .floatLtr{
-      direction: ltr;
-      width: 100%;
+.floatLtr{
+	direction: ltr;
+	width: 100%;
 
-    }
-    .floatingSocial{
-      background:red;
-      width: 30px;
-      height: 200px;
-      position:fixed;
-      top: 160px;
-      margin-left: -44px;
+}
+.floatingSocial{
+	width: 30px;
+	height: 200px;
+	position:fixed;
+	top: 130px;
+	margin-left: -15px;
 
-    }
+}

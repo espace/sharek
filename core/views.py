@@ -286,7 +286,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
          mc.set('top_ranked_' + str(article.id), top_ranked, settings.MEMCACHED_TIMEOUT)
 
     if order_by == "latest" or order_by == "def":
-        feedbacks = Feedback.objects.feedback_list(article.id, 'latest', top_ranked_count)
+        feedbacks = Feedback.objects.feedback_list(article.id, 'latest', 0)
     elif order_by == "order":
         feedbacks = Feedback.objects.feedback_list(article.id, 'order', top_ranked_count)
 
@@ -395,8 +395,7 @@ def modify(request):
             feedback = Feedback.objects.filter(articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
             article.feedback_count = article.feedback_count + 1
             article.save()
-                    
-            
+
             if request.user.username != "admin":
                 # post on twitter or facebook
                 if UserSocialAuth.auth_provider(request.user.username) == 'facebook':
@@ -422,6 +421,7 @@ def modify(request):
                                       access_token_secret=access_token_secret)
                     message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
                     api.PostUpdate(message)
+
                     
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
