@@ -80,6 +80,7 @@ class TwitterAuth(ConsumerBasedOAuth):
 
     def auth_complete(self, *args, **kwargs):
         """Completes login process, must return user instance"""
+        print "sdf"
         if 'denied' in self.data:
             raise AuthCanceled(self)
         else:
