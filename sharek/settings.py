@@ -45,6 +45,11 @@ DEBUG_TOOLBAR_CONFIG = {
     'TAG': 'div',
 }
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'core.social_auth.context_processors.social_auth_by_name_backends',
+    'core.social_auth.context_processors.social_auth_by_type_backends',
+)
+
 DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.version.VersionDebugPanel',
     'debug_toolbar.panels.timer.TimerDebugPanel',
@@ -70,8 +75,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-    #'core.facebook.backends.FacebookBackend',
-	'django.contrib.auth.backends.ModelBackend',
     'core.social_auth.backends.twitter.TwitterBackend',
     'core.social_auth.backends.facebook.FacebookBackend',
     'core.social_auth.backends.google.GoogleOAuthBackend',
@@ -79,7 +82,10 @@ AUTHENTICATION_BACKENDS = (
     'core.social_auth.backends.google.GoogleBackend',
     'core.social_auth.backends.yahoo.YahooBackend',
     'core.social_auth.backends.OpenIDBackend',
+	'django.contrib.auth.backends.ModelBackend',
 )
+
+SOCIAL_AUTH_ENABLED_BACKENDS = ('twitter',)
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
