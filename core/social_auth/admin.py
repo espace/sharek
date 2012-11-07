@@ -2,7 +2,7 @@
 from core.social_auth.utils import setting
 
 
-if setting('SOCIAL_AUTH_MODELS') in (None, 'social_auth.db.django_models'):
+if setting('SOCIAL_AUTH_MODELS') in (None, 'core.social_auth.db.django_models'):
     from django.contrib import admin
     from core.social_auth.models import UserSocialAuth, Nonce, Association
 
