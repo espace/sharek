@@ -6,9 +6,7 @@ Notes:
       token back.
 """
 
-import urllib2
-import core
-import os.path
+import os.path, urllib2, core
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth import login, REDIRECT_FIELD_NAME
@@ -98,8 +96,11 @@ def auth_process(request, backend):
 def complete_process(request, backend, *args, **kwargs):
     """Authentication complete process"""
     # pop redirect value before the session is trashed on login()
-    redirect_value = request.session.get(REDIRECT_FIELD_NAME, '')
 
+    from social_auth.backends.twitter import TWITTER_CHECK_AUTH
+    print TWITTER_CHECK_AUTH
+
+    redirect_value = request.session.get(REDIRECT_FIELD_NAME, '')
     user = auth_complete(request, backend, *args, **kwargs)
 
     if isinstance(user, HttpResponse):
@@ -196,5 +197,4 @@ def auth_complete(request, backend, user=None, *args, **kwargs):
            xkwargs['backend'].name == backend.AUTH_BACKEND.name:
             return backend.continue_pipeline(pipeline_index=idx,
                                              *xargs, **xkwargs)
-
     return backend.auth_complete(user=user, request=request, *args, **kwargs)
