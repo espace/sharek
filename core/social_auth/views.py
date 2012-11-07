@@ -36,7 +36,6 @@ def auth(request, backend):
 def complete(request, backend, *args, **kwargs):
     """Authentication complete view, override this view if transaction
     management doesn't suit your needs."""
-    print request.user
     if request.user.is_authenticated():
         return associate_complete(request, backend, *args, **kwargs)
     else:
@@ -49,6 +48,7 @@ def associate_complete(request, backend, *args, **kwargs):
     # pop redirect value before the session is trashed on login()
     redirect_value = request.session.get(REDIRECT_FIELD_NAME, '')
     user = auth_complete(request, backend, request.user, *args, **kwargs)
+    print user
 
     if not user:
         url = backend_setting(backend, 'LOGIN_ERROR_URL', LOGIN_ERROR_URL)
