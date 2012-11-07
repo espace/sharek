@@ -575,7 +575,6 @@ class BaseOAuth(BaseAuth):
         """Return tuple with Consumer Key and Consumer Secret for current
         service provider. Must return (key, secret), order *must* be respected.
         """
-        print cls.SETTINGS_KEY_NAME
         return setting(cls.SETTINGS_KEY_NAME), \
                setting(cls.SETTINGS_SECRET_NAME)
 
