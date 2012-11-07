@@ -69,7 +69,7 @@ PIPELINE = setting('SOCIAL_AUTH_PIPELINE', (
                 'core.social_auth.backends.pipeline.social.social_auth_user',
                 # Removed by default since it can be a dangerouse behavior that
                 # could lead to accounts take over.
-                #'social_auth.backends.pipeline.associate.associate_by_email',
+                #'core.social_auth.backends.pipeline.associate.associate_by_email',
                 'core.social_auth.backends.pipeline.user.get_username',
                 'core.social_auth.backends.pipeline.user.create_user',
                 'core.social_auth.backends.pipeline.social.associate_user',
