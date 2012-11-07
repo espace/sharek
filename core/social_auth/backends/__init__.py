@@ -400,12 +400,12 @@ class BaseAuth(object):
         """Deletes current backend from user if associated.
         Override if extra operations are needed.
         """
-            if association_id:
-                UserSocialAuth.get_social_auth_for_user(user)\
-                            .get(id=association_id).delete()
-            else:
-                UserSocialAuth.get_social_auth_for_user(user)\
-                            .filter(provider=self.AUTH_BACKEND.name).delete()
+        if association_id:
+            UserSocialAuth.get_social_auth_for_user(user)\
+                        .get(id=association_id).delete()
+        else:
+            UserSocialAuth.get_social_auth_for_user(user)\
+                        .filter(provider=self.AUTH_BACKEND.name).delete()
 
     def build_absolute_uri(self, path=None):
         """Build absolute URI for given path. Replace http:// schema with
