@@ -171,6 +171,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'core.social_auth',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -179,16 +180,15 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'core',
     'core.facebook',
+    'core.twitter',
     'django.contrib.admin',
     'markitup',
     'django_evolution',
     'template_utils',
     'django.contrib.humanize',
-    'core.social_auth',
     'debug_toolbar',
 	#'cache_toolbar',
     'smart_selects',
-    'core.twitter',
 )
 
 # A sample logging configuration. The only tangible logging

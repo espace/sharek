@@ -19,6 +19,7 @@ from openid.extensions import sreg, ax, pape
 from oauth2 import Consumer as OAuthConsumer, Token, Request as OAuthRequest
 
 from django.contrib.auth import authenticate
+from django.contrib.auth.backends import ModelBackend
 from django.utils import simplejson
 from django.utils.importlib import import_module
 
@@ -68,7 +69,7 @@ PIPELINE = setting('SOCIAL_AUTH_PIPELINE', (
                 'core.social_auth.backends.pipeline.social.social_auth_user',
                 # Removed by default since it can be a dangerouse behavior that
                 # could lead to accounts take over.
-                #'social_auth.backends.pipeline.associate.associate_by_email',
+                #'core.social_auth.backends.pipeline.associate.associate_by_email',
                 'core.social_auth.backends.pipeline.user.get_username',
                 'core.social_auth.backends.pipeline.user.create_user',
                 'core.social_auth.backends.pipeline.social.associate_user',
@@ -77,7 +78,7 @@ PIPELINE = setting('SOCIAL_AUTH_PIPELINE', (
            ))
 
 
-class SocialAuthBackend(object):
+class SocialAuthBackend(ModelBackend):
     """A django.contrib.auth backend that authenticates the user based on
     a authentication provider response"""
     name = ''  # provider name, it's stored in database
@@ -185,8 +186,7 @@ class SocialAuthBackend(object):
 
     def get_user(self, user_id):
         """
-        Return user with given ID from the User model used by this backend.
-        This is called by django.contrib.auth.middleware.
+        Return user with given ID from the User model used by this backend
         """
         return UserSocialAuth.get_user(user_id)
 
@@ -357,11 +357,9 @@ class BaseAuth(object):
         args = args[:] + tuple(map(ctype_to_model, session_data['args']))
 
         kwargs = kwargs.copy()
-        saved_kwargs = dict((key, ctype_to_model(val))
+        kwargs.update((key, ctype_to_model(val))
                             for key, val in session_data['kwargs'].iteritems())
-        saved_kwargs.update((key, val)
-                            for key, val in kwargs.iteritems())
-        return (session_data['next'], args, saved_kwargs)
+        return (session_data['next'], args, kwargs)
 
     def continue_pipeline(self, *args, **kwargs):
         """Continue previous halted pipeline"""
@@ -383,14 +381,9 @@ class BaseAuth(object):
         """Return extra arguments needed on auth process, setting is per
         backend and defined by:
             <backend name in uppercase>_AUTH_EXTRA_ARGUMENTS.
-        The defaults can be overriden by GET parameters.
         """
         backend_name = self.AUTH_BACKEND.name.upper().replace('-', '_')
-        extra_arguments = setting(backend_name + '_AUTH_EXTRA_ARGUMENTS', {})
-        for key in extra_arguments:
-            if key in self.data:
-                extra_arguments[key] = self.data[key]
-        return extra_arguments
+        return setting(backend_name + '_AUTH_EXTRA_ARGUMENTS', {})
 
     @property
     def uses_redirect(self):
@@ -409,10 +402,10 @@ class BaseAuth(object):
         """
         if association_id:
             UserSocialAuth.get_social_auth_for_user(user)\
-                            .get(id=association_id).delete()
+                        .get(id=association_id).delete()
         else:
             UserSocialAuth.get_social_auth_for_user(user)\
-                            .filter(provider=self.AUTH_BACKEND.name).delete()
+                        .filter(provider=self.AUTH_BACKEND.name).delete()
 
     def build_absolute_uri(self, path=None):
         """Build absolute URI for given path. Replace http:// schema with
@@ -492,16 +485,6 @@ class OpenIdAuth(BaseAuth):
         else:
             fetch_request = sreg.SRegRequest(optional=dict(SREG_ATTR).keys())
         openid_request.addExtension(fetch_request)
-
-        # Add PAPE Extension for max_auth_age, if configured
-        max_age = setting('SOCIAL_AUTH_OPENID_PAPE_MAX_AUTH_AGE')
-        if max_age is not None:
-            try:
-                openid_request.addExtension(
-                    pape.Request(max_auth_age=int(max_age))
-                )
-            except (ValueError, TypeError):
-                pass
 
         return openid_request
 
