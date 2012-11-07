@@ -37,9 +37,6 @@ def complete(request, backend, *args, **kwargs):
     """Authentication complete view, override this view if transaction
     management doesn't suit your needs."""
     if request.user.is_authenticated():
-
-        #from core.social_auth.backends.twitter import TWITTER_CHECK_AUTH
-        print TWITTER_CHECK_AUTH
         return associate_complete(request, backend, *args, **kwargs)
     else:
         return complete_process(request, backend, *args, **kwargs)
@@ -50,6 +47,7 @@ def associate_complete(request, backend, *args, **kwargs):
     """Authentication complete process"""
     # pop redirect value before the session is trashed on login()
     redirect_value = request.session.get(REDIRECT_FIELD_NAME, '')
+    print backend
     user = auth_complete(request, backend, request.user, *args, **kwargs)
 
     if not user:
