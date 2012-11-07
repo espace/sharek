@@ -502,11 +502,11 @@ class OpenIdAuth(BaseAuth):
 
     def openid_request(self, extra_params=None):
         """Return openid request"""
-            try:
+        try:
             return self.consumer().begin(url_add_parameters(self.openid_url(),
                                                             extra_params))
-            except DiscoveryFailure, err:
-                raise AuthException(self, 'OpenID discovery error: %s' % err)
+        except DiscoveryFailure, err:
+            raise AuthException(self, 'OpenID discovery error: %s' % err)
 
     def openid_url(self):
         """Return service provider URL.
