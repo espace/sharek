@@ -63,8 +63,8 @@ body {
     margin-top:10px ;
 }
 .user_img{
-    border: solid 2px #333;
-    border-radius: 10px;
+    border: solid 2px #222;
+    border-radius: 5px;
     vertical-align: middle;
     float: left;
     height: 50px;
@@ -1250,6 +1250,7 @@ background-position: -142px -9px !important;
 .comment-block .name a{
     font-size:12px;
     color:#333 !important;
+	text-shadow: 1px 1px 1px #FFFFFF;
 }
 .comment-block p{
     float: right;
@@ -2217,7 +2218,8 @@ span.divider{
 .profile-tabs .headtitle h4{
     font-size: 16px;
     font-weight: normal !important;
-    text-shadow: 0 0 0;
+    text-shadow: 1px 1px 1px #FFF;
+	margin-right: 15px;
     min-height: 20px !important;
     clear: right;
 }
@@ -2315,6 +2317,7 @@ a.morelink {
 #contributes .comment-block p{
     width: 98%;
     margin-top: 0px;
+	line-height: 18px;
 }
 #contributes .comment-block .reply{
     box-shadow: 0 0 0 0;

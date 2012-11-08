@@ -1,7 +1,23 @@
 {% load date_format %}
 
 <div class="comment-block L_{{feedback.id}}">
-    <h3><p class="name"><a target="_blank" href="http://www.facebook.com/740392655">{{ feedback.name }}</a></p></h3>
+
+  {% if feedback.user == 'admin' %}
+    <h3><p class="name"><a>{{ feedback.name }}</a></p></h3> 
+  {% else %}
+    {% if feedback.provider == 'facebook' %}
+      <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
+    {% elif feedback.provider == 'twitter' %}
+      <h3><p class="name"><a href="http://www.twitter.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
+    {% elif feedback.provider == 'yahoo' %}
+      <h3><p class="name"><a>{{ feedback.name }}</a></p></h3>
+    {% elif feedback.provider == 'google' %}
+      <h3><p class="name"><a>{{ feedback.name }}</a></p></h3>
+    {% else %}
+    <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3> 
+    {% endif %}
+  {% endif %}
+    
   <span class="date">{{feedback.date|format}}</span>
   <div class="more">{{feedback.suggestion|safe}}</div>
   <div class="delete-group">

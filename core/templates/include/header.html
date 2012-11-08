@@ -18,10 +18,10 @@
                     <a href="{% url logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
                   </div>
                   
-                  {% if request.session.social_auth_last_login_backend = 'google' %}
+                  {% if user.username = 'admin' or request.session.social_auth_last_login_backend = 'google' %}
                     <img src="{{STATIC_URL}}images/google_user.gif" class="user_img" />
                   {% else %}
-                  <img src="{{STATIC_URL}}photos/profile/{{user}}" class="user_img" />
+                    <img src="{{STATIC_URL}}photos/profile/{{user}}" class="user_img" />
                   {% endif %}
                   
                 {% else %}  
