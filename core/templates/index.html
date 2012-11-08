@@ -10,12 +10,6 @@
 
 <!-- <script src="{{ STATIC_URL }}js/init.js" type="text/javascript"></script> 
  -->
-{% if perecent > 50 %}
-<style>
-.progress-promo .comments-till-now { margin-right: -194px; }
-.progress-promo .comments-till-now::after { left: 20px; }
-</style>
-{% endif %} 
 
   <div class="row promo">
     <div class="">
@@ -60,33 +54,6 @@
         {% endfor %}
         </li>
       
-
-
-	<!-- <ul class="nav nav-pills divider-vert ">
-      {% for topic_item in topics %}
-      <li class="span4"> 
-        <a href="{% url topic topic_slug=topic_item.get_absolute_url %}">
-          <span class="home-sections-icon {{topic_item.slug}}"></span>
-          {{topic_item.name}}
-          {{topic_item.summary}}
-        </a>
-        {% if topic_item.count_articles > 0 %}
-        	{% if topic_item.count_articles < 11 %}
-	        <div class="articles-count-new">{{ topic_item.count_articles }} مواد</div>
-    	    {% elif topic_item.count_articles >= 11 %}
-        	<div class="articles-count-new">{{ topic_item.count_articles }} مادة</div>
-            {% endif %}
-        {% endif %}
-        
-        {% if topic_item.date_articles %}
-        <span class="edit-date"><i class=" icon-time"></i>   آخر تحديث  <strong>{{topic_item.date_articles|date:"Y/m/d"}} </strong> <strong>{{topic_item.date_articles|time:"G:i"}} </strong>{% if topic_item.date_articles|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}</span>
-        {% else %}
-        <span class="edit-date"><i class=" icon-time"></i>لم يتم التحديث من قبل</span>
-        {% endif %}
-      </li>
-      {% endfor %}
-    </ul> -->
-    
     <div class="span12 "> <span style="margin-right:-20px;" class="divider"> </span> </div>
     
     <div class="updates span8 divider-vert"> 

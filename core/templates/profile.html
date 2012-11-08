@@ -30,7 +30,7 @@
 
         {% for article in commented_articles %}
           <div counter="{{article.feedbacks.count}}" >
-          <div class="headtitle" > <h4>{{article.topic}} :<a href="">{{article.name}}</a></h4> </div>
+          <div class="headtitle"> <h4>{{article.topic}} :<a href="{% url article_detail classified_by='topics' class_slug=article.topic.slug article_slug=article.slug %}">{{article.name}}</a></h4>  </div>
           {% for feedback in article.feedbacks %}
             {% include "include/comment-block-simple.html" %}
           {% endfor %}
@@ -42,6 +42,46 @@
   
 <input type="hidden" id="csrf_token" value="{{csrf_token}}"/>
 <script src="{{STATIC_URL}}js/article_vote.js" type="text/javascript"></script>
+
+
+
+<script type="text/javascript">
+
+function showMore(){
+
+	var showChar = 200; 
+	var ellipsestext = "..."; 
+	var moretext = "المزيد"; 
+	var lesstext = "اخفاء"; 
+	
+	$('.more').each(function() { 
+		var content = $(this).html();
+		
+		if(content.length > showChar) {
+			var c = content.substr(0, showChar); 
+			var h = content.substr(showChar-1, content.length - showChar);
+			var html = c + '<span class="moreellipses">' + ellipsestext+ '&nbsp;</span><span class="morecontent"><span>' + h + '</span></span>&nbsp;&nbsp;<a href="" class="morelink">' + moretext + '</a>';
+			$(this).html(html); 
+		} 
+		 
+	});
+	$(".morelink").click(function(){ 
+		if($(this).hasClass("less")) { 
+			$(this).removeClass("less"); 
+			$(this).html(moretext); 
+		} else { 
+			$(this).addClass("less"); 
+			$(this).html(lesstext); 
+		} 
+		$(this).parent().prev().toggle(); 
+		$(this).prev().toggle(); 
+		return false; 
+	}); 
+}
+
+showMore();
+
+</script>
 
 <script type="text/javascript">
   $(document).ready(function() {

@@ -70,8 +70,6 @@ MIDDLEWARE_CLASSES = (
 )
 
 AUTHENTICATION_BACKENDS = (
-	'django.contrib.auth.backends.ModelBackend',
-    'core.facebook.backends.FacebookBackend',
     'core.social_auth.backends.twitter.TwitterBackend',
     'core.social_auth.backends.facebook.FacebookBackend',
     'core.social_auth.backends.google.GoogleOAuthBackend',
@@ -79,7 +77,7 @@ AUTHENTICATION_BACKENDS = (
     'core.social_auth.backends.google.GoogleBackend',
     'core.social_auth.backends.yahoo.YahooBackend',
     'core.social_auth.backends.OpenIDBackend',
-    'django.contrib.auth.backends.ModelBackend',
+	'django.contrib.auth.backends.ModelBackend',
 )
 
 ADMINS = (
@@ -171,6 +169,7 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'core.social_auth',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -179,16 +178,15 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'core',
     'core.facebook',
+    'core.twitter',
     'django.contrib.admin',
     'markitup',
     'django_evolution',
     'template_utils',
     'django.contrib.humanize',
-    'core.social_auth',
     'debug_toolbar',
 	#'cache_toolbar',
     'smart_selects',
-    'core.twitter',
 )
 
 # A sample logging configuration. The only tangible logging

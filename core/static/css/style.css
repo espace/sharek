@@ -2275,12 +2275,12 @@ span.divider{
     margin-top: 0;
 }
 .content{
-	position: relative;
+	position: relative !important;
 }
 
 .addthis_toolbox{
-	background: none;
-	position: absolute;
+	background: none !important;
+	position: absolute !important;
 	left: -60px !important;
 	top: 25px !important;
 	overflow-x: hidden;
@@ -2327,7 +2327,7 @@ a.morelink {
 
 .floatLtr{
 	direction: ltr;
-	width: 100%;
+	
 
 }
 .floatingSocial{
