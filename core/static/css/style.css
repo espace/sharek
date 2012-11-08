@@ -94,7 +94,7 @@ body {
 .social_login{
     margin-top: 10px;
     min-height: 40px;
-    width: 90%;
+    width: 100%;
     float: left;
     height: auto;
     overflow: hidden;
@@ -243,7 +243,7 @@ body {
     margin-top: 20px;
 }
 .progress-promo p{
-    font: 16px GESSTwoMediumRegular;
+    font: bold 20px GESSTwoMediumRegular;
     color: #474747;
     line-height: 36px;
     text-shadow: 1px 1px 1px #FFFFFF;
