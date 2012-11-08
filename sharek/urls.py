@@ -7,7 +7,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^markitup/', include('markitup.urls')),
+
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 		
 	url(r'^sharek/chaining/', include('smart_selects.urls')),
