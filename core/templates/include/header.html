@@ -21,11 +21,7 @@
                   {% if request.session.social_auth_last_login_backend = 'google' %}
                     <img src="{{STATIC_URL}}images/google_user.gif" class="user_img" />
                   {% else %}
-<<<<<<< HEAD
-                    <img src="{{STATIC_URL}}photos/profile/{{user}}" class="user_img" />
-=======
                   <img src="{{STATIC_URL}}photos/profile/{{user}}" class="user_img" />
->>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
                   {% endif %}
                   
                 {% else %}  
@@ -77,11 +73,7 @@
                 <li class="">
                   <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
                 </li>
-                {% if user %}
-                <li>
-                  <a href="{% url profile browsing_data='likes' %}">الملف الشخصي</a>
-                </li>
-                {% endif %}
+
               </ul>
               
 

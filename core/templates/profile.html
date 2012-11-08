@@ -10,11 +10,7 @@
       <div class="headtitle innerpage" id="headtitle">
           <h1 style="margin-right: 0px;">الملف الشخصي</h1> 
       </div>
-<<<<<<< HEAD
-    </div> 
-=======
   </div>
->>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
 
     <div class="span12 profile-tabs">
       <ul class="nav nav-tabs " id="myTab">
@@ -24,28 +20,6 @@
       </ul>
 
       <div class="tab-content" id="contributes">
-<<<<<<< HEAD
-        {% for article in liked_articles %}
-          {% include "include/article_block.html" %}
-        {% endfor %}
-
-        {% for article in disliked_articles %}
-          {% include "include/article_block.html" %}
-        {% endfor %}
-
-        {% for article in commented_articles %}
-          <div counter="{{article.feedbacks.count}}" >
-          <div class="headtitle"> <h4>{{article.topic}} :<a href="{% url article_detail classified_by='topics' class_slug=article.topic.slug article_slug=article.slug %}">{{article.name}}</a></h4>  </div>
-          {% for feedback in article.feedbacks %}
-            {% include "include/comment-block-simple.html" %}
-          {% endfor %}
-        </div>
-        {% endfor %}
-      </div>
-    </div> <!-- span12  --> 
-  </div> <!-- roww -->
-  
-=======
   {% for article in liked_articles %}
     {% include "include/article_block.html" %}
   {% endfor %}
@@ -66,7 +40,6 @@
     </div> <!-- span12  --> 
   </div><!-- roww -->
 
->>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
 <input type="hidden" id="csrf_token" value="{{csrf_token}}"/>
 <script src="{{STATIC_URL}}js/article_vote.js" type="text/javascript"></script>
 
@@ -133,15 +106,6 @@ showMore();
       if (confirm('هل أنت متأكد من أنك تريد حذف تعليقك ؟'))
       {
         $.ajax({
-<<<<<<< HEAD
-            type:"POST",
-              url :"{% url remove_feedback %}",
-            data:{'feedback':$(this).attr('id'),
-                  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value")},
-            dataType:"json",
-            error:function(data){},
-            success:function(data){
-=======
                 type:"POST",
                   url :"{% url remove_feedback %}",
                 data:{'feedback':$(this).attr('id'),
@@ -149,7 +113,6 @@ showMore();
                 dataType:"json",
                 error:function(data){},
                 success:function(data){
->>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
               if (parseInt($(".L_"+data.feedback_id).parent().attr("counter")) == 1)
               {
                 $(".L_"+data.feedback_id).parent().remove();
@@ -159,15 +122,9 @@ showMore();
                 counter =  parseInt($(".L_"+data.feedback_id).parent().attr("counter"))-1
                 $(".L_"+data.feedback_id).parent().attr("counter",counter);
               }
-<<<<<<< HEAD
-              $(".L_"+data.feedback_id).remove();
-            },
-          });
-=======
                 $(".L_"+data.feedback_id).remove();  
                 },
               });
->>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
       }
     {% endif %}
     });

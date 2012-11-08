@@ -2309,19 +2309,11 @@ a.morelink {
 }
 #contributes .comment-block h3{
     margin-top: 0px;
-<<<<<<< HEAD
 }
 #contributes .comment-block p{
     width: 98%;
     margin-top: 0px;
 }
-=======
-}
-#contributes .comment-block p{
-    width: 98%;
-    margin-top: 0px;
-}
->>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
 #contributes .comment-block .reply{
     box-shadow: 0 0 0 0;
     border: solid 1px #ccc;
@@ -2333,7 +2325,6 @@ a.morelink {
     color: #777 !important;
 }
 
-<<<<<<< HEAD
 .floatLtr{
 	direction: ltr;
 	
@@ -2347,18 +2338,3 @@ a.morelink {
 	margin-left: -15px;
 
 }
-=======
-    .floatLtr{
-      direction: ltr;
-	
-
-    }
-    .floatingSocial{
-      width: 30px;
-      height: 200px;
-      position:fixed;
-	top: 130px;
-	margin-left: -15px;
-
-    }
->>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935

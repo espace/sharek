@@ -54,8 +54,4 @@ def profile_likes_dislikes(self, user, is_likes):
        return articles_list
 
 User.add_to_class('profile_likes', profile_likes)
-<<<<<<< HEAD
 User.add_to_class('profile_dislikes', profile_dislikes)
-=======
-User.add_to_class('profile_dislikes', profile_dislikes)
->>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
