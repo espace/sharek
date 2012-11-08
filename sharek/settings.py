@@ -11,7 +11,6 @@ LOGIN_URL          = '/sharek/login-form/'
 LOGIN_REDIRECT_URL = '/sharek/logged-in/'
 LOGIN_ERROR_URL    = '/sharek/login-error/'
 
-SOCIAL_AUTH_ENABLED_BACKENDS = ('twitter','facebook','google','yahoo')
 SOCIAL_AUTH_COMPLETE_URL_NAME  = 'socialauth_complete'
 SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
 SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
