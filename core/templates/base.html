@@ -45,7 +45,11 @@
     
           //login_window = window.open('https://www.facebook.com/login.php?api_key={{ settings.FACEBOOK_APP_ID }}&next={{settings.domain}}{% url facebook_login %}%3Floginsucc%3D1&cancel_url={{settings.domain}}{% url facebook_login %}%3Fcancel%3D1&display=popup&fbconnect=1&return_session=1&session_version=3&v=1.0&req_perms=publish_stream%2Cemail','Login_by_facebook',features);
           login_window = window.open(backend_url, 'name', features);
+<<<<<<< HEAD
           if (window.focus) {login_window.focus()}
+=======
+           if (window.focus) {login_window.focus()}
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
           return false;
       }
 	  
@@ -83,7 +87,11 @@
 </head>
 
 <body  data-spy="scroll" data-target=".navbar">
+<<<<<<< HEAD
 
+=======
+    	
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
     {% include "include/header.html" %}
     
     <div id="target_container" class="container content">
@@ -91,6 +99,7 @@
 
                          
         	<div id="floatingSocial">
+<<<<<<< HEAD
 
                 <!-- AddThis Button BEGIN -->
                 <div class="addthis_toolbox addthis_floating_style addthis_32x32_style" style="left:50px;top:50px;">
@@ -102,6 +111,19 @@
                 </div>
                 
                 <!-- AddThis Button END -->  
+=======
+    	
+        <!-- AddThis Button BEGIN -->
+        <div class="addthis_toolbox addthis_floating_style addthis_32x32_style" style="left:50px;top:50px;">
+        <a class="addthis_button_preferred_1"></a>
+        <a class="addthis_button_preferred_2"></a>
+        <a class="addthis_button_preferred_3"></a>
+        <a class="addthis_button_preferred_4"></a>
+        <a class="addthis_button_compact"></a>
+        </div>
+                
+        <!-- AddThis Button END -->
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
             </div>
      </div>  
     <script type="text/javascript">

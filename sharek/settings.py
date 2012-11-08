@@ -21,11 +21,19 @@ SOCIAL_AUTH_EXPIRATION = 'expires'
 SOCIAL_AUTH_SESSION_EXPIRATION = False
 
 CACHES = {
+<<<<<<< HEAD
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': MEMCACHED_BACKEND,
     }
 }
+=======
+      'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': MEMCACHED_BACKEND,
+      }
+    }
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
 
 SESSION_COOKIE_NAME = "dostorid"
 
@@ -43,7 +51,11 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': show_toolbar,
     'HIDE_DJANGO_SQL': False,
     'TAG': 'div',
+<<<<<<< HEAD
 }
+=======
+    }
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
 
 DEBUG_TOOLBAR_PANELS = (
     'debug_toolbar.panels.version.VersionDebugPanel',

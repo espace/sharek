@@ -36,7 +36,11 @@
 <div class="row">
   <div class="home-sections span8">
     <div class="span8 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
         {% for struct in topics_tree %}
           {% if struct.level == 1 %}
           </li>
@@ -53,7 +57,11 @@
           {% endif %}
         {% endfor %}
         </li>
+<<<<<<< HEAD
       
+=======
+    
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
     <div class="span12 "> <span style="margin-right:-20px;" class="divider"> </span> </div>
     
     <div class="updates span8 divider-vert"> 
@@ -84,7 +92,11 @@
               {% endfor %}
               
            </div> <!--  Most liked -->
+<<<<<<< HEAD
     </div>
+=======
+        </div>
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
     
   </div>
   <!-- sidebar -->
@@ -102,11 +114,19 @@
       <h4> <i class="icon-star"></i> أعلى المشاركين</h4>
       <ul>
       	{% for top in top_users %}
+<<<<<<< HEAD
       	 <li>
         	  {% if top.provider == 'facebook' %}
               <a href="http://www.facebook.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
                 <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
               </a>
+=======
+        	<li>
+        	  {% if top.provider == 'facebook' %}
+            	<a href="http://www.facebook.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
+                	<img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
+                </a>
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
             {% elif top.provider == 'twitter' %}
               <a href="http://www.twitter.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
                 <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
@@ -120,7 +140,11 @@
                 <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
               </a>
             {% endif %}
+<<<<<<< HEAD
           </li>
+=======
+            </li>
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
         {% endfor %}
       </ul>
   </div>

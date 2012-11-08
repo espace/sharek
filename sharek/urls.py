@@ -9,8 +9,13 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
+<<<<<<< HEAD
 		
 	url(r'^sharek/chaining/', include('smart_selects.urls')),
+=======
+	
+    url(r'^sharek/chaining/', include('smart_selects.urls')),
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
 	
 	#Generate PDF
     url(r'^sharek/pdf/topics/$', 'core.reports.views.topics_pdf', name='topics_pdf'),

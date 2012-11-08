@@ -157,7 +157,11 @@ class Topic(models.Model):
        cursor.close()
        value = row[0]
        return Decimal(value.to_eng_string())
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> a3bf661f0993c85ae58f6c11fda68cf94bf80935
     def get_articles(self, offset = None, limit = None):
        return self.get_articles_limit()
     
