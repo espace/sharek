@@ -36,7 +36,7 @@ class ArticleHeaderAdmin(admin.ModelAdmin):
     form = ArticleForm
 
     class Media:
-        js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', 'js/admin-current-article.js')
+        js = ('js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', 'js/admin-current-article.js')
 
 class FeedbackAdmin(admin.ModelAdmin):
     list_filter = ('articledetails',)
