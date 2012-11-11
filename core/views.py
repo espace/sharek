@@ -413,7 +413,7 @@ def modify(request):
                  # GraphAPI is the main class from facebook_sdp.py
                     graph = facebook_sdk.GraphAPI(access_token)
                     attachment = {}
-                    attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/"
+                    attachment['link'] = shorten_url(settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/")
                     attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook.png"
                     message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
                     graph.put_wall_post(message, attachment)
@@ -769,8 +769,8 @@ def generate_members_map(request):
     blank_image.save(out_image)
 
 def shorten_url(long_url):
-    username = 'dostormasr'
-    password = 'R_cd048bd6656113dd694f60d69a642413'
+    username = settings.BITLY_USERNAME 
+    password = settings.BITLY_APIKEY
     bitly_url = "http://api.bit.ly/v3/shorten?login={0}&apiKey={1}&longUrl={2}&format=txt"
     req_url = bitly_url.format(username, password, long_url)
     short_url = urlopen(req_url).read()
