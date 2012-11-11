@@ -103,7 +103,7 @@
   {% endfor %}
 
 <div id="lastPostsLoader"></div>
-
+{% if just_comment == False %}
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -151,7 +151,7 @@ $(document).ready(function(){
 	
 });
 </script>
-
+{% endif %}
 <script type="text/javascript">
 
 function showMore(){

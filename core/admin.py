@@ -36,7 +36,7 @@ class ArticleHeaderAdmin(admin.ModelAdmin):
     form = ArticleForm
 
     class Media:
-        js = ('js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', 'js/admin-current-article.js')
+        js = ('js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', 'js/admin-current-article.js','markitup/jquery.markitup.js','markitup/ajax_csrf.js','markitup/sets/markdown/set.js')
 
 class FeedbackAdmin(admin.ModelAdmin):
     list_filter = ('articledetails',)
@@ -57,7 +57,7 @@ class TopicAdmin(admin.ModelAdmin):
     list_editable = ['order']
 
     class Media:
-        js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
+        js = ('js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
 
 class BranchInlineAdmin(admin.TabularInline):
     model      = Branch

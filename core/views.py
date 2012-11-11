@@ -42,6 +42,9 @@ from core.twitter import twitter
 
 from random import randint
 
+#from django.conf import settings
+from urllib import urlencode
+from urllib2 import urlopen
 
 # get first memcached URI
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
@@ -243,7 +246,7 @@ def article_diff(request, article_slug):
     template_context = {'article': article, 'topics':topics, 'topic':article.header.topic, 'versions': versions, 'request':request, 'user':user,'settings': settings}
     return render_to_response('article_diff.html',template_context ,RequestContext(request))
 
-def article_detail(request, classified_by, class_slug, article_slug, order_by="def"):
+def article_detail(request, classified_by, class_slug, article_slug, order_by="def", comment_no=None):
     user = None
 
     login(request)
@@ -278,56 +281,62 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
          related_tags = article.header.tags.all()
          mc.set('related_tags_' + str(article_slug), related_tags, settings.MEMCACHED_TIMEOUT)
 
-    top_ranked_count = 3
+    if comment_no != None:
+        feedbacks = Feedback.objects.filter(id = comment_no)
+        children = len(feedbacks[0].get_children())
+        template_context = {'children':children,'just_comment':True,'topic_page':True,'prev':prev,'next':next,'arts':arts,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}
 
-    top_ranked = mc.get('top_ranked_' + str(article.id))
-    if not top_ranked:
-         top_ranked = Feedback.objects.top_ranked(article.id, top_ranked_count)
-         mc.set('top_ranked_' + str(article.id), top_ranked, settings.MEMCACHED_TIMEOUT)
+    if comment_no == None:
+        top_ranked_count = 3
 
-    if order_by == "latest" or order_by == "def":
-        feedbacks = Feedback.objects.feedback_list(article.id, 'latest', 0)
-    elif order_by == "order":
-        feedbacks = Feedback.objects.feedback_list(article.id, 'order', top_ranked_count)
+        top_ranked = mc.get('top_ranked_' + str(article.id))
+        if not top_ranked:
+             top_ranked = Feedback.objects.top_ranked(article.id, top_ranked_count)
+             mc.set('top_ranked_' + str(article.id), top_ranked, settings.MEMCACHED_TIMEOUT)
 
-    paginator = Paginator(feedbacks, settings.paginator) 
-    page = request.GET.get('page')
+        if order_by == "latest" or order_by == "def":
+            feedbacks = Feedback.objects.feedback_list(article.id, 'latest', 0)
+        elif order_by == "order":
+            feedbacks = Feedback.objects.feedback_list(article.id, 'order', top_ranked_count)
 
-    voted_fb = []
-    voted_article = []
+        paginator = Paginator(feedbacks, settings.paginator) 
+        page = request.GET.get('page')
 
-    if user:
-        voted_fb = mc.get('voted_fb_' + str(article.id) + '-' + str(user.id))
-        if not voted_fb:
-            voted_fb = Rating.objects.filter(articledetails_id = article.id, user = user)
-            mc.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb, settings.MEMCACHED_TIMEOUT)
-	
-        voted_article = mc.get('voted_article_' + str(article.id) + '-' + str(user.id))
-        if not voted_article:
-            voted_article = ArticleRating.objects.filter(articledetails_id = article.id, user = user)
-            mc.set('voted_article_' + str(article.id) + '-' + str(user.id), voted_article, settings.MEMCACHED_TIMEOUT)
+        voted_fb = []
+        voted_article = []
 
-    article_rate = None
-    for art in voted_article:
-        if art.vote == True:
-            article_rate = 1
-        else:
-            article_rate = -1
+        if user:
+            voted_fb = mc.get('voted_fb_' + str(article.id) + '-' + str(user.id))
+            if not voted_fb:
+                 voted_fb = Rating.objects.filter(articledetails_id = article.id, user = user)
+                 mc.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb, settings.MEMCACHED_TIMEOUT)
+    	
+            voted_article = mc.get('voted_article_' + str(article.id) + '-' + str(user.id))
+            if not voted_article:
+                 voted_article = ArticleRating.objects.filter(articledetails_id = article.id, user = user)
+                 mc.set('voted_article_' + str(article.id) + '-' + str(user.id), voted_article, settings.MEMCACHED_TIMEOUT)
 
-    try:
-        feedbacks = paginator.page(page)
-    except PageNotAnInteger:
-        # If page is not an integer, deliver first page.
-        feedbacks = paginator.page(1)
-    except EmptyPage:
-        # If page is out of range (e.g. 9999), deliver last page of results.
-        feedbacks = paginator.page(paginator.num_pages)
-    
-    if classified_by == "tags":  
-        template_context = {'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
-    elif classified_by == "topics":
-        template_context = {'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
-    
+        article_rate = None
+        for art in voted_article:
+            if art.vote == True:
+                article_rate = 1
+            else:
+                article_rate = -1
+
+        try:
+            feedbacks = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            feedbacks = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            feedbacks = paginator.page(paginator.num_pages)
+
+        if classified_by == "tags":  
+            template_context = {'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
+        elif classified_by == "topics":
+            template_context = {'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
+
     return render_to_response('article.html',template_context ,RequestContext(request))
 
 def latest_comments(request):
@@ -399,13 +408,12 @@ def modify(request):
             if request.user.username != "admin":
                 # post on twitter or facebook
                 if UserSocialAuth.auth_provider(request.user.username) == 'facebook':
-                    #fb_user = FacebookSession.objects.get(user = request.user)
                     extra_data = UserSocialAuth.get_extra_data(request.user.username)
                     access_token = extra_data['access_token']
                  # GraphAPI is the main class from facebook_sdp.py
                     graph = facebook_sdk.GraphAPI(access_token)
                     attachment = {}
-                    attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
+                    attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/"
                     attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook.png"
                     message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
                     graph.put_wall_post(message, attachment)
@@ -419,7 +427,8 @@ def modify(request):
                                       consumer_secret=settings.TWITTER_CONSUMER_SECRET,
                                       access_token_key=access_token_key,
                                       access_token_secret=access_token_secret)
-                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
+                    link = shorten_url(str(settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"))
+                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+ link +"  من الدستور"
                     api.PostUpdate(message)
 
                     
@@ -759,3 +768,10 @@ def generate_members_map(request):
 
     blank_image.save(out_image)
 
+def shorten_url(long_url):
+    username = 'dostormasr'
+    password = 'R_cd048bd6656113dd694f60d69a642413'
+    bitly_url = "http://api.bit.ly/v3/shorten?login={0}&apiKey={1}&longUrl={2}&format=txt"
+    req_url = urlencode(bitly_url.format(username, password, long_url))
+    short_url = urlopen(req_url).read()
+    return short_url
