@@ -56,7 +56,7 @@ def index(request):
     home = True
     if request.user.is_authenticated():
       user = request.user
-	  
+
     topics_tree = mc.get('topics_tree')
     if not topics_tree:
          topics_tree = Topic.objects.topics_tree()
@@ -71,12 +71,12 @@ def index(request):
     if not contributions:
          contributions = Topic.total_contributions()
          mc.set('contributions', contributions, 900) # 15 Minutes
-
+    
     top_users = mc.get('top_users')
     if not top_users:
          top_users = User.get_top_users(24)
          mc.set('top_users', top_users, settings.MEMCACHED_TIMEOUT)
-
+	
     top_liked = mc.get('top_liked')
     if not top_liked:
          top_liked = ArticleDetails.objects.get_top_liked(5)
@@ -88,7 +88,7 @@ def index(request):
          mc.set('top_commented', top_commented, settings.MEMCACHED_TIMEOUT)
 
     template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics_tree':topics_tree,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
-    
+
     return render_to_response('index.html', template_context ,RequestContext(request))
         
 def tag_detail(request, tag_slug):
@@ -174,7 +174,7 @@ def topic_detail(request, topic_slug=None):
 
     if user:
         voted_articles = mc.get('voted_articles')
-        if not voted_articles:
+    if not voted_articles:
            voted_articles = ArticleRating.objects.filter(user = user)
            mc.set('voted_articles', voted_articles, 900) # 15 Minutes
 
@@ -334,7 +334,6 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         elif classified_by == "topics":
             template_context = {'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
 
-
     return render_to_response('article.html',template_context ,RequestContext(request))
 
 def latest_comments(request):
@@ -402,20 +401,20 @@ def modify(request):
             feedback = Feedback.objects.filter(articledetails_id = request.POST.get("article"),suggestion = request.POST.get("suggestion") , email= request.POST.get("email"), name = request.POST.get("name"))
             article.feedback_count = article.feedback_count + 1
             article.save()
-
+                    
             if request.user.username != "admin":
                 # post on twitter or facebook
                 if UserSocialAuth.auth_provider(request.user.username) == 'facebook':
                     extra_data = UserSocialAuth.get_extra_data(request.user.username)
                     access_token = extra_data['access_token']
-                    # GraphAPI is the main class from facebook_sdp.py
+                 # GraphAPI is the main class from facebook_sdp.py
                     graph = facebook_sdk.GraphAPI(access_token)
                     attachment = {}
                     attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+feedback[0].id+"/"
                     attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook.png"
                     message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
                     graph.put_wall_post(message, attachment)
-                
+            
                 if UserSocialAuth.auth_provider(request.user.username) == 'twitter':
                     extra_data = UserSocialAuth.get_extra_data(request.user.username)
                     access_token = extra_data['access_token']
@@ -717,7 +716,7 @@ def top_users_map(request):
     login(request)
     if request.user.is_authenticated():
       user = request.user
-	  
+
     members_map = mc.get('members_map')
     if not members_map:
          generate_members_map(request)
@@ -758,10 +757,10 @@ def generate_members_map(request):
             image = Image.open(os.path.dirname(os.path.realpath(__file__)) + "/static/images/google_user.gif")
 
        image.thumbnail(size, Image.ANTIALIAS)
-	   
-       blank_image.paste(image, (new_x, new_y))
 
+       blank_image.paste(image, (new_x, new_y))
+        
        new_x += width + margin
-	
+
     blank_image.save(out_image)
 

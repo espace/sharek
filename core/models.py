@@ -114,7 +114,7 @@ class TopicManager(models.Manager):
        query = '''SELECT core_topic.id, core_topic.short_name, core_topic.name, core_topic.slug, core_topic.order, core_topic.summary, core_topic._summary_rendered,
 	   				( SELECT MAX(core_articledetails.mod_date) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ),
 					( SELECT COUNT(core_articledetails.*) as articles_count FROM core_articleheader INNER JOIN core_articledetails on core_articleheader.id = core_articledetails.header_id WHERE core_topic.id = core_articleheader.topic_id AND core_articledetails.current is true ) as headers
-				  FROM core_topic '''
+				  FROM core_topic'''
        cursor = connection.cursor()
        cursor.execute(query)
 
@@ -141,7 +141,7 @@ class Topic(models.Model):
 
     def get_absolute_url(self):
         return self.slug
-
+    
     @classmethod
     def total_contributions(self):
        query = '''SELECT SUM(count) FROM (
@@ -157,7 +157,7 @@ class Topic(models.Model):
        cursor.close()
        value = row[0]
        return Decimal(value.to_eng_string())
-
+    
     def get_articles(self, offset = None, limit = None):
        return self.get_articles_limit()
     
@@ -200,7 +200,7 @@ class Topic(models.Model):
            articles_list.append(p)
        cursor.close()
        return articles_list
-
+   
     def get_mod_date(self):
 
        query = '''SELECT core_topic.id, MAX(core_articledetails.mod_date) as mod_date
@@ -348,7 +348,7 @@ class ArticleHeaderManager(models.Manager):
            return p
        else:
            return None
-
+    
 class ArticleHeader(models.Model):
     tags = models.ManyToManyField(Tag)
     topic = models.ForeignKey(Topic,null = True)

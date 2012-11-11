@@ -8,11 +8,9 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
-    url(r'^markitup/', include('markitup.urls')),
-
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
-		
-	url(r'^sharek/chaining/', include('smart_selects.urls')),
+	
+    url(r'^sharek/chaining/', include('smart_selects.urls')),
 	
 	#Generate PDF
     url(r'^sharek/pdf/topics/$', 'core.reports.views.topics_pdf', name='topics_pdf'),
