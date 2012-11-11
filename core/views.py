@@ -42,6 +42,9 @@ from core.twitter import twitter
 
 from random import randint
 
+from django.conf import settings
+from urllib import urlencode
+from urllib2 import urlopen
 
 # get first memcached URI
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
@@ -424,7 +427,7 @@ def modify(request):
                                       consumer_secret=settings.TWITTER_CONSUMER_SECRET,
                                       access_token_key=access_token_key,
                                       access_token_secret=access_token_secret)
-                    link = str(settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/")
+                    link = str(shorten_url(settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/"))
                     message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+ link +"  من الدستور"
                     api.PostUpdate(message)
 
@@ -765,3 +768,10 @@ def generate_members_map(request):
 
     blank_image.save(out_image)
 
+def shorten_url(long_url):
+     username = settings['dostormasr']
+     password = settings['d0st0r_MasR.admin']
+     bitly_url = "http://api.bit.ly/v3/shorten?login={0}&apiKey={1}&longUrl={2}&format=txt"
+     req_url = urlencode(bitly_url.format(username, password, long_url)
+     short_url = urlopen(req_url).read()
+     return short_url
