@@ -42,7 +42,9 @@ from core.twitter import twitter
 
 from random import randint
 
-from django.conf import settings
+#from django.conf import settings
+from urllib import urlencode
+from urllib2 import urlopen
 
 # get first memcached URI
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
@@ -767,9 +769,9 @@ def generate_members_map(request):
     blank_image.save(out_image)
 
 def shorten_url(long_url):
-     username = settings['dostormasr']
-     password = settings['d0st0r_MasR.admin']
-     bitly_url = "http://api.bit.ly/v3/shorten?login={0}&apiKey={1}&longUrl={2}&format=txt"
-     req_url = urlencode(bitly_url.format(username, password, long_url)
-     short_url = urlopen(req_url).read()
-     return short_url
+    username = settings['dostormasr']
+    password = settings['R_cd048bd6656113dd694f60d69a642413']
+    bitly_url = "http://api.bit.ly/v3/shorten?login={0}&apiKey={1}&longUrl={2}&format=txt"
+    req_url = urlencode(bitly_url.format(username, password, long_url))
+    short_url = urlopen(req_url).read()
+    return short_url
