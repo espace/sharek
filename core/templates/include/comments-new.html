@@ -85,7 +85,9 @@
    تحميل التعليقات
    </a>
  {% endif %}
- 
+
+{% if just_comment == 1 %}
+{% else %} 
 <div class="comment-block well top" {% if feedbacks|length == 0 %}style="display:none;"{% endif %}>
 {% if feedbacks|length > 0 %} 
       <a class="{%if order_by = 'def' or order_by = 'latest' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}latest/#time" id="time">حسب الوقت</a>
@@ -94,7 +96,7 @@
 {% endif %}
 
 </div>
-
+{% endif %}
 <!-- Comments Section -->
 
 {% if feedbacks|length >= 1 %}   
