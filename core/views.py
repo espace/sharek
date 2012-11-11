@@ -425,7 +425,7 @@ def modify(request):
                                       access_token_key=access_token_key,
                                       access_token_secret=access_token_secret)
                     link = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/"
-                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+ str(link) +"  من الدستور"
+                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+ link +"  من الدستور"
                     api.PostUpdate(message)
 
                     
