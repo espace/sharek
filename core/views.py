@@ -772,6 +772,6 @@ def shorten_url(long_url):
     username = 'dostormasr'
     password = 'R_cd048bd6656113dd694f60d69a642413'
     bitly_url = "http://api.bit.ly/v3/shorten?login={0}&apiKey={1}&longUrl={2}&format=txt"
-    req_url = urlencode(bitly_url.format(username, password, long_url))
+    req_url = bitly_url.format(username, password, long_url)
     short_url = urlopen(req_url).read()
     return short_url
