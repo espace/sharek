@@ -413,7 +413,7 @@ def modify(request):
                  # GraphAPI is the main class from facebook_sdp.py
                     art = get_object_or_404(ArticleDetails, id=request.POST.get("article"))
                     art_name = art.header.name.encode('utf-8')
-                    art_body = art.suggestion.encode('utf-8')
+                    art_body = art.summary.encode('utf-8')
                     graph = facebook_sdk.GraphAPI(access_token)
                     attachment = {}
                     attachment['name'] = art_name
