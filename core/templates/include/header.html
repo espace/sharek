@@ -65,6 +65,11 @@
                 <li class="">
                   <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
                 </li>
+                {% if user %}
+                  <li class="">
+                    <a href="{% url profile 'likes' %}">الملف الشخصي</a>
+                  </li>
+                {% endif %}
                 {% if user.is_staff %}
                   <li class="">
                     <a href="{% url top_liked %}">الإحصائيات</a>
@@ -93,6 +98,11 @@
                             <li class="">
                               <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
                             </li>
+                            {% if user %}
+                              <li class="">
+                                <a href="{% url profile 'likes' %}">الملف الشخصي</a>
+                              </li>
+                            {% endif %}
                             {% if user.is_staff %}
                               <li class="">
                                 <a href="{% url top_liked %}">الإحصائيات</a>
