@@ -43,8 +43,6 @@ from core.twitter import twitter
 from random import randint
 
 from django.conf import settings
-from urllib import urlencode
-from urllib2 import urlopen
 
 # get first memcached URI
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
