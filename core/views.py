@@ -411,11 +411,16 @@ def modify(request):
                     extra_data = UserSocialAuth.get_extra_data(request.user.username)
                     access_token = extra_data['access_token']
                  # GraphAPI is the main class from facebook_sdp.py
+                    art = get_object_or_404(ArticleDetails, id=request.POST.get("article"))
+                    art_name = art.header.name.encode('utf-8')
+                    art_body = art.suggestion.encode('utf-8')
                     graph = facebook_sdk.GraphAPI(access_token)
                     attachment = {}
+                    attachment['name'] = art_name
                     attachment['link'] = shorten_url(settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/")
                     attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook-thumb.jpg"
-                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
+                    attachment['description'] = art_body
+                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+art_name+" من الدستور"
                     graph.put_wall_post(message, attachment)
             
                 if UserSocialAuth.auth_provider(request.user.username) == 'twitter':
