@@ -413,7 +413,7 @@ def modify(request):
                  # GraphAPI is the main class from facebook_sdp.py
                     graph = facebook_sdk.GraphAPI(access_token)
                     attachment = {}
-                    attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"
+                    attachment['link'] = settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/"
                     attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook.png"
                     message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+" من الدستور"
                     graph.put_wall_post(message, attachment)
@@ -427,7 +427,7 @@ def modify(request):
                                       consumer_secret=settings.TWITTER_CONSUMER_SECRET,
                                       access_token_key=access_token_key,
                                       access_token_secret=access_token_secret)
-                    link = shorten_url(str(settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/"))
+                    link = shorten_url(str(settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/"))
                     message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+ link +"  من الدستور"
                     api.PostUpdate(message)
 
