@@ -354,7 +354,7 @@ def latest_comments(request):
         limit = settings.paginator
 
         obj_article = get_object_or_404( ArticleDetails, id=article )
-
+        topic = obj_article.header.topic
         top_ranked_count = 3
 
         if order_by == "latest" or order_by == "def":
@@ -368,7 +368,7 @@ def latest_comments(request):
         paginator = Paginator(feedbacks, settings.paginator)
         try:
             feedbacks = paginator.page(page)
-            return render_to_response('include/latest_comments.html',{'voted_fb':voted_fb,'voted_articles':voted_article,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
+            return render_to_response('include/latest_comments.html',{'topic':topic,'settings': settings,'voted_fb':voted_fb,'voted_articles':voted_article,'feedbacks':feedbacks,'article':article,'page':page} ,RequestContext(request))
         except PageNotAnInteger:
             return HttpResponse('')
         except EmptyPage:
