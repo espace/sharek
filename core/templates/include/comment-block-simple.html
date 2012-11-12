@@ -18,7 +18,7 @@
     {% endif %}
   {% endif %}
     
-  <span class="date"><a href="{% url comment_detail classified_by="topics" class_slug=topic.slug article_slug=article.slug comment_no=feedback.id %}">{{feedback.date|format}}</a></span>
+  <span class="date"><a href="{% url comment_detail classified_by="topics" class_slug=article.topic.slug  article_slug=article.slug comment_no=feedback.id %}">{{feedback.date|format}}</a></span>
   <div class="more">{{feedback.suggestion|safe}}</div>
   <div class="delete-group">
     <a id="{{feedback.id}}" class="L_remove" href="#"><span class="icon-trash"></span>حذف التعليق</a>
