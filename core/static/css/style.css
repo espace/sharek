@@ -70,12 +70,52 @@ body {
     height: 50px;
     width: 50px;
 }
+
 .attrs{
     float: left;
 }
 .attrs a{
     margin-right: 10px;
 }
+
+.profile-details .user_img_larg
+{
+    border: solid 2px #333;
+    border-radius: 0px;
+    vertical-align: middle;
+    height: 50px;
+    width: 50px;
+    float: right;
+    margin-top: 10px;
+}
+.profile-details {
+    margin: 30px 0 ;
+}
+.profile-details .attrs{
+    float: right;
+    max-width: 340px;
+}
+.profile-details .attrs a{
+    margin-right: 10px;
+
+}
+.profile-details .attrs span{
+    float: right;
+    margin-right: 10px;
+    margin-top: 0px;
+}
+.profile-details .social_login{
+    width: 150px;
+    float: right;
+    margin-right: 10px;
+}
+.profile-details .user_name{
+    float: right;
+    margin: 5px 10px 0 0;
+    font: 29px GESSTwoMediumRegular ;
+
+}
+
 .user_name{
     color:#9d0d0b;
     font-weight: bold;
@@ -243,7 +283,7 @@ body {
     margin-top: 20px;
 }
 .progress-promo p{
-    font: bold 22px FrutigerBold;
+    font: normal 21px GESSTwoMediumRegular;
     color: #474747;
     line-height: 36px;
     text-shadow: 1px 1px 1px #FFFFFF;
