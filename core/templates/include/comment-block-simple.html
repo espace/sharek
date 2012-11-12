@@ -18,7 +18,7 @@
     {% endif %}
   {% endif %}
     
-  <span class="date">{{feedback.date|format}}</span>
+  <span class="date"><a href="{{settings.domain}}sharek/topics/{{article.topic.slug}}/{{article.slug}}/comment/{{feedback.id}}/">{{feedback.date|format}}</a></span>
   <div class="more">{{feedback.suggestion|safe}}</div>
   <div class="delete-group">
     <a id="{{feedback.id}}" class="L_remove" href="#"><span class="icon-trash"></span>حذف التعليق</a>

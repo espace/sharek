@@ -215,6 +215,9 @@ class Topic(models.Model):
        cursor.close()
        return row[1]
 
+    class Meta:
+       ordering = ["order"]
+
 class Chapter(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
@@ -224,6 +227,9 @@ class Chapter(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    class Meta:
+       ordering = ["order"]
 
 class Branch(models.Model):
     name = models.CharField(max_length=100)
