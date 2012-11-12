@@ -40,14 +40,14 @@
       <h3><p class="name"><a>{{ feedback.name }}</a></p></h3>
     {% else %}
     <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3> 
-  {% endif %}
+  	{% endif %}
   {% endif %}
              
   <div class="like-group">
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == -1 %} active {% elif voted_fb|vote:feedback.id == 1 %} disabled {% endif %}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{feedback.dislikes}}</small></a>
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == 1 %} active {% elif voted_fb|vote:feedback.id == -1 %} disabled {% endif %}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{feedback.likes}}</small></a>
   </div>
-  <span class="date">{{feedback.date|format}}</span>
+  <span class="date"><a href="{% url comment_detail classified_by="topics" class_slug=topic.slug article_slug=article.slug comment_no=feedback.id %}">{{feedback.date|format}}</a></span>
   <div class="more">{{feedback.suggestion|safe}}</div>
   <div class="delete-group">
     {% if user %}
@@ -56,13 +56,12 @@
       {% endif %}
     {% endif %}
     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete " id="{{feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
-
-    {% if feedback.children > 0 %}
+    {% if feedback.children > 0 or children > 0 %}
         <a href="javascript:;" class="L_show_more " id="{{feedback.id}}"><span class="L_show_more_icon {{feedback.id}} icon-plus"></span><span class="L_show_more_txt {{feedback.id}}">إظهار باقي الردود</span></a>
     {% endif %}
   </div>
     <div class="L_replies_block child-wrapper {{feedback.id}}" style="display:none;">
-    {% if feedback.children > 0 %}
+    {% if feedback.children > 0 or children > 0 %}
       {% for reply in feedback.get_children %}
         <div class="comment-block child-reply L_{{reply.id}}">
           

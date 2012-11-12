@@ -1,7 +1,8 @@
 {% load replace %}
 {% load hash %} 
 {% load date_format %} 
-
+{% if just_comment == 1 %}
+{% else %}
 {% if user %}
   <div class="comment-block comment-entry">
     {% if user.username != 'admin' %}
@@ -67,7 +68,7 @@
     </div>
   </div><!-- comment end -->
 {% endif %}
-
+{% endif %}
 
 
 {% if feedbacks|length >= 1 and top_ranked|length == 3 %}
@@ -79,12 +80,14 @@
   </div><!-- "top-comments -->
 {% endif %}
   
- {% if user.is_staff %}
+ {% if user.is_staff and just_comment != 1 %}
    <a target="_blank" href="{% url comments_pdf article_slug=article.slug %}" class="download-pdf ">
    تحميل التعليقات
    </a>
  {% endif %}
- 
+
+{% if just_comment == 1 %}
+{% else %} 
 <div class="comment-block well top" {% if feedbacks|length == 0 %}style="display:none;"{% endif %}>
 {% if feedbacks|length > 0 %} 
       <a class="{%if order_by = 'def' or order_by = 'latest' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}latest/#time" id="time">حسب الوقت</a>
@@ -93,7 +96,7 @@
 {% endif %}
 
 </div>
-
+{% endif %}
 <!-- Comments Section -->
 
 {% if feedbacks|length >= 1 %}   
@@ -103,7 +106,7 @@
   {% endfor %}
 
 <div id="lastPostsLoader"></div>
-
+{% if just_comment == False %}
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -151,7 +154,7 @@ $(document).ready(function(){
 	
 });
 </script>
-
+{% endif %}
 <script type="text/javascript">
 
 function showMore(){

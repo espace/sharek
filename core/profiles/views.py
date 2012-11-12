@@ -31,6 +31,10 @@ def profile(request, browsing_data="def"):
     disliked_articles = []
     commented_articles = []
 
+    commented_ids = Feedback.objects.filter(user = user,parent_id = None).values('articledetails').distinct()
+
+    contributions = commented_ids.count
+
     voted_articles = ArticleRating.objects.filter(user = user)
 
     if browsing_data == "likes" or browsing_data == "def":
@@ -40,7 +44,6 @@ def profile(request, browsing_data="def"):
         disliked_articles = User.profile_dislikes(user.username)
 
     elif browsing_data == "comments":
-        commented_ids = Feedback.objects.filter(user = user,parent_id = None).values('articledetails').distinct()
         for id in commented_ids:
             if id['articledetails'] != None:
                 temp = ArticleDetails.objects.get(id = id['articledetails'])
@@ -48,4 +51,4 @@ def profile(request, browsing_data="def"):
                 commented_articles.append({'topic':temp.header.topic,'name':temp.header.name,'slug':temp.slug,'feedbacks':feedbacks})
                 
 
-    return render_to_response('profile.html', {'voted_articles': voted_articles, 'profile':True,'browsing_data':browsing_data,'commented_articles':commented_articles,'disliked_articles':disliked_articles,'liked_articles':liked_articles,'settings': settings,'user':user} ,RequestContext(request))
+    return render_to_response('profile.html', {'voted_articles': voted_articles, 'contributions': contributions, 'profile':True,'browsing_data':browsing_data,'commented_articles':commented_articles,'disliked_articles':disliked_articles,'liked_articles':liked_articles,'settings': settings,'user':user} ,RequestContext(request))

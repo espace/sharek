@@ -63,19 +63,59 @@ body {
     margin-top:10px ;
 }
 .user_img{
-    border: solid 2px #333;
-    border-radius: 10px;
+    border: solid 2px #222;
+    border-radius: 5px;
     vertical-align: middle;
     float: left;
     height: 50px;
     width: 50px;
 }
+
 .attrs{
     float: left;
 }
 .attrs a{
     margin-right: 10px;
 }
+
+.profile-details .user_img_larg
+{
+    border: solid 2px #333;
+    border-radius: 5px;
+    vertical-align: middle;
+    height: 50px;
+    width: 50px;
+    float: right;
+    margin-top: 10px;
+}
+.profile-details {
+    margin: 30px 0 ;
+}
+.profile-details .attrs{
+    float: right;
+    max-width: 340px;
+}
+.profile-details .attrs a{
+    margin-right: 10px;
+
+}
+.profile-details .attrs span{
+    float: right;
+    margin-right: 10px;
+    margin-top: 0px;
+}
+.profile-details .social_login{
+    width: 150px;
+    float: right;
+    margin-right: 10px;
+}
+.profile-details .user_name{
+    float: right;
+    margin: 5px 10px 0 0;
+    font: 29px GESSTwoMediumRegular ;
+
+}
+
 .user_name{
     color:#9d0d0b;
     font-weight: bold;
@@ -243,7 +283,7 @@ body {
     margin-top: 20px;
 }
 .progress-promo p{
-    font: bold 20px GESSTwoMediumRegular;
+    font: normal 21px GESSTwoMediumRegular;
     color: #474747;
     line-height: 36px;
     text-shadow: 1px 1px 1px #FFFFFF;
@@ -1250,6 +1290,7 @@ background-position: -142px -9px !important;
 .comment-block .name a{
     font-size:12px;
     color:#333 !important;
+	text-shadow: 1px 1px 1px #FFFFFF;
 }
 .comment-block p{
     float: right;
@@ -1267,7 +1308,7 @@ background-position: -142px -9px !important;
 .comment-block .date{
     float:left;
     position: absolute;
-    left:130px;
+    left:150px;
     top: 10px;
     /*color:#9d9d9d;*/
     font: 10px GESSTwoMediumRegular;
@@ -2217,8 +2258,10 @@ span.divider{
 .profile-tabs .headtitle h4{
     font-size: 16px;
     font-weight: normal !important;
-    text-shadow: 0 0 0;
+    text-shadow: 1px 1px 1px #FFF;
+	margin-right: 15px;
     min-height: 20px !important;
+    clear: right;
 }
 .profile-tabs .headtitle h4 a{
     font-size: 16px;
@@ -2234,6 +2277,7 @@ span.divider{
 .profile-tabs .comment-block {
     margin-right: 20px;
     width: 90%;
+    margin-bottom: 20px;
 }
 
 
@@ -2313,6 +2357,7 @@ a.morelink {
 #contributes .comment-block p{
     width: 98%;
     margin-top: 0px;
+	line-height: 18px;
 }
 #contributes .comment-block .reply{
     box-shadow: 0 0 0 0;
@@ -2325,16 +2370,16 @@ a.morelink {
     color: #777 !important;
 }
 
-    .floatLtr{
-      direction: ltr;
+.floatLtr{
+	direction: ltr;
 	
 
-    }
-    .floatingSocial{
-      width: 30px;
-      height: 200px;
-      position:fixed;
+}
+.floatingSocial{
+	width: 30px;
+	height: 200px;
+	position:fixed;
 	top: 130px;
 	margin-left: -15px;
 
-    }
+}

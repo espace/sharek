@@ -1,8 +1,24 @@
 {% load date_format %}
 
 <div class="comment-block L_{{feedback.id}}">
-    <h3><p class="name"><a target="_blank" href="http://www.facebook.com/740392655">{{ feedback.name }}</a></p></h3>
-  <span class="date">{{feedback.date|format}}</span>
+
+  {% if feedback.user == 'admin' %}
+    <h3><p class="name"><a>{{ feedback.name }}</a></p></h3> 
+  {% else %}
+    {% if feedback.provider == 'facebook' %}
+      <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
+    {% elif feedback.provider == 'twitter' %}
+      <h3><p class="name"><a href="http://www.twitter.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3>
+    {% elif feedback.provider == 'yahoo' %}
+      <h3><p class="name"><a>{{ feedback.name }}</a></p></h3>
+    {% elif feedback.provider == 'google' %}
+      <h3><p class="name"><a>{{ feedback.name }}</a></p></h3>
+    {% else %}
+    <h3><p class="name"><a href="http://www.facebook.com/{{ feedback.user }}" target="_blank">{{ feedback.name }}</a></p></h3> 
+    {% endif %}
+  {% endif %}
+    
+  <span class="date"><a href="{% url comment_detail classified_by="topics" class_slug=article.topic.slug  article_slug=article.slug comment_no=feedback.id %}">{{feedback.date|format}}</a></span>
   <div class="more">{{feedback.suggestion|safe}}</div>
   <div class="delete-group">
     <a id="{{feedback.id}}" class="L_remove" href="#"><span class="icon-trash"></span>حذف التعليق</a>
