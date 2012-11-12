@@ -31,7 +31,7 @@ def profile(request, browsing_data="def"):
     disliked_articles = []
     commented_articles = []
 
-	contributions = 12
+    contributions = 12
 
     voted_articles = ArticleRating.objects.filter(user = user)
 
