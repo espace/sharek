@@ -80,7 +80,7 @@
   </div><!-- "top-comments -->
 {% endif %}
   
- {% if user.is_staff %}
+ {% if user.is_staff and just_comment != 1 %}
    <a target="_blank" href="{% url comments_pdf article_slug=article.slug %}" class="download-pdf ">
    تحميل التعليقات
    </a>
