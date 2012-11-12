@@ -48,7 +48,7 @@ urlpatterns = patterns('',
     #ArticleDetails detail URL    
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'core.views.article_detail'),
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/$', 'core.views.article_detail', name='article_detail'),
-    url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/comment/(?P<comment_no>[-\w]+)/$', 'core.views.article_detail', name='article_detail'),
+    url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/comment/(?P<comment_no>[-\w]+)/$', 'core.views.article_detail', name='comment_detail'),
     #Tag detail URL
     url(r'^sharek/tags/(?P<tag_slug>[-\w]+)/$', 'core.views.tag_detail', name='tag'),
 	
