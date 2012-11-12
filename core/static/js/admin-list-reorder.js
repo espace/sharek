@@ -43,15 +43,14 @@ $(document).ready(function() {
     sorted = $('#result_list thead th.sorted')
     sorted_col = $('#result_list thead th').index(sorted)
     sort_order = sorted.hasClass('descending') ? 'desc' : 'asc';
-    
     if (sorted_col != pos_col) {
         // Sorted column is not position column, bail out
         console.info("Sorted column is not %s, bailing out", pos_field);
         return;
     }
-    
+
     $('#result_list tbody tr').css('cursor', 'move')
-    
+
     // Make tbody > tr sortable
     $('#result_list tbody').sortable({
         axis: 'y',
