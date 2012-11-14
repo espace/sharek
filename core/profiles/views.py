@@ -31,9 +31,9 @@ def profile(request, browsing_data="def"):
     disliked_articles = []
     commented_articles = []
 
-    commented_ids = Feedback.objects.filter(user = user,parent_id = None).values('articledetails').distinct()
+    obj_contributions = Feedback.objects.filter(user = user,parent_id = None)
 
-    contributions = commented_ids.count
+    contributions = obj_contributions.count
 
     voted_articles = ArticleRating.objects.filter(user = user)
 
@@ -44,6 +44,7 @@ def profile(request, browsing_data="def"):
         disliked_articles = User.profile_dislikes(user.username)
 
     elif browsing_data == "comments":
+        commented_ids = Feedback.objects.filter(user = user,parent_id = None).values('articledetails').distinct()
         for id in commented_ids:
             if id['articledetails'] != None:
                 temp = ArticleDetails.objects.get(id = id['articledetails'])

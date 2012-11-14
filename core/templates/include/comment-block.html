@@ -47,7 +47,7 @@
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == -1 %} active {% elif voted_fb|vote:feedback.id == 1 %} disabled {% endif %}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{feedback.dislikes}}</small></a>
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == 1 %} active {% elif voted_fb|vote:feedback.id == -1 %} disabled {% endif %}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{feedback.likes}}</small></a>
   </div>
-  <span class="date"><a href="{% url comment_detail classified_by="topics" class_slug=topic.slug article_slug=article.slug comment_no=feedback.id %}">{{feedback.date|format}}</a></span>
+  <span class="date">{% if just_comment != 1 %}<a href="{% url comment_detail classified_by="topics" class_slug=topic.slug article_slug=article.slug comment_no=feedback.id %}">{% endif %}{{feedback.date|format}}</a></span>
   <div class="more">{{feedback.suggestion|safe}}</div>
   <div class="delete-group">
     {% if user %}
