@@ -3,6 +3,7 @@ import os, sys
 
 import Image
 import logging
+import subprocess
 
 from django.template import Context, loader, RequestContext
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
@@ -799,7 +800,8 @@ def rename_articles(request):
             val['header'].name = "مادة ("+str(idx+1)+")"
             val['header'].order = idx
             val['header'].save()
-
+        command_args = "sudo /etc/init.d/memcached restart"
+        popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
         text = "done!"
     else:
         text = "you don't have permission"

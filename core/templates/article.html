@@ -41,22 +41,21 @@
   <div id="ajax-container" class="span9">
     
     {% include "include/article_block.html" %}
-    {% if just_comment == 1 %}
-    {% else %}
-    <ul class="topic-paging">
-        {% if prev %}
-        <li class="prev" >
-          <a href="{% url article_detail classified_by='topics' class_slug=prev.topic_slug article_slug=prev.slug %}"> &rarr; &nbsp;&nbsp;{{prev.name}}</a>
-        </li>
-        {% endif %}
-        
-        {% if next %}
-         <li class="next">
-          <a href="{% url article_detail classified_by='topics' class_slug=next.topic_slug article_slug=next.slug %}">{{next.name}}&nbsp;&nbsp;  &larr;</a>
-         </li>
-        {% endif %}
-	  </ul>
-    {% endif %}
+    {% ifnotequal just_comment 1 %}
+      <ul class="topic-paging">
+          {% if prev %}
+          <li class="prev" >
+            <a href="{% url article_detail classified_by='topics' class_slug=prev.topic_slug article_slug=prev.slug %}"> &rarr; &nbsp;&nbsp;{{prev.name}}</a>
+          </li>
+          {% endif %}
+          
+          {% if next %}
+           <li class="next">
+            <a href="{% url article_detail classified_by='topics' class_slug=next.topic_slug article_slug=next.slug %}">{{next.name}}&nbsp;&nbsp;  &larr;</a>
+           </li>
+          {% endif %}
+  	  </ul>
+    {% endifnotequal %}
     {% include "include/comments-new.html" %}
 
   </div><!-- span 8 -->
