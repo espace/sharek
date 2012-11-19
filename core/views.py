@@ -46,6 +46,8 @@ from random import randint
 from urllib import urlencode
 from urllib2 import urlopen
 
+from operator import itemgetter, attrgetter
+
 # get first memcached URI
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
 
@@ -780,3 +782,26 @@ def shorten_url(long_url):
     req_url = bitly_url.format(username, password, long_url)
     short_url = urlopen(req_url).read()
     return short_url
+
+
+def rename_articles(request):
+    if request.user.is_superuser:
+        all_art = ArticleDetails.objects.filter(current = True)
+        headers = []
+        temp = {}
+        for art in all_art:
+            temp = {'header':art.header, 'topic_order':art.header.topic.order, 'order':art.header.order}
+            headers.append(temp)
+
+        headers = sorted(headers, key=lambda header: (header['topic_order'], header['order']))
+
+        for idx,val in enumerate(headers):
+            val['header'].name = "مادة ("+str(idx+1)+")"
+            val['header'].order = idx
+            val['header'].save()
+
+        text = "done!"
+    else:
+        text = "you don't have permission"
+
+    return render_to_response('rename.html',{'text':text} ,RequestContext(request))
