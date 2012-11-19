@@ -812,3 +812,5 @@ def rename_articles(request):
 def restart_memcache():
     command_args = "/etc/init.d/memcached restart"
     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    popen.terminate()
+    popen.wait()
