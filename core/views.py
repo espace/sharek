@@ -801,7 +801,9 @@ def rename_articles(request):
             val['header'].order = idx
             val['header'].save()
 
-        restart_memcache()
+        command_args = "sudo /etc/init.d/memcached restart"
+        popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        popen.terminate()
 
         text = "done!"
     else:
