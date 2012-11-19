@@ -800,10 +800,15 @@ def rename_articles(request):
             val['header'].name = "مادة ("+str(idx+1)+")"
             val['header'].order = idx
             val['header'].save()
-        command_args = "sudo /etc/init.d/memcached restart"
-        popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
+        restart_memcache()
+
         text = "done!"
     else:
         text = "you don't have permission"
 
     return render_to_response('rename.html',{'text':text} ,RequestContext(request))
+
+def restart_memcache():
+    command_args = "sudo /etc/init.d/memcached restart"
+    popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
