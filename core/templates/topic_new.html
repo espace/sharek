@@ -73,40 +73,6 @@
             {% include "include/article_block.html" %}
         {% endfor %}
         
-                {% for article in all_articles %}
-            {% ifchanged article.chapter_id %}
-                {% ifnotequal article.chapter_name None %}
-                   <div class="chapter-head">
-                            <h3 id="{{article.chapter_slug}}" class="fasl">{{article.chapter_name}}</h1>
-                    </div>
-                {% endifnotequal %}
-            {% endifchanged %}
-            {% ifchanged article.branch_id %}
-                {% ifnotequal article.branch_name None %}
-                   <div class="chapter-head">
-                            <h6 id="{{article.branch_slug}}" class="fasl">{{article.branch_name}}</h1>
-                    </div>
-                {% endifnotequal %}
-            {% endifchanged %}
-            {% include "include/article_block.html" %}
-        {% endfor %}
-                {% for article in all_articles %}
-            {% ifchanged article.chapter_id %}
-                {% ifnotequal article.chapter_name None %}
-                   <div class="chapter-head">
-                            <h3 id="{{article.chapter_slug}}" class="fasl">{{article.chapter_name}}</h1>
-                    </div>
-                {% endifnotequal %}
-            {% endifchanged %}
-            {% ifchanged article.branch_id %}
-                {% ifnotequal article.branch_name None %}
-                   <div class="chapter-head">
-                            <h6 id="{{article.branch_slug}}" class="fasl">{{article.branch_name}}</h1>
-                    </div>
-                {% endifnotequal %}
-            {% endifchanged %}
-            {% include "include/article_block.html" %}
-        {% endfor %}
         </div>
     </div><!-- row end -->
 {% else %}
