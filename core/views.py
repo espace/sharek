@@ -3,6 +3,7 @@ import os, sys
 
 import Image
 import logging
+import subprocess
 
 from django.template import Context, loader, RequestContext
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
@@ -45,6 +46,8 @@ from random import randint
 #from django.conf import settings
 from urllib import urlencode
 from urllib2 import urlopen
+
+from operator import itemgetter, attrgetter
 
 # get first memcached URI
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
@@ -780,3 +783,36 @@ def shorten_url(long_url):
     req_url = bitly_url.format(username, password, long_url)
     short_url = urlopen(req_url).read()
     return short_url
+
+
+def rename_articles(request):
+    if request.user.is_superuser:
+        all_art = ArticleDetails.objects.filter(current = True)
+        headers = []
+        temp = {}
+        for art in all_art:
+            temp = {'header':art.header, 'topic_order':art.header.topic.order, 'order':art.header.order}
+            headers.append(temp)
+
+        headers = sorted(headers, key=lambda header: (header['topic_order'], header['order']))
+
+        for idx,val in enumerate(headers):
+            val['header'].name = "مادة ("+str(idx+1)+")"
+            val['header'].order = idx
+            val['header'].save()
+
+        '''
+        command_args = "sudo /etc/init.d/memcached restart"
+        popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        popen.terminate()
+        '''
+        text = "done!"
+    else:
+        text = "you don't have permission"
+
+    return render_to_response('rename.html',{'text':text} ,RequestContext(request))
+
+def restart_memcache():
+    command_args = "sudo /etc/init.d/memcached restart"
+    popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    popen.terminate()

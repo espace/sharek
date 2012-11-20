@@ -1,12 +1,35 @@
 {% load replace %}
 {% load hash %} 
 {% load date_format %} 
-{% if just_comment == 1 %}
-{% else %}
-{% if user %}
-  <div class="comment-block comment-entry">
-    {% if user.username != 'admin' %}
-    <div class="facebook_user_img">
+
+{% ifnotequal just_comment 1 %}
+  {% if user %}
+    <div class="comment-block comment-entry">
+      {% if user.username != 'admin' %}
+      <div class="facebook_user_img">
+          {% if request.session.social_auth_last_login_backend == 'facebook' %}
+          <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+              <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          </a>
+          {% elif request.session.social_auth_last_login_backend == 'twitter' %}
+            <a href="http://www.twitter.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+              <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+            </a>
+          {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          {% elif request.session.social_auth_last_login_backend == 'google' %}
+            <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
+          {% else %}
+            <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+              <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+            </a>
+          {% endif %}
+      </div>
+      {% endif %}
+            
+            {% if user.username == 'admin' %}
+  	        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+            {% else %}
         {% if request.session.social_auth_last_login_backend == 'facebook' %}
         <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
             <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
@@ -86,17 +109,16 @@
    </a>
  {% endif %}
 
-{% if just_comment == 1 %}
-{% else %} 
-<div class="comment-block well top" {% if feedbacks|length == 0 %}style="display:none;"{% endif %}>
-{% if feedbacks|length > 0 %} 
-      <a class="{%if order_by = 'def' or order_by = 'latest' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}latest/#time" id="time">حسب الوقت</a>
-    <a> | </a>
-      <a class="{%if order_by = 'order' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}order/#rank" id="rank">حسب التصويت</a>
-{% endif %}
+{% ifnotequal just_comment 1 %} 
+  <div class="comment-block well top" {% if feedbacks|length == 0 %}style="display:none;"{% endif %}>
+  {% if feedbacks|length > 0 %} 
+        <a class="{%if order_by = 'def' or order_by = 'latest' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}latest/#time" id="time">حسب الوقت</a>
+      <a> | </a>
+        <a class="{%if order_by = 'order' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}order/#rank" id="rank">حسب التصويت</a>
+  {% endif %}
 
-</div>
-{% endif %}
+  </div>
+{% endifnotequal %}
 <!-- Comments Section -->
 
 {% if feedbacks|length >= 1 %}   
@@ -106,55 +128,55 @@
   {% endfor %}
 
 <div id="lastPostsLoader"></div>
-{% if just_comment == False %}
-<script type="text/javascript">
-$(document).ready(function(){
-	
-	var page = 1;
-	var fetching = false;
-	
-	function get_latest_comments() 
-	{ 
-		fetching = true;
-		
-		$('div#lastPostsLoader').html('<img src="{{STATIC_URL}}images/loading.gif">');
-		
-		$.ajax({
-		  type:"POST",
-		  url :"/sharek/latest-comments/",
-		  data:{
-			  'page': ++page, 'article': {{article.id}}, 'order_by': '{{order_by}}',
-			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
-		  dataType:"html",
-		  error:function(data){},
-		  success:function(data){
-			if (data != "") {
-				
-				$(".last-comment:last").after(data);
-				  
-				showMore();
-				
-				setTimeout(function(){ fetching = false; },300);
-				$('div#lastPostsLoader').empty();
-			} else{
-				$('div#lastPostsLoader').html('');
-			}
-			
-		  },
-	  	});
+{% ifnotequal just_comment 1 %}
+  <script type="text/javascript">
+  $(document).ready(function(){
+  	
+  	var page = 1;
+  	var fetching = false;
+  	
+  	function get_latest_comments() 
+  	{ 
+  		fetching = true;
+  		
+  		$('div#lastPostsLoader').html('<img src="{{STATIC_URL}}images/loading.gif">');
+  		
+  		$.ajax({
+  		  type:"POST",
+  		  url :"/sharek/latest-comments/",
+  		  data:{
+  			  'page': ++page, 'article': {{article.id}}, 'order_by': '{{order_by}}',
+  			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},
+  		  dataType:"html",
+  		  error:function(data){},
+  		  success:function(data){
+  			if (data != "") {
+  				
+  				$(".last-comment:last").after(data);
+  				  
+  				showMore();
+  				
+  				setTimeout(function(){ fetching = false; },300);
+  				$('div#lastPostsLoader').empty();
+  			} else{
+  				$('div#lastPostsLoader').html('');
+  			}
+  			
+  		  },
+  	  	});
 
-	}
-	
-	$(window).scroll(function(){
-		var bufferzone = $(window).scrollTop() * 0.20;
-		if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
-			get_latest_comments();
-		}
-	});
-	
-});
-</script>
-{% endif %}
+  	}
+  	
+  	$(window).scroll(function(){
+  		var bufferzone = $(window).scrollTop() * 0.20;
+  		if (!fetching && ($(window).scrollTop() + bufferzone > ($(document).height()- $(window).height() ) )){
+  			get_latest_comments();
+  		}
+  	});
+  	
+  });
+  </script>
+{% endifnotequal %}
 <script type="text/javascript">
 
 function showMore(){

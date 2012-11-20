@@ -8,6 +8,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
 
+    url(r'^sharek/rename/$', 'core.views.rename_articles', name='rename'),
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
     url(r'^sharek/chaining/', include('smart_selects.urls')),
