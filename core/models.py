@@ -199,6 +199,8 @@ class Topic(models.Model):
            p.original_slug = row[21]
            articles_list.append(p)
        cursor.close()
+       articles_list.append(articles_list)
+       articles_list.append(articles_list)
        return articles_list
    
     def get_mod_date(self):
