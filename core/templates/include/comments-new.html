@@ -31,44 +31,67 @@
   	        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
             {% else %}
         {% if request.session.social_auth_last_login_backend == 'facebook' %}
-          <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+        <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+        </a>
         {% elif request.session.social_auth_last_login_backend == 'twitter' %}
-          <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+          <a href="http://www.twitter.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          </a>
         {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
-          <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+          <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
         {% elif request.session.social_auth_last_login_backend == 'google' %}
-          <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+          <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
         {% else %}
-      <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
-            {% endif %}
-      {% endif %}
-              
-      <p >
-         <textarea rows="3" class="input-xlarge span7" id="suggestion"></textarea>
-         <br />
-         <button class="btn btn-danger offset0" type="submit" id="modify" >أضف تعليقك الآن !</button>
-      </p>
+          <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
+            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
+          </a>
+        {% endif %}
     </div>
-  {% else %}
-    <div class="comment-block comment-entry not-logged">  
-      <p style=" color:#960d0d; text-align:center; line-height:34px; font-size:16px;">
-        مرحبـــا! 
-      <br /> 
-        لكى تتمكن من تسجيل مقترحاتك لابد من تسجيل دخولك أولا
-      <br />
-      </p>
-      <div class=' social_in_topic'>
-          <p> يمكنك الآن تسجيل الدخول بواسطة</p>
-          <div class="social_icons_wrap">
-            <a href="#" onclick="login('facebook'); return false;" class="facebook" title="سجل دخول"><img src="{{STATIC_URL}}images/facebook.png" alt=""></a>
-            <a href="#" onclick="login('twitter'); return false;" class="twitter" title="سجل دخول"><img src="{{STATIC_URL}}images/twitter.png" alt=""></a>
-            <a href="#" onclick="login('google'); return false;" class="google" title="سجل دخول"><img src="{{STATIC_URL}}images/google.png" alt=""></a>
-            <a href="#" onclick="login('yahoo'); return false;" class="yahoo" title="سجل دخول"><img src="{{STATIC_URL}}images/yahoo.png" alt=""></a>
-          </div>
-      </div>
-    </div><!-- comment end -->
-  {% endif %}
-{% endifnotequal %}
+    {% endif %}
+          
+          {% if user.username == 'admin' %}
+	        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+          {% else %}
+      {% if request.session.social_auth_last_login_backend == 'facebook' %}
+        <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% elif request.session.social_auth_last_login_backend == 'twitter' %}
+        <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
+        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% elif request.session.social_auth_last_login_backend == 'google' %}
+        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
+      {% else %}
+    <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
+          {% endif %}
+    {% endif %}
+            
+    <p >
+       <textarea rows="3" class="input-xlarge span7" id="suggestion"></textarea>
+       <br />
+       <button class="btn btn-danger offset0" type="submit" id="modify" >أضف تعليقك الآن !</button>
+    </p>
+  </div>
+{% else %}
+  <div class="comment-block comment-entry not-logged">  
+    <p style=" color:#960d0d; text-align:center; line-height:34px; font-size:16px;">
+مرحبـــا! 
+<br /> 
+لكى تتمكن من تسجيل مقترحاتك لابد من تسجيل دخولك أولا
+<br />
+    </p>
+    <div class=' social_in_topic'>
+        <p> يمكنك الآن تسجيل الدخول بواسطة</p>
+        <div class="social_icons_wrap">
+          <a href="#" onclick="login('facebook'); return false;" class="facebook" title="سجل دخول"><img src="{{STATIC_URL}}images/facebook.png" alt=""></a>
+          <a href="#" onclick="login('twitter'); return false;" class="twitter" title="سجل دخول"><img src="{{STATIC_URL}}images/twitter.png" alt=""></a>
+          <a href="#" onclick="login('google'); return false;" class="google" title="سجل دخول"><img src="{{STATIC_URL}}images/google.png" alt=""></a>
+          <a href="#" onclick="login('yahoo'); return false;" class="yahoo" title="سجل دخول"><img src="{{STATIC_URL}}images/yahoo.png" alt=""></a>
+        </div>
+    </div>
+  </div><!-- comment end -->
+{% endif %}
+{% endif %}
 
 
 {% if feedbacks|length >= 1 and top_ranked|length == 3 %}
