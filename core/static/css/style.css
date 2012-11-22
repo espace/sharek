@@ -2062,6 +2062,31 @@ span.divider{
 
 }
 
+.suggestion-block{   
+    background: rgba(0,0,0,0.02)  ;
+    margin: 5px 0;
+    box-shadow: 0px 2px 1px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.3);
+    float: right;
+    padding: 8px 10px;
+    position: relative;
+    border: solid 1px #faf9f7;
+    border-bottom: none;
+    border-radius: 5px;
+    width: 95%;
+    clear: both;
+    z-index: 5;
+}
+
+.suggestion-block .name a{
+    font-size:12px;
+    color:#333 !important;
+    text-shadow: 1px 1px 1px #FFFFFF;
+}
+
+.suggestion-block  .like-group{
+    left: 10px;
+    top:10px;
+}
 .history-records .mada-title{
     display: block;
     position: relative;
