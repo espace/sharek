@@ -9,12 +9,10 @@ from core.actions import export_as_csv_action
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 
-class ArticleDetailsInlineAdmin(admin.TabularInline):
-    model      = ArticleDetails
-    extra      = 0
-    can_delete = True
-    fields     = ['current', 'slug','summary','mod_date']
-
+class ArticleDetailsAdmin(admin.ModelAdmin):
+    list_display = ('header','mod_date')
+    list_filter = ('header',)
+    
 class ArticleForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField( queryset=Tag.objects.all(), widget=forms.CheckboxSelectMultiple)
 
@@ -28,7 +26,7 @@ class ArticleForm(forms.ModelForm):
             self.fields['tags'].queryset = tags
 
 class ArticleHeaderAdmin(admin.ModelAdmin):
-    inlines = [ArticleDetailsInlineAdmin,]
+    #inlines = [ArticleDetailsInlineAdmin,]
     list_display = ('name','topic','chapter','branch','order')
     list_filter = ('topic',)
     list_editable = ['order']
@@ -99,7 +97,8 @@ class UserAdmin(admin.ModelAdmin):
        except KeyError:
            pass
        return actions
-    
+
+admin.site.register(ArticleDetails, ArticleDetailsAdmin)
 admin.site.register(ArticleHeader, ArticleHeaderAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Topic, TopicAdmin)
