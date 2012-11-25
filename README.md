@@ -36,7 +36,9 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine
 
     sudo pip install django-markitup
 	
-	sudo pip install django-admin-views
+	download git://github.com/frankwiles/django-admin-views.git
+	cd django-debug-toolbar/
+	sudo python setup.py install
 
     sudo apt-get install python-psycopg2
 
