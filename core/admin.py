@@ -1,6 +1,6 @@
 from core.models import Tag
 from core.models import Topic, Chapter, Branch
-from core.models import Info, Feedback, ArticleDetails, ArticleHeader
+from core.models import Info, Feedback, ArticleDetails, ArticleHeader,Suggestion
 from core.models import ReadOnlyAdminFields
 from django.contrib.auth.models import User
 from django import forms
@@ -9,7 +9,14 @@ from core.actions import export_as_csv_action
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 
+class SuggestionInlineAdmin(admin.TabularInline):
+    model      = Suggestion
+    extra      = 0
+    can_delete = True
+    fields     = ['description']
+
 class ArticleDetailsAdmin(admin.ModelAdmin):
+    inlines = [SuggestionInlineAdmin,]
     list_display = ('header','mod_date')
     list_filter = ('header',)
     

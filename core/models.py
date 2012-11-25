@@ -714,7 +714,6 @@ class ReadOnlyAdminFields(object):
 
         return form
 
-
 @classmethod
 def get_top_users(self, limit):
     query = '''SELECT username, first_name, last_name, count(core_feedback.*) contribution, COALESCE(social_auth_usersocialauth.provider, 'facebook') as provider
@@ -733,7 +732,6 @@ def get_top_users(self, limit):
     cursor.close()
     return users_list
 
-
 @classmethod
 def get_inactive(self):
     all_result = User.objects.filter(is_active=False).values('username')
@@ -743,6 +741,9 @@ def get_inactive(self):
     
     return inactive
 
-
 User.add_to_class('get_inactive', get_inactive)
 User.add_to_class('get_top_users', get_top_users)
+
+class Suggestion(models.Model):
+    articledetails = models.ForeignKey(ArticleDetails)
+    description = MarkupField(default='')
