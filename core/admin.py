@@ -65,9 +65,6 @@ class TopicAdmin(AdminViews):
          ('Generate Topics PDF', reverse('topics_pdf')),
     )
 
-    def redirect_to_cnn(self, *args, **kwargs):
-        return redirect('http://www.cnn.com')
-
 class BranchInlineAdmin(admin.TabularInline):
     model      = Branch
     extra      = 0
