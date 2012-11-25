@@ -9,6 +9,8 @@ from core.actions import export_as_csv_action
 from django.contrib import admin
 from django.core.urlresolvers import reverse
 
+from admin_views.admin import AdminViews
+
 class ArticleDetailsInlineAdmin(admin.TabularInline):
     model      = ArticleDetails
     extra      = 0
@@ -51,13 +53,20 @@ class TagAdmin(admin.ModelAdmin):
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
 
-class TopicAdmin(admin.ModelAdmin):
+class TopicAdmin(AdminViews):
     prepopulated_fields = {"slug": ["name"]}
     list_display = ('name','short_name','order')
     list_editable = ['order']
 
     class Media:
         js = ('js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js',)
+
+    admin_views = (
+         ('Generate Topics PDF', 'http://192.168.0.193:9000/sharek/pdf/topics/'),
+    )
+
+    def redirect_to_cnn(self, *args, **kwargs):
+        return redirect('http://www.cnn.com')
 
 class BranchInlineAdmin(admin.TabularInline):
     model      = Branch

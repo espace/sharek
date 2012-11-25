@@ -1,3 +1,6 @@
+import core
+import os.path
+import subprocess
 from django import forms
 from django.utils import timezone
 from datetime import datetime
@@ -13,7 +16,7 @@ from django.db import connection, models
 from django import db
 from decimal import Decimal
 from django.core.cache import cache
-
+from django.template import Context, loader, RequestContext
 from smart_selects.db_fields import ChainedForeignKey 
 
 class Tag(models.Model):
@@ -746,3 +749,4 @@ def get_inactive(self):
 
 User.add_to_class('get_inactive', get_inactive)
 User.add_to_class('get_top_users', get_top_users)
+

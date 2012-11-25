@@ -35,6 +35,8 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine
     easy_install django_evolution
 
     sudo pip install django-markitup
+	
+	sudo pip install django-admin-views
 
     sudo apt-get install python-psycopg2
 

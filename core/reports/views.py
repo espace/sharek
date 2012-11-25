@@ -132,15 +132,17 @@ def render_to_pdf(template_html, template_prefix, context, pdf_filename):
      full_temp_html_file_name = core.__path__[0] + '/static/temp/' + template_prefix + date_str + '.html'
      file= open(full_temp_html_file_name, 'w')
      file.write(rendered.encode('utf8'))
-     file.close( )
+     file.close()
 
-     command_args = 'wkhtmltopdf -L 10 -R 10 -T 20 -B 10 --footer-html ' + core.__path__[0] + '/static/footer.html ' + full_temp_html_file_name + ' -'
+     #command_args = 'wkhtmltopdf -L 10 -R 10 -T 20 -B 10 --footer-html ' + core.__path__[0] + '/static/footer.html ' + full_temp_html_file_name + ' -'
+     command_args = 'wkhtmltopdf -L 10 -R 10 -T 20 -B 10 --footer-html ' + core.__path__[0] + '/static/footer.html ' + full_temp_html_file_name + ' ' + core.__path__[0] + '/static/pdf/dostor_masr.pdf'
      popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
      pdf_contents = popen.stdout.read()
      popen.terminate()
      popen.wait()
-
+     '''
      response = HttpResponse(pdf_contents, mimetype='application/pdf')
      response['Content-Disposition'] = 'filename=' + pdf_filename + '.pdf'
      return response
-
+     '''
+     return HttpResponseRedirect("/sharek/admin/")
