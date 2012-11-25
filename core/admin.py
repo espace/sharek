@@ -62,7 +62,7 @@ class TopicAdmin(AdminViews):
         js = ('js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js',)
 
     admin_views = (
-         ('Generate Topics PDF', 'http://192.168.0.193:9000/sharek/pdf/topics/'),
+         ('Generate Topics PDF', '/sharek/pdf/topics/'),
     )
 
     def redirect_to_cnn(self, *args, **kwargs):
