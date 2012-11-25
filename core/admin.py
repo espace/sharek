@@ -62,7 +62,7 @@ class TopicAdmin(AdminViews):
         js = ('js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js',)
 
     admin_views = (
-         ('Generate Topics PDF', reverse('topics_pdf')),
+         ('Generate PDF', reverse('index')),
     )
 
 class BranchInlineAdmin(admin.TabularInline):
