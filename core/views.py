@@ -292,10 +292,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     if comment_no == None:
         top_ranked_count = 3
 
-        top_ranked = mc.get('top_ranked_' + str(article.id))
-        if not top_ranked:
-             top_ranked = Feedback.objects.top_ranked(article.id, top_ranked_count)
-             mc.set('top_ranked_' + str(article.id), top_ranked, settings.MEMCACHED_TIMEOUT)
+        top_ranked = Feedback.objects.top_ranked(article.id, top_ranked_count)
 
         if order_by == "latest" or order_by == "def":
             feedbacks = Feedback.objects.feedback_list(article.id, 'latest', 0)
