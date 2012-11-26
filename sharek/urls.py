@@ -36,6 +36,10 @@ urlpatterns = patterns('',
     url(r'^sharek/search/$', 'core.views.search', name='search'),
     url(r'^sharek/ajx_search/$', 'core.views.ajx_search', name='ajx_search'),
     
+    url(r'^sharek/profile/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.profile', name='profile'),
+    url(r'^sharek/user/(?P<username>[-\w]+)/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.user', name='user'),
+    url(r'^sharek/user/(?P<username>[-\w]+)/$', 'core.profiles.views.user', name='user'),
+    
     url(r'^sharek/vote/', 'core.views.vote', name='vote'),
     url(r'^sharek/article_vote/', 'core.views.article_vote', name='article_vote'),
     url(r'^sharek/modify/', 'core.views.modify', name='modify'),
@@ -50,6 +54,7 @@ urlpatterns = patterns('',
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'core.views.article_detail'),
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/$', 'core.views.article_detail', name='article_detail'),
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/comment/(?P<comment_no>[-\w]+)/$', 'core.views.article_detail', name='comment_detail'),
+	
     #Tag detail URL
     url(r'^sharek/tags/(?P<tag_slug>[-\w]+)/$', 'core.views.tag_detail', name='tag'),
 	
@@ -67,9 +72,6 @@ urlpatterns = patterns('',
     url(r'^sharek/top_disliked/', 'core.views.top_disliked', name='top_disliked'),
     url(r'^sharek/top_commented/', 'core.views.top_commented', name='top_commented'),
     url(r'sharek/statistics/$', 'core.views.statistics', name='statistics'),
-    
-    url(r'^sharek/profile/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.profile', name='profile'),
-    url(r'^sharek/user_profile/$', 'core.profiles.views.user_profile', name='user_profile'),
 
     url(r'^sharek/$', 'core.views.index', name='index'),
 	
