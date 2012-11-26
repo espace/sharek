@@ -1,6 +1,6 @@
 from core.models import Tag
 from core.models import Topic, Chapter, Branch
-from core.models import Info, Feedback, ArticleDetails, ArticleHeader
+from core.models import Info, Feedback, ArticleDetails, ArticleHeader,Suggestion
 from core.models import ReadOnlyAdminFields
 from django.contrib.auth.models import User
 from django import forms
@@ -10,12 +10,17 @@ from django.contrib import admin
 
 from admin_views.admin import AdminViews
 
-class ArticleDetailsInlineAdmin(admin.TabularInline):
-    model      = ArticleDetails
+class SuggestionInlineAdmin(admin.TabularInline):
+    model      = Suggestion
     extra      = 0
     can_delete = True
-    fields     = ['current', 'slug','summary','mod_date']
+    fields     = ['description']
 
+class ArticleDetailsAdmin(admin.ModelAdmin):
+    inlines = [SuggestionInlineAdmin,]
+    list_display = ('header','mod_date')
+    list_filter = ('header',)
+    
 class ArticleForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField( queryset=Tag.objects.all(), widget=forms.CheckboxSelectMultiple)
 
@@ -29,7 +34,7 @@ class ArticleForm(forms.ModelForm):
             self.fields['tags'].queryset = tags
 
 class ArticleHeaderAdmin(admin.ModelAdmin):
-    inlines = [ArticleDetailsInlineAdmin,]
+    #inlines = [ArticleDetailsInlineAdmin,]
     list_display = ('name','topic','chapter','branch','order')
     list_filter = ('topic',)
     list_editable = ['order']
@@ -104,7 +109,8 @@ class UserAdmin(admin.ModelAdmin):
        except KeyError:
            pass
        return actions
-    
+
+admin.site.register(ArticleDetails, ArticleDetailsAdmin)
 admin.site.register(ArticleHeader, ArticleHeaderAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Topic, TopicAdmin)

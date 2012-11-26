@@ -9,6 +9,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^sharek/rename/$', 'core.views.rename_articles', name='rename'),
+    url(r'^sharek/copy_details/$', 'core.views.copy_details', name='copy_details'),
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
     url(r'^sharek/chaining/', include('smart_selects.urls')),
@@ -42,6 +43,7 @@ urlpatterns = patterns('',
     
     url(r'^sharek/vote/', 'core.views.vote', name='vote'),
     url(r'^sharek/article_vote/', 'core.views.article_vote', name='article_vote'),
+    url(r'^sharek/suggestion_vote/', 'core.views.suggestion_vote', name='suggestion_vote'),
     url(r'^sharek/modify/', 'core.views.modify', name='modify'),
     url(r'^sharek/reply_feedback/', 'core.views.reply_feedback', name='reply_feedback'),
     url(r'^sharek/remove_feedback/', 'core.views.remove_feedback', name='remove_feedback'),

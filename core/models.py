@@ -506,6 +506,9 @@ class ArticleDetails(models.Model):
     mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Modification Date')
     objects = ArticleManager()
 
+    def get_suggestions(self):
+        return Suggestion.objects.filter(articledetails_id= self.id)
+
     def get_votes(self):
         return Rating.objects.filter(articledetails_id= self.id)
 
@@ -534,8 +537,8 @@ class ArticleDetails(models.Model):
         return self.header.articledetails_set.get(current = True)
 
     class Meta:
-       verbose_name = "Article Text"
-       verbose_name_plural = "Article Texts"
+       verbose_name = "Article Detail"
+       verbose_name_plural = "Article Details"
 
 def update_original(sender, instance, created, **kwargs):
     if created:
@@ -717,7 +720,6 @@ class ReadOnlyAdminFields(object):
 
         return form
 
-
 @classmethod
 def get_top_users(self, limit):
     query = '''SELECT username, first_name, last_name, count(core_feedback.*) contribution, COALESCE(social_auth_usersocialauth.provider, 'facebook') as provider
@@ -736,7 +738,6 @@ def get_top_users(self, limit):
     cursor.close()
     return users_list
 
-
 @classmethod
 def get_inactive(self):
     all_result = User.objects.filter(is_active=False).values('username')
@@ -746,7 +747,19 @@ def get_inactive(self):
     
     return inactive
 
-
 User.add_to_class('get_inactive', get_inactive)
 User.add_to_class('get_top_users', get_top_users)
 
+class Suggestion(models.Model):
+    articledetails = models.ForeignKey(ArticleDetails)
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
+    description = MarkupField(default='', null = True, blank = True)
+
+    class Meta:
+      get_latest_by = 'id'
+
+class SuggestionRating(models.Model):
+    suggestions = models.ForeignKey(Suggestion)    
+    user = models.CharField(max_length=200,default='')
+    vote = models.BooleanField()
