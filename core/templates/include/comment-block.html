@@ -54,7 +54,7 @@
     {% endif %}
     <div class="comment-block comment-entry child-reply {{feedback.id}}" style="display:none;">
     
-      {% with name=user.first_name|add:" "|add:user.last_name username=user.username provider=request.session.social_auth_last_login_backend %}
+      {% with name=user.first_name|default_if_none:""|add:" "|add:user.last_name|default_if_none:"" username=user.username provider=request.session.social_auth_last_login_backend %}
        	 {% include "include/user-block.html" %}
       {% endwith %}
       

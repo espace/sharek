@@ -256,7 +256,7 @@ showMore();
 <script id="modification_temp" type="text/x-jquery-tmpl">
   <div class="comment-block L_${id} alt">
     
-    {% with name=user.first_name|add:" "|add:user.last_name username=user.username provider=request.session.social_auth_last_login_backend %}
+    {% with name=user.first_name|default_if_none:""|add:" "|add:user.last_name|default_if_none:"" username=user.username provider=request.session.social_auth_last_login_backend %}
        {% include "include/user-block.html" %}
     {% endwith %}
              
@@ -275,7 +275,7 @@ showMore();
 <script id="reply_temp" type="text/x-jquery-tmpl">
   <div class="comment-block child-reply L_${id}" >
     
-    {% with name=user.first_name|add:" "|add:user.last_name username=user.username provider=request.session.social_auth_last_login_backend %}
+    {% with name=user.first_name|default_if_none:""|add:" "|add:user.last_name|default_if_none:"" username=user.username provider=request.session.social_auth_last_login_backend %}
        {% include "include/user-block.html" %}
     {% endwith %}
 
