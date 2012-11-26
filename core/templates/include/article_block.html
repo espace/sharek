@@ -13,8 +13,8 @@
   <h3>
       <p class="mada-title">
           {% if profile %}
-          <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}">{{article.name}}</a>
-          <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}" class="comments-number pull-left">
+            <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}">{{article.name}}</a>
+            <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}" class="comments-number pull-left">
           {% else %}
             <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}">{{article.name}}</a>
             <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}" class="comments-number pull-left">
@@ -34,28 +34,19 @@
   <a href="{% url topic topic_slug=article.topic_slug %}">{{ article.topic_name }}</a>
   {% endifnotequal %}
   
+  {% for suggestion in article.get_suggestions %}
   <div class="suggestion-block ">
-      <h3><p class="name"><a href="#" target="_blank">مقترح (1)</a></p></h3>
+      <h3><p class="name"><a href="#" target="_blank">مقترح ({{ forloop.counter0 }})</a></p></h3>
     
       <div class="like-group">
-        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{article.id}} {% if voted_articles|vote_art:article.id == -1 %} active {% elif voted_articles|vote_art:article.id == 1 %} disabled {% endif %}" id="{{article.id}} " vote="0"><small class="dislike article {{article.id}}">{{article.dislikes}}</small></a>
-        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{article.id}} {% if voted_articles|vote_art:article.id == 1 %} active {% elif voted_articles|vote_art:article.id == -1 %} disabled {% endif %}" id="{{article.id}}" vote="1" ><small class="like article {{article.id}}">{{article.likes}}</small></a>
+        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == -1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == 1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}} " vote="0"><small class="dislike suggestion {{suggestion.id}}">{{suggestion.dislikes}}</small></a>
+        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == 1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == -1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}}" vote="1" ><small class="like suggestion {{suggestion.id}}">{{suggestion.likes}}</small></a>
       </div>
 
-      <p>{%if related_tags%}{{article.summary|safe}}{%else%}{{article.summary|safe|truncatewords_html:35}}{%endif%}</p>
+      <p>{%if related_tags%}{{suggestion.description|safe}}{%else%}{{suggestion.description|safe|truncatewords_html:35}}{%endif%}</p>
   </div>
+  {% endfor %}
 
-  <div class="suggestion-block ">
-      <h3><p class="name"><a href="#" target="_blank">مقترح (2)</a></p></h3>
-    
-      <div class="like-group">
-        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{article.id}} {% if voted_articles|vote_art:article.id == -1 %} active {% elif voted_articles|vote_art:article.id == 1 %} disabled {% endif %}" id="{{article.id}} " vote="0"><small class="dislike article {{article.id}}">{{article.dislikes}}</small></a>
-        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{article.id}} {% if voted_articles|vote_art:article.id == 1 %} active {% elif voted_articles|vote_art:article.id == -1 %} disabled {% endif %}" id="{{article.id}}" vote="1" ><small class="like article {{article.id}}">{{article.likes}}</small></a>
-      </div>
-
-      <p>{%if related_tags%}{{article.summary|safe}}{%else%}{{article.summary|safe|truncatewords_html:35}}{%endif%}</p>
-  </div>
-  
   {% if article.mod_date %}
   <p class="edit-date-article date">آخر تحديث {{article.mod_date|format}} </p><br />
   {% endif %}

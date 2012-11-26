@@ -503,6 +503,9 @@ class ArticleDetails(models.Model):
     mod_date = models.DateTimeField(default=timezone.make_aware(datetime.now(),timezone.get_default_timezone()).astimezone(timezone.utc), verbose_name='Modification Date')
     objects = ArticleManager()
 
+    def get_suggestions(self):
+        return Suggestion.objects.filter(articledetails_id= self.id)
+
     def get_votes(self):
         return Rating.objects.filter(articledetails_id= self.id)
 
@@ -531,8 +534,8 @@ class ArticleDetails(models.Model):
         return self.header.articledetails_set.get(current = True)
 
     class Meta:
-       verbose_name = "Article Text"
-       verbose_name_plural = "Article Texts"
+       verbose_name = "Article Detail"
+       verbose_name_plural = "Article Details"
 
 def update_original(sender, instance, created, **kwargs):
     if created:
@@ -746,4 +749,14 @@ User.add_to_class('get_top_users', get_top_users)
 
 class Suggestion(models.Model):
     articledetails = models.ForeignKey(ArticleDetails)
-    description = MarkupField(default='')
+    likes = models.IntegerField(default=0)
+    dislikes = models.IntegerField(default=0)
+    description = MarkupField(default='', null = True, blank = True)
+
+    class Meta:
+      get_latest_by = 'id'
+
+class SuggestionRating(models.Model):
+    suggestions = models.ForeignKey(Suggestion)    
+    user = models.CharField(max_length=200,default='')
+    vote = models.BooleanField()

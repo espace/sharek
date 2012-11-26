@@ -16,7 +16,7 @@ from decimal import Decimal
 from diff_match import diff_match_patch
 from django.contrib import auth
 from django.core import serializers
-from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User
+from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User, Suggestion, SuggestionRating
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -303,7 +303,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         page = request.GET.get('page')
 
         voted_fb = []
-        voted_article = []
+        voted_suggestion = []
 
         if user:
             voted_fb = mc.get('voted_fb_' + str(article.id) + '-' + str(user.id))
@@ -311,13 +311,18 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
                  voted_fb = Rating.objects.filter(articledetails_id = article.id, user = user)
                  mc.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb, settings.MEMCACHED_TIMEOUT)
     	
-            voted_article = mc.get('voted_article_' + str(article.id) + '-' + str(user.id))
-            if not voted_article:
-                 voted_article = ArticleRating.objects.filter(articledetails_id = article.id, user = user)
-                 mc.set('voted_article_' + str(article.id) + '-' + str(user.id), voted_article, settings.MEMCACHED_TIMEOUT)
+            voted_suggestion = mc.get('voted_suggestion_' + str(article.id) + '-' + str(user.id))
+            if not voted_suggestion:
+                voted_suggestion = []
+                suggestions = article.get_suggestions()
+                for suggestion in suggestions:
+                    votes = SuggestionRating.objects.filter(suggestions_id = suggestion.id, user = user)
+                    for vote in votes:
+                        voted_suggestion.append(vote)
+                mc.set('voted_suggestion_' + str(article.id) + '-' + str(user.id), voted_suggestion, settings.MEMCACHED_TIMEOUT)
 
         article_rate = None
-        for art in voted_article:
+        for art in voted_suggestion:
             if art.vote == True:
                 article_rate = 1
             else:
@@ -333,9 +338,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
             feedbacks = paginator.page(paginator.num_pages)
 
         if classified_by == "tags":  
-            template_context = {'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
+            template_context = {'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
         elif classified_by == "topics":
-            template_context = {'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_articles':voted_article, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
+            template_context = {'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
 
     return render_to_response('article.html',template_context ,RequestContext(request))
 
@@ -455,6 +460,7 @@ def vote(request):
     if request.user.is_authenticated():
         if request.method == 'POST':
             feedback =  request.POST.get("modification")
+            article =  request.POST.get("article")
             user =  request.user
 
             record = Rating.objects.filter(feedback_id = feedback, user = user )
@@ -490,6 +496,7 @@ def vote(request):
             mod.order = mod.likes - mod.dislikes
             mod.save()
 
+            mc.delete('voted_fb_' + str(article) + '-' + str(user.id))
             return HttpResponse(simplejson.dumps({'modification':request.POST.get("modification"),'p':p,'n':n,'vote':request.POST.get("type")}))
 
 def article_vote(request):
@@ -781,7 +788,6 @@ def shorten_url(long_url):
     short_url = urlopen(req_url).read()
     return short_url
 
-
 def rename_articles(request):
     if request.user.is_superuser:
         all_art = ArticleDetails.objects.filter(current = True)
@@ -798,18 +804,63 @@ def rename_articles(request):
             val['header'].order = idx
             val['header'].save()
 
-        '''
-        command_args = "sudo /etc/init.d/memcached restart"
-        popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-        popen.terminate()
-        '''
         text = "done!"
     else:
         text = "you don't have permission"
 
-    return render_to_response('rename.html',{'text':text} ,RequestContext(request))
+    return render_to_response('operation.html',{'text':text} ,RequestContext(request))
 
-def restart_memcache():
-    command_args = "sudo /etc/init.d/memcached restart"
-    popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    popen.terminate()
+def suggestion_vote(request):
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            suggestion =  request.POST.get("suggestion")
+            article =  request.POST.get("article")
+            user =  request.user
+
+            vote = False
+            
+            if request.POST.get("type") == "1" :
+              vote = True
+
+            art = Suggestion.objects.get(id = suggestion)
+
+            p = art.likes
+            n = art.dislikes
+
+            record = SuggestionRating.objects.filter(suggestions_id = suggestion, user = user )
+            
+            if record:
+                if record[0].vote != vote:
+                    if vote == True:
+                      p += 1
+                      n -= 1
+                    else:
+                      n += 1
+                      p -= 1
+                record[0].vote = vote
+                record[0].save()
+            else:
+                SuggestionRating(user = user, vote = vote,suggestions_id = suggestion).save()
+                if vote == True:
+                  p += 1
+                else:
+                  n += 1
+
+            art.likes = p
+            art.dislikes = n
+            art.save()
+            mc.delete('voted_suggestion_' + str(article) + '-' + str(user.id))
+            return HttpResponse(simplejson.dumps({'suggestion':suggestion,'p':p,'n':n,'vote':request.POST.get("type")}))
+
+def copy_details(request):
+    articledetails = ArticleDetails.objects.all()
+    for art in articledetails:
+        Suggestion(articledetails_id = art.id, likes = art.likes,dislikes = art.dislikes, description = art.summary).save()
+        sug = Suggestion.objects.latest()
+        votes = ArticleRating.objects.filter(articledetails_id = art.id)
+        for vote in votes:
+            SuggestionRating(suggestions_id = sug.id,user = vote.user, vote = vote.vote).save()
+
+    text = "done!"
+    
+    return render_to_response('operation.html',{'text':text} ,RequestContext(request))
