@@ -4,11 +4,11 @@
 <!-- display an image if the logged was not admin -->
 {% if username != 'admin' %}
     {% if provider == 'facebook' %}
-        <a href="{% url user username='admin' %}" class="user-image" title="{{ name }}">
+        <a href="{% url user username=username %}" class="user-image" title="{{ name }}">
             <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ username }}">
         </a>
     {% elif provider == 'twitter' %}
-        <a href="{% url user username='admin' %}" class="user-image" title="{{ name }}">
+        <a href="{% url user username=username %}" class="user-image" title="{{ name }}">
           <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ username }}">
         </a>
     {% elif provider == 'yahoo' %}
@@ -16,7 +16,7 @@
     {% elif provider == 'google' %}
    	 	<img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
     {% else %}
-        <a href="{% url user username='admin' %}" class="user-image" title="{{ name }}">
+        <a href="{% url user username=username %}" class="user-image" title="{{ name }}">
           <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ username }}">
         </a>
     {% endif %}
@@ -27,14 +27,14 @@
     <h3><p class="name"><a>{{ name }}</a></p></h3> 
 {% else %}
     {% if provider == 'facebook' %}
-		<h3><p class="name"><a href="{% url user username='admin' %}">{{ name }}</a></p></h3>
+		<h3><p class="name"><a href="{% url user username=username %}">{{ name }}</a></p></h3>
     {% elif provider == 'twitter' %}
-		<h3><p class="name"><a href="{% url user username='admin' %}">{{ name }}</a></p></h3>
+		<h3><p class="name"><a href="{% url user username=username %}">{{ name }}</a></p></h3>
     {% elif provider == 'yahoo' %}
 		<h3><p class="name"><a>{{ name }}</a></p></h3>
     {% elif provider == 'google' %}
 		<h3><p class="name"><a>{{ name }}</a></p></h3>
     {% else %}
-		<h3><p class="name"><a href="{% url user username='admin' %}">{{ name }}</a></p></h3> 
+		<h3><p class="name"><a href="{% url user username=username %}">{{ name }}</a></p></h3> 
   	{% endif %}
 {% endif %}
