@@ -1,5 +1,9 @@
-# Django settings for sharek project.
-# Rename this file to settings_local.py and use your own custom settings for facebook, twitter and database configuration
+
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+
+MEMCACHED_TIMEOUT = 21600 # 6 Hrs
+MEMCACHED_BACKEND = '127.0.0.1:11211'
 
 DATABASES = {
     'default': {
@@ -30,3 +34,6 @@ GOOGLE_CONSUMER_KEY          = ''
 GOOGLE_CONSUMER_SECRET       = ''
 GOOGLE_OAUTH2_CLIENT_ID      = ''
 GOOGLE_OAUTH2_CLIENT_SECRET  = ''
+
+BITLY_USERNAME = 'YOUR_BITLY_USERNAME'
+BITLY_APIKEY = 'YOUR_BITLY_APIKEY'

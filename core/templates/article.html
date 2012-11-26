@@ -1,9 +1,13 @@
 {% extends 'base.html' %}
 
+{% load call %}
 {% load replace %}
 {% load hash %} 
 <!-- {% load date_format %}  -->
+
 {% block title %}{{article.header.name}}{% endblock %}
+{% block description %}{{article.summary|striptags }}{% endblock %}
+{% block keywords %}{% for related in related_tags %}{{related.name}}, {% endfor %}{% endblock %}
 
 {% block content %}
 

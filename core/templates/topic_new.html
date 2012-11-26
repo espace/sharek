@@ -2,7 +2,10 @@
 {% load settings %}
 {% load hash %}
 {% load call %}
+
 {% block title %}{{topic.name}}{% endblock %}
+{% block description %}{{topic.name}}{% endblock %}
+{% block keywords %}{{topic.name}}{% endblock %}
 
 {% block content %}
 
@@ -15,9 +18,6 @@
                 <h1>{{topic.name}}</h1> 
                 
                 {% if all_articles %}
-                <a target="_blank" href="{% url topic_pdf topic_slug=topic.get_absolute_url %}" class="download-pdf ">
-                  تحميل مسودة باب {{ topic.name }}
-                </a>
 
                 <select class="span2" onchange="window.open(this.options[this.selectedIndex].value,'_top')"> 
                     <option>-- اذهب للمادة --</option>
@@ -33,9 +33,6 @@
                 <h1>{{topic.name}}</h1>
                 
                 {% if articles %}
-                <a target="_blank" href="{% url topic_pdf topic_slug=topic.get_absolute_url %}" class="download-pdf ">
-                  تحميل مسودة باب {{ topic.name }}
-                </a>
 
                 <select class="span2" onchange="window.open(this.options[this.selectedIndex].value,'_top')"> 
                     <option>-- اذهب للمادة --</option>
