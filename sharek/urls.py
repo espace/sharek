@@ -38,8 +38,8 @@ urlpatterns = patterns('',
     url(r'^sharek/ajx_search/$', 'core.views.ajx_search', name='ajx_search'),
     
     url(r'^sharek/profile/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.profile', name='profile'),
-    url(r'^sharek/user/(?P<username>[-\w]+)/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.user', name='user'),
-    url(r'^sharek/user/(?P<username>[-\w]+)/$', 'core.profiles.views.user', name='user'),
+    url(r'^sharek/user/(?P<userid>[-\w]+)/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.user', name='user'),
+    url(r'^sharek/user/(?P<userid>[-\w]+)/$', 'core.profiles.views.user', name='user'),
     
     url(r'^sharek/vote/', 'core.views.vote', name='vote'),
     url(r'^sharek/article_vote/', 'core.views.article_vote', name='article_vote'),

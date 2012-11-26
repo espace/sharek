@@ -29,9 +29,9 @@
     <div class="span12 profile-tabs">
       <ul class="nav nav-tabs " id="myTab">
       {% if url == 'user_profile' %}
-            <li {% if browsing_data = "likes" %}class="active"{% endif %}><a href="{% url user username=user_profile.username browsing_data="likes" %}"><i class=" icon-thumbs-up"></i>المواد التى أعجبتك</a></li>
-            <li {% if browsing_data = "dislikes" %}class="active"{% endif %}><a href="{% url user username=user_profile.username browsing_data="dislikes" %}"><i class=" icon-thumbs-down"></i>المواد التى لم تعجبك</a></li>
-            <li {% if browsing_data = "comments" %}class="active"{% endif %}><a href="{% url user username=user_profile.username browsing_data="comments" %}"> <i class=" icon-comment "></i>مشاركاتك</a></li>
+            <li {% if browsing_data = "likes" %}class="active"{% endif %}><a href="{% url user userid=user_profile.username browsing_data="likes" %}"><i class=" icon-thumbs-up"></i>المواد التى أعجبتك</a></li>
+            <li {% if browsing_data = "dislikes" %}class="active"{% endif %}><a href="{% url user userid=user_profile.username browsing_data="dislikes" %}"><i class=" icon-thumbs-down"></i>المواد التى لم تعجبك</a></li>
+            <li {% if browsing_data = "comments" %}class="active"{% endif %}><a href="{% url user userid=user_profile.username browsing_data="comments" %}"> <i class=" icon-comment "></i>مشاركاتك</a></li>
       {% else %}
             <li {% if browsing_data = "likes" %}class="active"{% endif %}><a href="{% url profile browsing_data="likes" %}"><i class=" icon-thumbs-up"></i>المواد التى أعجبتك</a></li>
             <li {% if browsing_data = "dislikes" %}class="active"{% endif %}><a href="{% url profile browsing_data="dislikes" %}"><i class=" icon-thumbs-down"></i>المواد التى لم تعجبك</a></li>
