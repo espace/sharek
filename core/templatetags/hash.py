@@ -18,11 +18,8 @@ def vote(voted, key_name):
   return 0
 
 def vote_sug(voted, key_name):
-  print voted
   for sug_vote in voted:
     if sug_vote.suggestions_id == key_name:
-      print sug_vote.vote
-      print "$$$$$$$$$$$$$$$$$$$$$"
       if sug_vote.vote == True:
         return 1
       else:
