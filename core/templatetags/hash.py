@@ -17,7 +17,7 @@ def vote(voted, key_name):
 
   return 0
 
-def vote_sug(voted, key_name):
+def vote_sug(voted, key_name):  
   for sug_vote in voted:
     if sug_vote.suggestions_id == key_name:
       if sug_vote.vote == True:

@@ -35,16 +35,17 @@
   {% endifnotequal %}
   
   {% for suggestion in article.get_suggestions %}
-  <div class="suggestion-block ">
-      <h3><p class="name"><a href="#" target="_blank">مقترح ({{ forloop.counter0 }})</a></p></h3>
-    
-      <div class="like-group">
-        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == -1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == 1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}} " vote="0"><small class="dislike suggestion {{suggestion.id}}">{{suggestion.dislikes}}</small></a>
-        <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == 1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == -1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}}" vote="1" ><small class="like suggestion {{suggestion.id}}">{{suggestion.likes}}</small></a>
-      </div>
-
-      <p>{%if related_tags%}{{suggestion.description|striptags}}{%else%}{{suggestion.description|striptags|truncatewords_html:35}}{%endif%}</p>
-  </div>
+    <div class="suggestion-block ">
+        <h3><p class="name"><a href="#" target="_blank">{% if article.get_suggestions|length == 1 %}النص المقترح{% else %}مقترح ({{ forloop.counter }}){% endif %}</a></p></h3>
+        <div class="like-group">
+          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == -1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == 1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}} " vote="0"><small class="dislike suggestion {{suggestion.id}}">{{suggestion.dislikes}}</small></a>
+          <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == 1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == -1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}}" vote="1" ><small class="like suggestion {{suggestion.id}}">{{suggestion.likes}}</small></a>
+        </div>
+        {% if suggestion.image %}
+          <img src="{{settings.MEDIA_URL}}{{suggestion.image}}">
+        {% endif %}
+        <p>{%if related_tags%}{{suggestion.description|striptags}}{%else%}{{suggestion.description|striptags|truncatewords_html:35}}{%endif%}</p>
+    </div>
   {% endfor %}
 
   {% if article.mod_date %}
