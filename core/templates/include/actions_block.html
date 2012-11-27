@@ -1,0 +1,28 @@
+{% load hash %}
+{% load replace %}
+{% load date_format %}
+{% load auth_provider %}
+<div class="like-group">
+    <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {{comment.id}} {% if voted_fb|vote:comment.id == -1 %} active {% elif voted_fb|vote:comment.id == 1 %} disabled {% endif %} {{comment.id}}" id="{{comment.id}}" vote="0"><small class="dislike {{comment.id}}">{{comment.dislikes}}</small></a>
+    <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{comment.id}} {% if voted_fb|vote:comment.id == 1 %} active {% elif voted_fb|vote:comment.id == -1 %} disabled {% endif %} {{comment.id}}" id="{{comment.id}}" vote="1"><small class="like {{comment.id}}">{{comment.likes}}</small></a>
+</div>
+
+<span class="date">{% if just_comment != 1 %}<a href="{% url comment_detail classified_by="topics" class_slug=topic.slug article_slug=article.slug comment_no=comment.id %}">{% endif %}{{comment.date|format}}</a></span>
+
+<div class="more">{{comment.suggestion|striptags}}</div>
+
+<div class="delete-group">
+  {% if user %}
+    {% if user.username = comment.user or user.is_staff %}
+      <a href="javascript:;" class="L_remove delete " feedback_id="{{comment.id}}"><span class="icon-trash"></span>مسح التعليق</a>
+    {% endif %}
+  {% endif %}
+  
+  {% if with_reply %}
+  <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete " id="{{comment.id}}"><span class="icon-comment"></span>أضف رد</a>
+  {% endif %}
+  
+  {% if comment.children > 0 or children > 0 %}
+      <a href="javascript:;" class="L_show_more " id="{{comment.id}}"><span class="L_show_more_icon {{comment.id}} icon-plus"></span><span class="L_show_more_txt {{comment.id}}">إظهار باقي الردود</span></a>
+  {% endif %}
+</div>

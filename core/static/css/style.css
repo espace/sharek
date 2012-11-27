@@ -2359,6 +2359,7 @@ span.divider{
 a.morelink { 
 	text-decoration:none; 
 	outline: none; 
+	font-size: 11px;
 } 
 .morecontent span { 
 	display: none; 
@@ -2412,4 +2413,13 @@ a.morelink {
 
 .more {
     clear: both;
+}
+
+
+.user-response {
+    color: #BBBBBB;
+	font-family: GESSTwoMediumRegular;
+    font-size: 10px;
+	margin-right: 5px;
+    font-weight: normal;
 }

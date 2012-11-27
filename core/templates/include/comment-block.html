@@ -8,25 +8,12 @@
   {% with name=feedback.name username=feedback.user provider=feedback.provider %}
   	{% include "include/user-block.html" %}
   {% endwith %}
-             
-  <div class="like-group">
-     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == -1 %} active {% elif voted_fb|vote:feedback.id == 1 %} disabled {% endif %}" id="{{feedback.id}}" vote="0"><small class="dislike {{feedback.id}}">{{feedback.dislikes}}</small></a>
-     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{feedback.id}} {% if voted_fb|vote:feedback.id == 1 %} active {% elif voted_fb|vote:feedback.id == -1 %} disabled {% endif %}" id="{{feedback.id}}" vote="1"><small class="like {{feedback.id}}">{{feedback.likes}}</small></a>
-  </div>
-  <span class="date">{% if just_comment != 1 %}<a href="{% url comment_detail classified_by="topics" class_slug=topic.slug article_slug=article.slug comment_no=feedback.id %}">{% endif %}{{feedback.date|format}}</a></span>
-  <div class="more">{{feedback.suggestion|striptags}}</div>
-  <div class="delete-group">
-    {% if user %}
-      {% if user.username = feedback.user or user.is_staff %}
-        <a href="javascript:;" class="L_remove delete " feedback_id="{{feedback.id}}"><span class="icon-trash"></span>مسح التعليق</a>
-      {% endif %}
-    {% endif %}
-    <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="L_reply delete " id="{{feedback.id}}"><span class="icon-comment"></span>أضف رد</a>
-    {% if feedback.children > 0 or children > 0 %}
-        <a href="javascript:;" class="L_show_more " id="{{feedback.id}}"><span class="L_show_more_icon {{feedback.id}} icon-plus"></span><span class="L_show_more_txt {{feedback.id}}">إظهار باقي الردود</span></a>
-    {% endif %}
-  </div>
-    <div class="L_replies_block child-wrapper {{feedback.id}}" style="display:none;">
+          
+  {% with comment=feedback with_reply='1' %}
+    {% include "include/actions_block.html" %}
+  {% endwith %}
+  
+  <div class="L_replies_block child-wrapper {{feedback.id}}" style="display:none;">
     {% if feedback.children > 0 or children > 0 %}
       {% for reply in feedback.get_children %}
         <div class="comment-block child-reply L_{{reply.id}}">
@@ -34,21 +21,11 @@
           {% with name=reply.name username=reply.user provider=reply.provider %}
           	{% include "include/user-block.html" %}
           {% endwith %}
-            
-          <div class="like-group">
-           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {% if voted_fb|vote:reply.id == -1 %} active {% elif voted_fb|vote:reply.id == 1 %} disabled {% endif %} {{reply.id}}" id="{{reply.id}}" vote="0"><small class="dislike {{reply.id}}">{{reply.dislikes}}</small></a>
-           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {% if voted_fb|vote:reply.id == 1 %} active {% elif voted_fb|vote:reply.id == -1 %} disabled {% endif %} {{reply.id}}" id="{{reply.id}}" vote="1"><small class="like {{reply.id}}">{{reply.likes}}</small></a>
-          </div>
           
-          <span class="date">{{reply.date|format}}</span>
-          <p>{{reply.suggestion}}</p>
-          <div class="delete-group">
-            {% if user %}
-              {% if user.username = reply.user or user.is_staff %}
-                <a href="javascript:;" class="L_remove delete " feedback_id="{{reply.id}}"><span class="icon-trash"></span>مسح التعليق</a>
-              {% endif %}
-            {% endif %}
-          </div>
+          {% with comment=reply %}
+          	{% include "include/actions_block.html" %}
+          {% endwith %}
+          
         </div><!-- comment end -->
       {% endfor %}
     {% endif %}
@@ -59,7 +36,7 @@
       {% endwith %}
       
              
-      <a href="javascript:;" class="L_hide close  " feedback_id="{{feedback.id}}" ><span>x</span></a>
+      <a href="javascript:;" class="L_hide close  " feedback_id="{{feedback.id}}" ><span>&times;</span></a>
       <p >
        <textarea rows="3" class="input-xlarge span7 L_reply_txt {{feedback.id}}" id="suggestion"></textarea>
        <br />
