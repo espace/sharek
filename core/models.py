@@ -759,7 +759,7 @@ class Suggestion(models.Model):
     class Meta:
       get_latest_by = 'id'
 
-class SuggestionRating(models.Model):
+class SuggestionVotes(models.Model):
     suggestions = models.ForeignKey(Suggestion)    
     user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()

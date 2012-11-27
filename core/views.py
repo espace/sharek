@@ -16,7 +16,7 @@ from decimal import Decimal
 from diff_match import diff_match_patch
 from django.contrib import auth
 from django.core import serializers
-from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User, Suggestion, SuggestionRating
+from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User, Suggestion, SuggestionVotes
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -316,7 +316,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
                 voted_suggestion = []
                 suggestions = article.get_suggestions()
                 for suggestion in suggestions:
-                    votes = SuggestionRating.objects.filter(suggestions_id = suggestion.id, user = user)
+                    votes = SuggestionVotes.objects.filter(suggestions_id = suggestion.id, user = user)
                     for vote in votes:
                         voted_suggestion.append(vote)
                 mc.set('voted_suggestion_' + str(article.id) + '-' + str(user.id), voted_suggestion, settings.MEMCACHED_TIMEOUT)
@@ -827,7 +827,7 @@ def suggestion_vote(request):
             p = art.likes
             n = art.dislikes
 
-            record = SuggestionRating.objects.filter(suggestions_id = suggestion, user = user )
+            record = SuggestionVotes.objects.filter(suggestions_id = suggestion, user = user )
             
             if record:
                 if record[0].vote != vote:
@@ -840,7 +840,7 @@ def suggestion_vote(request):
                 record[0].vote = vote
                 record[0].save()
             else:
-                SuggestionRating(user = user, vote = vote,suggestions_id = suggestion).save()
+                SuggestionVotes(user = user, vote = vote,suggestions_id = suggestion).save()
                 if vote == True:
                   p += 1
                 else:
@@ -859,7 +859,7 @@ def copy_details(request):
         sug = Suggestion.objects.latest()
         votes = ArticleRating.objects.filter(articledetails_id = art.id)
         for vote in votes:
-            SuggestionRating(suggestions_id = sug.id,user = vote.user, vote = vote.vote).save()
+            SuggestionVotes(suggestions_id = sug.id,user = vote.user, vote = vote.vote).save()
 
     text = "done!"
     
