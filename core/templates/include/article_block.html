@@ -30,9 +30,9 @@
   </h3>
 
 
-  {% ifnotequal topic_page 1 %}
+  {% ifequal topic_page 1 %}
   <a href="{% url topic topic_slug=article.topic_slug %}">{{ article.topic_name }}</a>
-  {% endifnotequal %}
+  {% endifequal %}
   
   {% for suggestion in article.get_suggestions %}
     <div class="suggestion-block ">
