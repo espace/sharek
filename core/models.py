@@ -1,3 +1,4 @@
+from sharek import settings
 import core
 import os.path
 import subprocess
@@ -755,6 +756,7 @@ class Suggestion(models.Model):
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
     description = MarkupField(default='', null = True, blank = True)
+    image = models.ImageField(upload_to="suggestions/", blank=True)
 
     class Meta:
       get_latest_by = 'id'

@@ -14,7 +14,7 @@ class SuggestionInlineAdmin(admin.TabularInline):
     model      = Suggestion
     extra      = 0
     can_delete = True
-    fields     = ['description']
+    fields     = ['description','image']
 
 class ArticleDetailsAdmin(admin.ModelAdmin):
     inlines = [SuggestionInlineAdmin,]
