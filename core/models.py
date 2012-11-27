@@ -757,6 +757,7 @@ class Suggestion(models.Model):
     dislikes = models.IntegerField(default=0)
     description = MarkupField(default='', null = True, blank = True)
     image = models.ImageField(upload_to="suggestions/", blank=True)
+    video = models.CharField(max_length=12,default='',help_text="The Youtube video code, ex: oq6Yij-hnGo ", null = True, blank = True)
 
     class Meta:
       get_latest_by = 'id'
