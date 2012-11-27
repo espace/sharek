@@ -255,43 +255,10 @@ showMore();
 
 <script id="modification_temp" type="text/x-jquery-tmpl">
   <div class="comment-block L_${id} alt">
-    {% if user.username != 'admin' %}
-    <div class="facebook_user_img">
-        {% if request.session.social_auth_last_login_backend == 'facebook' %}
-          <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
-            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-          </a>
-        {% elif request.session.social_auth_last_login_backend == 'twitter' %}
-          <a href="http://www.twitter.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
-            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-          </a>
-        {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
-          <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-        {% elif request.session.social_auth_last_login_backend == 'google' %}
-          <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
-        {% else %}
-        <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
-            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-        </a>
-        {% endif %}
-    </div>
-    {% endif %}
-          
-          {% if user.username == 'admin' %}
-          <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
-          {% else %}
-      {% if request.session.social_auth_last_login_backend == 'facebook' %}
-        <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% elif request.session.social_auth_last_login_backend == 'twitter' %}
-        <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
-        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% elif request.session.social_auth_last_login_backend == 'google' %}
-        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% else %}
-    <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{user.first_name}} {{ user.last_name }}</a></p></h3> 
-          {% endif %}
-    {% endif %}
+    
+    {% with name=user.first_name username=user.username provider=request.session.social_auth_last_login_backend %}
+       {% include "include/user-block.html" %}
+    {% endwith %}
              
     <div class="like-group">
      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote  ${id}" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
@@ -306,50 +273,17 @@ showMore();
 </script>
 
 <script id="reply_temp" type="text/x-jquery-tmpl">
-  <div class="comment-block child-reply L_${id}">
+  <div class="comment-block child-reply L_${id}" >
     
-    {% if user.username != 'admin' %}
-    <div class="facebook_user_img">
-        {% if request.session.social_auth_last_login_backend == 'facebook' %}
-      <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
-        <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-      </a>
-        {% elif request.session.social_auth_last_login_backend == 'twitter' %}
-          <a href="http://www.twitter.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
-            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-          </a>
-        {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
-          <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-        {% elif request.session.social_auth_last_login_backend == 'google' %}
-          <img class="loader" src="{{ STATIC_URL }}images/google_user.gif">
-        {% else %}
-          <a href="http://www.facebook.com/{{ user }}" target="_blank" class="user-image" title="{{ user.first_name }} {{ user.last_name }}">
-            <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ user }}">
-          </a>
-        {% endif %}
-    </div>
-    {% endif %}
-          
-          {% if user == 'admin' %}
-          <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3> 
-          {% else %}
-      {% if request.session.social_auth_last_login_backend == 'facebook' %}
-      <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% elif request.session.social_auth_last_login_backend == 'twitter' %}
-        <h3><p class="name"><a href="http://www.twitter.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% elif request.session.social_auth_last_login_backend == 'yahoo' %}
-        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% elif request.session.social_auth_last_login_backend == 'google' %}
-        <h3><p class="name"><a>{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% else %}
-        <h3><p class="name"><a href="http://www.facebook.com/{{ user }}" target="_blank">{{ user.first_name }} {{ user.last_name }}</a></p></h3>
-      {% endif %}
-          {% endif %}
+    {% with name=user.first_name username=user.username provider=request.session.social_auth_last_login_backend %}
+       {% include "include/user-block.html" %}
+    {% endwith %}
 
     <div class="like-group">
          <a {% if user %} href="javascript:;" {% else %} href="#not-logged" rel="facebox"{% endif %}  class="dislike vote L_vote ${id}" id="${id}" vote="0"><small class="dislike ${id}">0</small></a>
          <a {% if user %} href="javascript:;" {% else %} href="#not-logged" rel="facebox"{% endif %}  class="like vote L_vote ${id}" id="${id}" vote="1"><small class="like ${id}">0</small></a>
     </div>
+	
     <span class="date">${date}</span>
     <p>${suggestion}</p>
     <div class="delete-group">

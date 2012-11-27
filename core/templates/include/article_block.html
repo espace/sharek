@@ -44,7 +44,7 @@
         {% if suggestion.image %}
           <img src="{{settings.MEDIA_URL}}{{suggestion.image}}">
         {% endif %}
-        <p>{%if related_tags%}{{suggestion.description|safe}}{%else%}{{suggestion.description|safe|truncatewords_html:35}}{%endif%}</p>
+        <p>{%if related_tags%}{{suggestion.description|striptags}}{%else%}{{suggestion.description|striptags|truncatewords_html:35}}{%endif%}</p>
     </div>
   {% endfor %}
 
