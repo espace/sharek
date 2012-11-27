@@ -1,6 +1,6 @@
 <div class="facebook_user_img">
 <!-- display an image if the logged was not admin -->
-{% if username != 'admin' %}
+{% if username != 'admin' and username != '' %}
     <a href="{% url user username=username %}" class="user-image" title="{{ name }}">
         <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ username }}">
     </a>
