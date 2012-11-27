@@ -2408,3 +2408,7 @@ a.morelink {
 	margin-left: -15px;
 
 }
+
+.more {
+    clear: both;
+}
