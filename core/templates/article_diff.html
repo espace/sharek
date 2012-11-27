@@ -33,7 +33,7 @@
                 {{article.date|date:"Y/m/d"}} {{article.date|time:"G:i"}} {% if article.date|time:"A" == 'AM' %}{{"ص"}} {% else %}{{"م"}}{% endif %}
             </span>
         </h3>
-        <div id="version-67">{{ article.text|safe }}</div><br>
+        <div id="version-67">{{ article.text|striptags }}</div><br>
       </div><!-- well -->
     {% endfor %}
   </div>

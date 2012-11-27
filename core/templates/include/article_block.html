@@ -43,7 +43,7 @@
         <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == 1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == -1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}}" vote="1" ><small class="like suggestion {{suggestion.id}}">{{suggestion.likes}}</small></a>
       </div>
 
-      <p>{%if related_tags%}{{suggestion.description|safe}}{%else%}{{suggestion.description|safe|truncatewords_html:35}}{%endif%}</p>
+      <p>{%if related_tags%}{{suggestion.description|striptags}}{%else%}{{suggestion.description|striptags|truncatewords_html:35}}{%endif%}</p>
   </div>
   {% endfor %}
 
