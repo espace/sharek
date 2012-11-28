@@ -16,7 +16,7 @@ urlpatterns = patterns('',
 	
 	#Generate PDF
     url(r'^sharek/pdf/topics/$', 'core.reports.views.topics_pdf', name='topics_pdf'),
-	#url(r'^sharek/pdf/topic/(?P<topic_slug>[-\w]+)/$', 'core.reports.views.topic_pdf', name='topic_pdf'),
+	url(r'^sharek/pdf/topic/(?P<topic_slug>[-\w]+)/$', 'core.reports.views.topic_pdf', name='topic_pdf'),
 	url(r'^sharek/pdf/comments/(?P<article_slug>[-\w]+)/$', 'core.reports.views.comments_pdf', name='comments_pdf'),
 	
     url(r'sharek/latest-comments/$', 'core.views.latest_comments', name='latest_comments'),
