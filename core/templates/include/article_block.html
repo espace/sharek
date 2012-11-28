@@ -36,7 +36,7 @@
   
   {% for suggestion in article.get_suggestions %}
     <div class="suggestion-block ">
-        <h3><p class="name"><a href="#" target="_blank">{% if article.get_suggestions|length == 1 %}النص المقترح{% else %}مقترح ({{ forloop.counter }}){% endif %}</a></p></h3>
+        <h3><p class="name">{% if article.get_suggestions|length == 1 %}النص المقترح{% else %}مقترح ({{ forloop.counter }}){% endif %}</p></h3>
         <div class="like-group">
           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == -1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == 1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}} " vote="0"><small class="dislike suggestion {{suggestion.id}}">{{suggestion.dislikes}}</small></a>
           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == 1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == -1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}}" vote="1" ><small class="like suggestion {{suggestion.id}}">{{suggestion.likes}}</small></a>
@@ -51,7 +51,7 @@
         {% if suggestion.get_poll_options %}
           <ul suggestion_id="{{suggestion.id}}">
             {% for option in suggestion.get_poll_options %}
-              <a href="javascript:;" class="option" option_id="{{option.id}}"><li>{{option.option}}</li></a>
+              <input type="checkbox" class="option" value="{{option.id}}">  {{option.option}} <span class="count {{option.id}}">{{option.count}}</span><br>
             {% endfor %}
           </ul>
         {% endif %}

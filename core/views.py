@@ -16,7 +16,7 @@ from decimal import Decimal
 from diff_match import diff_match_patch
 from django.contrib import auth
 from django.core import serializers
-from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User, Suggestion, SuggestionVotes
+from core.models import Tag, ArticleDetails, ArticleHeader, Feedback, Rating, Topic, Info, ArticleRating, User, Suggestion, SuggestionVotes, PollOptions, PollResult
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
@@ -176,15 +176,15 @@ def topic_detail(request, topic_slug=None):
             topic = None
             all_articles = None
 
-    voted_articles = []
+    voted_suggestion = []
 
     if user:
-        voted_articles = mc.get('voted_articles')
-    if not voted_articles:
-           voted_articles = ArticleRating.objects.filter(user = user)
-           mc.set('voted_articles', voted_articles, 900) # 15 Minutes
+        voted_suggestion = mc.get('voted_suggestion_'+ str(user.id))
+    if not voted_suggestion:
+           voted_suggestion = SuggestionVotes.objects.filter(user = user)
+           mc.set('voted_suggestion_'+ str(user.id), voted_suggestion, 900) # 15 Minutes
 
-    template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
+    template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_suggestions':voted_suggestion}
 
     return render_to_response('topic_new.html',template_context ,RequestContext(request))
 
@@ -311,7 +311,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
                  voted_fb = Rating.objects.filter(articledetails_id = article.id, user = user)
                  mc.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb, settings.MEMCACHED_TIMEOUT)
     	
-            voted_suggestion = mc.get('voted_suggestion_' + str(article.id) + '-' + str(user.id))
+            voted_suggestion = mc.get('voted_suggestion_'+ str(user.id))
             if not voted_suggestion:
                 voted_suggestion = []
                 suggestions = article.get_suggestions()
@@ -319,7 +319,7 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
                     votes = SuggestionVotes.objects.filter(suggestions_id = suggestion.id, user = user)
                     for vote in votes:
                         voted_suggestion.append(vote)
-                mc.set('voted_suggestion_' + str(article.id) + '-' + str(user.id), voted_suggestion, settings.MEMCACHED_TIMEOUT)
+                mc.set('voted_suggestion_'+ str(user.id), voted_suggestion, settings.MEMCACHED_TIMEOUT)
 
         article_rate = None
         for art in voted_suggestion:
@@ -849,18 +849,26 @@ def suggestion_vote(request):
             art.likes = p
             art.dislikes = n
             art.save()
-            mc.delete('voted_suggestion_' + str(article) + '-' + str(user.id))
+            mc.delete('voted_suggestion_'+ str(user.id))
             return HttpResponse(simplejson.dumps({'suggestion':suggestion,'p':p,'n':n,'vote':request.POST.get("type")}))
 
-def copy_details(request):
-    articledetails = ArticleDetails.objects.all()
-    for art in articledetails:
-        Suggestion(articledetails_id = art.id, likes = art.likes,dislikes = art.dislikes, description = art.summary).save()
-        sug = Suggestion.objects.latest()
-        votes = ArticleRating.objects.filter(articledetails_id = art.id)
-        for vote in votes:
-            SuggestionVotes(suggestions_id = sug.id,user = vote.user, vote = vote.vote).save()
+def poll_select(request):
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            option_id = request.POST.get("option_id")
+            state = request.POST.get("state")
+            user_id =  request.user.id
 
-    text = "done!"
-    
-    return render_to_response('operation.html',{'text':text} ,RequestContext(request))
+            option = PollOptions.objects.get(id = option_id)
+            record = PollResult.objects.filter(option_id = option_id, user_id = user_id)
+
+            if not record:
+                PollResult(option_id = option_id, user_id = user_id).save()
+                option.count += 1
+                option.save()
+            else:
+                record[0].delete()
+                option.count -=1
+                option.save()
+
+    return HttpResponse(simplejson.dumps({'option_id':option_id,'count':option.count}))
