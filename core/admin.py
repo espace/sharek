@@ -68,17 +68,13 @@ class TagAdmin(admin.ModelAdmin):
     class Media:
         js = ( 'js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js', )
 
-class TopicAdmin(AdminViews):
+class TopicAdmin(admin.ModelAdmin):
     prepopulated_fields = {"slug": ["name"]}
     list_display = ('name','short_name','order')
     list_editable = ['order']
 
     class Media:
         js = ('js/jquery.min.js', 'js/jquery-ui.min.js', 'js/admin-list-reorder.js',)
-
-    admin_views = (
-         ('Generate PDF', '/sharek/pdf/topics/'),
-    )
 
 class BranchInlineAdmin(admin.TabularInline):
     model      = Branch

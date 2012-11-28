@@ -3,23 +3,27 @@ import os
 import core
 import os.path
 import subprocess
-
+import mimetypes
 from django.template import Context, loader, RequestContext
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.template.loader import get_template
 from django.template import Context
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
-
+from django.core.servers.basehttp import FileWrapper
 from core.models import Tag, ArticleDetails
 from core.models import Feedback, Rating, Topic
 from core.models import Info, ArticleRating, User
 from core.views import login
 
 import time
+import memcache
 from datetime import datetime
 from operator import attrgetter
 from sharek import settings
+
+# get first memcached URI
+mc = memcache.Client([settings.MEMCACHED_BACKEND])
 
 def comments_pdf(request, article_slug=None):
     user = None
@@ -49,7 +53,7 @@ def comments_pdf(request, article_slug=None):
         return render_to_response('reports/comments_template.html', context ,RequestContext(request))
 
     else:
-        return render_to_pdf('reports/comments_template.html', 'comments_template_', context, 'article_' + article.slug)
+        return render_to_pdf('reports/comments_template.html', 'comments_template_', context, 'article-' + str(article.slug))
 
 def topics_pdf(request):
     user = None
@@ -73,7 +77,7 @@ def topics_pdf(request):
         return render_to_response('reports/topics_template.html', context ,RequestContext(request))
 
     else:
-        return render_to_pdf('reports/topics_template.html', 'topics_template_', context, 'dostor_masr')
+        return render_to_pdf('reports/topics_template.html', 'topics_template_', context, 'dostor-masr')
 
 def topic_pdf(request, topic_slug=None):
     user = None
@@ -99,7 +103,7 @@ def topic_pdf(request, topic_slug=None):
         return render_to_response('reports/topic_template.html', context ,RequestContext(request))
 
     else:
-        return render_to_pdf('reports/topic_template.html', 'topic_template_', context, 'topic_' + topic.slug)
+        return render_to_pdf('reports/topic_template.html', 'topic_template_', context, 'topic-' + str(topic_slug))
 
 def export_feedback(request, article_slug):
     
@@ -123,26 +127,37 @@ def export_feedback(request, article_slug):
 
 def render_to_pdf(template_html, template_prefix, context, pdf_filename):
 
-     dt_obj = datetime.now()
-     date_str = dt_obj.strftime("%Y%m%d_%H%M%S")
-     date_display = dt_obj.strftime("%Y-%m-%d")
+    generated_pdf = mc.get(pdf_filename + '_pdf')
 
-     template = loader.get_template(template_html)
-     rendered = template.render(context)
-     full_temp_html_file_name = core.__path__[0] + '/static/temp/' + template_prefix + date_str + '.html'
-     file= open(full_temp_html_file_name, 'w')
-     file.write(rendered.encode('utf8'))
-     file.close()
+    output_file = core.__path__[0] + '/static/pdf/' + pdf_filename + '.pdf'
 
-     #command_args = 'wkhtmltopdf -L 10 -R 10 -T 20 -B 10 --footer-html ' + core.__path__[0] + '/static/footer.html ' + full_temp_html_file_name + ' -'
-     command_args = 'wkhtmltopdf -L 10 -R 10 -T 20 -B 10 --footer-html ' + core.__path__[0] + '/static/footer.html ' + full_temp_html_file_name + ' ' + core.__path__[0] + '/static/pdf/dostor_masr.pdf'
-     popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-     pdf_contents = popen.stdout.read()
-     popen.terminate()
-     popen.wait()
-     '''
-     response = HttpResponse(pdf_contents, mimetype='application/pdf')
-     response['Content-Disposition'] = 'filename=' + pdf_filename + '.pdf'
-     return response
-     '''
-     return HttpResponseRedirect("/sharek/admin/")
+    if not generated_pdf or not os.path.isfile(output_file):
+
+        dt_obj = datetime.now()
+        date_str = dt_obj.strftime("%Y%m%d_%H%M%S")
+        date_display = dt_obj.strftime("%Y-%m-%d")
+
+        template = loader.get_template(template_html)
+        rendered = template.render(context)
+        full_temp_html_file_name = core.__path__[0] + '/static/temp/' + template_prefix + date_str + '.html'
+        file= open(full_temp_html_file_name, 'w')
+        file.write(rendered.encode('utf8'))
+        file.close()
+
+        command_args = 'wkhtmltopdf -L 10 -R 10 -T 20 -B 10 --footer-html ' + core.__path__[0] + '/static/footer.html ' + full_temp_html_file_name + ' ' + output_file
+        popen = subprocess.Popen(command_args, bufsize=4096, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        pdf_contents = popen.stdout.read()
+        popen.terminate()
+        popen.wait()
+
+        mc.set(pdf_filename + '_pdf', pdf_filename + '_generated', settings.MEMCACHED_TIMEOUT)
+
+    download_name = pdf_filename + '.pdf'
+    wrapper       = FileWrapper(open(output_file))
+    content_type  = mimetypes.guess_type(output_file)[0]
+
+    response = HttpResponse(wrapper,content_type=content_type)
+    response['Content-Length'] = os.path.getsize(output_file)    
+    response['Content-Disposition'] = "attachment; filename=%s"%download_name
+
+    return response
