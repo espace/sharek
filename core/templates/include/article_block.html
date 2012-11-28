@@ -48,6 +48,14 @@
           <img src="{{settings.MEDIA_URL}}{{suggestion.image}}">
         {% endif %}
         <p>{%if related_tags%}{{suggestion.description|striptags}}{%else%}{{suggestion.description|striptags|truncatewords_html:35}}{%endif%}</p>
+        {% if suggestion.get_poll_options %}
+          <ul suggestion_id="{{suggestion.id}}">
+            {% for option in suggestion.get_poll_options %}
+              <a href="javascript:;" class="option" option_id="{{option.id}}"><li>{{option.option}}</li></a>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
     </div>
   {% endfor %}
 

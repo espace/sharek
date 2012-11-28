@@ -1,6 +1,6 @@
 from core.models import Tag
 from core.models import Topic, Chapter, Branch
-from core.models import Info, Feedback, ArticleDetails, ArticleHeader,Suggestion
+from core.models import Info, Feedback, ArticleDetails, ArticleHeader,Suggestion, PollOptions
 from core.models import ReadOnlyAdminFields
 from django.contrib.auth.models import User
 from django import forms
@@ -9,6 +9,17 @@ from core.actions import export_as_csv_action
 from django.contrib import admin
 
 from admin_views.admin import AdminViews
+
+class PollOptionsInlineAdmin(admin.TabularInline):
+    model      = PollOptions
+    extra      = 0
+    can_delete = True
+    fields     = ['option','count']
+
+class SuggestionAdmin(admin.ModelAdmin):
+    inlines = [PollOptionsInlineAdmin,]
+    list_display = ('articledetails',)
+    list_filter = ('articledetails',)
 
 class SuggestionInlineAdmin(admin.TabularInline):
     model      = Suggestion
@@ -115,3 +126,4 @@ admin.site.register(Info, InfoAdmin)
 admin.site.register(Feedback, FeedbackAdmin)
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(Suggestion, SuggestionAdmin)

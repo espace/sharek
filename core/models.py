@@ -153,7 +153,7 @@ class Topic(models.Model):
 					UNION
 					SELECT COUNT(*) FROM core_rating
 					UNION
-					SELECT COUNT(*) FROM core_articlerating
+					SELECT COUNT(*) FROM core_suggestionvotes
 				  ) total_count'''
        cursor = connection.cursor()
        cursor.execute(query)
@@ -759,6 +759,10 @@ class Suggestion(models.Model):
     image = models.ImageField(upload_to="suggestions/", blank=True)
     video = models.CharField(max_length=12,default='',help_text="The Youtube video code, ex: oq6Yij-hnGo ", null = True, blank = True)
 
+    def get_poll_options(self):
+      options = PollOptions.objects.filter(suggestions_id = self.id)
+      return options
+
     class Meta:
       get_latest_by = 'id'
 
@@ -766,3 +770,12 @@ class SuggestionVotes(models.Model):
     suggestions = models.ForeignKey(Suggestion)    
     user = models.CharField(max_length=200,default='')
     vote = models.BooleanField()
+
+class PollOptions(models.Model):
+    suggestions = models.ForeignKey(Suggestion)
+    option = models.CharField(max_length=100,default='')
+    count = models.IntegerField(default=0)
+
+class PollResult(models.Model):
+    option = models.ForeignKey(PollOptions)    
+    user = models.CharField(max_length=200,default='')
