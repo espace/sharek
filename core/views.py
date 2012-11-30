@@ -179,10 +179,10 @@ def topic_detail(request, topic_slug=None):
     voted_articles = []
 
     if user:
-        voted_articles = mc.get('voted_articles')
+        voted_articles = mc.get('voted_articles_' + str(user))
     if not voted_articles:
            voted_articles = ArticleRating.objects.filter(user = user)
-           mc.set('voted_articles', voted_articles, 900) # 15 Minutes
+           mc.set('voted_articles_' + str(user), voted_articles, 900) # 15 Minutes
 
     template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_articles':voted_articles}
 
