@@ -52,6 +52,9 @@ def comments_pdf(request, article_slug=None):
         return render_to_pdf('reports/comments_template.html', 'comments_template_', context, 'article_' + article.slug)
 
 def topics_pdf(request):
+
+    return HttpResponseRedirect("http://egelections-2011.appspot.com/Referendum2012/dostor_masr_draft.pdf")
+
     user = None
 
     login(request)
