@@ -84,8 +84,15 @@ def topic_pdf(request, topic_slug=None):
       user = request.user
 
     if topic_slug:
-        topic = get_object_or_404( Topic, slug=topic_slug )
-        articles = topic.get_articles()
+        topic = mc.get('topic_' + str(topic_slug))
+        if not topic:
+             topic = get_object_or_404( Topic, slug=topic_slug )
+             mc.set('topic_' + str(topic_slug), topic, settings.MEMCACHED_TIMEOUT)
+    
+        articles = mc.get(str(topic_slug) + '_articles')
+        if not articles:
+             articles = topic.get_articles()
+             mc.set(str(topic_slug) + '_articles', articles, settings.MEMCACHED_TIMEOUT)
 
     dt_obj = datetime.now()
     date_str = dt_obj.strftime("%Y%m%d_%H%M%S")

@@ -76,7 +76,7 @@ def index(request):
     contributions = mc.get('contributions')
     if not contributions:
          contributions = Topic.total_contributions()
-         mc.set('contributions', contributions, 900) # 15 Minutes
+         mc.set('contributions', contributions, 3600) # 15 Minutes
     
     top_users = mc.get('top_users')
     if not top_users:
