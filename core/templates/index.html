@@ -15,9 +15,9 @@
     <div class="">
       <div class="span7 progress-promo">
         <p>{{settings.new_domain}}هذا هو الموقع الرسمي للجمعية التأسيسية لوضع مشروع الدستور, والمواد المعلنة هنا هي الوحيدة المعتمدة من الجمعية وسيتم الأخذ بالملاحظات والمقترحات الموجودة هنا فقط ولا يوجد أي موقع آخر يمثل الجمعية.</p>
-        <a href="{% url topics %}" class="btn btn-green">شارك برأيك فى الدستور!</a>
+        <a href="{% url topics %}" class="btn btn-green">شارك برأيك فى مشروع الدستور!</a>
         <br />
-        <a href="http://bit.ly/dostor-masr" target="_blank" class="download-pdf">تحميل المسودة الأخيرة من الدستور</a>
+        <a href="http://bit.ly/dostor-masr-final" target="_blank" class="download-pdf">تحميل النسخة النهائية من مشروع الدستور</a>
       </div>
       <div class="span5 map hidden-phone">
         <!-- <iframe width="460" height="230" src="http://www.youtube.com/embed/2ddxz5o_e18" frameborder="0" allowfullscreen></iframe> -->
@@ -35,7 +35,7 @@
 
 <div class="row">
   <div class="home-sections span8">
-    <div class="span8 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
+    <div class="span8 "> <h1 class="headtitle"><span>أبواب الدستور</span></h1> </div>
 
         {% for struct in topics_tree %}
           {% if struct.level == 1 %}
@@ -95,7 +95,7 @@
   <p class="mosharakat_number">
     {{ contributions|intcomma }}
     <br />
-    <span>مشاركة على مسودة الدستور المصرى</span>
+    <span>مشاركة على مشروع الدستور المصرى</span>
   </p>
 
    <div class="top-members ">
