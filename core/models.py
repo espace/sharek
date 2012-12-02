@@ -43,16 +43,14 @@ class Tag(models.Model):
 						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
 						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name,
 						core_articledetails.original, original_articledetails.slug
-					FROM core_articleheader
-					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+					FROM core_articleheader_tags
+					INNER JOIN core_articleheader ON core_articleheader.id = core_articleheader_tags.articleheader_id
+					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id AND core_articledetails.current IS TRUE
 					INNER JOIN core_articledetails original_articledetails ON original_articledetails.id = core_articledetails.original
-					INNER JOIN core_articleheader_tags ON core_articleheader.id = core_articledetails.header_id
-					INNER JOIN core_tag ON core_tag.id = core_articleheader_tags.tag_id
-					INNER JOIN core_topic ON core_articleheader.id = core_articleheader_tags.articleheader_id
+					INNER JOIN core_topic ON core_topic.id = core_articleheader.topic_id
 					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
 					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
-					WHERE core_articledetails.current IS TRUE AND core_tag.id = %s
-					ORDER BY coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
+					WHERE tag_id = %s ORDER BY core_topic.order, coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
 
        if offset != None and limit != None:
            query = query + ' OFFSET ' + str(offset) + ' LIMIT ' + str(limit)
@@ -632,6 +630,7 @@ class Feedback(models.Model):
     date = models.DateTimeField( auto_now_add=True, default=datetime.now() ,blank=True,null=True)
     order = models.IntegerField(default=0)
     user = models.CharField(max_length=200,default='')
+    commenter = models.ForeignKey(User, null = True)
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
     likes = models.IntegerField(default=0)
     dislikes = models.IntegerField(default=0)
@@ -665,6 +664,7 @@ class Rating(models.Model):
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
     feedback = models.ForeignKey(Feedback)
     user = models.CharField(max_length=200,default='')
+    voter = models.ForeignKey(User, null = True)
     vote = models.BooleanField()
 
 class ArticleRating(models.Model):
