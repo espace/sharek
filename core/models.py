@@ -773,9 +773,9 @@ class SuggestionVotes(models.Model):
 
 class PollOptions(models.Model):
     suggestions = models.ForeignKey(Suggestion)
-    option = models.CharField(max_length=100,default='')
+    option = models.CharField(max_length=1024,default='')
     count = models.IntegerField(default=0)
 
 class PollResult(models.Model):
     option = models.ForeignKey(PollOptions)    
-    user = models.CharField(max_length=200,default='')
+    user = models.ForeignKey(User)
