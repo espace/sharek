@@ -56,7 +56,14 @@ def tmp(request):
     return HttpResponseRedirect(reverse('splash'))
 
 def splash(request):
-    template_context = {}
+    user = None
+
+    login(request)
+    home = True
+    if request.user.is_authenticated():
+      user = request.user
+
+    template_context = {'settings': settings,'user':user,}
     return render_to_response('splash.html',template_context ,RequestContext(request))
 
 def index(request):
