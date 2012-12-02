@@ -55,6 +55,10 @@ mc = memcache.Client([settings.MEMCACHED_BACKEND])
 def tmp(request):
     return HttpResponseRedirect(reverse('index'))
 
+def splash(request):
+    template_context = {}
+    return render_to_response('splash.html',template_context ,RequestContext(request))
+
 def index(request):
     user = None
 
