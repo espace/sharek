@@ -51,7 +51,7 @@
         {% if suggestion.get_poll_options %}
           <ul suggestion_id="{{suggestion.id}}">
             {% for option in suggestion.get_poll_options %}
-              <input type="checkbox" class="option" value="{{option.id}}">  {{option.option}} <span class="count {{option.id}}">{{option.count}}</span><br>
+              <input {% if poll_selection|selected_option:option.id == 1 %}checked = "checked"{% endif %} type="checkbox" class="option" value="{{option.id}}">  {{option.option}} <span class="count {{option.id}}">{{option.count}}</span><br>
             {% endfor %}
           </ul>
         {% endif %}

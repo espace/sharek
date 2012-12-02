@@ -304,6 +304,8 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
 
         voted_fb = []
         voted_suggestion = []
+        poll_selection = []
+        suggestions = article.get_suggestions()
 
         if user:
             voted_fb = mc.get('voted_fb_' + str(article.id) + '-' + str(user.id))
@@ -314,12 +316,16 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
             voted_suggestion = mc.get('voted_suggestion_'+ str(user.id))
             if not voted_suggestion:
                 voted_suggestion = []
-                suggestions = article.get_suggestions()
                 for suggestion in suggestions:
                     votes = SuggestionVotes.objects.filter(suggestions_id = suggestion.id, user = user)
                     for vote in votes:
                         voted_suggestion.append(vote)
                 mc.set('voted_suggestion_'+ str(user.id), voted_suggestion, settings.MEMCACHED_TIMEOUT)
+
+            poll_selection = mc.get('poll_selection_'+ str(user.id))
+            if not poll_selection:
+                poll_selection = PollResult.objects.filter(user_id = user.id)
+                mc.set('poll_selection_'+ str(user.id), poll_selection, settings.MEMCACHED_TIMEOUT)
 
         article_rate = None
         for art in voted_suggestion:
@@ -338,9 +344,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
             feedbacks = paginator.page(paginator.num_pages)
 
         if classified_by == "tags":  
-            template_context = {'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
+            template_context = {'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
         elif classified_by == "topics":
-            template_context = {'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
+            template_context = {'poll_selection':poll_selection,'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
 
     return render_to_response('article.html',template_context ,RequestContext(request))
 
@@ -870,5 +876,6 @@ def poll_select(request):
                 record[0].delete()
                 option.count -=1
                 option.save()
+            mc.delete('poll_selection_'+ str(user_id))
 
     return HttpResponse(simplejson.dumps({'option_id':option_id,'count':option.count}))
