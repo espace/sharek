@@ -53,7 +53,7 @@ from operator import itemgetter, attrgetter
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
 
 def tmp(request):
-    return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('splash'))
 
 def splash(request):
     template_context = {}
