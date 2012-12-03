@@ -93,7 +93,12 @@ def index(request):
          top_commented = ArticleDetails.objects.get_top_commented(5)
          mc.set('top_commented', top_commented, settings.MEMCACHED_TIMEOUT)
 
-    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics_tree':topics_tree,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+    most_updated = mc.get('most_updated')
+    if not most_updated:
+         most_updated = ArticleDetails.objects.get_most_updated(5)
+         mc.set('most_updated', most_updated, settings.MEMCACHED_TIMEOUT)
+
+    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics_tree':topics_tree,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented,'most_updated':most_updated, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
         
