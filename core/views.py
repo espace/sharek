@@ -185,7 +185,7 @@ def topic_detail(request, topic_slug=None):
 
     if user:
         voted_suggestion = mc.get('voted_suggestion_'+ str(user.id))
-    if not voted_suggestion:
+        if not voted_suggestion:
            voted_suggestion = SuggestionVotes.objects.filter(user = user)
            mc.set('voted_suggestion_'+ str(user.id), voted_suggestion, 900) # 15 Minutes
 
