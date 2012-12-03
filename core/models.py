@@ -249,11 +249,11 @@ class ArticleHeaderManager(models.Manager):
 						core_branch.slug, core_chapter.slug, core_articledetails.original, original_articledetails.slug
 					FROM core_articleheader
 					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
-					INNER JOIN core_articledetails original_articledetails ON original_articledetails.id = core_articledetails.original
+					INNER JOIN core_articledetails original_articledetails ON original_articledetails.id = core_articledetails.original AND core_articledetails.current IS TRUE
 					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
 					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
 					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
-					WHERE core_articledetails.current IS TRUE AND core_articleheader.name like %s OR core_articledetails.summary like %s
+					WHERE core_articleheader.name like %s OR core_articledetails.summary like %s
 					ORDER BY coalesce(core_chapter.order, 0), coalesce(core_branch.order, 0), core_articleheader.order'''
        print(query)
        cursor = connection.cursor()
