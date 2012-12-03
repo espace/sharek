@@ -493,6 +493,38 @@ class ArticleManager(models.Manager):
        cursor.close()
        return article_list
 
+    def get_most_updated(self, limit):
+      query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug,
+            core_articledetails.slug, core_topic.slug,
+          core_articleheader.name, core_articledetails.summary, core_articledetails._summary_rendered,
+          core_articledetails.mod_date, original_articledetails.slug
+        FROM core_articleheader
+        INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+        INNER JOIN core_articledetails original_articledetails ON original_articledetails.id = core_articledetails.original and core_articledetails.current IS TRUE
+        INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
+        GROUP BY core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug,
+          core_articledetails.slug, core_topic.slug,
+          core_articleheader.name, core_articledetails.summary, core_articledetails._summary_rendered,
+          core_articledetails.mod_date, original_articledetails.slug ORDER BY mod_date DESC LIMIT %s'''
+          
+      cursor = connection.cursor()
+      cursor.execute(query, [limit])
+
+      article_list = []
+      for row in cursor.fetchall():
+         p = self.model(slug=row[5])
+         p.header = ArticleHeader.objects.get(id=row[0])
+         p.topic = Topic.objects.get(id=row[2])
+         p.topic_slug = row[6]
+         p.name = row[7]
+         p.summary = row[8]
+         p._summary_rendered = row[9]
+         p.mod_date = row[10]
+         p.original_slug = row[11]
+         article_list.append(p)
+      cursor.close()
+      return article_list
+
 class ArticleDetails(models.Model):
     header =  models.ForeignKey(ArticleHeader, null = True, blank = True)
     slug   = models.SlugField(max_length=40, unique=True, help_text="created from name")
