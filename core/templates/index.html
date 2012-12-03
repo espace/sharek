@@ -35,8 +35,9 @@
 
 
 <div class="row">
-  <div class="home-sections span8">
-    <div class="span8 "> <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> </div>
+  <div class="home-sections span12">
+    <div class="span8 "> 
+      <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> 
 
         {% for struct in topics_tree %}
           {% if struct.level == 1 %}
@@ -54,44 +55,12 @@
           {% endif %}
         {% endfor %}
         </li>
+   </div> 
     
-    <div class="span12 "> <span style="margin-right:-20px;" class="divider"> </span> </div>
     
-    <div class="updates span8 divider-vert"> 
-            <div class="span4 most-liked">
-              <h1 class="headtitle small"><span>الأكثر قبولا</span></h1> 
-
-              {% for article in top_liked %}
-                <dl>
-                    <dt>
-                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.slug article_slug=article.slug %}">{{ article.topic.name }} - {{article.header.name}}</a>
-                      <span class="icon-update">{{article.likes}}</span>
-                    </dt> 
-                </dl>
-              {% endfor %}
-    
-           </div>
-
-           <div class="span4 most-argued">
-                <h1 class="headtitle small"><span><i class="icon-fire"></i>الأكثر مناقشة</span></h1> 
-                
-                {% for article in top_commented %}
-                <dl>
-                    <dt>
-                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.slug article_slug=article.slug %}">{{ article.topic.name }} - {{article.header.name}}</a> 
-                      <span class="icon-update"><i class="icon-comment"></i>{{article.feedback_count}}</span>
-                    </dt>
-                </dl>
-              {% endfor %}
-              
-           </div> <!--  Most liked -->
-        </div>
-    
-  </div>
-  <!-- sidebar -->
  
-  <div class="facebook-plugin span4"> 
-    <div class="span4 "> <h1 class="headtitle"><span>عدد مشاركات الزوار</span></h1> </div>
+  <div class="facebook-plugin "> 
+    <div class=" "> <h1 class="headtitle"><span>عدد مشاركات الزوار</span></h1> </div>
 
   <p class="mosharakat_number">
     {{ contributions|intcomma }}
@@ -124,20 +93,80 @@
             </li>
         {% endfor %}
       </ul>
-  </div>
+  </div><!-- top-members -->
   
     </div>
   
-       <div class="tags span4">     
+       
+  </div>
+  <!--span --> 
+      <div class="span12 "> <span style="margin-right:-20px;" class="divider"> </span> </div>
+
+<div class="row">
+  <div class="updates span12divider-vert"> 
+            <div class="span4 most-liked">
+              <h1 class="headtitle small"><span>الأكثر قبولا</span></h1> 
+
+              {% for article in top_liked %}
+                <dl>
+                    <dt>
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.slug article_slug=article.slug %}">{{ article.topic.name }} - {{article.header.name}}</a>
+                      <span class="icon-update">{{article.likes}}</span>
+                    </dt> 
+                </dl>
+              {% endfor %}
+    
+           </div>
+
+           <div class="span4 most-argued">
+                <h1 class="headtitle small"><span><i class="icon-fire"></i>الأكثر مناقشة</span></h1> 
+                
+                {% for article in top_commented %}
+                <dl>
+                    <dt>
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.slug article_slug=article.slug %}">{{ article.topic.name }} - {{article.header.name}}</a> 
+                      <span class="icon-update"><i class="icon-comment"></i>{{article.feedback_count}}</span>
+                    </dt>
+                </dl>
+              {% endfor %}
+              
+           </div> <!--  Most liked -->
+           <div class="span4 most-new well">
+                <h1 class="headtitle small label label-important "><span><i class="icon-time icon-white"></i> أخر التحديثات</span></h1> 
+                
+                {% for article in top_commented %}
+                <dl>
+                    <dt>
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.slug article_slug=article.slug %}">{{ article.topic.name }} - {{article.header.name}}</a> 
+                      <span class="icon-update"><i class="date"> 12-6-2010</i></span>
+                    </dt>
+                </dl>
+              {% endfor %}
+                <dl>
+                    <dt>
+                        <a href="#" class="more label label-important ">المزيد</a>
+                    </dt>
+                </dl>
+           
+              
+           </div> <!--  Most liked -->
+        </div>
+    
+  </div>
+  <!-- sidebar -->
+</div><!-- row -->
+      <div class="span12 "> <span style="margin-right:-20px;" class="divider"> </span> </div>
+
+<div class="row">
+      <div class="tags span12">     
           <p> روابط دلالية:</p>
           {% for tag in tags %}
             <a href="{% url tag tag_slug=tag.get_absolute_url %}">{{tag.name}}</a>
           {% endfor %}
        </div>   
-  </div>
-  <!--span --> 
+</div> <!-- row -->
+
 </div>
 <!-- row end --> 
-
 
 {% endblock %}
