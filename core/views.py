@@ -93,7 +93,12 @@ def index(request):
          top_commented = ArticleDetails.objects.get_top_commented(5)
          mc.set('top_commented', top_commented, settings.MEMCACHED_TIMEOUT)
 
-    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics_tree':topics_tree,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented, 'tags':tags}
+    most_updated = mc.get('most_updated')
+    if not most_updated:
+         most_updated = ArticleDetails.objects.get_most_updated(5)
+         mc.set('most_updated', most_updated, settings.MEMCACHED_TIMEOUT)
+
+    template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics_tree':topics_tree,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented,'most_updated':most_updated, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
         
@@ -608,8 +613,6 @@ def search(request):
     if len(query.strip()) == 0:
         return HttpResponseRedirect(reverse('index'))
 
-    #arts = ArticleDetails.objects.filter(Q(summary__contains=query.strip()) | Q(header__name__contains=query.strip()) , current = True)
-    #arts = sorted(arts,  key=attrgetter('header.topic.id','header.order','id'))
     arts = ArticleHeader.objects.search_articles('%'+query.strip()+'%')
     voted_articles = ArticleRating.objects.filter(user = user)
 
@@ -627,6 +630,16 @@ def search(request):
         arts = paginator.page(paginator.num_pages)
 
     return render_to_response('search.html',{'voted_articles':voted_articles, 'search':search,'request':request,'user':user,"articles":arts,'settings': settings,"query":query.strip(),"count":count},RequestContext(request))
+
+def latest(request):
+    user = None
+    search = True
+
+    if request.user.is_authenticated():
+      user = request.user
+
+    articles = ArticleDetails.objects.get_most_updated(20)
+    return render_to_response('latest.html',{'request':request,'user':user,"articles":articles,'settings': settings},RequestContext(request))
 
 def ajx_search(request):
     if request.method == 'GET':

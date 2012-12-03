@@ -3,6 +3,7 @@
 {% load humanize %}
 {% load settings %}
 {% load auth_provider %}
+{% load date_format %}
 
 {% block title %}الصفحة الرئيسية{% endblock %}
 {% block description %}هذا هو الموقع الرسمي للجمعية التأسيسية لوضع مشروع الدستور, والمواد المعلنة هنا هي الوحيدة المعتمدة من الجمعية وسيتم الأخذ بالملاحظات والمقترحات الموجودة هنا فقط ولا يوجد أي موقع آخر يمثل الجمعية.{% endblock %}
@@ -134,17 +135,17 @@
            <div class="span4 most-new well">
                 <h1 class="headtitle small label label-important "><span><i class="icon-time icon-white"></i> أخر التحديثات</span></h1> 
                 
-                {% for article in top_commented %}
+                {% for article in most_updated %}
                 <dl>
                     <dt>
                       <a href="{% url article_detail classified_by='topics' class_slug=article.topic.slug article_slug=article.slug %}">{{ article.topic.name }} - {{article.header.name}}</a> 
-                      <span class="icon-update"><i class="date"> 12-6-2010</i></span>
+                      <span class="icon-update"><i class="date">{{article.mod_date|format}}</i></span>
                     </dt>
                 </dl>
-              {% endfor %}
+                {% endfor %}
                 <dl>
                     <dt>
-                        <a href="#" class="more label label-important ">المزيد</a>
+                        <a href="{% url latest %}" class="more label label-important ">المزيد</a>
                     </dt>
                 </dl>
            

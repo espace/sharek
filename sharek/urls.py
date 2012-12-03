@@ -33,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^sharek/admin/', include(admin.site.urls)),
 
     url(r'^sharek/slider/$', 'core.views.slider', name='slider'),
+    url(r'^sharek/latest/$', 'core.views.latest', name='latest'),
     url(r'^sharek/search/$', 'core.views.search', name='search'),
     url(r'^sharek/ajx_search/$', 'core.views.ajx_search', name='ajx_search'),
     

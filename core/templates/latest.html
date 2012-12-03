@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load settings %}
+
+{% block title %}نتيجة البحث{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="span12 ">
+      <h1 id="headtitle" class="headtitle innerpage searchPage"><span> أخر التحديثات </span></h1>
+    </div>
+  </div><!-- row -end -->
+
+  <div class="row">
+    <div class="span12">
+    {% for article in articles %}
+        {% include "include/article_block.html" %}
+    {% endfor %}  
+    </div>
+  </div>
+
+{% endblock %}
