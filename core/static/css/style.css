@@ -626,6 +626,45 @@ left: 1px;
     font-weight: normal;
 
 }
+
+.voting {
+    margin: 20px;
+}
+.voting li{
+    position: relative;
+}
+.voting h4{
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 12px;
+}
+.voting .checkbox{
+
+}
+.voting .votes-numbers{
+    position: absolute;
+    left: 0px;
+    top:19px;
+    font:14px GESSTwoMediumRegular;
+    color: #333;
+    text-shadow:0 0px 1px rgba(0,0,0,0.2);
+
+
+}
+.voting .progress{
+    height: 14px;
+    width: 500px;
+    margin-left: 0 !important;
+    position: relative !important;
+}
+.voting .progress .bar{
+    height: 14px;
+    font-size: 13px !important;
+    font-weight: bold;
+    color: #fff !important;
+    text-shadow:0 0px 0px  rgba(0, 0, 0, 0.25);
+
+}
 /*------------   Navigation    ------ */
 /*.nav{
     background: url("../images/menu-slice.png") repeat-x  0 0 ;

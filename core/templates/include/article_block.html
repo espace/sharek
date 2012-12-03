@@ -55,12 +55,51 @@
             {% endfor %}
           </ul>
         {% endif %}
-
     </div>
   {% endfor %}
+        <p>
+            <img src="{{ STATIC_URL }}photos/trail-image.jpg" alt="">
+            <img src="{{ STATIC_URL }}photos/_DSC7181.jpg" alt="">
+            <img src="{{ STATIC_URL }}photos/trail-image.jpg" alt="">
+        </p>
+
+  <div class="voting">
+  <h4>التصويت:</h4>  
+  <ul class="unstyled">
+      <li>
+          <label class="checkbox">
+                <input type="checkbox"> نعم أؤيد هذه التعديلات المقترحة 
+          </label>
+          <div class="progress progress-danger progress-striped">
+              <div class="bar" style="width: 15%;"> 15%</div>
+          </div>
+          <span class="pull-left strong votes-numbers">16,000 صوتا</span>
+
+      </li>
+      <li>
+         <label class="checkbox">
+                <input type="checkbox"> نعم أؤيد هذه التعديلات المقترحة <span class="pull-right strong">45%</span>
+          </label>
+          <div class="progress progress-danger progress-striped">
+              <div class="bar" style="width: 30%;">30%</div>
+          </div>
+          <span class="pull-left strong votes-numbers">16,000 صوتا</span>
+      </li>
+       <li>
+          <label class="checkbox">
+                <input type="checkbox"> نعم أؤيد هذه التعديلات المقترحة <span class="pull-right strong">45%</span>
+          </label>
+          <div class="progress progress-danger progress-striped">
+              <div class="bar" style="width: 45%;">45%</div>
+          </div>
+          <span class="pull-left strong votes-numbers">16,000 صوتا</span>
+      </li>
+  </ul>
+</div>
 
   {% if article.mod_date %}
   <p class="edit-date-article date">آخر تحديث {{article.mod_date|format}} </p><br />
   {% endif %}
   
+
 </div><!-- topic end -->
