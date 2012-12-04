@@ -17,9 +17,32 @@ from core.models import Info, ArticleRating, User
 from core.views import login
 
 import time
+import memcache
 from datetime import datetime
 from operator import attrgetter
 from sharek import settings
+
+# get first memcached URI
+mc = memcache.Client([settings.MEMCACHED_BACKEND])
+
+def comments_chart(request):
+    user = None
+
+    login(request)
+
+    if request.user.is_authenticated() and request.user.is_staff:
+      user = request.user
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+    chart_data = mc.get('chart_data')
+    if not chart_data:
+         chart_data = Feedback.objects.feedback_charts()
+         mc.set('chart_data', chart_data, settings.MEMCACHED_TIMEOUT)
+
+    context = Context({'user': user, 'chart_data': chart_data})
+
+    return render_to_response('charts/comments.html', context ,RequestContext(request))
 
 def comments_pdf(request, article_slug=None):
     user = None
