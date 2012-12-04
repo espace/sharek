@@ -7,7 +7,7 @@ $(document).ready(function() {
             dataType:"json",
             error:function(data){},
             success:function(data){
-              $(".count"+"."+data.option_id).text(data.count);
+              $(".count"+"."+data.option_id).text(data.count+"  صوتا");
             },
           });
   });

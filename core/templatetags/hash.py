@@ -35,8 +35,12 @@ def selected_option(selections, key_name):
 def linebreak(summary, replace_text):
     return summary.replace('\n', replace_text)
 
+def percentage(num1,num2):
+  return (num1*100)/num2
+
 key = register.filter('key', key)
 linebreak = register.filter('linebreak', linebreak)
 vote = register.filter('vote', vote)
 vote_sug = register.filter('vote_sug', vote_sug)
 selected_option = register.filter('selected_option', selected_option)
+percentage = register.filter('percentage', percentage)
