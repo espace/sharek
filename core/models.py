@@ -556,6 +556,13 @@ signals.post_save.connect(update_original, sender = ArticleDetails)
 exclusive_boolean_fields(ArticleDetails, ('current',), ('header',))
 
 class FeedbackManager(models.Manager):
+    def feedback_charts(self):
+       query = '''SELECT to_char("date",'mm/yyyy') AS month, count(*) AS comments FROM core_feedback GROUP BY to_char("date",'mm/yyyy')  ORDER BY to_char("date",'mm/yyyy')'''
+       cursor = connection.cursor()
+       cursor.execute(query)
+
+       return cursor.fetchall()
+
     def top_ranked(self, article_id, limit):
        query = '''SELECT core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
 						core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
