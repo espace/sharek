@@ -1082,7 +1082,10 @@ background-position: -142px -9px !important;
     border-radius: 0 0 3px 3px;
 
 }
-
+.topic .thumbnail{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
 .comments-number {
     background: url("../images/small-ribbon.png") no-repeat  right top transparent;
     color:#fff !important;
