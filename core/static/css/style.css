@@ -1063,7 +1063,7 @@ background-position: -142px -9px !important;
 }
 .tags{
     font-family: GESSTwoMediumRegular;
-    margin-top: 55px;
+    margin-top: 140px;
 
 }
 .tags p{
@@ -2234,7 +2234,14 @@ span.divider{
     margin-right: 10px;
 }
 .footer-nav {
-    /*margin-top:24px;*/
+    color: #bbb;
+    font: 12px GESSTwoMediumRegular;
+	text-align: left;
+	padding-top: 15px;
+}
+.footer-nav p{
+	margin-top: 5px;
+	display: inline-block;
 }
 
 
@@ -2382,4 +2389,23 @@ a.morelink {
 	top: 130px;
 	margin-left: -15px;
 
+}
+
+.espaceLogo {
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: transparent;
+    background-image: url("../images/espace.png");
+    background-origin: padding-box;
+    background-position: 0 -2px;
+    background-repeat: repeat;
+    background-size: auto auto;
+    float: left;
+    height: 22px;
+    width: 85px;
+}
+
+.espaceLogo:hover {
+    background-position: 0 29px;
+	text-decoration: none;
 }
