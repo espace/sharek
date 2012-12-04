@@ -880,15 +880,19 @@ def poll_select(request):
 
             option = PollOptions.objects.get(id = option_id)
             record = PollResult.objects.filter(option_id = option_id, user_id = user_id)
+            suggestion = Suggestion.objects.get(id = option.suggestions_id)
 
             if not record:
                 PollResult(option_id = option_id, user_id = user_id).save()
                 option.count += 1
-                option.save()
+                suggestion.poll_total_count += 1
             else:
                 record[0].delete()
                 option.count -=1
-                option.save()
+                suggestion.poll_total_count -= 1
+            
+            suggestion.save()
+            option.save()
             mc.delete('poll_selection_'+ str(user_id))
 
     return HttpResponse(simplejson.dumps({'option_id':option_id,'count':option.count}))
