@@ -127,7 +127,7 @@
   
     </div>
   
-       <div class="tags span4">     
+       <div class="tags span4" style="margin-top: 140px; ">
           <p> روابط دلالية:</p>
           {% for tag in tags %}
             <a href="{% url tag tag_slug=tag.get_absolute_url %}">{{tag.name}}</a>
