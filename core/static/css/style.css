@@ -1303,6 +1303,12 @@ background-position: -142px -9px !important;
 
 .most-new .label-important{
     background-color: #cf4947 !important;
+      background-image: -ms-linear-gradient(top, #cf4947, #a81515);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#cf4947), to(#a81515));
+    background-image: -webkit-linear-gradient(top, #cf4947, #a81515);
+    background-image: -o-linear-gradient(top, #cf4947, #a81515);
+    background-image: linear-gradient(top, #cf4947, #a81515);
+    background-image: -moz-linear-gradient(top, #cf4947, #a81515);
 }
 .most-new .headtitle span{
      padding-right: 30px;
