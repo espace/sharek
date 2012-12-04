@@ -2397,15 +2397,16 @@ a.morelink {
     background-color: transparent;
     background-image: url("../images/espace.png");
     background-origin: padding-box;
-    background-position: 0 -2px;
+    background-position: 0 29px;
     background-repeat: repeat;
     background-size: auto auto;
     float: left;
     height: 22px;
     width: 85px;
+	opacity: .7;
 }
 
 .espaceLogo:hover {
-    background-position: 0 29px;
+	opacity: 1;
 	text-decoration: none;
 }
