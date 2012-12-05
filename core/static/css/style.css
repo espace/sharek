@@ -2383,7 +2383,14 @@ span.divider{
     margin-right: 10px;
 }
 .footer-nav {
-    /*margin-top:24px;*/
+    color: #bbb;
+    font: 12px GESSTwoMediumRegular;
+	text-align: left;
+	padding-top: 15px;
+}
+.footer-nav p{
+	margin-top: 5px;
+	display: inline-block;
 }
 
 

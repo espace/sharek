@@ -36,7 +36,7 @@
   
   {% for suggestion in article.get_suggestions %}
     <div class="suggestion-block ">
-        <h3><p class="name">{% if article.get_suggestions|length == 1 %}النص المقترح{% else %}مقترح ({{ forloop.counter }}){% endif %}</p></h3>
+        <h5 class="name" style="padding: 10px 0px">{% if article.get_suggestions|length == 1 %}النص المقترح{% else %}مقترح ({{ forloop.counter }}){% endif %}</h5>
         <div class="like-group">
           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == -1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == 1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}} " vote="0"><small class="dislike suggestion {{suggestion.id}}">{{suggestion.dislikes}}</small></a>
           <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == 1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == -1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}}" vote="1" ><small class="like suggestion {{suggestion.id}}">{{suggestion.likes}}</small></a>
