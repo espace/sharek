@@ -14,9 +14,6 @@ from core.models import ArticleRating, ArticleDetails, Feedback, User
 
 from sharek import settings
 
-def temp(request):
-    return HttpResponse("temp")
-
 def user(request, username=None, browsing_data="def"):
 
     user = None
