@@ -12,6 +12,10 @@ urlpatterns = patterns('',
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
     url(r'^sharek/chaining/', include('smart_selects.urls')),
+    
+    url(r'^sharek/profile/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.profile', name='profile'),
+    url(r'^sharek/user/(?P<username>[-\w]+)/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.user', name='user_profile'),
+    url(r'^sharek/user/(?P<username>[-\w]+)/$', 'core.profiles.views.temp', name='user'),
 	
 	#Generate PDF
     url(r'^sharek/pdf/topics/$', 'core.reports.views.topics_pdf', name='topics_pdf'),
@@ -37,10 +41,6 @@ urlpatterns = patterns('',
     url(r'^sharek/latest/$', 'core.views.latest', name='latest'),
     url(r'^sharek/search/$', 'core.views.search', name='search'),
     url(r'^sharek/ajx_search/$', 'core.views.ajx_search', name='ajx_search'),
-    
-    url(r'^sharek/profile/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.profile', name='profile'),
-    url(r'^sharek/user/(?P<username>[-\w]+)/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.user', name='user_profile'),
-    url(r'^sharek/user/(?P<username>[-\w]+)/$', 'core.profiles.views.temp', name='user'),
     
     
     url(r'^sharek/vote/', 'core.views.vote', name='vote'),
