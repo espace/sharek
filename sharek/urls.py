@@ -14,8 +14,8 @@ urlpatterns = patterns('',
     url(r'^sharek/chaining/', include('smart_selects.urls')),
     
     url(r'^sharek/profile/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.profile', name='profile'),
-    url(r'^sharek/xxxx/(?P<username>[-\w]+)/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.user', name='user_profile'),
-    url(r'^sharek/xxxx/(?P<username>[-\w]+)/$', 'core.profiles.views.temp', name='user'),
+    url(r'^sharek/user/(?P<username>[-\w]+)/(?P<browsing_data>[-\w]+)/$', 'core.profiles.views.user', name='user_profile'),
+    url(r'^sharek/user/(?P<username>[-\w]+)/$', 'core.profiles.views.temp', name='user'),
 	
 	#Generate PDF
     url(r'^sharek/pdf/topics/$', 'core.reports.views.topics_pdf', name='topics_pdf'),
@@ -82,6 +82,6 @@ urlpatterns = patterns('',
 	
     url(r'^sharek/', include('core.social_auth.urls')),
 	
-    url(r'$', 'core.views.tmp'),
+    #url(r'$', 'core.views.tmp'),
       
 )
