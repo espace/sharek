@@ -1,13 +1,13 @@
 <!-- display an image if the logged was not admin -->
 {% if username != '' and username != 'admin' %}
     <div class="facebook_user_img">
-        <a href="{% url user username='admin' %}" class="user-image" title="{{ name }}">
+        <a href="{% url user username=username %}" class="user-image" title="{{ name }}">
             <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ username }}">
         </a>
     </div>
     <h3>
     	<p class="name">
-        	<a href="{% url user username='admin' %}">{{ name }}</a>
+        	<a href="{% url user username='username' %}">{{ name }}</a>
             {% if response %}
             <span class="user-response"> ( {{ response }} )</span>
             {% endif %}
