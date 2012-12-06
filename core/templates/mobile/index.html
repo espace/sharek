@@ -1,0 +1,7 @@
+<ul>
+    {% for topic in topics %}
+      <li>
+        <a href="{% url topic_mobile topic_slug=topic.get_absolute_url %}">{{topic.short_name}}</a>
+      </li>
+    {% endfor %}
+</ul>

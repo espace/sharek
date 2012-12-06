@@ -1,6 +1,7 @@
 {% load hash %}
 {% load call %}
 {% load date_format %}
+
 <div class="topic article-block">
 
   {% if article.id != article.original %}
@@ -28,7 +29,6 @@
           </a>
       </p>
   </h3>
-
 
   {% ifequal topic_page 1 %}
   <a href="{% url topic topic_slug=article.topic_slug %}">{{ article.topic_name }}</a>
@@ -72,12 +72,8 @@
     </div>
   {% endfor %}
 
-
-
-
   {% if article.mod_date %}
   <p class="edit-date-article date">آخر تحديث {{article.mod_date|format}} </p><br />
   {% endif %}
-  
 
 </div><!-- topic end -->

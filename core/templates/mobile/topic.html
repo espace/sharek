@@ -1,0 +1,8 @@
+<h1>{{ topic.name }}</h1>
+<ul>
+    {% for article in articles %}
+      <li>
+        <a href="{% url article_mobile article_slug=article.slug %}">{{article.name}}</a>
+      </li>
+    {% endfor %}
+</ul>

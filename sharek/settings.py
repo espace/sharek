@@ -189,6 +189,7 @@ INSTALLED_APPS = (
     'debug_toolbar',
 	#'cache_toolbar',
     'smart_selects',
+	'mobile',
 )
 
 # A sample logging configuration. The only tangible logging

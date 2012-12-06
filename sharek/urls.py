@@ -1,6 +1,7 @@
 from django.conf.urls import patterns, include, url
 #from wkhtmltopdf.views import PDFTemplateView
-import core
+import core, mobile
+from mobile import urls
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -34,14 +35,15 @@ urlpatterns = patterns('',
     #Reports & Charts
     url(r'sharek/reports/feedback/(?P<article_slug>[-\w]+)/$', 'core.reports.views.export_feedback', name='feedback_report'),
 	url(r'sharek/charts/comments/$', 'core.reports.views.comments_chart', name='comments_chart'),
-     
+
+    url(r'^sharek/m/', include(mobile.urls)),
     url(r'^sharek/admin/', include(admin.site.urls)),
 
     url(r'^sharek/slider/$', 'core.views.slider', name='slider'),
     url(r'^sharek/latest/$', 'core.views.latest', name='latest'),
     url(r'^sharek/search/$', 'core.views.search', name='search'),
     url(r'^sharek/ajx_search/$', 'core.views.ajx_search', name='ajx_search'),
-    
+
     
     url(r'^sharek/vote/', 'core.views.vote', name='vote'),
     url(r'^sharek/article_vote/', 'core.views.article_vote', name='article_vote'),
