@@ -792,8 +792,17 @@ def get_inactive(self):
     
     return inactive
 
+@classmethod
+def users_chart(self):
+   query = '''SELECT to_char("date_joined",'mm/yyyy') AS month, count(*) AS users FROM auth_user GROUP BY to_char("date_joined",'mm/yyyy')  ORDER BY to_char("date_joined",'mm/yyyy')'''
+   cursor = connection.cursor()
+   cursor.execute(query)
+
+   return cursor.fetchall()
+
 User.add_to_class('get_inactive', get_inactive)
 User.add_to_class('get_top_users', get_top_users)
+User.add_to_class('users_chart', users_chart)
 
 class Suggestion(models.Model):
     articledetails = models.ForeignKey(ArticleDetails)

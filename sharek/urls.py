@@ -35,6 +35,7 @@ urlpatterns = patterns('',
     #Reports & Charts
     url(r'sharek/reports/feedback/(?P<article_slug>[-\w]+)/$', 'core.reports.views.export_feedback', name='feedback_report'),
 	url(r'sharek/charts/comments/$', 'core.reports.views.comments_chart', name='comments_chart'),
+    url(r'sharek/charts/users/$', 'core.reports.views.users_chart', name='users_chart'),
 
     url(r'^sharek/m/', include(mobile.urls)),
     url(r'^sharek/admin/', include(admin.site.urls)),

@@ -44,6 +44,25 @@ def comments_chart(request):
 
     return render_to_response('charts/comments.html', context ,RequestContext(request))
 
+def users_chart(request):
+    user = None
+
+    login(request)
+
+    if request.user.is_authenticated() and request.user.is_staff:
+      user = request.user
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+    user_chart = mc.get('user_chart')
+    if not user_chart:
+        user_chart = user.users_chart()
+        mc.set('user_chart', user_chart, settings.MEMCACHED_TIMEOUT)
+
+    context = Context({'user': user, 'user_chart': user_chart})
+
+    return render_to_response('charts/users.html', context ,RequestContext(request))
+
 def comments_pdf(request, article_slug=None):
     user = None
 
