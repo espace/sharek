@@ -12,7 +12,7 @@
   var data = google.visualization.arrayToDataTable([
     ['الشهر', 'عدد الأعضاء']
     {% for ele in user_chart %}
-      ,['{{ ele.0 }}',  {{ ele.1 }}]
+      ,[{{ ele.0 }},  {{ ele.1 }}]
     {% endfor %}
   ]);
 
@@ -30,7 +30,11 @@
 
 <div class="row">
     <div class="span12 ">
-      <h1 id="headtitle" class="headtitle innerpage"><span>تعليقات الزوار</span></h1>
+    {% for ele in user_chart %}
+      {{ ele.0 }},  {{ ele.1 }}
+      <br>
+    {% endfor %}
+      <h1 id="headtitle" class="headtitle innerpage"><span>عدد الأعضاء</span></h1>
     </div>
 </div><!-- row -end -->
 
