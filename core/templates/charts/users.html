@@ -12,7 +12,7 @@
   var data = google.visualization.arrayToDataTable([
     ['الشهر', 'عدد الأعضاء']
     {% for ele in user_chart %}
-      ,[{{ ele.0 }},  {{ ele.1 }}]
+      ,['{{ ele.0 }}',  {{ ele.1 }}]
     {% endfor %}
   ]);
 
