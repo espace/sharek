@@ -38,9 +38,15 @@ def linebreak(summary, replace_text):
 def percentage(num1,num2):
   return (num1*100)/num2
 
+def segmant(range,num):
+  if num < 0:
+    return round((-num*20)/range)
+  return round((num*20)/range)
+
 key = register.filter('key', key)
 linebreak = register.filter('linebreak', linebreak)
 vote = register.filter('vote', vote)
 vote_sug = register.filter('vote_sug', vote_sug)
 selected_option = register.filter('selected_option', selected_option)
 percentage = register.filter('percentage', percentage)
+segmant = register.filter('segmant', segmant)

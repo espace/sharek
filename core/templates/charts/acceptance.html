@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load hash %}
+{% block title %}تعليقات الزوار{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["treemap"]});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['Location', 'Parent', 'size', 'acceptance ratio like-dislike (color)']
+    ,['دستور', null, 0, 0]
+    {% for ele in articles_acceptance %}
+    ,['{{ ele.1 }}','دستور',1,{% if ele.2 >= 0 %}{{ max|segmant:ele.2 }}{% else %}{{ min|segmant:ele.2 }}{% endif %}]
+    {% endfor %}
+    
+  ]);
+
+  var tree = new google.visualization.TreeMap(document.getElementById('chart_div'));
+  tree.draw(data, {
+    minColor: '#f00',
+    midColor: '#ddd',
+    maxColor: '#0d0',
+    headerHeight: 15,
+    fontColor: 'black',
+    showScale: true});
+  }
+</script>
+
+<div class="row">
+    <div class="span12 ">
+      <h1 id="headtitle" class="headtitle innerpage"><span>مواد الدستور</span></h1>
+    </div>
+</div><!-- row -end -->
+
+<div class="row">
+  <div class="span12">
+        <center>
+            <div id="chart_div" style="width: 900px; height: 500px;"></div>
+        </center>
+  </div>
+</div><!-- row -end -->
+
+{% endblock %}

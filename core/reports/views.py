@@ -11,7 +11,7 @@ from django.template import Context
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.core.servers.basehttp import FileWrapper
-from core.models import Tag, ArticleDetails
+from core.models import Tag, ArticleDetails, ArticleHeader
 from core.models import Feedback, Rating, Topic
 from core.models import Info, ArticleRating, User
 from core.views import login
@@ -62,6 +62,30 @@ def users_chart(request):
     context = Context({'user': user, 'user_chart': user_chart})
 
     return render_to_response('charts/users.html', context ,RequestContext(request))
+
+def articles_acceptance(request):
+    user = None
+
+    login(request)
+
+    if request.user.is_authenticated() and request.user.is_staff:
+        user = request.user
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+    articles_acceptance = mc.get('articles_acceptance')
+    if not articles_acceptance:
+         articles_acceptance = ArticleHeader.objects.acceptance_chart()
+         mc.set('articles_acceptance', articles_acceptance, settings.MEMCACHED_TIMEOUT)
+
+    max_min = ArticleHeader.objects.get_max_min()
+    max = max_min[0]
+    min = max_min[1]
+    
+    context = Context({'user': user, 'max':max,'min':min,'articles_acceptance': articles_acceptance})
+
+    return render_to_response('charts/acceptance.html', context ,RequestContext(request))
+
 
 def comments_pdf(request, article_slug=None):
     user = None

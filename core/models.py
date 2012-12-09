@@ -356,6 +356,30 @@ class ArticleHeaderManager(models.Manager):
            return p
        else:
            return None
+
+    def acceptance_chart(self):
+      query = '''SELECT core_articleheader.order,name,SUM(core_suggestion.likes)-SUM(core_suggestion.dislikes) AS acceptance from core_articleheader,core_suggestion,core_articledetails where core_articledetails.current=TRUE and core_suggestion.articledetails_id = core_articledetails.id and core_articledetails.header_id=core_articleheader.id group by name,core_articleheader.order ORDER BY 1'''
+      cursor = connection.cursor()
+      cursor.execute(query)
+      return cursor.fetchall()
+
+    def get_max_min(self):
+      q = ''' SELECT MAX(acceptance),MIN(acceptance) from ( 
+        SELECT core_articleheader.order,name,SUM(core_suggestion.likes)-SUM(core_suggestion.dislikes) AS acceptance from core_articleheader,core_suggestion,core_articledetails
+        where core_articledetails.current=TRUE
+        and core_suggestion.articledetails_id = core_articledetails.id
+        and core_articledetails.header_id=core_articleheader.id
+        group by name,core_articleheader.order
+        ORDER BY 1 ) gg '''
+
+      cursor = connection.cursor()
+      cursor.execute(q)
+      row = cursor.fetchone()
+      cursor.close()
+      p = []
+      p.append(row[0])
+      p.append(row[1])
+      return p
     
 class ArticleHeader(models.Model):
     tags = models.ManyToManyField(Tag)
@@ -594,7 +618,7 @@ exclusive_boolean_fields(ArticleDetails, ('current',), ('header',))
 
 class FeedbackManager(models.Manager):
     def feedback_charts(self):
-       query = '''SELECT to_char("date",'mm/yyyy') AS month, count(*) AS comments FROM core_feedback GROUP BY to_char("date",'mm/yyyy')  ORDER BY to_char("date",'mm/yyyy')'''
+       query = '''SELECT name,likes-dislikes AS net_acceptance FROM core_articleheader,core_articledetails WHERE core_articledetails.current=TRUE AND core_articledetails.header_id=core_articleheader.id ORDER BY core_articleheader.order'''
        cursor = connection.cursor()
        cursor.execute(query)
 
