@@ -13,7 +13,7 @@
     ['Location', 'Parent', 'size', 'acceptance ratio like-dislike (color)']
     ,['دستور', null, 0, 0]
     {% for ele in articles_acceptance %}
-    ,['{{ ele.1 }}','دستور',1,{% if ele.2 >= 0 %}{{ max|segmant:ele.2 }}{% else %}{{ min|segmant:ele.2 }}{% endif %}]
+    ,['{{ forloop.counter }}','دستور',1,{% if ele.2 >= 0 %}{{ max|segmant:ele.2 }}{% else %}{{ min|segmant:ele.2 }}{% endif %}]
     {% endfor %}
     
   ]);
