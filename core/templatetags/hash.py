@@ -39,7 +39,7 @@ def percentage(num1,num2):
   return (num1*100)/num2
 
 def opacity(range,num):
-  if num == 0:
+  if num/range == 0:
     return 0.1
   return num/range
 
