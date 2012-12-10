@@ -352,7 +352,7 @@ class ArticleHeaderManager(models.Manager):
         and core_articledetails.header_id = %s
         GROUP BY core_articleheader.name,core_articledetails.id,core_articledetails.mod_date
         ORDER BY core_articledetails.mod_date
-        ) select name, id, (1.0*likes)/nullif(likes+dislikes,0) * 100 as likes, (1.0*dislikes)/nullif(likes+dislikes,0) * 100 as dislikes from w'''
+        ) select name, id, round((1.0*likes)/nullif(likes+dislikes,0) * 100,1) as likes, round((1.0*dislikes)/nullif(likes+dislikes,0) * 100,1) as dislikes from w'''
       cursor = connection.cursor()
       cursor.execute(query, [header_id])
       return cursor.fetchall()
