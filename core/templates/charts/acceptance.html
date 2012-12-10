@@ -5,7 +5,6 @@
 {% block content %}
 
 
-
 <div class="row">
     <div class="span12 ">
       <h1 id="headtitle" class="headtitle innerpage"><span>مواد الدستور</span></h1>
@@ -15,10 +14,11 @@
 <div class="row">
   <div class="span12">
         <center>
-            <div id="chart_div" style="width: 800px;">
+
+            <div id="chart_div" style="width: 1000px;">
               {% for ele in articles_acceptance %}
-                <div style="width:100; float:left;" >
-                  {{ele.1}}||
+                <div style="color:#000000; width:100px; float:right; border:1px solid #ccc; {% if ele.2 >= 0 %}background:#006633;opacity:{{ max|opacity:ele.2 }};{% else %}background:#ff0000;opacity:{{ min|opacity:ele.2 }};{% endif %}" >
+                  {{ele.1}}
                 </div>
               {% endfor %}
             </div>
