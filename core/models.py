@@ -344,13 +344,15 @@ class ArticleHeaderManager(models.Manager):
       return cursor.fetchone()
 
     def get_history_chart(self,header_id):
-      query ='''SELECT core_articleheader.name,core_articledetails.mod_date,core_articledetails.id , SUM(core_suggestion.likes),SUM(core_suggestion.dislikes)
+      query ='''WITH RECURSIVE w AS (
+        SELECT core_articleheader.name,core_articledetails.mod_date,core_articledetails.id , SUM(core_suggestion.likes) as likes,SUM(core_suggestion.dislikes) as dislikes
         FROM core_articledetails, core_suggestion,core_articleheader 
         WHERE core_suggestion.articledetails_id = core_articledetails.id
         and core_articledetails.header_id = core_articleheader.id
         and core_articledetails.header_id = %s
         GROUP BY core_articleheader.name,core_articledetails.id,core_articledetails.mod_date
-        ORDER BY core_articledetails.mod_date'''
+        ORDER BY core_articledetails.mod_date
+        ) select name, id, likes/nullif(likes+dislikes,0) * 100 as likes, dislikes/nullif(likes+dislikes,0) * 100 as dislikes from w'''
       cursor = connection.cursor()
       cursor.execute(query, [header_id])
       return cursor.fetchall()

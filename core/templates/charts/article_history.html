@@ -12,12 +12,18 @@
     var data = google.visualization.arrayToDataTable([
       ['التاريخ', 'الموافقين', 'الرافضين']
       {% for ele in article_history %}
-      ,['النسخه {{ forloop.counter }}',{{ ele.3}},{{ ele.4}}]
+      ,['النسخه {{ forloop.counter }}',{% if ele.2 %}{{ ele.2}},{{ ele.3}}{% else %}0,0{% endif %}]
       {% endfor %}
     ]);
 
+    var options = {
+      fontName: 'tahoma',
+      title:"{{article_history.0.0}}",
+      pointSize:5,
+      vAxis:{title:'النسبة المئوية'}
+    };
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-    chart.draw(data,{fontName: 'tahoma',title:"{{article_history.0.0}}",pointSize:5});
+    chart.draw(data,options);
   }
 </script>
 
