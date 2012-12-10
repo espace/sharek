@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}تعليقات الزوار{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['التاريخ', 'الموافقين', 'الرافضين']
+      {% for ele in article_history %}
+      ,['النسخه {{ forloop.counter }}',{{ ele.3}},{{ ele.4}}]
+      {% endfor %}
+    ]);
+
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    chart.draw(data,{fontName: 'tahoma',title:"{{article_history.0.0}}",pointSize:5});
+  }
+</script>
+
+
+<div class="row">
+    <div class="span12 ">
+      <h1 id="headtitle" class="headtitle innerpage"><span>مواد الدستور</span></h1>
+      {% if next_article %}
+      <a href="{%url article_history header_id=next_article.1 order=next_article.2%}">{{next_article.0}}</a>
+      {% endif %}
+      <br>
+      {% if prev_article %}
+      <a href="{%url article_history header_id=prev_article.1 order=prev_article.2%}">{{prev_article.0}}</a>
+      {% endif %}
+    </div>
+</div><!-- row -end -->
+
+<div class="row">
+  <div class="span12">
+        <center>
+            <div id="chart_div" style="width: 900px; height: 500px;"></div>
+        </center>
+  </div>
+</div><!-- row -end -->
+
+{% endblock %}

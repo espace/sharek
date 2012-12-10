@@ -319,6 +319,52 @@ class ArticleHeaderManager(models.Manager):
        else:
            return None
 
+    def get_next_art(self,order):
+      query ='''SELECT core_articleheader.name,core_articleheader.id,core_articleheader.order
+        FROM core_articledetails,core_articleheader 
+        WHERE core_articledetails.header_id = core_articleheader.id
+        and core_articledetails.current = TRUE
+        and core_articleheader.order > %s
+        GROUP BY core_articleheader.name,core_articleheader.order,core_articleheader.id
+        ORDER BY 3 LIMIT 1'''
+      cursor = connection.cursor()
+      cursor.execute(query, [order])
+      return cursor.fetchone()
+
+    def get_prev_art(self,order):
+      query ='''SELECT core_articleheader.name,core_articleheader.id,core_articleheader.order
+        FROM core_articledetails,core_articleheader 
+        WHERE core_articledetails.header_id = core_articleheader.id
+        and core_articledetails.current = TRUE
+        and core_articleheader.order < %s
+        GROUP BY core_articleheader.name,core_articleheader.order,core_articleheader.id
+        ORDER BY 3 DESC LIMIT 1'''
+      cursor = connection.cursor()
+      cursor.execute(query, [order])
+      return cursor.fetchone()
+
+    def get_history_chart(self,header_id):
+      query ='''SELECT core_articleheader.name,core_articledetails.mod_date,core_articledetails.id , SUM(core_suggestion.likes),SUM(core_suggestion.dislikes)
+        FROM core_articledetails, core_suggestion,core_articleheader 
+        WHERE core_suggestion.articledetails_id = core_articledetails.id
+        and core_articledetails.header_id = core_articleheader.id
+        and core_articledetails.header_id = %s
+        GROUP BY core_articleheader.name,core_articledetails.id,core_articledetails.mod_date
+        ORDER BY core_articledetails.mod_date'''
+      cursor = connection.cursor()
+      cursor.execute(query, [header_id])
+      return cursor.fetchall()
+
+    def get_first(self):
+      query ='''SELECT core_articleheader.id
+        FROM core_articledetails,core_articleheader 
+        WHERE core_articledetails.header_id = core_articleheader.id
+        and core_articledetails.current = TRUE
+        ORDER BY core_articleheader.order LIMIT 1'''
+      cursor = connection.cursor()
+      cursor.execute(query)
+      return cursor.fetchone()
+
     def get_next(self, topic, order):
        query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.slug, core_articledetails.slug
 					FROM core_articleheader inner join core_articledetails

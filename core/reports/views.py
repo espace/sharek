@@ -25,6 +25,27 @@ from sharek import settings
 # get first memcached URI
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
 
+def article_history(request, header_id=None,order=0):
+    user = None
+
+    login(request)
+
+    if request.user.is_authenticated() and request.user.is_staff:
+      user = request.user
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+    if not header_id:
+        header_id = ArticleHeader.objects.get_first()[0]
+
+    article_history = ArticleHeader.objects.get_history_chart(header_id)
+    next_article = ArticleHeader.objects.get_next_art(order)
+    prev_article = ArticleHeader.objects.get_prev_art(order)
+
+    context = Context({'user': user, 'article_history': article_history,'next_article':next_article,'prev_article':prev_article})
+
+    return render_to_response('charts/article_history.html', context ,RequestContext(request))
+
 def comments_chart(request):
     user = None
 
@@ -85,7 +106,6 @@ def articles_acceptance(request):
     context = Context({'user': user, 'max':max,'min':min,'articles_acceptance': articles_acceptance})
 
     return render_to_response('charts/acceptance.html', context ,RequestContext(request))
-
 
 def comments_pdf(request, article_slug=None):
     user = None
