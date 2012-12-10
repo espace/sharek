@@ -138,7 +138,7 @@
                 {% for article in most_updated %}
                 <dl>
                     <dt>
-                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.slug article_slug=article.slug %}">{{ article.topic.name }} - {{article.header.name}}</a> 
+                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}">{{ article.topic.name }} - {{article.header.name}}</a> 
                       <span class="icon-update"><i class="date">{{article.mod_date|format}}</i></span>
                     </dt>
                 </dl>
