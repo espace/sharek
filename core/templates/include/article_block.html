@@ -39,7 +39,7 @@
     {% endfor %}
   {% else %}
     {% for suggestion in article.get_suggestions %}
-      {% include "include/suggestion_block.html" %}
+      {% include "include/suggestion_block.html" with suggestions=article.get_suggestions %}
     {% endfor %}
   {% endif %}
 
