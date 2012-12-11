@@ -620,8 +620,11 @@ class ArticleDetails(models.Model):
 
       suggestions = []
       for row in cursor.fetchall():
-        p = Suggestion(id=row[0], articledetails_id=row[1], description=row[2], _description_rendered=row[3], dislikes=row[4], likes=row[5], image=row[6],video=row[7],poll_total_count=row[8])
+        p = Suggestion(id=row[0], articledetails_id=row[1], description=row[4], _description_rendered=row[8], dislikes=row[3], likes=row[2], image=row[5],video=row[6],poll_total_count=row[7])
         suggestions.append(p)
+
+      
+      print [f.name for f in suggestions[0]._meta.fields]
       cursor.close()
       return suggestions
 
