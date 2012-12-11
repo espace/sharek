@@ -310,7 +310,11 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         voted_fb = []
         voted_suggestion = []
         poll_selection = []
-        suggestions = article.get_suggestions()
+
+        suggestions = mc.get('suggestions' + str(article.id))
+        if not suggestions:
+            suggestions = article.get_suggestions()
+            mc.set('suggestions' + str(article.id), suggestions, settings.MEMCACHED_TIMEOUT)
 
         if user:
             voted_fb = mc.get('voted_fb_' + str(article.id) + '-' + str(user.id))
@@ -349,9 +353,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
             feedbacks = paginator.page(paginator.num_pages)
 
         if classified_by == "tags":  
-            template_context = {'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
+            template_context = {'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
         elif classified_by == "topics":
-            template_context = {'poll_selection':poll_selection,'topic_page':True,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
+            template_context = {'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
 
     return render_to_response('article.html',template_context ,RequestContext(request))
 

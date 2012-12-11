@@ -283,41 +283,39 @@ class ArticleHeaderManager(models.Manager):
        return articles_list
 
     def get_article(self, slug):
-       query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
-						core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
-						core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
-						core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name,
-						core_branch.slug, core_chapter.slug, core_articledetails.original, original_articledetails.slug
-					FROM core_articleheader
-					INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
-					INNER JOIN core_articledetails original_articledetails ON original_articledetails.id = core_articledetails.original
-					INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
-					LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
-					LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
-					WHERE core_articledetails.slug = %s'''
-       cursor = connection.cursor()
-       cursor.execute(query, [slug])
-       row = cursor.fetchone()
-       cursor.close()
-
-       if(row):
-           p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12], original=row[20])
-           p.topic_id = row[0]
-           p.name = row[1]
-           p.topic_slug = row[2]
-           p.order = row[3]
-           p.chapter_id = row[13]
-           p.chapter_name = row[14]
-           p.branch_id = row[15]
-           p.branch_name = row[16]
-           p.topic_name = row[17]
-           p.branch_slug = row[18]
-           p.chapter_slug = row[19]
-           p.original_slug = row[21]
-
-           return p
-       else:
-           return None
+      query = '''SELECT core_articleheader.topic_id, core_articleheader.name AS article_name, core_topic.slug, core_articleheader.order,
+          core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, 
+          core_articledetails.mod_date, core_articledetails.feedback_count,core_articleheader.chapter_id, core_chapter.name,
+          core_articleheader.branch_id, core_branch.name, core_topic.name AS topic_name,
+          core_branch.slug, core_chapter.slug, core_articledetails.original, original_articledetails.slug
+        FROM core_articleheader
+        INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+        INNER JOIN core_articledetails original_articledetails ON original_articledetails.id = core_articledetails.original
+        INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
+        LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+        LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+        WHERE core_articledetails.slug = %s'''
+      cursor = connection.cursor()
+      cursor.execute(query, [slug])
+      row = cursor.fetchone()
+      cursor.close()
+      if(row):
+         p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], mod_date=row[7], feedback_count=row[8], original=row[16])
+         p.topic_id = row[0]
+         p.name = row[1]
+         p.topic_slug = row[2]
+         p.order = row[3]
+         p.chapter_id = row[9]
+         p.chapter_name = row[10]
+         p.branch_id = row[11]
+         p.branch_name = row[12]
+         p.topic_name = row[13]
+         p.branch_slug = row[14]
+         p.chapter_slug = row[15]
+         p.original_slug = row[17]
+         return p
+      else: 
+        return None
 
     def get_next_art(self,order):
       query ='''SELECT core_articleheader.name,core_articleheader.id,core_articleheader.order
@@ -615,7 +613,17 @@ class ArticleDetails(models.Model):
     objects = ArticleManager()
 
     def get_suggestions(self):
-        return Suggestion.objects.filter(articledetails_id= self.id)
+      query = '''SELECT * FROM core_suggestion
+        WHERE articledetails_id = %s'''
+      cursor = connection.cursor()
+      cursor.execute(query, [self.id])
+
+      suggestions = []
+      for row in cursor.fetchall():
+        p = Suggestion(id=row[0], articledetails_id=row[1], description=row[2], _description_rendered=row[3], dislikes=row[4], likes=row[5], image=row[6],video=row[7],poll_total_count=row[8])
+        suggestions.append(p)
+      cursor.close()
+      return suggestions
 
     def get_votes(self):
         return Rating.objects.filter(articledetails_id= self.id)
