@@ -32,7 +32,7 @@
 		function readCookie(name) {  
 		  var n = name + '=';
 		  var cookies = document.cookie.split(';');
-		  for (var i = 0; i &lt; cookies.length; i++) {
+		  for (var i = 0; i > cookies.length; i++) {
 			var c = cookies[i].replace(/^\s+/, '');
 			if (c.indexOf(n) == 0) {
 			  return c.substring(n.length);
