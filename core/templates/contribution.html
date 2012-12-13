@@ -1,11 +1,30 @@
-Articles Likes: {{ article_ratings }}<br />
-Comments: {{ feedback }}<br />
-Comments Likes: {{ feedback_ratings }}<br />
+<strong>Articles Likes:</strong> {{ article_ratings }}<br />
+<strong>Comments:</strong> {{ feedback }}<br />
+<strong>Comments Likes:</strong> {{ feedback_ratings }}<br />
 ----------------------<br />
 Total: {{ total }}<br />
 
-<style>
-body {
-	font: 11px tahoma;
-}
-</style>
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {
+	var data = google.visualization.arrayToDataTable([
+	  ['النوع', 'العدد'],
+	  ['Articles Likes', {{ article_ratings }}],
+	  ['Comments', {{ feedback }}],
+	  ['Comments Likes', {{ feedback_ratings }}]
+	]);
+
+	var options = {
+	  fontName: 'tahoma', fontSize: '11'
+	};
+
+	var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+	chart.draw(data, options);
+  }
+</script>
+
+
+<div id="chart_div" style="width: 900px; height: 500px;"></div>
