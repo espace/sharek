@@ -25,6 +25,8 @@ def topics(request):
          topics = Topic.objects.with_counts()
          mc.set('topics_tree', topics, settings.MEMCACHED_TIMEOUT)
 
+    print(topics)
+
     template_context = {'topics':topics,}
 
     return render_to_response('mobile/topics.html', template_context ,RequestContext(request))
