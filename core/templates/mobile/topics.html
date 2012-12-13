@@ -7,12 +7,14 @@
         <li data-role="list-divider" role="heading">أبواب الدستور</li>
         
         {% for topic in topics %}
+        {% if topic.level == 1 %}
         <li data-theme="">
           <a href="{% url articles_mobile topic_slug=topic.slug %}" data-transition="slide">
               {{topic.name}}
               <span class="ui-li-count">{{topic.count_articles}} مادة</span>
           </a>
         </li>
+        {% endif %}
         {% endfor %}
         
     </ul>

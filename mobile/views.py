@@ -22,10 +22,8 @@ def topics(request):
 
     topics = mc.get('topics_tree')
     if not topics:
-         topics = Topic.objects.with_counts()
+         topics = Topic.objects.topics_tree()
          mc.set('topics_tree', topics, settings.MEMCACHED_TIMEOUT)
-
-    print(topics)
 
     template_context = {'topics':topics,}
 
