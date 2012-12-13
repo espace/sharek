@@ -9,16 +9,14 @@
         {% for topic in topics %}
         <li data-theme="">
           <a href="{% url articles_mobile topic_slug=topic.slug %}" data-transition="slide">
-              {{topic.short_name}}
-              <span class="ui-li-count">
-                {{topic.articles_count}}  مادة
-              </span>
+              {{topic.name}}
+              <span class="ui-li-count">{{topic.count_articles}} مادة</span>
           </a>
         </li>
         {% endfor %}
         
     </ul>
     
-    <a href="{% url index_mobile %}" data-transition="slide">العودة للرئيسية</a>
+    <a style="float: left;" href="{% url index_mobile %}" data-transition="slide">العودة للرئيسية</a>
      
 {% endblock %}

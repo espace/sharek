@@ -20,10 +20,10 @@ def index(request):
 
 def topics(request):
 
-    topics = mc.get('topics_list')
+    topics = mc.get('topics_tree')
     if not topics:
          topics = Topic.objects.with_counts()
-         mc.set('topics_list', topics, settings.MEMCACHED_TIMEOUT)
+         mc.set('topics_tree', topics, settings.MEMCACHED_TIMEOUT)
 
     template_context = {'topics':topics,}
 
