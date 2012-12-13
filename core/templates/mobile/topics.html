@@ -11,7 +11,7 @@
         <li data-theme="">
           <a href="{% url articles_mobile topic_slug=topic.slug %}" data-transition="slide">
               {{topic.name}}
-              <span class="ui-li-count">{{topic.count_articles}} مادة</span>
+              <span class="ui-li-count">{{topic.articles_count}} مادة</span>
           </a>
         </li>
         {% endif %}
