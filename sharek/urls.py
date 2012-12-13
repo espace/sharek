@@ -37,6 +37,8 @@ urlpatterns = patterns('',
 	url(r'sharek/charts/comments/$', 'core.reports.views.comments_chart', name='comments_chart'),
     url(r'sharek/charts/users/$', 'core.reports.views.users_chart', name='users_chart'),
     url(r'sharek/charts/acceptance/$', 'core.reports.views.articles_acceptance', name='acceptance_chart'),
+    url(r'sharek/charts/article_history/(?P<header_id>[-\w]+)/(?P<order>[-\w]+)/$', 'core.reports.views.article_history', name='article_history'),
+    url(r'sharek/charts/article_history/$', 'core.reports.views.article_history'),
 
     url(r'^sharek/m/', include(mobile.urls)),
     url(r'^sharek/admin/', include(admin.site.urls)),
