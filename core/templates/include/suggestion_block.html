@@ -1,0 +1,39 @@
+{% load hash %}
+
+<div class="suggestion-block "> 
+    <h5 class="name" style="padding: 10px 0px">
+      {% if suggestions|length == 1 %}النص المقترح{% else %}مقترح ({{ forloop.counter }}){% endif %}
+    </h5>
+    <div class="like-group">
+      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == -1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == 1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}} " vote="0"><small class="dislike suggestion {{suggestion.id}}">{{suggestion.dislikes}}</small></a>
+      <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote rate {{suggestion.id}} {% if voted_suggestions|vote_sug:suggestion.id == 1 %} active {% elif voted_suggestions|vote_sug:suggestion.id == -1 %} disabled {% endif %}" art_id="{{article.id}}" id="{{suggestion.id}}" vote="1" ><small class="like suggestion {{suggestion.id}}">{{suggestion.likes}}</small></a>
+    </div>
+    {% if suggestion.video %}
+      <iframe width="420" height="315" src="http://www.youtube.com/embed/{{suggestion.video}}" frameborder="0" allowfullscreen></iframe>
+    {% endif %}
+    {% if suggestion.image %}
+    <div style="text-align:center; width:100%; float:none" class="thumbnail">
+      <img src="{{settings.MEDIA_URL}}{{suggestion.image}}">
+    </div>
+    {% endif %}
+    <p>{%if related_tags%}{{suggestion.description|striptags}}{%else%}{{suggestion.description|striptags|truncatewords_html:35}}{%endif%}</p>
+    {% if suggestion.get_poll_options %}
+    <div class="voting">
+      <ul suggestion_id="{{suggestion.id}}" class="unstyled">
+          {% for option in suggestion.get_poll_options %}
+            <li>
+                <label class="checkbox">
+                  <input {% if poll_selection|selected_option:option.id == 1 %}checked = "checked"{% endif %} type="checkbox" class="option" value="{{option.id}}"> {{option.option}}
+                </label>
+                <div class="progress progress-danger progress-striped">
+                    <div class="bar" style="width: {% ifnotequal suggestion.poll_total_count 0 %}{{option.count|percentage:suggestion.poll_total_count}}{% else %}0{% endifnotequal %}%;"> 
+                      {% ifnotequal suggestion.poll_total_count 0 %}{{option.count|percentage:suggestion.poll_total_count}}{% else %} 0 {% endifnotequal %}%</div>
+                </div>
+                <span class="count {{option.id}} pull-left strong votes-numbers">{{option.count}} صوتا</span>
+
+            </li>
+          {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+</div>

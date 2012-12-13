@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load hash %}
+{% block title %}تعليقات الزوار{% endblock %}
+
+{% block content %}
+
+
+<div class="row">
+    <div class="span12 ">
+      <h1 id="headtitle" class="headtitle innerpage"><span>مواد الدستور</span></h1>
+    </div>
+</div><!-- row -end -->
+
+<div class="row">
+  <div class="span12">
+        <center>
+
+            <div id="chart_div" style="width: 900px; ">
+              {% for ele in articles_acceptance %}
+              <div style="width:100px; height: 20px; float:right; position: relative;">
+              <div style="position: absolute; width: 100%; height: 100%; color: #000;">{{ele.1}}</div>
+                <div style="border:1px solid #ccc; width: 100%; height: 100%; {% if ele.2 >= 0 %}background:#006633;opacity:{{ max|opacity:ele.2 }};{% else %}background:#ff0000;opacity:{{ min|opacity:ele.2 }};{% endif %} color:#000000; " >
+                  
+                </div></div>
+              {% endfor %}
+            </div>
+        </center>
+  </div>
+</div><!-- row -end -->
+
+{% endblock %}

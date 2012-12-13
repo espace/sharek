@@ -14,7 +14,7 @@ from django.template import Context
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.core.servers.basehttp import FileWrapper
-from core.models import Tag, ArticleDetails
+from core.models import Tag, ArticleDetails, ArticleHeader
 from core.models import Feedback, Rating, Topic
 from core.models import Info, ArticleRating, User
 from core.views import login
@@ -34,6 +34,27 @@ from sharek import settings
 # get first memcached URI
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
 
+def article_history(request, header_id=None,order=0):
+    user = None
+
+    login(request)
+
+    if request.user.is_authenticated() and request.user.is_staff:
+      user = request.user
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+    if not header_id:
+        header_id = ArticleHeader.objects.get_first()[0]
+
+    article_history = ArticleHeader.objects.get_history_chart(header_id)
+    next_article = ArticleHeader.objects.get_next_art(order)
+    prev_article = ArticleHeader.objects.get_prev_art(order)
+
+    context = Context({'user': user, 'article_history': article_history,'next_article':next_article,'prev_article':prev_article})
+
+    return render_to_response('charts/article_history.html', context ,RequestContext(request))
+
 def comments_chart(request):
     user = None
 
@@ -52,6 +73,48 @@ def comments_chart(request):
     context = Context({'user': user, 'chart_data': chart_data})
 
     return render_to_response('charts/comments.html', context ,RequestContext(request))
+
+def users_chart(request):
+    user = None
+
+    login(request)
+
+    if request.user.is_authenticated() and request.user.is_staff:
+      user = request.user
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+    user_chart = mc.get('user_chart')
+    if not user_chart:
+        user_chart = user.users_chart()
+        mc.set('user_chart', user_chart, settings.MEMCACHED_TIMEOUT)
+
+    context = Context({'user': user, 'user_chart': user_chart})
+
+    return render_to_response('charts/users.html', context ,RequestContext(request))
+
+def articles_acceptance(request):
+    user = None
+
+    login(request)
+
+    if request.user.is_authenticated() and request.user.is_staff:
+        user = request.user
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+    articles_acceptance = mc.get('articles_acceptance')
+    if not articles_acceptance:
+         articles_acceptance = ArticleHeader.objects.acceptance_chart()
+         mc.set('articles_acceptance', articles_acceptance, settings.MEMCACHED_TIMEOUT)
+
+    max_min = ArticleHeader.objects.get_max_min()
+    max = max_min[0]
+    min = max_min[1]
+    
+    context = Context({'user': user, 'max':max,'min':min,'articles_acceptance': articles_acceptance})
+
+    return render_to_response('charts/acceptance.html', context ,RequestContext(request))
 
 def comments_pdf(request, article_slug=None):
     user = None

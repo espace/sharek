@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}تعليقات الزوار{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+<script type="text/javascript">
+  google.load("visualization", "1", {packages:["corechart"]});
+  google.setOnLoadCallback(drawChart);
+  function drawChart() {
+  var data = google.visualization.arrayToDataTable([
+    ['الشهر', 'عدد الأعضاء']
+    {% for ele in user_chart %}
+      ,['{{ ele.0 }}',  {{ ele.1 }}]
+    {% endfor %}
+  ]);
+
+  var options = {
+    fontName: 'tahoma',
+    fontSize: '11',
+    vAxis: {format:'#,###'}
+
+  };
+
+  var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+  chart.draw(data, options);
+  }
+</script>
+
+<div class="row">
+    <div class="span12 ">
+      <h1 id="headtitle" class="headtitle innerpage"><span>عدد الأعضاء</span></h1>
+    </div>
+</div><!-- row -end -->
+
+<div class="row">
+  <div class="span12">
+        <center>
+            <div id="chart_div" style="width: 800px; height: 300px;"></div>
+        </center>
+  </div>
+</div><!-- row -end -->
+
+{% endblock %}

@@ -1,7 +1,13 @@
-<ul>
-    {% for topic in topics %}
-      <li>
-        <a href="{% url topic_mobile topic_slug=topic.get_absolute_url %}">{{topic.short_name}}</a>
-      </li>
-    {% endfor %}
-</ul>
+
+        {% extends 'mobile/base.html' %} 
+
+        {% block content %}
+
+
+               <blockquote>
+                 إيمانا منا بقيمة التواصل مع جميع فئات الشعب المصرى العظيم فإننا قمنا بتأسيس هذا الموقع ليكون نافذة للتواصل الفعال بن اللجنة التأسيسة لوضع الدستور المصرى وبين كل من يرغب فى الإسهام الحقيقى فى صناعة دستور مصر القادم 
+              </blockquote>
+              <a href="{% url topics_mobile %}" data-role="button" data-transition="slide" data-theme="b">تحميل الدستور </a>
+              <a href="{% url topics_mobile %}" data-role="button" data-transition="slide" data-theme="b">استعراض الدستور</a>
+       
+ {% endblock %}
