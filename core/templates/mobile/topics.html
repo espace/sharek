@@ -1,0 +1,28 @@
+
+        {% extends 'mobile/base.html' %} 
+
+        {% block content %}
+
+        <!-- Home -->
+       
+                <ul data-role="listview" data-divider-theme="a" data-inset="true">
+                    <li data-role="list-divider" role="heading">
+                        أبواب الدستور
+                    </li>
+                     {% for topic in topics %}
+                       <li data-theme="">
+                        <a href="{% url articles_mobile topic_slug=topic.slug %}" data-transition="slide">
+                            {{topic.short_name}}
+                            <span class="ui-li-count">
+                              {{topic.articles_count}}  مادة
+                            </span>
+                        </a>
+                    </li>
+                    {% endfor %}
+                    
+                </ul>
+
+                <a href="{% url index_mobile %}" data-transition="slide">العودة للرئيسية</a>
+
+     
+ {% endblock %}

@@ -14,6 +14,12 @@ mc = memcache.Client([settings.MEMCACHED_BACKEND])
 
 def index(request):
 
+    template_context = {}
+
+    return render_to_response('mobile/index.html', template_context ,RequestContext(request))
+
+def topics(request):
+
     topics = mc.get('topics_list')
     if not topics:
          topics = Topic.objects.with_counts()
@@ -21,10 +27,10 @@ def index(request):
 
     template_context = {'topics':topics,}
 
-    return render_to_response('mobile/index.html', template_context ,RequestContext(request))
+    return render_to_response('mobile/topics.html', template_context ,RequestContext(request))
 
 
-def topic(request, topic_slug=None):
+def articles(request, topic_slug=None):
 
     topic = mc.get('topic_' + str(topic_slug))
     if not topic:
@@ -38,17 +44,6 @@ def topic(request, topic_slug=None):
 
     template_context = {'topic':topic,'articles':articles,}
 
-    return render_to_response('mobile/topic.html', template_context ,RequestContext(request))
-
-def article(request, article_slug):
-
-    article = mc.get('article_' + str(article_slug))
-    if not article:
-         article = ArticleHeader.objects.get_article(article_slug)
-         mc.set('article_' + str(article_slug), article, settings.MEMCACHED_TIMEOUT)
-
-    template_context = {'article':article,}
-
-    return render_to_response('mobile/article.html', template_context ,RequestContext(request))
+    return render_to_response('mobile/articles.html', template_context ,RequestContext(request))
 
 

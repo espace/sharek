@@ -1,0 +1,58 @@
+/* Put your custom CSS here */
+body{
+	direction: rtl;
+	text-align: right;
+    font: 1.2em  "tahoma", Helvetica, Arial, sans-serif;
+
+}
+
+.ui-collapsible-heading .ui-btn{
+	text-align: right;
+}
+
+.ui-collapsible-content{
+	    background: #f7f7f7;
+	    border: solid 1px #ccc;
+
+}
+.ui-collapsible-content p{
+	font-size: 1.2em;
+    font-family: "tahoma", Helvetica, Arial, sans-serif;
+    line-height: 1.5em;
+    margin: 0;
+    padding: 0;
+
+}
+.ui-li, .ui-li.ui-field-contain{
+	text-align: right;
+}
+.ui-li-has-arrow.ui-li-has-count .ui-li-count{
+	left: 40px;
+	right: auto;
+}
+.ui-btn-icon-right .ui-icon{
+	left: 10px;
+	right: auto;
+}
+
+.ui-li-has-arrow.ui-li-has-count .ui-btn-inner a.ui-link-inherit, .ui-li-static.ui-li-has-arrow.ui-li-has-count{
+	padding-right: 15px;
+	white-space: normal;
+	width: 60%;
+}
+.ui-btn-inner{
+	font-size: 1.2em;
+}
+blockquote{
+	font-size: 1.2em;
+	margin: 0.2em;
+	text-align: center;
+}
+
+.links{
+	float: right;
+	margin-top: 20px;
+	margin-bottom: 70px;
+}
+data-role=page]{height: 100% !important; position:relative !important; }
+[data-role=footer]{bottom:0px; position:absolute !important; top: auto !important; width:100%;} 

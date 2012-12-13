@@ -3,9 +3,9 @@ import mobile
 
 urlpatterns = patterns('',
 	
-    url(r'^topic/(?P<topic_slug>[-\w]+)/$', 'mobile.views.topic', name='topic_mobile'),
-    url(r'article/(?P<article_slug>[-\w]+)/$', 'mobile.views.article', name='article_mobile'),
+    url(r'^topics/$', 'mobile.views.topics', name='topics_mobile'),
+    url(r'topic/(?P<topic_slug>[-\w]+)/$', 'mobile.views.articles', name='articles_mobile'),
     
-	url(r'$', 'mobile.views.index'),
+	url(r'$', 'mobile.views.index', name='index_mobile'),
 	
 )

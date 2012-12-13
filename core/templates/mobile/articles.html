@@ -1,0 +1,28 @@
+
+        {% extends 'mobile/base.html' %} 
+
+        {% block content %}
+
+        <!-- Home -->
+            
+                <h2>
+                    {{topic.name}}
+                </h2>
+                <h3>
+                    الفصل الأول
+                </h3>
+                {% for article in articles %}
+                <div data-role="collapsible-set">
+                    <div data-role="collapsible">
+                        <h3>
+                            {{ article.name }}
+                        </h3>
+                        <p class="article-text">
+ إيمانا منا بقيمة التواصل مع جميع فئات الشعب المصرى العظيم فإننا قمنا بتأسيس هذا الموقع ليكون نافذة للتواصل الفعال بن اللجنة التأسيسة لوضع الدستور المصرى وبين كل من يرغب فى الإسهام الحقيقى فى صناعة دستور مصر القادم 
+                      </p>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="links"><a href="{% url topics_mobile %}" data-transition="slide">العودة الى أبواب الدستور</a></div>
+ {% endblock %}
