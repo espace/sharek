@@ -404,27 +404,50 @@ class ArticleHeaderManager(models.Manager):
            return None
 
     def acceptance_chart(self):
-      query = '''SELECT core_articleheader.order,name,SUM(core_suggestion.likes)-SUM(core_suggestion.dislikes) AS acceptance from core_articleheader,core_suggestion,core_articledetails where core_articledetails.current=TRUE and core_suggestion.articledetails_id = core_articledetails.id and core_articledetails.header_id=core_articleheader.id group by name,core_articleheader.order ORDER BY 1'''
+      query = '''SELECT core_articleheader.order,core_articleheader.name, core_articledetails.slug AS article_slug , core_topic.slug AS topic_slug
+        ,SUM(core_suggestion.likes)AS likes 
+        ,SUM(core_suggestion.dislikes) AS dislikes
+        ,SUM(core_suggestion.likes)-SUM(core_suggestion.dislikes) AS acceptance
+        ,SUM(core_suggestion.likes)+SUM(core_suggestion.dislikes) AS total
+        from core_articleheader,core_suggestion,core_articledetails ,core_topic
+        where core_articledetails.current=TRUE and core_suggestion.articledetails_id = core_articledetails.id 
+        and core_articledetails.header_id=core_articleheader.id
+        and core_articleheader.topic_id = core_topic.id
+        group by core_articleheader.name,core_articleheader.order,core_articledetails.slug,core_topic.slug ORDER BY 1'''
       cursor = connection.cursor()
       cursor.execute(query)
       return cursor.fetchall()
 
-    def get_max_min(self):
-      q = ''' SELECT MAX(acceptance),MIN(acceptance) from ( 
-        SELECT core_articleheader.order,name,SUM(core_suggestion.likes)-SUM(core_suggestion.dislikes) AS acceptance from core_articleheader,core_suggestion,core_articledetails
-        where core_articledetails.current=TRUE
-        and core_suggestion.articledetails_id = core_articledetails.id
+    def get_approved_count(self):
+      q = ''' SELECT COUNT(acceptance) from (SELECT core_articleheader.order,core_articleheader.name
+        ,SUM(core_suggestion.likes)-SUM(core_suggestion.dislikes) AS acceptance
+        from core_articleheader,core_suggestion,core_articledetails ,core_topic
+        where core_articledetails.current=TRUE and core_suggestion.articledetails_id = core_articledetails.id 
         and core_articledetails.header_id=core_articleheader.id
-        group by name,core_articleheader.order
-        ORDER BY 1 ) gg '''
+        and core_articleheader.topic_id = core_topic.id
+        group by core_articleheader.name,core_articleheader.order,core_articledetails.slug,core_topic.slug ORDER BY 1) gg WHERE acceptance >= 0'''
 
       cursor = connection.cursor()
       cursor.execute(q)
       row = cursor.fetchone()
       cursor.close()
-      p = []
-      p.append(row[0])
-      p.append(row[1])
+      p = row[0]
+      return p
+
+    def get_refused_count(self):
+      q = ''' SELECT COUNT(acceptance) from (SELECT core_articleheader.order,core_articleheader.name
+        ,SUM(core_suggestion.likes)-SUM(core_suggestion.dislikes) AS acceptance
+        from core_articleheader,core_suggestion,core_articledetails ,core_topic
+        where core_articledetails.current=TRUE and core_suggestion.articledetails_id = core_articledetails.id 
+        and core_articledetails.header_id=core_articleheader.id
+        and core_articleheader.topic_id = core_topic.id
+        group by core_articleheader.name,core_articleheader.order,core_articledetails.slug,core_topic.slug ORDER BY 1) gg WHERE acceptance < 0'''
+
+      cursor = connection.cursor()
+      cursor.execute(q)
+      row = cursor.fetchone()
+      cursor.close()
+      p = row[0]
       return p
     
 class ArticleHeader(models.Model):

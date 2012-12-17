@@ -13,19 +13,58 @@
 
 <div class="row">
   <div class="span12">
-        <center>
-
-            <div id="chart_div" style="width: 900px; ">
-              {% for ele in articles_acceptance %}
-              <div style="width:100px; height: 20px; float:right; position: relative;">
-              <div style="position: absolute; width: 100%; height: 100%; color: #000;">{{ele.1}}</div>
-                <div style="border:1px solid #ccc; width: 100%; height: 100%; {% if ele.2 >= 0 %}background:#006633;opacity:{{ max|opacity:ele.2 }};{% else %}background:#ff0000;opacity:{{ min|opacity:ele.2 }};{% endif %} color:#000000; " >
-                  
-                </div></div>
-              {% endfor %}
-            </div>
-        </center>
+    <table style="width: 100%; ">
+      <tr class="headtitle innerpage" style="height:50px; text-align:center;">
+        <td>المواد المقبولة : <span style="color: #A11212">{{approved_count}} مادة</span></td>
+        <td>المواد المرفوضة : <span style="color: #A11212">{{refused_count}} مادة</span></td>
+      </tr>
+    </table>
+    <select id="jumper" class="span2"> 
+      <option>-- اذهب للمادة --</option>
+      {% for ele in articles_acceptance %}
+      <option value="{{ele.0}}">{{ele.1}}</option>
+      {% endfor %} 
+    </select>
+    <center>
+        <div id="chart_div" style="width: 900px; ">
+          {% for ele in articles_acceptance %}
+          <a class="containers {{ele.0}}" href="{% url article_detail classified_by="topics" class_slug=ele.3 article_slug=ele.2 %}" target="_blank" style="width:100px; height: 20px; float:right; position: relative; border:solid 3px #F2F2F2; margin:2px;">
+          <div style="position:  absolute; z-index:3; width: 100%; height: 100%; color: #000;">{{ele.1}}</div>
+            <div style="width: 100%; height: 100%; {% if ele.6 >= 0 %}background:#006633;opacity:{{ ele.7|opacity:ele.4 }};{% else %}background:#ff0000;opacity:{{ ele.7|opacity:ele.5 }};{% endif %} color:#000000; " >
+            </div></a>
+          {% endfor %}
+        </div>
+    </center>
   </div>
 </div><!-- row -end -->
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.balloon.js"></script>
+<script type="text/javascript">
+ $(document).ready(function() {
+    {% for ele in articles_acceptance %}
+      $('.containers.'+{{ele.0}}).balloon({
+        contents: '<p>المؤيدون : {{ele.4}}</p>'
+          +'<p>الرافضون : {{ele.5}}</p>'
+          +'<p>إجمالي الأصوات : {{ele.7}}</p>',
+           css: {
+            border: 'solid 4px #5baec0',
+            padding: '10px',
+            fontSize: '100%',
+            fontWeight: 'bold',
+            lineHeight: '1',
+            backgroundColor: '#666',
+            color: '#fff',
+            textAlign:'right'
+          }
+        });
+    {% endfor %} 
+
+    $('#jumper').change(function() {
+      val = $('#jumper').val();
+      $('.containers').css("border-color","#F2F2F2");
+      $('.containers.'+val).css("border-color","#000");
+      $('html, body').animate({scrollTop: $('.containers.'+val).offset().top-100}, 1000);
+    });
+ });
+</script>
 
 {% endblock %}
