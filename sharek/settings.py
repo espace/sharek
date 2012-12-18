@@ -228,7 +228,7 @@ MARKITUP_SET = 'markitup/sets/markdown'
 SPHINX_API_VERSION = 0x116
 
 
-
+'''
 SOCIAL_AUTH_PIPELINE = (
     'core.social_auth.backends.pipeline.social.social_auth_user',
     'core.social_auth.backends.pipeline.misc.save_status_to_session',
@@ -242,3 +242,4 @@ SOCIAL_AUTH_PIPELINE = (
     #'core.social_auth.associate.pipeline.redirect_to_form2',
     #'core.social_auth.associate.pipeline.first_name',
 )
+'''
