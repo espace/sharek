@@ -4,6 +4,7 @@ from sharek import settings
 from django.template import Context, loader, RequestContext
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
+from django.utils import simplejson
 
 from core.models import ArticleDetails, ArticleRating, Feedback, Rating
 
