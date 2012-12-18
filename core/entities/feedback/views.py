@@ -10,6 +10,8 @@ from core.models import ArticleDetails, ArticleRating, Feedback, Rating
 from core.social_auth.models import UserSocialAuth
 from core.facebook import facebook_sdk
 
+from core.views import mc,shorten_url
+
 def latest_comments(request):
 
     user = None
