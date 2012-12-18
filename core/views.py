@@ -47,8 +47,7 @@ from urllib2 import urlopen
 
 from operator import itemgetter, attrgetter
 
-from core.models import Info, User
-from core.models import Topic, Tag, ArticleDetails, ArticleHeader, ArticleRating
+from core.models import Info, User, Topic, Tag, ArticleDetails, ArticleHeader, ArticleRating
 
 
 # get first memcached URI
