@@ -1,7 +1,9 @@
 # This Python file uses the following encoding: utf-8
 from sharek import settings
 
+from django.template import Context, loader, RequestContext
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
+from django.shortcuts  import render_to_response, get_object_or_404, redirect
 
 from core.models import ArticleDetails, ArticleRating, Feedback, Rating
 
