@@ -8,6 +8,7 @@ from django.shortcuts  import render_to_response, get_object_or_404, redirect
 from core.models import ArticleDetails, ArticleRating, Feedback, Rating
 
 from core.social_auth.models import UserSocialAuth
+from core.facebook import facebook_sdk
 
 def latest_comments(request):
 
