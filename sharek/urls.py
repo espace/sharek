@@ -1,15 +1,22 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls.defaults import *
+
 #from wkhtmltopdf.views import PDFTemplateView
 import core, mobile
 from mobile import urls
+
+from core.api import *
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
+entry_resource = TopicsResource()
+
 urlpatterns = patterns('',
 
+	url(r'^sharek/api/', include(entry_resource.urls)),
     url(r'^sharek/rename/$', 'core.entities.article.views.rename_articles', name='rename'),
+	
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
     url(r'^sharek/chaining/', include('smart_selects.urls')),

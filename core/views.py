@@ -102,7 +102,6 @@ def index(request):
     template_context = {'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics_tree':topics_tree,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented,'most_updated':most_updated, 'tags':tags}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
-        
           
 def facebook_comment(request):
     return render_to_response('facebook_comment.html', {},RequestContext(request))
