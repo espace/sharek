@@ -151,7 +151,7 @@ def topic_detail(request, topic_slug=None):
 
     topics = mc.get('topics_list')
     if not topics:
-         topics = Topic.objects.with_counts()
+         topics = Topic.objects.with_counts
          mc.set('topics_list', topics, settings.MEMCACHED_TIMEOUT)
 
 
