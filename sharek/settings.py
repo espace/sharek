@@ -17,7 +17,6 @@ SOCIAL_AUTH_ASSOCIATE_URL_NAME = 'socialauth_associate_complete'
 SOCIAL_AUTH_DEFAULT_USERNAME = 'new_social_auth_user'
 SOCIAL_AUTH_UUID_LENGTH = 16
 SOCIAL_AUTH_EXTRA_DATA = False
-#SOCIAL_AUTH_PROTECTED_USER_FIELDS = ['email',]
 SOCIAL_AUTH_EXPIRATION = 'expires'
 SOCIAL_AUTH_SESSION_EXPIRATION = False
 
@@ -230,3 +229,12 @@ MARKITUP_SET = 'markitup/sets/markdown'
 SPHINX_API_VERSION = 0x116
 
 
+SOCIAL_AUTH_PIPELINE = (
+    'core.social_auth.backends.pipeline.social.social_auth_user',
+    'social_auth.backends.pipeline.associate.associate_by_email',
+    'core.social_auth.backends.pipeline.user.get_username',
+    'core.social_auth.backends.pipeline.user.create_user',
+    'core.social_auth.backends.pipeline.social.associate_user',
+    'core.social_auth.backends.pipeline.social.load_extra_data',
+    'core.social_auth.backends.pipeline.user.update_user_details'
+)

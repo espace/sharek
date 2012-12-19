@@ -38,10 +38,10 @@ def linebreak(summary, replace_text):
 def percentage(num1,num2):
   return (num1*100)/num2
 
-def opacity(range,num):
-  if num/range == 0:
-    return 0.1
-  return num/range
+def opacity(total,num):
+  if total == 0:
+    return 0
+  return (1.0*num)/total
 
 key = register.filter('key', key)
 linebreak = register.filter('linebreak', linebreak)

@@ -103,16 +103,12 @@ def articles_acceptance(request):
     else:
         return HttpResponseRedirect(reverse('index'))
 
-    articles_acceptance = mc.get('articles_acceptance')
-    if not articles_acceptance:
-         articles_acceptance = ArticleHeader.objects.acceptance_chart()
-         mc.set('articles_acceptance', articles_acceptance, settings.MEMCACHED_TIMEOUT)
 
-    max_min = ArticleHeader.objects.get_max_min()
-    max = max_min[0]
-    min = max_min[1]
+    articles_acceptance = ArticleHeader.objects.acceptance_chart()
+    approved_count = ArticleHeader.objects.get_approved_count()
+    refused_count = ArticleHeader.objects.get_refused_count()
     
-    context = Context({'user': user, 'max':max,'min':min,'articles_acceptance': articles_acceptance})
+    context = Context({'user': user,'articles_acceptance': articles_acceptance,'approved_count':approved_count, 'refused_count':refused_count})
 
     return render_to_response('charts/acceptance.html', context ,RequestContext(request))
 
