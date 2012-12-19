@@ -13,6 +13,8 @@ urlpatterns = patterns('',
 	
     url(r'^sharek/chaining/', include('smart_selects.urls')),
 	
+	url(r'^sharek/update_user_info', 'core.jobs.views.update_user_info'),
+	
 	#Generate PDF
     #url(r'^sharek/pdf/topics/$', 'core.reports.views.topics_pdf', name='topics_pdf'),
 	#url(r'^sharek/pdf/topic/(?P<topic_slug>[-\w]+)/$', 'core.reports.views.topic_pdf', name='topic_pdf'),
