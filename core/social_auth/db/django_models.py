@@ -64,9 +64,11 @@ class UserSocialAuth(models.Model, UserSocialAuthMixin):
         return providers
 
     @classmethod
-    def get_extra_data(cls, username):
+    ''' We modify this " adding the provider " part in case user associated with more than account 
+    as we need to know each provider data seperated '''
+    def get_extra_data(cls, username, provider):
         user =  User.objects.get(username = username)
-        social_user = cls.objects.get(user_id = user.id)
+        social_user = cls.objects.get(user_id = user.id, provider = provider)
         return social_user.extra_data
 
 class Nonce(models.Model, NonceMixin):

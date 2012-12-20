@@ -82,7 +82,7 @@ def modify(request):
             if request.user.username != "admin":
                 # post on twitter or facebook
                 if 'facebook' in UserSocialAuth.auth_provider(request.user.username):
-                    extra_data = UserSocialAuth.get_extra_data(request.user.username)
+                    extra_data = UserSocialAuth.get_extra_data(request.user.username, "facebook")
                     access_token = extra_data['access_token']
                  # GraphAPI is the main class from facebook_sdp.py
                     art = get_object_or_404(ArticleDetails, id=request.POST.get("article"))
@@ -98,7 +98,7 @@ def modify(request):
                     graph.put_wall_post(message, attachment)
             
                 if 'twitter' in UserSocialAuth.auth_provider(request.user.username):
-                    extra_data = UserSocialAuth.get_extra_data(request.user.username)
+                    extra_data = UserSocialAuth.get_extra_data(request.user.username, "twitter")
                     access_token = extra_data['access_token']
                     access_token_secret = access_token[access_token.find('=')+1 : access_token.find('&')]
                     access_token_key = access_token[access_token.rfind('=')+1:]
