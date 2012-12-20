@@ -179,7 +179,8 @@ def backend_setting(backend, name, default=None):
         print setting(name) + "222222"
         return setting(name)
     else:
-        print default + "&&&&&&&&&&&&&&&&&&&&&&&&&&"
+        print "%%%%%%%%%%%%%%%%%%%%%%%%"
+        print default
         return default
 
 
