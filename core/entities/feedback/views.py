@@ -81,8 +81,7 @@ def modify(request):
                     
             if request.user.username != "admin":
                 # post on twitter or facebook
-                print UserSocialAuth.auth_provider(request.user.username)
-                if UserSocialAuth.auth_provider(request.user.username) == 'facebook':
+                if 'facebook' in UserSocialAuth.auth_provider(request.user.username):
                     extra_data = UserSocialAuth.get_extra_data(request.user.username)
                     access_token = extra_data['access_token']
                  # GraphAPI is the main class from facebook_sdp.py
@@ -98,7 +97,7 @@ def modify(request):
                     message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+art_name+" من الدستور"
                     graph.put_wall_post(message, attachment)
             
-                if UserSocialAuth.auth_provider(request.user.username) == 'twitter':
+                if 'twitter' in UserSocialAuth.auth_provider(request.user.username):
                     extra_data = UserSocialAuth.get_extra_data(request.user.username)
                     access_token = extra_data['access_token']
                     access_token_secret = access_token[access_token.find('=')+1 : access_token.find('&')]

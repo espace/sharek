@@ -55,8 +55,13 @@ class UserSocialAuth(models.Model, UserSocialAuthMixin):
     @classmethod
     def auth_provider(cls, username):
         user =  User.objects.get(username = username)
-        social_user = cls.objects.get(user_id = user.id)
-        return social_user.provider
+        ''' We modify this " .get => .filter " part in case user associated with more than account 
+            as we need to know all providers in the share action '''
+        social_users = cls.objects.filter(user_id = user.id)
+        providers = []
+        for user in social_users:
+            providers.appened(user.provider)
+        return providers
 
     @classmethod
     def get_extra_data(cls, username):
