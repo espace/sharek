@@ -79,7 +79,7 @@ AUTHENTICATION_BACKENDS = (
     'core.social_auth.backends.OpenIDBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
-'''
+
 SOCIAL_AUTH_PIPELINE = (
     'core.social_auth.backends.pipeline.social.social_auth_user',
     'core.social_auth.backends.pipeline.user.get_username',
@@ -88,7 +88,7 @@ SOCIAL_AUTH_PIPELINE = (
     'core.social_auth.backends.pipeline.social.load_extra_data',
     'core.social_auth.backends.pipeline.user.update_user_details'
 )
-'''
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
