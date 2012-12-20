@@ -60,7 +60,7 @@ class UserSocialAuth(models.Model, UserSocialAuthMixin):
         social_users = cls.objects.filter(user_id = user.id)
         providers = []
         for user in social_users:
-            providers.appened(user.provider)
+            providers.append(user.provider)
         return providers
 
     @classmethod
