@@ -81,6 +81,7 @@ def modify(request):
                     
             if request.user.username != "admin":
                 # post on twitter or facebook
+                print UserSocialAuth.auth_provider(request.user.username)
                 if UserSocialAuth.auth_provider(request.user.username) == 'facebook':
                     extra_data = UserSocialAuth.get_extra_data(request.user.username)
                     access_token = extra_data['access_token']
