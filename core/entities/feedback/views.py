@@ -10,6 +10,7 @@ from core.models import ArticleDetails, ArticleRating, Feedback, Rating
 
 from core.social_auth.models import UserSocialAuth
 from core.facebook import facebook_sdk
+from core.twitter import twitter
 
 from core.views import mc,shorten_url
 
