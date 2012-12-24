@@ -14,6 +14,7 @@ entry_resource = TopicsResource()
 
 urlpatterns = patterns('',
 
+    url(r'^logged-in/$', 'core.profiles.views.profile', name='profile'),
 	url(r'^sharek/api/', include(entry_resource.urls)),
     url(r'^sharek/rename/$', 'core.entities.article.views.rename_articles', name='rename'),
 	
