@@ -923,6 +923,7 @@ class Suggestion(models.Model):
 
     class Meta:
       get_latest_by = 'id'
+      ordering = ["id"]
 
 class SuggestionVotes(models.Model):
     suggestions = models.ForeignKey(Suggestion)    
