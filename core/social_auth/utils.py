@@ -161,7 +161,7 @@ def setting(name, default=None):
     return getattr(settings, name, default)
 
 
-def backend_setting(backend, name, default='sharek/profile/'):
+def backend_setting(backend, name, default=None):
     """
     Looks for setting value following these rules:
         1. Search for <backend_name> prefixed setting
