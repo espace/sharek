@@ -161,7 +161,7 @@ def setting(name, default=None):
     return getattr(settings, name, default)
 
 
-def backend_setting(backend, name, default=None):
+def backend_setting(backend, name, default='sharek/profile/'):
     """
     Looks for setting value following these rules:
         1. Search for <backend_name> prefixed setting
@@ -173,14 +173,10 @@ def backend_setting(backend, name, default=None):
         name
     )
     if hasattr(settings, backend_setting_name):
-        print setting(backend_setting_name) + "111111"
         return setting(backend_setting_name)
     elif hasattr(settings, name):
-        print setting(name) + "222222"
         return setting(name)
     else:
-        print "%%%%%%%%%%%%%%%%%%%%%%%%"
-        print default
         return default
 
 
