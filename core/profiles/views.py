@@ -12,6 +12,7 @@ from django.shortcuts  import render_to_response, get_object_or_404, redirect
 
 from core.models import ArticleRating, ArticleDetails, Feedback, User
 from core.social_auth import __version__ as version
+from core.social_auth.models import UserSocialAuth
 from sharek import settings
 
 def user(request, username=None, browsing_data="def"):
