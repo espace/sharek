@@ -54,10 +54,11 @@ def associate_complete(request, backend, *args, **kwargs):
     elif isinstance(user, HttpResponse):
         return user
     else:
-        url = backend_setting(backend,
+        '''url = backend_setting(backend,
                               'SOCIAL_AUTH_NEW_ASSOCIATION_REDIRECT_URL') or \
               redirect_value or \
-              DEFAULT_REDIRECT
+              DEFAULT_REDIRECT'''
+        return HttpResponse("<script type='text/javascript'> window.close(); window.opener.refreshPage(); </script>");
     return HttpResponseRedirect(url)
 
 
