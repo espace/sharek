@@ -637,7 +637,7 @@ class ArticleDetails(models.Model):
 
     def get_suggestions(self):
       query = '''SELECT * FROM core_suggestion
-        WHERE articledetails_id = %s'''
+        WHERE articledetails_id = %s order by core_suggestion.order'''
       cursor = connection.cursor()
       cursor.execute(query, [self.id])
 
@@ -924,7 +924,6 @@ class Suggestion(models.Model):
 
     class Meta:
       get_latest_by = 'id'
-      ordering = ["order"]
 
 class SuggestionVotes(models.Model):
     suggestions = models.ForeignKey(Suggestion)    

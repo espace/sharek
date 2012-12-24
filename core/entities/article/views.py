@@ -8,6 +8,8 @@ from django.shortcuts  import render_to_response, get_object_or_404, redirect
 from django.utils import simplejson
 
 from core.views import login,mc
+from core.helpers.diff_match import diff_match_patch
+
 
 from core.models import ArticleDetails, ArticleHeader, PollOptions, PollResult, Suggestion, SuggestionVotes, Topic, Feedback, Rating
 
