@@ -637,7 +637,7 @@ class ArticleDetails(models.Model):
 
     def get_suggestions(self):
       query = '''SELECT * FROM core_suggestion
-        WHERE articledetails_id = %s order by core_suggestion.order'''
+        WHERE articledetails_id = %s order by core_suggestion.date'''
       cursor = connection.cursor()
       cursor.execute(query, [self.id])
 
@@ -916,7 +916,7 @@ class Suggestion(models.Model):
     image = models.ImageField(upload_to="suggestions/", blank=True)
     video = models.CharField(max_length=12,default='',help_text="The Youtube video code, ex: oq6Yij-hnGo ", null = True, blank = True)
     poll_total_count = models.IntegerField(default=0)
-    order = models.IntegerField(blank = True, null = True, default=0)
+    date = models.DateTimeField( auto_now_add=True, default=datetime.now() ,blank=True,null=True)
 
     def get_poll_options(self):
       options = PollOptions.objects.filter(suggestions_id = self.id)
