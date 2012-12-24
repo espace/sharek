@@ -916,6 +916,7 @@ class Suggestion(models.Model):
     image = models.ImageField(upload_to="suggestions/", blank=True)
     video = models.CharField(max_length=12,default='',help_text="The Youtube video code, ex: oq6Yij-hnGo ", null = True, blank = True)
     poll_total_count = models.IntegerField(default=0)
+    order = models.IntegerField(blank = True, null = True, default=0)
 
     def get_poll_options(self):
       options = PollOptions.objects.filter(suggestions_id = self.id)
@@ -923,7 +924,7 @@ class Suggestion(models.Model):
 
     class Meta:
       get_latest_by = 'id'
-      ordering = ["-id"]
+      ordering = ["order"]
 
 class SuggestionVotes(models.Model):
     suggestions = models.ForeignKey(Suggestion)    
