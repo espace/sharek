@@ -6,7 +6,7 @@ from django.shortcuts  import render_to_response, get_object_or_404, redirect
 
 from core.views import login,mc
 
-from core.models import Topic, SuggestionVotes
+from core.models import Topic, SuggestionVotes, PollResult
 
 def topic_detail(request, topic_slug=None):
     user = None
@@ -48,6 +48,7 @@ def topic_detail(request, topic_slug=None):
             all_articles = None
 
     voted_suggestion = []
+    poll_selection = []
 
     if user:
         voted_suggestion = mc.get('voted_suggestion_'+ str(user.id))
@@ -55,7 +56,12 @@ def topic_detail(request, topic_slug=None):
            voted_suggestion = SuggestionVotes.objects.filter(user = user)
            mc.set('voted_suggestion_'+ str(user.id), voted_suggestion, 900) # 15 Minutes
 
-    template_context = {'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_suggestions':voted_suggestion}
+        poll_selection = mc.get('poll_selection_'+ str(user.id))
+        if not poll_selection:
+            poll_selection = PollResult.objects.filter(user_id = user.id)
+            mc.set('poll_selection_'+ str(user.id), poll_selection, settings.MEMCACHED_TIMEOUT)
+
+    template_context = {'poll_selection':poll_selection,'all_articles':all_articles, 'request':request, 'topics':topics,'topic':topic,'settings': settings,'user':user,'voted_suggestions':voted_suggestion}
 
     return render_to_response('topic_new.html',template_context ,RequestContext(request))
 
