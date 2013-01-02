@@ -8,16 +8,45 @@
 
 <div class="row">
     <div class="span12 ">
+    {% if type = '' %}
+    
+    
+     <div class="span12" style="text-align: center; margin-top: 40px;">
+          <h2 style="font-family: GESSTwoMediumRegular; margin-bottom: 10px; text-shadow: 1px 1px 1px #FFFFFF;">
+          احصائيات المشاركات على مواد الدستور</h2>
+     </div>
+    
+    {% else %}
 		<h1 id="headtitle" class="headtitle innerpage">
-        	<span>احصائيات المشاركات على مواد الدستور</span>
+        	{% if type = 'ar' %}
+        		<span>احصائيات المشاركات على مواد الدستور</span>
+            {% elif type = 'en' %}
+            	<span style="float: left;">Contributions Statistics on the Constitutional Articles</span>
+            {% endif %}
         </h1>
+	{% endif %}
     </div>
 </div><!-- row -end -->
 
 <div class="row">
 	<div class="span12">
         <center>
-            <img src="{{ STATIC_URL }}images/infographic-ar.jpeg"
+        	{% if type = 'ar' %}
+            	<img src="{{ STATIC_URL }}images/infographic-ar.jpeg" />
+            {% elif type = 'en' %}
+            	<img src="{{ STATIC_URL }}images/infographic-en.jpeg" />
+            {% else %}
+            
+            
+            	<a href="{% url infographic_type type='ar' %}">
+                	<img src="{{ STATIC_URL }}images/arabic-infographic.jpg" />
+                </a>
+            	<a href="{% url infographic_type type='en' %}">
+                	<img src="{{ STATIC_URL }}images/english-infographic.jpg" />
+                </a>
+                
+                
+            {% endif %}
         </center>
 	</div>
 </div><!-- row -end -->
