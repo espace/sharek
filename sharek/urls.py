@@ -11,6 +11,8 @@ urlpatterns = patterns('',
     url(r'^sharek/rename/$', 'core.views.rename_articles', name='rename'),
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
+    url(r'^sharek/infographic', 'core.reports.views.infographic', name='infographic'),
+	
     url(r'^sharek/chaining/', include('smart_selects.urls')),
 	
 	url(r'^sharek/update_user_info', 'core.jobs.views.update_user_info'),
