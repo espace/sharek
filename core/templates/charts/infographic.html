@@ -10,7 +10,6 @@
     <div class="span12 ">
     {% if type = '' %}
     
-    
      <div class="span12" style="text-align: center; margin-top: 40px;">
           <h2 style="font-family: GESSTwoMediumRegular; margin-bottom: 10px; text-shadow: 1px 1px 1px #FFFFFF;">
           احصائيات المشاركات على مواد الدستور</h2>
@@ -36,19 +35,17 @@
             {% elif type = 'en' %}
             	<img src="{{ STATIC_URL }}images/infographic-en.jpeg" />
             {% else %}
-            
-            
             	<a href="{% url infographic_type type='ar' %}">
                 	<img src="{{ STATIC_URL }}images/arabic-infographic.jpg" />
                 </a>
             	<a href="{% url infographic_type type='en' %}">
                 	<img src="{{ STATIC_URL }}images/english-infographic.jpg" />
                 </a>
-                
-                
             {% endif %}
         </center>
 	</div>
 </div><!-- row -end -->
+
+<img src="{{ STATIC_URL }}images/arabic-infographic.jpg" style="display: none;" />
 
 {% endblock %}
