@@ -2,6 +2,10 @@
 
 {% block title %}احصائيات عن المشاركة على مواد الدستور{% endblock %}
 
+{% block og_image %}
+  <meta property="og:image" content="{{ STATIC_URL }}images/arabic-infographic.jpg"/>
+{% endblock %}
+
 {% block content %}
 
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
@@ -46,6 +50,5 @@
 	</div>
 </div><!-- row -end -->
 
-<img src="{{ STATIC_URL }}images/arabic-infographic.jpg" style="display: none;" />
 
 {% endblock %}
