@@ -1,4 +1,6 @@
 @import url(http://fonts.googleapis.com/earlyaccess/droidarabickufi.css);
+@import url(http://fonts.googleapis.com/earlyaccess/droidarabicnaskh.css);
+
 
 @font-face {
     font-family: 'FrutigerBold';
@@ -35,9 +37,9 @@
 
 
 body {
-    background: #f2f2f2;
+    background: #fff;
     color: #444444;
-    font-family: Tahoma,Geneva,sans-serif;
+    font-family: 'Droid Arabic Naskh',Geneva,sans-serif;
     font-size: 12px;
     direction: rtl;
 }
@@ -51,26 +53,95 @@ body {
     margin:0px;
 }
 
+/*------------   carousel    ------ */
+.carousel-caption {
+    top: 120px;
+    bottom: auto;
+    height: 110px;
+    padding: 40px;
+    background: rgba(0, 0, 0, 0.6);
+}
+.carousel-caption h4{
+    float: right;
+    font: 40px GESSTwoMediumRegular;
+    width: 40%;
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-left: 20px;
+    color: #4dc3fa;
+    border-left: solid 7px rgba(255,255,255,0.3);
+
+}
+.carousel-caption p{
+    float: right;
+    font: 20px GESSTwoMediumRegular;
+    width: 50%;
+    height: 130px;
+    overflow: hidden;
+    margin-top: -10px;
+    line-height: 33px;
+    opacity: 0.9;
+}
+
+.carousel-control {
+      background-color: transparent;
+      border: 0;
+      font-size: 50px;
+      margin-top: 0;
+      top: 200px;
+      text-shadow: 0 1px 1px rgba(0,0,0,.4);
+    }
+.carousel.carousel-fade .item {
+  -webkit-transition: opacity 1s ease-in-out;
+  -moz-transition: opacity 1s ease-in-out;
+  -ms-transition: opacity 1s ease-in-out;
+  -o-transition: opacity 1s ease-in-out;
+  transition: opacity 1s ease-in-out;
+}
+.carousel.carousel-fade .active.left,
+.carousel.carousel-fade .active.right {
+  left: 0;
+  z-index: 2;
+  opacity: 0;
+  filter: alpha(opacity=0);
+}
+.carousel.carousel-fade .next,
+.carousel.carousel-fade .prev {
+  left: 0;
+  z-index: 1;
+}
+
+.carousel.carousel-fade .carousel-control {
+  z-index: 3;
+}
 /*------------   header    ------ */
+.nav-wrapper{
+    width: 100%;
+    background: #356b8c;
+    height: auto;
+    border-bottom: solid 1px #eaeaea;
+}
 .header-wrapper{
     width: 100%;
-    background: rgba(120,103,93,0.3);
-    height: 75px;
+    background: #eee;
+    height: auto;
+    border-bottom: solid 1px #eaeaea;
+    padding: 20px 0;
 }
-
-
+.header{
+}
+.navbar-blue{
+    background: #356b8c !important;
+}
 .facebook_log_in {
-    margin-top:10px ;
+    margin-top:20px ;
 }
 .user_img{
-    border: solid 2px #222;
+    border: solid 3px #d0d0d0;
     border-radius: 5px;
     vertical-align: middle;
     float: left;
-    height: 50px;
-    width: 50px;
 }
-
 .attrs{
     float: left;
 }
@@ -80,7 +151,7 @@ body {
 
 .profile-details .user_img_larg
 {
-    border: solid 2px #333;
+    border:solid 2px #08c;
     border-radius: 5px;
     vertical-align: middle;
     height: 50px;
@@ -134,11 +205,11 @@ body {
 .social_login{
     margin-top: 10px;
     min-height: 40px;
-    width: 100%;
+    /*width: 100%;*/
     float: left;
     height: auto;
     overflow: hidden;
-    border-radius: 5px;
+/*    border-radius: 5px;
     box-shadow:inset 0px 1px 1px rgba(255,255,255,1), 0 1px 1px 0px rgba(0,0,0,0.3) ;
     border:solid 1px #e1e3ec ; 
     background:-ms-linear-gradient(top, #fbfbfb, #e7e7e7);
@@ -146,7 +217,7 @@ body {
     background:-webkit-linear-gradient(top, #fbfbfb, #e7e7e7);
     background:-o-linear-gradient(top, #fbfbfb, #e7e7e7);
     background:linear-gradient(top, #fbfbfb, #e7e7e7);
-    background:-moz-linear-gradient(top, #fbfbfb, #e7e7e7);
+    background:-moz-linear-gradient(top, #fbfbfb, #e7e7e7);*/
     opacity: 0.7;
     -webkit-transition: opacity 200ms linear;
     -moz-transition: opacity 200ms linear;
@@ -204,7 +275,7 @@ body {
 }*/
 
 .navbar-search .search-query{
-    background: #b1b1b1;
+    background: #FAFAFA;
     color: #000 !important;
 }
 
@@ -665,6 +736,7 @@ left: 1px;
     text-shadow:0 0px 0px  rgba(0, 0, 0, 0.25);
 
 }
+
 /*------------   Navigation    ------ */
 /*.nav{
     background: url("../images/menu-slice.png") repeat-x  0 0 ;
@@ -714,32 +786,26 @@ left: 1px;
 
 
 /* ------------------sidebar --------------------------- */
+.sidebar .nav-pills {
+border-left: solid 1px #08C;
+}
 
 .sidebar .nav li a{
-    height: 40px;
-    padding: 15px 0  ;
+    /*height: 40px;*/
+    padding: 10px   ;
     font-size: 14px;
-    color: #b8babb !important;
+    color: #b7b7b7 !important;
     line-height: 18px;
-    font-family: GESSTwoMediumRegular;
+    font-family: 'Droid Arabic Kufi';
     -webkit-border-radius:0 !important;
      -moz-border-radius: 0 !important;
           border-radius: 0 !important;
 
 }
 .sidebar .nav li.active a{
-    background: #a11212;
+    background: #08C;
     color: #fff !important;
-}
 
-
-.sidebar-icon{
-    float: right;
-    height: 70px;
-/*    margin-left: 20px;
-*/    margin-top: -20px;
-    width: 70px;
-    background: url("../images/sprite-small.png") 0 0 no-repeat;
 }
 
 .sidebar .state-components{
@@ -793,8 +859,8 @@ background-position: -142px -9px !important;
             background-position: 0 0 !important ;
         }
 .tagLi a{
-    padding: 20px 0 0px 0 !important;
-}
+/*    padding: 10px 0 0px 0 !important;
+*/}
 /*
 .sidebar .judge{
     background-position: -23px -10px ;
@@ -859,6 +925,105 @@ background-position: -142px -9px !important;
 
 }
 
+
+/* =-=-=-=-=-=-=-=-  Home Page    =-=-=-=-=-=-=-=- */
+.home-content{
+    padding-top: 20px;
+}
+.home-content h3 {
+    font: bold 16px 'Droid Arabic Kufi',"Trebuchet MS",Arial,Helvetica,sans-serif;
+    color: #53aed9;
+}
+section{
+    border-top: solid 1px #ededed;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+section figure{
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+
+section h4{
+   font: bold 14px 'Droid Arabic Kufi',"Trebuchet MS",Arial,Helvetica,sans-serif;
+   color: #888;
+}
+section p{
+   color: #666;
+}
+
+section time , section span{
+    font-size: 11px;
+    margin-left: 10px;
+    color: #b6b9ba;
+}
+.latest-comments section {
+    float: right;
+}
+.latest-comments figure {
+    float: right;
+    margin: 0;
+    padding: 0;
+}
+.latest-comments h4 {
+    float: right;
+    margin: 0;
+    padding: 0;
+    max-width: 220px;
+    white-space: nowrap;
+}
+.latest-comments section img{
+    float: right;
+    margin: 0 10px 0 16px ;
+    padding: 0;
+    border: solid 2px #efefef;
+}
+.latest-comments section p{
+    float: right;
+    margin:  5px 0 10px 0;
+    padding: 0;
+    max-width: 220px;
+}
+.latest-comments  section span span{
+    color: #ccc;
+}
+.statistics{
+    float: right;
+    background: #f7f7f7;
+    border: solid 1px #efefef;
+    margin-bottom: 20px;
+}
+.statistics p{
+    float: right;
+    width:100%;
+    font: normal 16px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    text-align: center;
+
+}
+.statistics .number{
+    float: right;
+    width: 100%;
+    font-size: 72px;
+    text-align: center;
+    font-weight: bold;
+
+}
+.statistics .number.laws{
+    color: #53aed9;
+ 
+}
+.statistics .number.comments{
+    color: #53aed9;
+ 
+}
+.statistics .subject{
+    float: right;
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+
+}
 /*------------  members    ------ */
 
 
@@ -888,12 +1053,15 @@ background-position: -142px -9px !important;
 .headtitle a,
 .headsubtitle,
 .headsubtitle a{
-    color: #111;
+    color: #53AED9;
     /*display: block;*/
-    font: bold 26px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    font: bold 26px 'Droid Arabic Kufi',"Trebuchet MS",Arial,Helvetica,sans-serif;
 /*  margin-top: 30px;
 */    margin-bottom: 0px;
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+}
+.headtitle h1 {
+    font-size: 22px;
 }
 .headtitle strong{
     font-size: 36px;
@@ -916,7 +1084,7 @@ background-position: -142px -9px !important;
 }
 .headsubtitle,
 .headsubtitle a{
-    font: bold 25px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
+    font: bold 25px 'Droid Arabic Kufi',"Trebuchet MS",Arial,Helvetica,sans-serif;
 }
 
 .headtitle a,
@@ -932,7 +1100,7 @@ background-position: -142px -9px !important;
 
 }
 .headtitle h1{
-    background: url("../images/pattern.png") repeat;
+    /*background: url("../images/pattern.png") repeat;*/
     padding: 5px 10px;
     border-radius: 5px;
 	text-shadow: 1px 1px 1px #FFFFFF;
@@ -961,7 +1129,7 @@ background-position: -142px -9px !important;
 }
 
 .headtitle span{
-    background: url("../images/pattern.png") repeat;
+    /*background: url("../images/pattern.png") repeat;*/
     padding: 5px 10px;
     border-radius: 5px;
     text-shadow: 1px 1px 1px #FFFFFF;
@@ -1017,38 +1185,48 @@ background-position: -142px -9px !important;
 
 
 /*------------   Topics    ------ */
-
 .topic { 
-    background: #fafafa  ;
+    /*background: #fafafa  ;*/
     margin-bottom: 20px;
-    box-shadow: 0px 3px 1px rgba(0,0,0,0.1);
+    /*box-shadow: 0px 3px 1px rgba(0,0,0,0.1);*/
     padding: 20px;
     position: relative;
-    border: solid 2px #BA4242;
+    border-bottom: solid 1px rgba(0,0,0,0.1);
+    /*border: solid 2px #BA4242;*/
     /*border-top: solid 1px #f2f2f2;*/
     margin-left: 15px;
-    border-radius: 5px;
+    /*border-radius: 5px;*/
 }
-.topic-paging {
-    margin: 0 20px 0 35px;
-}
-.topic-paging li{
-    list-style-type: none;
-    margin: 5px 0;
-}
-.topic-paging li.prev{
-    float: right;
-}
-.topic-paging li.next{
-    float: left;
+.topic p{
+    color:  #a9a9a9;
 }
 .mada-title{
     color:#000;
-    font-size: 24px;
-    font-family: 'GESSTwoMediumRegular';
+    font-size: 20px;
+    font-family: 'Droid Arabic Kufi';
 }
 .mada-title a{
-    color:#000;
+    color:#7f7f7f;
+/*    font: bold 18px 'Droid Arabic Kufi',"Trebuchet MS",Arial,Helvetica,sans-serif;
+*/}
+.comments-number {
+    /*background: url("../images/small-ribbon.png") no-repeat  right top transparent;*/
+    /*color:#fff !important;*/
+    opacity: 0.7;
+    width: 109px;
+    height: 28px;
+    float: left;
+    font-size: 12px;
+    position: absolute;
+    top: 25px;
+    left: 6px;
+    padding: 5px 0 0 0;
+    text-align: center;
+    font: bold 10px tahoma,Arial,Helvetica,sans-serif !important;
+    color: #000;
+}
+.comments-number i{
+    margin-top: -2px !important;
 }
 
 .editings-con {
@@ -1086,19 +1264,16 @@ background-position: -142px -9px !important;
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.comments-number {
-    background: url("../images/small-ribbon.png") no-repeat  right top transparent;
-    color:#fff !important;
-    width: 159px;
-    height: 38px;
+.topic-paging {
+    margin: 0;
+}
+.topic-paging li.prev{
+    float: right;
+    list-style: none;
+}
+.topic-paging li.next{
     float: left;
-    font-size: 12px;
-    position: absolute;
-    top: 15px;
-    left: -14px;
-    padding: 5px 0 0 0;
-    text-align: center;
-	font-family: tahoma;
+    list-style: none;
 }
 /*----------- tags --------------------*/
 .span4 .tags{
@@ -1119,8 +1294,8 @@ background-position: -142px -9px !important;
 .tags a{
     font-size: 14px;
     margin-left: 5px;
-    color: #111;
-    background: #E0E0E0 url("../images/tag.png") no-repeat right center;
+    color: #666;
+    background: #eee  url("../images/tag.png") no-repeat right center;
     border-radius: 10px;
     padding: 5px 35px 5px 10px;
     display: inline-block;
@@ -1435,7 +1610,7 @@ margin-left: -20px;
     left:150px;
     top: 10px;
     /*color:#9d9d9d;*/
-    font: 10px GESSTwoMediumRegular;
+    font: 10px 'Droid Arabic Naskh';
 
 }
 .comment-block.child-reply{
@@ -1583,10 +1758,11 @@ span.divider{
     margin: 10px 0 15px 0;
 }
 .comment-entry{
-    width:92%;
-    background:#fafafa;
-    border: solid 1px #CCC;
+    width: 92%;
+    background: rgba(0, 0, 0, 0.01);
+    border: solid 1px #FAF9F7;
     padding: 10px 40px 10px 0;
+
 }
 
 .comment-entry.child-reply{
@@ -1606,7 +1782,7 @@ span.divider{
     width: 90%;
 }
 
-.comment-entry .btn-danger{
+.comment-entry .btn-info{
     font-family: GESSTwoMediumRegular;
     font-size: 14px;
 }
@@ -2118,8 +2294,8 @@ span.divider{
 /*-------------- top-comments -------------------- */
 .top-comments{
     padding: 20px;
-    background: #fafafa;
-    border: solid 1px #D9AEAE;
+    background: rgba(0, 0, 0, 0.01);
+    border: solid 1px #08C;
     float: right;
     border-radius:5px;
     margin: 10px 0 10px 0;
@@ -2141,7 +2317,7 @@ span.divider{
     text-indent: -9999px;
 }
 .top-comments .comment-block {
-    width: 90% !important;
+    width: 97% !important;
 }
 .searchPage.headtitle.innerpage span{
     margin-right: 0 !important;
@@ -2180,20 +2356,19 @@ span.divider{
     box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1);
     padding: 20px;
     position: relative;
-    border: solid 2px #BA4242;
+    border: solid 2px #08c;
     border-radius: 3px;
 
 
 }
 
 .suggestion-block{   
-    background: rgba(0,0,0,0.02)  ;
+    background: rgba(0,0,0,0.01)  ;
     margin: 15px 0 15px 0;
-    box-shadow: 0px 2px 1px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.3);
+    /*box-shadow: 0px 2px 1px rgba(0,0,0,0.1),inset 0 1px 0 rgba(255,255,255,0.3);*/
     padding: 8px 10px;
     position: relative;
     border: solid 1px #faf9f7;
-    border-bottom: none;
     border-radius: 5px;
     /*width: 95%;
     float: right;*/
@@ -2208,8 +2383,17 @@ span.divider{
 }
 
 .suggestion-block  .like-group{
-    left: 10px;
-    top:10px;
+    left: 8px;
+    top: 6px;
+    opacity: 0.9;
+    border: 0;
+    box-shadow: 0 0 0;
+}
+.suggestion-block .like-group a.like {
+    box-shadow: inset -1px 0px 2px rgba(0, 0, 0, 0.1);
+}
+.suggestion-block .like-group a.dislike {
+    box-shadow: inset 1px 0px 2px rgba(0, 0, 0, 0.1);
 }
 .history-records .mada-title{
     display: block;
@@ -2223,7 +2407,7 @@ span.divider{
 
 }
 .history-records .well.recent .edit-date strong{
-    color: #BA4242 !important;
+    color: #08c !important;
     font-weight: normal;
     font-size: 14px;
         letter-spacing: 0;
@@ -2401,7 +2585,7 @@ span.divider{
     margin-top: 20px;
 }
 .profile-tabs ul li a{
-    color: #a11212;
+    color: #08c;
     font: 14px GESSTwoMediumRegular,"Trebuchet MS",Arial,Helvetica,sans-serif;
 }
 .profile-tabs ul li.active a{
@@ -2426,7 +2610,7 @@ span.divider{
     display: inline;
     float: none !important;
     background: none;
-    color: #a11212;
+    color: #08c;
     margin-right: 5px;
 }
 

@@ -12,8 +12,10 @@
 
 <!-- <script src="{{ STATIC_URL }}js/init.js" type="text/javascript"></script> 
  -->
-
-  <div class="row promo">
+<!-- <div class="row">
+  <img src="{{ STATIC_URL }}images/law-slide.jpg">
+</div> --><!-- row -->
+  <!-- <div class="row promo">
     <div class="">
       <div class="span7 progress-promo">
         <p>هذا هو الموقع الرسمي للجمعية التأسيسية لوضع مشروع الدستور, والمواد المعلنة هنا هي الوحيدة المعتمدة من الجمعية وسيتم الأخذ بالملاحظات والمقترحات الموجودة هنا فقط ولا يوجد أي موقع آخر يمثل الجمعية.</p>
@@ -22,150 +24,131 @@
         <a href="{% url topics_pdf %}" class="download-pdf">تحميل المسودة الأولى من الدستور</a>
       </div>
       <div class="span5 map hidden-phone">
-        <!-- <iframe width="460" height="230" src="http://www.youtube.com/embed/2ddxz5o_e18" frameborder="0" allowfullscreen></iframe> -->
+         <iframe width="460" height="230" src="http://www.youtube.com/embed/2ddxz5o_e18" frameborder="0" allowfullscreen></iframe> 
         <a href="{% url top_users_map %}" ><img src="{{ STATIC_URL }}images/map.jpg" alt=""></a>
       </div>
-    </div><!-- below header -->
-  </div><!-- row -->
-  
+    </div>
+  </div> -->
+<!--   
 <div class="row">
   <div class="span12 "> <span class="divider visible-desktop"></span> <br /><br /></div>
-</div>
+</div> -->
 <!-- row -end -->
 
+<div class="row home-content">
+    <div class="span4 latest-laws">
+        <h3>آخر القوانين</h3>
+        <section>
+          <h4>قانون حرية اتاحة المعلومات</h4>
+          <p>
+            الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
+          </p>
+          <time>تاريخ الإضافة : 6-1-2013</time> <span>عدد المواد : 122</span>
+        </section>
+        <section>
+          <h4>قانون حرية اتاحة المعلومات</h4>
+          <p>
+            الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
+          </p>
+          <time>تاريخ الإضافة : 6-1-2013</time> <span>عدد المواد : 122</span>
+        </section>
+        <section>
+          <h4>قانون حرية اتاحة المعلومات</h4>
+          <p>
+            الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
+          </p>
+          <time>تاريخ الإضافة : 6-1-2013</time> <span>عدد المواد : 122</span>
+        </section>
+
+    </div><!-- span4 -->
+
+    <div class="span4 latest-comments">
+        <h3>آخر القوانين</h3>
+         <section>
+          
+            <figure>
+               <img src="{{ STATIC_URL }}images/amin.jpg" alt="">
+
+                <h4>محمد محمود أمين</h4>
+                <p>
+                  الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
+                </p>
+            </figure>
+          
+          <time>تاريخ الإضافة : 6-1-2013</time> <span>على <a href="#">قانون حرية اتاحة المعلومات</a></span>
+        </section>
+
+          <section>
+          
+            <figure>
+               <img src="{{ STATIC_URL }}images/amin.jpg" alt="">
+
+                <h4>محمد محمود أمين</h4>
+                <p>
+                  الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
+                </p>
+            </figure>
+          
+          <time>تاريخ الإضافة : 6-1-2013</time> <span>على <a href="#">قانون حرية اتاحة المعلومات</a></span>
+        </section>
+         <section>
+          
+            <figure>
+               <img src="{{ STATIC_URL }}images/amin.jpg" alt="">
+
+                <h4>محمد محمود أمين</h4>
+                <p>
+                  الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
+                </p>
+            </figure>
+          
+          <time>تاريخ الإضافة : 6-1-2013</time> <span>على <a href="#">قانون حرية اتاحة المعلومات</a></span>
+        </section>
+        
+    </div><!-- span4 -->
+
+    <div class="span4 misc">
+        <h3>احصائيات</h3>
+        <section class="statistics">
+          <p> 
+            <span class="subject">التعليقات</span>
+            <span class="number comments">71,242</span>
+          </p>
+          
+          <p> 
+            <span class="subject">القوانين</span>
+              <span class="number laws">120</span>
+
+          </p>
+          
+        </section>
+
+      <!--  <h3>تصويت</h3>
+         <section class="vote">
+          <label class="checkbox">
+                <input type="checkbox"> موافق
+              </label>
+          <div class="progress progress-info">
+            <div class="bar" style="width: 20%"></div>
+          </div>
+
+           <label class="checkbox">
+                <input type="checkbox">غير موافق 
+              </label>
+          <div class="progress progress-info">
+            <div class="bar" style="width: 20%"></div>
+          </div>
+
+          <button type="submit" class="btn btn-info">أدخل صوتك</button>
 
 
-<div class="row">
-  <div class="home-sections span12">
-    <div class="span8 "> 
-      <h1 class="headtitle"><span>تصنيفات مواد الدستور</span></h1> 
-
-        {% for struct in topics_tree %}
-          {% if struct.level == 1 %}
-          </li>
-          <li class="span4"> 
-            <a href="{% url topic topic_slug=struct.topic_slug %}">
-            <h3>{{struct.name}} <span class="articles-count-new">{{struct.articles_count}} مادة</span></h3>
-            </a>
-          {% elif struct.level == 2 %}
-            <a href="{% url topic topic_slug=struct.topic_slug %}#{{struct.slug}}">
-              <h5><i class="icon-book"></i> {{struct.name}}</h5>
-            </a>
-          {% else %}
-            <a href="{% url topic topic_slug=struct.topic_slug %}#{{struct.slug}}"><h6>- {{struct.name}}</h6></a>
-          {% endif %}
-        {% endfor %}
-        </li>
-   </div> 
+        </section> -->
+        
+    </div><!-- span4 -->
     
-    
- 
-  <div class="facebook-plugin "> 
-    <div class=" "> <h1 class="headtitle"><span>عدد مشاركات الزوار</span></h1> </div>
-
-  <p class="mosharakat_number">
-    {{ contributions|intcomma }}
-    <br />
-    <span>مشاركة على مسودة الدستور المصرى</span>
-  </p>
-
-   <div class="top-members ">
-      <h4> <i class="icon-star"></i> أعلى المشاركين</h4>
-      <ul>
-      	{% for top in top_users %}
-        	<li>
-        	  {% if top.provider == 'facebook' %}
-            	<a href="http://www.facebook.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
-                	<img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
-                </a>
-            {% elif top.provider == 'twitter' %}
-              <a href="http://www.twitter.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
-                <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
-              </a>
-            {% elif top.provider == 'yahoo' %}
-              <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}" title="{{ top.first_name }} {{ top.last_name }}">
-            {% elif top.provider == 'google' %}
-              <img class="loader" src="{{ STATIC_URL }}images/google_user.gif" title="{{ top.first_name }} {{ top.last_name }}">
-            {% else %}
-              <a href="http://www.facebook.com/{{ top.username }}" target="_blank" class="user-image" title="{{ top.first_name }} {{ top.last_name }}">
-                <img class="loader" src="{{ STATIC_URL }}photos/profile/{{ top.username }}">
-              </a>
-            {% endif %}
-            </li>
-        {% endfor %}
-      </ul>
-  </div><!-- top-members -->
-  
-    </div>
-  
-       
-  </div>
-  <!--span --> 
-      <div class="span12 "> <span style="margin-right:-20px;" class="divider"> </span> </div>
-
-<div class="row">
-  <div class="updates span12divider-vert"> 
-            <div class="span4 most-liked">
-              <h1 class="headtitle small"><span>الأكثر قبولا</span></h1> 
-
-              {% for article in top_liked %}
-                <dl>
-                    <dt>
-                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.slug article_slug=article.slug %}">{{ article.topic.name }} - {{article.header.name}}</a>
-                      <span class="icon-update">{{article.likes}}</span>
-                    </dt> 
-                </dl>
-              {% endfor %}
-    
-           </div>
-
-           <div class="span4 most-argued">
-                <h1 class="headtitle small"><span><i class="icon-fire"></i>الأكثر مناقشة</span></h1> 
-                
-                {% for article in top_commented %}
-                <dl>
-                    <dt>
-                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic.slug article_slug=article.slug %}">{{ article.topic.name }} - {{article.header.name}}</a> 
-                      <span class="icon-update"><i class="icon-comment"></i>{{article.feedback_count}}</span>
-                    </dt>
-                </dl>
-              {% endfor %}
-              
-           </div> <!--  Most liked -->
-           <div class="span4 most-new well">
-                <h1 class="headtitle small label label-important "><span><i class="icon-time icon-white"></i> أخر التحديثات</span></h1> 
-                
-                {% for article in most_updated %}
-                <dl>
-                    <dt>
-                      <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}">{{ article.topic.name }} - {{article.header.name}}</a> 
-                      <span class="icon-update"><i class="date">{{article.mod_date|format}}</i></span>
-                    </dt>
-                </dl>
-                {% endfor %}
-                <dl>
-                    <dt>
-                        <a href="{% url latest %}" class="more label label-important ">المزيد</a>
-                    </dt>
-                </dl>
-           
-              
-           </div> <!--  Most liked -->
-        </div>
-    
-  </div>
-  <!-- sidebar -->
 </div><!-- row -->
-      <div class="span12 "> <span style="margin-right:-20px;" class="divider"> </span> </div>
 
-<div class="row">
-      <div class="tags span12">     
-          <p> روابط دلالية:</p>
-          {% for tag in tags %}
-            <a href="{% url tag tag_slug=tag.get_absolute_url %}">{{tag.name}}</a>
-          {% endfor %}
-       </div>   
-</div> <!-- row -->
+
 
 </div>
 <!-- row end --> 

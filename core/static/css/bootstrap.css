@@ -4894,7 +4894,7 @@ a.badge:hover {
 
 .carousel {
   position: relative;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   line-height: 1;
 }
 
@@ -4907,11 +4907,10 @@ a.badge:hover {
 .carousel .item {
   position: relative;
   display: none;
-  -webkit-transition: 0.6s ease-in-out right;
-     -moz-transition: 0.6s ease-in-out right;
-      -ms-transition: 0.6s ease-in-out right;
-       -o-transition: 0.6s ease-in-out right;
-          transition: 0.6s ease-in-out right;
+  -webkit-transition: 0.6s ease-in-out left;
+     -moz-transition: 0.6s ease-in-out left;
+       -o-transition: 0.6s ease-in-out left;
+          transition: 0.6s ease-in-out left;
 }
 
 .carousel .item > img {
@@ -4926,7 +4925,7 @@ a.badge:hover {
 }
 
 .carousel .active {
-  right: 0;
+  left: 0;
 }
 
 .carousel .next,
@@ -4937,30 +4936,30 @@ a.badge:hover {
 }
 
 .carousel .next {
-  right: 100%;
+  left: 100%;
 }
 
 .carousel .prev {
-  right: -100%;
+  left: -100%;
 }
 
-.carousel .next.right,
-.carousel .prev.left {
-  right: 0;
-}
-
-.carousel .active.right {
-  right: -100%;
+.carousel .next.left,
+.carousel .prev.right {
+  left: 0;
 }
 
 .carousel .active.left {
-  right: 100%;
+  left: -100%;
+}
+
+.carousel .active.right {
+  left: 100%;
 }
 
 .carousel-control {
   position: absolute;
   top: 40%;
-  right: 15px;
+  left: 15px;
   width: 40px;
   height: 40px;
   margin-top: -20px;
@@ -4978,9 +4977,9 @@ a.badge:hover {
   filter: alpha(opacity=50);
 }
 
-.carousel-control.left {
-  left: 15px;
-  right: auto;
+.carousel-control.right {
+  right: 15px;
+  left: auto;
 }
 
 .carousel-control:hover {
@@ -4992,18 +4991,28 @@ a.badge:hover {
 
 .carousel-caption {
   position: absolute;
-  left: 0;
-  bottom: 0;
   right: 0;
-  padding: 10px 15px 5px;
+  bottom: 0;
+  left: 0;
+  padding: 15px;
   background: #333333;
   background: rgba(0, 0, 0, 0.75);
 }
 
 .carousel-caption h4,
 .carousel-caption p {
+  line-height: 20px;
   color: #ffffff;
 }
+
+.carousel-caption h4 {
+  margin: 0 0 5px;
+}
+
+.carousel-caption p {
+  margin-bottom: 0;
+}
+
 
 .hero-unit {
   padding: 60px;

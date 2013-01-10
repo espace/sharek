@@ -636,18 +636,7 @@ class ArticleDetails(models.Model):
     objects = ArticleManager()
 
     def get_suggestions(self):
-      query = '''SELECT * FROM core_suggestion
-        WHERE articledetails_id = %s order by core_suggestion.date'''
-      cursor = connection.cursor()
-      cursor.execute(query, [self.id])
-
-      suggestions = []
-      for row in cursor.fetchall():
-        p = Suggestion(id=row[0], articledetails_id=row[1], description=row[4], _description_rendered=row[5], dislikes=row[3], likes=row[2], image=row[6],video=row[7],poll_total_count=row[8])
-        suggestions.append(p)
-
-      cursor.close()
-      return suggestions
+        return Suggestion.objects.filter(articledetails_id=self.id)
 
     def get_votes(self):
         return Rating.objects.filter(articledetails_id= self.id)
