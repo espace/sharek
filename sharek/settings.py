@@ -198,7 +198,7 @@ INSTALLED_APPS = (
 	#'cache_toolbar',
     'smart_selects',
 	'mobile',
-	'tastypie',
+	#'tastypie',
 )
 
 # A sample logging configuration. The only tangible logging

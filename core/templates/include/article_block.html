@@ -3,12 +3,12 @@
 
 <div class="topic article-block">
 
-  {% if article.id != article.original %}
+  <!-- {% if article.id != article.original %}
   <div class="editings-con">
       <span class="new">نسخة معدلة </span> 
       <a class="old" href="{% url article_diff article_slug=article.original_slug %}" >التعديلات السابقة</a>
   </div>
-  {% endif %}
+  {% endif %} -->
     
   <h3>
       <p class="mada-title">
@@ -20,12 +20,13 @@
             <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}" class="comments-number pull-left">
           {% endif %}
           
-            <i style="margin-top:4px; margin-left:5px;" class="icon-comment icon-white"></i>
+            <i  class="icon-comment "></i>
               {% if article.feedback_count > 0 %}
                   {{article.feedback_count}}
                   تعليق
               {% else %}لا توجد تعليقات{% endif %}
           </a>
+          
       </p>
   </h3>
 

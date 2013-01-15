@@ -5,7 +5,9 @@
 {% block content %}
 
     <div class="topic">
-        <h3><p class="mada-title">{{info.name}}</p></h3>  
+    	<div id="headtitle" class="headtitle innerpage  visible-desktop">
+                <h1>{{info.name}}</h1> 
+         </div>       
         <p>{{info.summary}}</p>
     </div><!-- topic end -->
 {% endblock %}

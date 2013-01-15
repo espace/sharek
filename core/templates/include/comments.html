@@ -13,12 +13,12 @@
     <p>
        <textarea rows="3" class="input-xlarge span7" id="suggestion"></textarea>
        <br />
-       <button class="btn btn-danger offset0" type="submit" id="modify" >أضف تعليقك الآن !</button>
+       <button class="btn btn-info offset0" type="submit" id="modify" >أضف تعليقك الآن !</button>
     </p>
   </div>
 {% else %}
   <div class="comment-block comment-entry not-logged">  
-    <p style=" color:#960d0d; text-align:center; line-height:34px; font-size:16px;">
+    <p style=" color:#08C; text-align:center; line-height:34px; font-size:16px;">
 مرحبـــا! 
 <br /> 
 لكى تتمكن من تسجيل مقترحاتك لابد من تسجيل دخولك أولا
@@ -40,7 +40,7 @@
 
 {% if feedbacks|length >= 1 and top_ranked|length == 3 %}
     <div class="top-comments">
-      <span class="comments-number pull-left">أفضل التعليقات</span>
+      <!-- <span class="comments-number pull-left">أفضل التعليقات</span> -->
     {% for feedback in top_ranked %}
     	{% include "include/comment-block.html" %}
   {% endfor %}

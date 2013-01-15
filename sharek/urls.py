@@ -82,7 +82,7 @@ urlpatterns = patterns('',
     #Topic detail URL    
     url(r'^sharek/topics/$', 'core.entities.topic.views.topic_detail', name='topics'),
     url(r'^sharek/topic/(?P<topic_slug>[-\w]+)/$', 'core.entities.topic.views.topic_detail', name='topic'),
-    url(r'^sharek/article_versions/(?P<article_slug>[-\w]+)/$', 'core.entities.article.views.article_diff', name='article_diff'),
+    url(r'^sharek/history/(?P<article_slug>[-\w]+)/$', 'core.entities.article.views.article_diff', name='article_diff'),
 
 	  url(r'^sharek/map/', 'core.views.top_users_map', name='top_users_map'),
 	  url(r'^sharek/total_contributions/', 'core.views.total_contribution', name='total_contributions'),

@@ -1,10 +1,88 @@
 {% load settings %}
 
+<div class="nav-wrapper">
+
+  <div class="container navigation">
+    <div class="row">
+        <div class="span12">
+
+          <div class="navbar-blue top-nav hidden-phone">
+              <ul class="nav nav-pills ">
+                  <li class="">
+                    <a href="http://dostour.eg">الرئيسية</a>
+                  </li>
+                  <li class="">
+                    <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
+                  </li>
+                  {% if user %}
+                    <li class="">
+                      <a href="{% url profile 'likes' %}">الملف الشخصي</a>
+                    </li>
+                  {% endif %}
+                  {% if user.is_staff %}
+                    <li class="">
+                      <a href="{% url top_liked %}">الإحصائيات</a>
+                    </li>
+                  {% endif %}
+                  <li class="">
+                    <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
+                  </li>
+
+                </ul>
+                
+
+              <form class="navbar-search pull-left" action="{% url search %}" method="POST">
+                  {% csrf_token %}
+                   <input type="text" name="q" id="q" style="font: 11px tahoma;" class="search-query span2" placeholder="أدخل كلمات البحث">
+              </form>
+          </div><!-- nav -end -->
+        <div class="navbar-blue top-nav  visible-phone">
+
+              <div class="btn-group">
+                        <button data-toggle="dropdown" class="btn btn-large btn-inverse dropdown-toggle"><i class="icon-list icon-white"></i> <span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                              <li class="">
+                                <a href="http://dostour.eg">الرئيسية</a>
+                              </li>
+                              <li class="">
+                                <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
+                              </li>
+                              {% if user %}
+                                <li class="">
+                                  <a href="{% url profile 'likes' %}">الملف الشخصي</a>
+                                </li>
+                              {% endif %}
+                              {% if user.is_staff %}
+                                <li class="">
+                                  <a href="{% url top_liked %}">الإحصائيات</a>
+                                </li>
+                              {% endif %}
+                               <li class="">
+                                <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
+                              </li>
+                        </ul>
+                </div>
+
+                <form class="navbar-search pull-left" action="{% url search %}" method="POST">
+                        {% csrf_token %}
+                         <input type="text" name="q" id="q" style="font: 11px tahoma;" class="search-query span2" placeholder="أدخل كلمات البحث">
+                </form>
+           </div>
+        </div>
+        
+
+    </div><!-- row end -->
+  </div><!-- content -->   
+</div> <!-- nav-wrapper -->
+
+<div class="header-wrapper">
+
 <div class="container header">
   <div class="row">
+
       <div class="span3">
         <div class="pull-right logo">
-            <a href="http://dostour.eg"><img src="{{STATIC_URL}}images/logo.png" alt="دستور مصر"></a>
+            <a href="#"><img src="{{STATIC_URL}}images/logo.png" alt="دستور مصر"></a>
         </div>
       </div><!-- logo end -->
       
@@ -15,7 +93,7 @@
                 
                   <div class="attrs">
                     <a href="{% url profile 'likes' %}" class="user_name">{{ user.first_name }} {{ user.last_name }}</a>
-                    <a href="{% url logout %}" class="log_out btn btn-inverse btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                    <a href="{% url logout %}" class="log_out btn btn-info btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
                   </div>
                   
                   {% if user.username = 'admin' or request.session.social_auth_last_login_backend = 'google' %}
@@ -51,79 +129,59 @@
           </div>
       </div> <!-- search -->
   </div><!-- row end -->
+
+{% if homepage == 'true' %}
+<div class="row">
+  <div class="span12">
+    <div id="myCarousel" class="carousel slide carousel-fade ">
+      <!-- Carousel items -->
+        <div class="carousel-inner">
+            <div class="active item">    
+                    <div class="carousel-caption">
+                      <h4>مشروع قانون حرية اتاحة المعلومات </h4>
+                      <p>الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة. الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.</p>
+                    </div>
+                     <img src="{{ STATIC_URL }}images/law-slide.jpg">
+            </div>
+            <div class=" item">    
+                    <div class="carousel-caption">
+                      <h4>مشروع قانون حرية التعبير و الرأى</h4>
+                      <p>الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة. الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.</p>
+                    </div>
+                     <img src="{{ STATIC_URL }}images/freedome-speech.jpg">
+            </div>
+            <div class=" item">    
+                    <div class="carousel-caption">
+                      <h4>مشروع قانون حرية اتاحة المعلومات 3</h4>
+                      <p>الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة. الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.</p>
+                    </div>
+                     <img src="{{ STATIC_URL }}images/law-slide.jpg">
+            </div>
+            <div class=" item">    
+                    <div class="carousel-caption">
+                      <h4>مشروع قانون حرية اتاحة المعلومات 4</h4>
+                      <p>الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة. الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.</p>
+                    </div>
+                     <img src="{{ STATIC_URL }}images/law-slide.jpg">
+            </div>
+        </div>
+        <!-- Carousel nav -->
+        <a class="carousel-control right" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+        <a class="carousel-control left" href="#myCarousel" data-slide="next">&rsaquo;</a>
+    </div>
+  </div>
+</div><!-- row -->
+
+{% endif %}
+
 </div><!-- header -->
 
-<div class="container navigation">
-  <div class="row">
-      <div class="span12">
 
-        <div class="navbar-inner top-nav hidden-phone">
-            <ul class="nav nav-pills ">
-                <li class="">
-                  <a href="http://dostour.eg">الرئيسية</a>
-                </li>
-                <li class="">
-                  <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
-                </li>
-                {% if user %}
-                  <li class="">
-                    <a href="{% url profile 'likes' %}">الملف الشخصي</a>
-                  </li>
-                {% endif %}
-                {% if user.is_staff %}
-                  <li class="">
-                    <a href="{% url top_liked %}">الإحصائيات</a>
-                  </li>
-                {% endif %}
-                <li class="">
-                  <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
-                </li>
+</div> <!-- header-wrapper -->   
 
-              </ul>
-              
 
-            <form class="navbar-search pull-left" action="{% url search %}" method="POST">
-                {% csrf_token %}
-                 <input type="text" name="q" id="q" style="font: 11px tahoma;" class="search-query span2" placeholder="أدخل كلمات البحث">
-            </form>
-        </div><!-- nav -end -->
-      <div class="navbar-inner top-nav  visible-phone">
 
-            <div class="btn-group">
-                      <button data-toggle="dropdown" class="btn btn-large btn-inverse dropdown-toggle"><i class="icon-list icon-white"></i> <span class="caret"></span></button>
-                      <ul class="dropdown-menu">
-                            <li class="">
-                              <a href="http://dostour.eg">الرئيسية</a>
-                            </li>
-                            <li class="">
-                              <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
-                            </li>
-                            {% if user %}
-                              <li class="">
-                                <a href="{% url profile 'likes' %}">الملف الشخصي</a>
-                              </li>
-                            {% endif %}
-                            {% if user.is_staff %}
-                              <li class="">
-                                <a href="{% url top_liked %}">الإحصائيات</a>
-                              </li>
-                            {% endif %}
-                             <li class="">
-                              <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
-                            </li>
-                      </ul>
-              </div>
-
-              <form class="navbar-search pull-left" action="{% url search %}" method="POST">
-                      {% csrf_token %}
-                       <input type="text" name="q" id="q" style="font: 11px tahoma;" class="search-query span2" placeholder="أدخل كلمات البحث">
-              </form>
-         </div>
-      </div>
-      
-
-  </div><!-- row end -->
-</div><!-- content -->        
+     
         
    <div id="not-logged" style="display:none;">  
     <p style=" color:#960d0d; text-align:center ;margin-top:20px;   font: 14px GESSTwoMediumRegular;
