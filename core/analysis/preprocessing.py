@@ -4,28 +4,39 @@ import re
 import collections
 import numpy as np
 
-from core.views import mc
+#from core.views import mc
+import memcache
+from sharek import settings
+mc = memcache.Client([settings.MEMCACHED_BACKEND])
 
-def remove_stop_words(string):
-  stop_words = load_stop_words()
+def remove_stop_words(string,stop_words):
+  temp = ""
+  for word in string.split():
+    if not word in stop_words.keys():
+      temp += word.strip() + " "
+  return temp
 
 
-def load_stop_words(filepath):
+def load_stop_words():
   stop_words = mc.get('stop_words')
   if not stop_words:
-    ins = open( filepath , "r" )
+    ins = open('stopwords.txt').read().splitlines()
     stop_words = {}
     for line in ins:
-        stop_words[line] = True
+        stop_words[line.decode('utf-8')] = True
     mc.set('stop_words', stop_words, settings.MEMCACHED_TIMEOUT)
   return stop_words
 
 def stammer(strings):
-  myFile = open('Failed.py', 'w')
+  stop_words = load_stop_words()
+  #myFile = open(name+'.py', 'w')
+  cleaned = []
   for string in strings:
-    string  = remove_punctuations(string)
-    splitted = string.split()
+    clean = remove_stop_words(string[1],stop_words)
+    clean  = remove_punctuations(clean)
+    splitted = clean.split()
     word = ""
+    temp = ""
     for word in splitted:
     #postfixes
       if re.match(".*كما$",word) and len(word) >10: word = re.sub("كما$","",word)
@@ -64,11 +75,10 @@ def stammer(strings):
       if re.match("^فل",word): word = re.sub("^فل","",word)
       if re.match("^وس",word): word = re.sub("^وس","",word)
       if re.match("^كال",word): word = re.sub("^كال","",word)
-      myFile.write(word+" ")
-    myFile.write("\n\n")
-    
-  myFile.close()
-  return splitted[0].decode('utf-8')
+      temp += word + " "
+    # cleaned array of [ suggestion_id, suggestion_cleaned_text ]
+    cleaned.append([string[0],temp])
+  return cleaned
 
 def remove_punctuations(string):
   string = string.replace(',',' ')
@@ -93,15 +103,14 @@ def remove_punctuations(string):
   string = string.replace('{',' ')
   string = string.replace('}',' ')
   string = string.replace('+',' ')
-  string = string.replace('،',' ')
+  string = string.replace('-',' ')
+  string = string.replace('?',' ')
+  string = string.replace('~',' ')
+  string = string.replace('؟'.decode('utf-8'),' ')
+  string = string.replace('،'.decode('utf-8'),' ')
   return string
 
 def unique_words(string):
   words = collections.Counter()
   words.update(string.split())
   return list(words)
-
-''' Compute the Cosine similarity of two victors
-    law:  v1 * v2 / |v1|*|v2| '''
-def copute_cousine_similarity(v1,v2):
-  return np.dot(v1,v2)/(np.linalg.norm(v1)*np.linalg.norm(v2))
