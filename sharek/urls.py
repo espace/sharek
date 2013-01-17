@@ -82,8 +82,8 @@ urlpatterns = patterns('',
     url(r'^sharek/topic/(?P<topic_slug>[-\w]+)/$', 'core.entities.topic.views.topic_detail', name='topic'),
     url(r'^sharek/history/(?P<article_slug>[-\w]+)/$', 'core.entities.article.views.article_diff', name='article_diff'),
 
-	  url(r'^sharek/map/', 'core.views.top_users_map', name='top_users_map'),
-	  url(r'^sharek/total_contributions/', 'core.views.total_contribution', name='total_contributions'),
+	url(r'^sharek/map/', 'core.views.top_users_map', name='top_users_map'),
+	url(r'^sharek/total_contributions/', 'core.views.total_contribution', name='total_contributions'),
 	
     # statistics pages
     url(r'^sharek/top_liked/', 'core.views.top_liked', name='top_liked'),
@@ -95,6 +95,6 @@ urlpatterns = patterns('',
 	
     url(r'^sharek/', include('core.social_auth.urls')),
 	
-    #url(r'$', 'core.views.tmp'),
+    url(r'$', 'core.views.tmp'),
       
 )
