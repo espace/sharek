@@ -9,7 +9,7 @@
 
 <span class="date">{% if just_comment != 1 %}<a href="{% url comment_detail classified_by="topics" class_slug=topic.slug article_slug=article.slug comment_no=comment.id %}">{% endif %}{{comment.date|format}}</a></span>
 
-<div class="more">{{comment.suggestion|striptags}}</div>
+<p>{{comment.suggestion|striptags}}</p>
 
 <div class="delete-group">
   {% if user %}

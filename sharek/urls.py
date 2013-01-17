@@ -14,6 +14,8 @@ entry_resource = TopicsResource()
 
 urlpatterns = patterns('',
 
+    url(r'^sharek/idf/$', 'core.analysis.tfidf.idf', name='idf'),
+    url(r'^sharek/summerize/$', 'core.analysis.tfidf.compute_tfidf', name='summerize'),
     #url(r'^sharek/logged-in/$', 'core.profiles.views.profile', name='profile'),
 	url(r'^sharek/api/', include(entry_resource.urls)),
     url(r'^sharek/rename/$', 'core.entities.article.views.rename_articles', name='rename'),
