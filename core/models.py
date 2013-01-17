@@ -927,3 +927,14 @@ class PollOptions(models.Model):
 class PollResult(models.Model):
     option = models.ForeignKey(PollOptions)    
     user = models.ForeignKey(User)
+
+# store the term idf per article
+class article_idf(models.Model):
+  articledetail = models.ForeignKey(ArticleDetails)
+  term = models.CharField(max_length=200,default='')
+  idf = models.FloatField()
+
+# store the term idf across the whole articles
+class idf(models.Model):
+  term = models.CharField(max_length=200,default='')
+  idf = models.FloatField()
