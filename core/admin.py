@@ -8,7 +8,7 @@ from core.actions import export_as_csv_action
 
 from django.contrib import admin
 
-from admin_views.admin import AdminViews
+#from admin_views.admin import AdminViews
 
 class PollOptionsInlineAdmin(admin.TabularInline):
     model      = PollOptions

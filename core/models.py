@@ -489,6 +489,43 @@ class ArticleHeader(models.Model):
        ordering = ["order"]
 
 class ArticleManager(models.Manager):
+    
+    # by Amr
+    def get_latest(self, limit):
+      query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
+                core_articledetails.id, core_articledetails.header_id, core_articledetails.slug, core_articledetails.summary, core_articledetails._summary_rendered,
+                core_articledetails.likes, core_articledetails.dislikes, core_articledetails.mod_date, core_articledetails.feedback_count,
+                core_articleheader.chapter_id, core_chapter.name, core_articleheader.branch_id, core_branch.name, core_topic.name,
+                core_branch.slug, core_chapter.slug, core_articledetails.original
+              FROM core_articleheader
+              INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
+              INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
+              LEFT JOIN core_chapter ON core_articleheader.chapter_id = core_chapter.id
+              LEFT JOIN core_branch ON core_articleheader.branch_id = core_branch.id
+              WHERE core_articledetails.current IS TRUE
+              ORDER BY core_articledetails.id desc limit %s'''
+          
+      cursor = connection.cursor()
+      cursor.execute(query, [limit])
+
+      articles_list = []
+      for row in cursor.fetchall():
+         p = ArticleDetails(id=row[4], header_id=row[5], slug=row[6], summary=row[7], _summary_rendered=row[8], likes=row[9], dislikes=row[10], mod_date=row[11], feedback_count=row[12], original=row[20])
+         p.topic_id = row[0]
+         p.name = row[1]
+         p.topic_slug = row[2]
+         p.order = row[3]
+         p.chapter_id = row[13]
+         p.chapter_name = row[14]
+         p.branch_id = row[15]
+         p.branch_name = row[16]
+         p.topic_name = row[17]
+         p.branch_slug = row[18]
+         p.chapter_slug = row[19]
+         articles_list.append(p)
+      cursor.close()
+      return articles_list
+    
     def get_top_liked(self, limit):
        query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug,
 	   					core_articledetails.slug, max(core_articledetails.likes) likes, core_topic.slug,
@@ -754,6 +791,37 @@ class FeedbackManager(models.Manager):
            p.provider = row[11]
            p.children = row[12]
 
+           feedback_list.append(p)
+
+       cursor.close()
+       return feedback_list
+   
+    # by Amr
+    def get_latest_comments(self, limit):
+       query = '''SELECT auth_user.username, auth_user.first_name, auth_user.last_name, core_feedback.id, core_feedback.suggestion, core_articleheader.name, core_articledetails.mod_date,COALESCE(social_auth_usersocialauth.provider, 'facebook') as provider
+                  FROM core_feedback
+                  INNER JOIN auth_user ON core_feedback.user = auth_user.username
+                  INNER JOIN core_articledetails ON core_articledetails.id = core_feedback.articledetails_id
+                  INNER JOIN core_articleheader ON core_articledetails.header_id = core_articleheader.id
+                  LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
+                  GROUP BY auth_user.username, auth_user.first_name, auth_user.last_name, core_feedback.id,
+                  social_auth_usersocialauth.provider, auth_user.is_active, core_articleheader.name, core_articledetails.mod_date
+                  HAVING auth_user.is_active IS TRUE AND core_feedback.parent_id IS NULL ORDER BY core_feedback.id DESC LIMIT %s '''
+       cursor = connection.cursor()
+       cursor.execute(query, [limit])
+
+       feedback_list = []
+
+       for row in cursor.fetchall():
+           p = self.model(id=row[3])
+           p.username = row[0]
+           p.first_name = row[1]
+           p.last_name = row[2]
+           p.my_suggestion = row[4]
+           p.article_name = row[5]
+           p.mod_date = row[6]
+           p.provider = row[7]
+           
            feedback_list.append(p)
 
        cursor.close()

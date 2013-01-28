@@ -4,20 +4,16 @@ from django.conf.urls.defaults import *
 import core, mobile
 from mobile import urls
 
-from core.api import *
-
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
-
-entry_resource = TopicsResource()
 
 urlpatterns = patterns('',
 
     url(r'^sharek/idf/$', 'core.analysis.tfidf.idf', name='idf'),
     url(r'^sharek/summerize/$', 'core.analysis.tfidf.compute_tfidf', name='summerize'),
     #url(r'^sharek/logged-in/$', 'core.profiles.views.profile', name='profile'),
-	url(r'^sharek/api/', include(entry_resource.urls)),
+#	url(r'^sharek/api/', include(entry_resource.urls)),
     url(r'^sharek/rename/$', 'core.entities.article.views.rename_articles', name='rename'),
 	
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
