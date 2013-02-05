@@ -77,7 +77,7 @@ def stammer(strings):
       if re.match("^كال",word): word = re.sub("^كال","",word)
       temp += word + " "
     # cleaned array of [ suggestion_id, suggestion_cleaned_text ]
-    cleaned.append([string[0],temp])
+    if len(temp)>0:cleaned.append([string[0],temp])
   return cleaned
 
 def remove_punctuations(string):
