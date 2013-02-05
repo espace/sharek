@@ -4,20 +4,16 @@ from django.conf.urls.defaults import *
 import core, mobile
 from mobile import urls
 
-from core.api import *
-
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
-
-entry_resource = TopicsResource()
 
 urlpatterns = patterns('',
 
     url(r'^sharek/idf/$', 'core.analysis.tfidf.idf', name='idf'),
     url(r'^sharek/summerize/$', 'core.analysis.tfidf.compute_tfidf', name='summerize'),
     #url(r'^sharek/logged-in/$', 'core.profiles.views.profile', name='profile'),
-	url(r'^sharek/api/', include(entry_resource.urls)),
+#	url(r'^sharek/api/', include(entry_resource.urls)),
     url(r'^sharek/rename/$', 'core.entities.article.views.rename_articles', name='rename'),
 	
     url(r'sharek/auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
@@ -84,8 +80,8 @@ urlpatterns = patterns('',
     url(r'^sharek/topic/(?P<topic_slug>[-\w]+)/$', 'core.entities.topic.views.topic_detail', name='topic'),
     url(r'^sharek/history/(?P<article_slug>[-\w]+)/$', 'core.entities.article.views.article_diff', name='article_diff'),
 
-	  url(r'^sharek/map/', 'core.views.top_users_map', name='top_users_map'),
-	  url(r'^sharek/total_contributions/', 'core.views.total_contribution', name='total_contributions'),
+	url(r'^sharek/map/', 'core.views.top_users_map', name='top_users_map'),
+	url(r'^sharek/total_contributions/', 'core.views.total_contribution', name='total_contributions'),
 	
     # statistics pages
     url(r'^sharek/top_liked/', 'core.views.top_liked', name='top_liked'),
@@ -97,6 +93,6 @@ urlpatterns = patterns('',
 	
     url(r'^sharek/', include('core.social_auth.urls')),
 	
-    #url(r'$', 'core.views.tmp'),
+    url(r'$', 'core.views.tmp'),
       
 )

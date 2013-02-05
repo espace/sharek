@@ -34,91 +34,48 @@
   <div class="span12 "> <span class="divider visible-desktop"></span> <br /><br /></div>
 </div> -->
 <!-- row -end -->
-
 <div class="row home-content">
+    
+    {% if latest_articles %}
     <div class="span4 latest-laws">
         <h3>آخر القوانين</h3>
-        <section>
-          <h4>قانون حرية اتاحة المعلومات</h4>
-          <p>
-            الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
-          </p>
-          <time>تاريخ الإضافة : 6-1-2013</time> <span>عدد المواد : 122</span>
-        </section>
-        <section>
-          <h4>قانون حرية اتاحة المعلومات</h4>
-          <p>
-            الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
-          </p>
-          <time>تاريخ الإضافة : 6-1-2013</time> <span>عدد المواد : 122</span>
-        </section>
-        <section>
-          <h4>قانون حرية اتاحة المعلومات</h4>
-          <p>
-            الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
-          </p>
-          <time>تاريخ الإضافة : 6-1-2013</time> <span>عدد المواد : 122</span>
-        </section>
-
-    </div><!-- span4 -->
-
-    <div class="span4 latest-comments">
-        <h3>آخر القوانين</h3>
-         <section>
-          
-            <figure>
-               <img src="{{ STATIC_URL }}images/amin.jpg" alt="">
-
-                <h4>محمد محمود أمين</h4>
-                <p>
-                  الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
-                </p>
-            </figure>
-          
-          <time>تاريخ الإضافة : 6-1-2013</time> <span>على <a href="#">قانون حرية اتاحة المعلومات</a></span>
-        </section>
-
+        {% for article in latest_articles %}
           <section>
-          
-            <figure>
-               <img src="{{ STATIC_URL }}images/amin.jpg" alt="">
-
-                <h4>محمد محمود أمين</h4>
-                <p>
-                  الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
-                </p>
-            </figure>
-          
-          <time>تاريخ الإضافة : 6-1-2013</time> <span>على <a href="#">قانون حرية اتاحة المعلومات</a></span>
-        </section>
-         <section>
-          
-            <figure>
-               <img src="{{ STATIC_URL }}images/amin.jpg" alt="">
-
-                <h4>محمد محمود أمين</h4>
-                <p>
-                  الكرامة الإنسانية حق لكل إنسان ويكفل المجتمع والدولة واجب احترامها وحمايتها ولا يجوز تعريض أي مواطن للازدراء والمهانة.
-                </p>
-            </figure>
-          
-          <time>تاريخ الإضافة : 6-1-2013</time> <span>على <a href="#">قانون حرية اتاحة المعلومات</a></span>
-        </section>
-        
+            <h4>{{ article.name }}</h4>
+            <p>{{ article.summary }}</p>
+            <time>تاريخ الإضافة : {{ article.mod_date|date:"d-m-Y" }}</time>
+          </section>
+        {% endfor %}
     </div><!-- span4 -->
+    {% endif %}
+    
+    {% if latest_comments %}
+    <div class="span4 latest-comments">
+        <h3>آخر التعليقات</h3>
+        {% for comment in latest_comments %}
+         <section>
+            <figure>
+               <img src="{{ STATIC_URL }}images/profile/{{comment.username}}" alt="{{comment.username}}">
+                <h4>{{ comment.first_name }} {{ comment.last_name }}</h4>
+                <p>{{ comment.my_suggestion }}</p>
+            </figure>
+          <time>تاريخ الإضافة : {{ comment.mod_date|date:"d-m-Y" }}</time> <span>على <a href="#">{{ comment.article_name }}</a></span>
+        </section>
+        {% endfor %}
+    </div>
+    {% endif %}
 
     <div class="span4 misc">
         <h3>احصائيات</h3>
         <section class="statistics">
           <p> 
             <span class="subject">التعليقات</span>
-            <span class="number comments">71,242</span>
+            <span class="number comments">{{feedback_count}}</span>
           </p>
           
           <p> 
             <span class="subject">القوانين</span>
-              <span class="number laws">120</span>
-
+              <span class="number laws">{{articles_count}}</span>
           </p>
           
         </section>

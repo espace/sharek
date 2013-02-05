@@ -1,5 +1,5 @@
 ﻿
-import textmining
+#import textmining
 
 import sys
 import os
@@ -23,7 +23,7 @@ import pprint
 from difflib import SequenceMatcher
 
 # http://python-cluster.sourceforge.net/
-from cluster import HierarchicalClustering
+#from cluster import HierarchicalClustering
 
 import time
 import memcache

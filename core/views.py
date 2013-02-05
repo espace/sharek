@@ -13,7 +13,7 @@ from datetime import datetime
 from django.db import connection
 from decimal import Decimal
 
-from diff_match import diff_match_patch
+from helpers.diff_match import diff_match_patch
 from django.contrib import auth
 from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -47,7 +47,7 @@ from urllib2 import urlopen
 
 from operator import itemgetter, attrgetter
 
-from core.models import Info, User, Topic, Tag, ArticleDetails, ArticleHeader, ArticleRating
+from core.models import Info, User, Topic, Tag, ArticleDetails, ArticleHeader, ArticleRating, Feedback
 
 
 # get first memcached URI
@@ -57,6 +57,7 @@ def tmp(request):
     return HttpResponseRedirect(reverse('index'))
 
 def index(request):
+    
     user = None
 
     login(request)
@@ -64,42 +65,55 @@ def index(request):
     if request.user.is_authenticated():
       user = request.user
 
-    topics_tree = mc.get('topics_tree')
-    if not topics_tree:
-         topics_tree = Topic.objects.topics_tree()
-         mc.set('topics_tree', topics_tree, settings.MEMCACHED_TIMEOUT)
+    latest_articles = mc.get('latest_articles')
+    if not latest_articles:
+      latest_articles = ArticleDetails.objects.get_latest(3)
+      mc.set('latest_articles', latest_articles, settings.MEMCACHED_TIMEOUT)
 
-    tags = mc.get('tags')
-    if not tags:
-         tags = Tag.objects.all()
-         mc.set('tags', tags, settings.MEMCACHED_TIMEOUT)
-
-    contributions = mc.get('contributions')
-    if not contributions:
-         contributions = Topic.total_contributions()
-         mc.set('contributions', contributions, 900) # 15 Minutes
+    latest_comments = Feedback.objects.get_latest_comments(3)
+#    latest_comments = mc.get('latest_comments')
+#    if not latest_comments:
+#      latest_comments = Feedback.objects.get_latest_comments(3)
+#      mc.set('latest_comments', latest_comments, 900)
     
-    top_users = mc.get('top_users')
-    if not top_users:
-         top_users = User.get_top_users(24)
-         mc.set('top_users', top_users, settings.MEMCACHED_TIMEOUT)
-    
-    top_liked = mc.get('top_liked')
-    if not top_liked:
-         top_liked = ArticleDetails.objects.get_top_liked(5)
-         mc.set('top_liked', top_liked, settings.MEMCACHED_TIMEOUT)
+    feedback_count = Feedback.objects.all().count()
+    articles_count = ArticleDetails.objects.filter(current=1).count()
+#    topics_tree = mc.get('topics_tree')
+#    if not topics_tree:
+#         topics_tree = Topic.objects.topics_tree()
+#         mc.set('topics_tree', topics_tree, settings.MEMCACHED_TIMEOUT)
+#
+#    tags = mc.get('tags')
+#    if not tags:
+#         tags = Tag.objects.all()
+#         mc.set('tags', tags, settings.MEMCACHED_TIMEOUT)
+#
+#    contributions = mc.get('contributions')
+#    if not contributions:
+#         contributions = Topic.total_contributions()
+#         mc.set('contributions', contributions, 900) # 15 Minutes
+#    
+#    top_users = mc.get('top_users')
+#    if not top_users:
+#         top_users = User.get_top_users(24)
+#         mc.set('top_users', top_users, settings.MEMCACHED_TIMEOUT)
+#    
+#    top_liked = mc.get('top_liked')
+#    if not top_liked:
+#         top_liked = ArticleDetails.objects.get_top_liked(5)
+#         mc.set('top_liked', top_liked, settings.MEMCACHED_TIMEOUT)
+#
+#    top_commented = mc.get('top_commented')
+#    if not top_commented:
+#         top_commented = ArticleDetails.objects.get_top_commented(5)
+#         mc.set('top_commented', top_commented, settings.MEMCACHED_TIMEOUT)
+#
+#    most_updated = mc.get('most_updated')
+#    if not most_updated:
+#         most_updated = ArticleDetails.objects.get_most_updated(5)
+#         mc.set('most_updated', most_updated, settings.MEMCACHED_TIMEOUT)
 
-    top_commented = mc.get('top_commented')
-    if not top_commented:
-         top_commented = ArticleDetails.objects.get_top_commented(5)
-         mc.set('top_commented', top_commented, settings.MEMCACHED_TIMEOUT)
-
-    most_updated = mc.get('most_updated')
-    if not most_updated:
-         most_updated = ArticleDetails.objects.get_most_updated(5)
-         mc.set('most_updated', most_updated, settings.MEMCACHED_TIMEOUT)
-
-    template_context = {'homepage': 'true', 'settings':settings, 'request':request, 'top_users':top_users, 'home':home,'topics_tree':topics_tree,'settings': settings,'user':user,'contributions':contributions,'top_liked':top_liked, 'top_disliked':top_disliked, 'top_commented':top_commented,'most_updated':most_updated, 'tags':tags}
+    template_context = {'homepage': 'true', 'settings':settings, 'request':request, 'home':home, 'user':user, 'latest_articles':latest_articles, 'latest_comments':latest_comments, 'feedback_count':feedback_count, 'articles_count':articles_count}
 
     return render_to_response('index.html', template_context ,RequestContext(request))
           

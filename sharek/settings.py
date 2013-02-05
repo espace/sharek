@@ -185,7 +185,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-	'admin_views',
+	  #'admin_views',
     'core',
     'core.facebook',
     'core.twitter',
