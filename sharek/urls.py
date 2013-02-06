@@ -25,13 +25,13 @@ urlpatterns = patterns('',
     url(r'^sharek/user/(?P<username>\w+[-\.\w]*)/$', 'core.profiles.views.user', name='user'),
 	
 	#Generate PDF
-    url(r'^sharek/pdf/topics/$', 'core.reports.views.topics_pdf', name='topics_pdf'),
-	url(r'^sharek/pdf/topic/(?P<topic_slug>[-\w]+)/$', 'core.reports.views.topic_pdf', name='topic_pdf'),
+    url(r'^sharek/pdf/bills/$', 'core.reports.views.topics_pdf', name='topics_pdf'),
+	url(r'^sharek/pdf/bill/(?P<topic_slug>[-\w]+)/$', 'core.reports.views.topic_pdf', name='topic_pdf'),
 	url(r'^sharek/pdf/comments/(?P<article_slug>[-\w]+)/$', 'core.reports.views.comments_pdf', name='comments_pdf'),
 	
     url(r'sharek/latest-comments/$', 'core.entities.feedback.views.latest_comments', name='latest_comments'),
-	url(r'sharek/topic_next_articles/$', 'core.entities.topic.views.topic_next_articles', name='topic_next_articles'),
-	url(r'sharek/tag_next_articles/$', 'core.entities.tag.views.tag_next_articles', name='tag_next_articles'),
+	url(r'sharek/bill_next_items/$', 'core.entities.topic.views.topic_next_articles', name='topic_next_articles'),
+	url(r'sharek/tag_next_items/$', 'core.entities.tag.views.tag_next_articles', name='tag_next_articles'),
     
     #Facebook
     url(r'sharek/facebook/login', 'core.facebook.views.login', name='facebook_login'),
@@ -44,8 +44,8 @@ urlpatterns = patterns('',
 	url(r'sharek/charts/comments/$', 'core.reports.views.comments_chart', name='comments_chart'),
     url(r'sharek/charts/users/$', 'core.reports.views.users_chart', name='users_chart'),
     url(r'sharek/charts/acceptance/$', 'core.reports.views.articles_acceptance', name='acceptance_chart'),
-    url(r'sharek/charts/article_history/(?P<header_id>[-\w]+)/(?P<order>[-\w]+)/$', 'core.reports.views.article_history', name='article_history'),
-    url(r'sharek/charts/article_history/$', 'core.reports.views.article_history'),
+    url(r'sharek/charts/item_history/(?P<header_id>[-\w]+)/(?P<order>[-\w]+)/$', 'core.reports.views.article_history', name='article_history'),
+    url(r'sharek/charts/item_history/$', 'core.reports.views.article_history'),
 
     url(r'^sharek/m/', include(mobile.urls)),
     url(r'^sharek/admin/', include(admin.site.urls)),
@@ -76,8 +76,8 @@ urlpatterns = patterns('',
     url(r'^sharek/tags/(?P<tag_slug>[-\w]+)/$', 'core.entities.tag.views.tag_detail', name='tag'),
 	
     #Topic detail URL    
-    url(r'^sharek/topics/$', 'core.entities.topic.views.topic_detail', name='topics'),
-    url(r'^sharek/topic/(?P<topic_slug>[-\w]+)/$', 'core.entities.topic.views.topic_detail', name='topic'),
+    url(r'^sharek/bills/$', 'core.entities.topic.views.topic_detail', name='topics'),
+    url(r'^sharek/bill/(?P<topic_slug>[-\w]+)/$', 'core.entities.topic.views.topic_detail', name='topic'),
     url(r'^sharek/history/(?P<article_slug>[-\w]+)/$', 'core.entities.article.views.article_diff', name='article_diff'),
 
 	url(r'^sharek/map/', 'core.views.top_users_map', name='top_users_map'),
@@ -90,6 +90,8 @@ urlpatterns = patterns('',
     url(r'sharek/statistics/$', 'core.views.statistics', name='statistics'),
 
     url(r'^sharek/$', 'core.views.index', name='index'),
+    url(r'^sharek/about_us$', 'core.views.index', name='about_us'),
+    url(r'^sharek/contact_us$', 'core.views.index', name='contact_us'),
 	
     url(r'^sharek/', include('core.social_auth.urls')),
 	

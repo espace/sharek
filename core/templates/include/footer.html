@@ -5,7 +5,10 @@
                 <div class="span8 footer-nav">
                     <ul class="nav nav-pills">
                         <li class="">
-                            <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
+                            <a href="{% url contact_us %}">اتصل بنا</a>
+                        </li>
+                        <li class="">
+                            <a href="{% url about_us %}">من نحن ؟</a>
                         </li>
                         {% if user.is_staff %}
                           <li class="">
@@ -13,15 +16,12 @@
                           </li>
                         {% endif %}
                         <li class="">
-                          <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
-                        </li>
-                        <li class="">
-                            <a href="http://dostour.eg">الرئيسية</a>
+                            <a href="{% url index %}">الرئيسية</a>
                         </li>
                     </ul>
             </div><!-- top-nav -->
             </div>
-            <p class="copyrights pull-right"> جميع الحقوق محفوظة للجمعية التأسيسية للدستور</p>
+            <p class="copyrights pull-right"> جميع الحقوق محفوظة لمبادرة صوتي</p>
 
     </div><!--  end -->
 </div><!-- row end -->
