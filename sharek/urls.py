@@ -1,5 +1,5 @@
 from django.conf.urls.defaults import *
-
+from core.social_auth.views import auth, complete, disconnect
 #from wkhtmltopdf.views import PDFTemplateView
 import core, mobile
 from mobile import urls
@@ -68,7 +68,7 @@ urlpatterns = patterns('',
     url(r'^sharek/info/(?P<info_slug>[-\w]+)/$', 'core.views.info_detail', name='info'),
 
     #ArticleDetails detail URL    
-    url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'core.entities.article.views.article_detail'),
+    url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'core.entities.article.views.article_detail', name='article_detail_ordered'),
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/$', 'core.entities.article.views.article_detail', name='article_detail'),
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/comment/(?P<comment_no>[-\w]+)/$', 'core.entities.article.views.article_detail', name='comment_detail'),
 	
@@ -92,7 +92,8 @@ urlpatterns = patterns('',
     url(r'^sharek/$', 'core.views.index', name='index'),
 	
     url(r'^sharek/', include('core.social_auth.urls')),
-	
+    url(r'^sharek/login/', auth, name='login'), # by Amr to overwrite a url rule in social_auth
+    
     url(r'$', 'core.views.tmp'),
       
 )

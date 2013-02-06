@@ -6,7 +6,8 @@
   <title>دستور مصر :: {% block title %}{% endblock %}&rlm;</title>
   
   <meta property="og:site_name" content="دستور مصر"/>
-  <meta property="og:image" content="http://dostour.eg/sharek/static/images/facebook.png"/>
+  
+  <meta property="og:image" content="{{ STATIC_URL }}images/facebook.png"/>
   
   <meta name="description" content="{% block description %}{% endblock %}">
   <meta name="keywords" content="الدستور, التأسيسية, الجمعية التأسيسية, دستور مصر, {% block keywords %}{% endblock %}">
@@ -46,7 +47,7 @@
       var newwindow;
       var intId;
       function login(backend){
-          backend_url = "/sharek/login/"+backend+"/";
+          backend_url = "{% url login %}"+backend+"/";
           var  screenY     = typeof window.screenY     != 'undefined' ? window.screenY     : window.screenTop,
                screenX     = typeof window.screenX     != 'undefined' ? window.screenX     : window.screenLeft,
                outerWidth  = typeof window.outerWidth  != 'undefined' ? window.outerWidth  : document.body.clientWidth,

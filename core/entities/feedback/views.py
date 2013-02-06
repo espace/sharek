@@ -93,10 +93,10 @@ def modify(request):
                     graph = facebook_sdk.GraphAPI(access_token)
                     attachment = {}
                     attachment['name'] = art_name
-                    attachment['link'] = shorten_url(settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/")
+                    attachment['link'] = shorten_url(settings.domain+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/")
                     attachment['picture'] = settings.domain + settings.STATIC_URL + "images/facebook-thumb.jpg"
                     attachment['description'] = art_body
-                    message = 'لقد شاركت في كتابة #دستور_مصر وقمت بالتعليق على '+art_name+" من الدستور"
+                    message = 'لقد شاركت في كتابة #قانون_مصر وقمت بالتعليق على '+art_name+" من القانون"
                     graph.put_wall_post(message, attachment)
             
                 if 'twitter' in UserSocialAuth.auth_provider(request.user.username):
@@ -108,7 +108,7 @@ def modify(request):
                                       consumer_secret=settings.TWITTER_CONSUMER_SECRET,
                                       access_token_key=access_token_key,
                                       access_token_secret=access_token_secret)
-                    link = shorten_url(settings.domain+"sharek/"+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/")
+                    link = shorten_url(settings.domain+request.POST.get("class_slug")+"/"+request.POST.get("article_slug")+"/comment/"+str(feedback[0].id)+"/")
                     message = 'لقد شاركت في كتابة #دستور_مصر بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+"  "+link
                     api.PostUpdate(message)
 
