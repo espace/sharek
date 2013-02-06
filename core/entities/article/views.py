@@ -82,6 +82,9 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
                  mc.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb, settings.MEMCACHED_TIMEOUT)
       
             voted_suggestion = mc.get('voted_suggestion_'+ str(user.id))
+
+            print voted_suggestion
+            
             if not voted_suggestion:
                 voted_suggestion = []
                 for suggestion in suggestions:
@@ -89,7 +92,6 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
                     for vote in votes:
                         voted_suggestion.append(vote)
                 mc.set('voted_suggestion_'+ str(user.id), voted_suggestion, settings.MEMCACHED_TIMEOUT)
-
             poll_selection = mc.get('poll_selection_'+ str(user.id))
             if not poll_selection:
                 poll_selection = PollResult.objects.filter(user_id = user.id)
@@ -218,7 +220,9 @@ def suggestion_vote(request):
             art.likes = p
             art.dislikes = n
             art.save()
+            mc.delete('suggestions' + str(article))
             mc.delete('voted_suggestion_'+ str(user.id))
+
             return HttpResponse(simplejson.dumps({'suggestion':suggestion,'p':p,'n':n,'vote':request.POST.get("type")}))
 
 def poll_select(request):
