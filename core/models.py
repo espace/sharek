@@ -129,6 +129,30 @@ class TopicManager(models.Manager):
 
        cursor.close()
        return topic_list
+   
+   # by Amr
+    def get_latest_topics(self, limit):
+      query = '''SELECT DISTINCT ON (core_topic.id, core_topic.name) core_topic.name, core_topic.id, core_topic.slug, core_suggestion.description, core_articledetails.mod_date
+                 FROM core_topic
+                 INNER JOIN core_articleheader ON core_articleheader.topic_id = core_topic.id
+                 INNER JOIN core_articledetails ON core_articledetails.header_id = core_articleheader.id
+                 INNER JOIN core_suggestion ON core_suggestion.articledetails_id = core_articledetails.id
+                 WHERE core_articledetails.current IS TRUE
+                 ORDER BY core_topic.id DESC limit %s'''
+          
+      cursor = connection.cursor()
+      cursor.execute(query, [limit])
+
+      topics_list = []
+      for row in cursor.fetchall():
+         single_topic = {}
+         single_topic['name'] = row[0]
+         single_topic['slug'] = row[2]
+         single_topic['description'] = row[3]
+         single_topic['mod_date'] = row[4]
+         topics_list.append(single_topic)
+      cursor.close()
+      return topics_list
 
 class Topic(models.Model):
     name = models.CharField(max_length=100)

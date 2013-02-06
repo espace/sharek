@@ -9,11 +9,8 @@
           <div class="navbar-blue top-nav hidden-phone">
               <ul class="nav nav-pills ">
                   <li class="">
-                    <a href="http://dostour.eg">الرئيسية</a>
+                    <a href="{% url index %}">الرئيسية</a>
                   </li>
-                  <li class="">
-<!--                     <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
- -->                  </li>
                   {% if user %}
                     <li class="">
                       <a href="{% url profile 'likes' %}">الملف الشخصي</a>
@@ -82,7 +79,7 @@
 
       <div class="span3">
         <div class="pull-right logo">
-            <a href="#"><img src="{{STATIC_URL}}images/logo.png" alt="دستور مصر"></a>
+            <a href="{% url index %}"><img src="{{STATIC_URL}}images/logo.png" alt="دستور مصر"></a>
         </div>
       </div><!-- logo end -->
       

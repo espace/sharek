@@ -36,14 +36,14 @@
 <!-- row -end -->
 <div class="row home-content">
     
-    {% if latest_articles %}
+    {% if latest_laws %}
     <div class="span4 latest-laws">
         <h3>آخر القوانين</h3>
-        {% for article in latest_articles %}
+        {% for law in latest_laws %}
           <section>
-            <h4>{{ article.name }}</h4>
-            <p>{{ article.summary }}</p>
-            <time>تاريخ الإضافة : {{ article.mod_date|date:"d-m-Y" }}</time>
+            <h4><a href='{% url topic topic_slug=law.slug %}'>{{ law.name }}</a></h4>
+            <p>{{ law.description|truncatewords:"30" }}</p>
+            <time>تاريخ الإضافة : {{ law.mod_date|date:"d-m-Y" }}</time>
           </section>
         {% endfor %}
     </div><!-- span4 -->
