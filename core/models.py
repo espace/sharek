@@ -75,7 +75,15 @@ class Tag(models.Model):
        cursor.close()
        return articles_list
         
-        
+    def get_topics(self, limit = None):
+      return self.get_topics_limit()
+
+    def get_topics_limit(self, limit = None):
+      if limit != None:
+        return self.topic_set.all()[:limit]
+      else:
+        return self.topic_set.all()
+
     class Meta:
        ordering = ["order"]
 
@@ -160,6 +168,7 @@ class Topic(models.Model):
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
     summary = MarkupField(blank=True, default='')
     order = models.IntegerField(blank = True, null = True)
+    tags = models.ManyToManyField(Tag,blank = True, null = True)
     objects = TopicManager()
 
     def __unicode__(self):
@@ -475,7 +484,7 @@ class ArticleHeaderManager(models.Manager):
       return p
     
 class ArticleHeader(models.Model):
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag,blank = True, null = True)
     topic = models.ForeignKey(Topic,null = True)
     chapter = ChainedForeignKey(
         Chapter, 
