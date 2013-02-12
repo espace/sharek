@@ -41,9 +41,10 @@ def compute_idf(id , words, cleaned):
   for word in words.keys():
     counter = 0
     for string in cleaned:
-      if word in string.split():
+      #print string
+      if word in string:
         counter +=1
-    article_idf(articledetail_id = id , term = word, idf = math.log10(len(cleaned)/(counter*1.0))).save()
+    article_idf(articledetail_id = id , term = word, idf = math.log10(len(cleaned)/((1+counter)*1.0))).save()
 
 def compute_tfidf(request):
   #query ='''SELECT distinct articledetails_id from core_feedback order by 1'''
@@ -125,7 +126,7 @@ def summerize(tfidfs):
             print active
           similarity = np.dot(t1,t2)/(np.linalg.norm(t1)*np.linalg.norm(t2))
           #TODO : save index and return them to return the full suggesion 
-          if similarity > 0.1:
+          if similarity > 0.7:
             tfidfs[active] = ""
   summerized = []
   for vector in tfidfs:
