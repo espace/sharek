@@ -1029,13 +1029,16 @@ class PollResult(models.Model):
     option = models.ForeignKey(PollOptions)    
     user = models.ForeignKey(User)
 
+                        ########################### idf data analysis ###########################
+
 # store the term idf per article
 class article_idf(models.Model):
   articledetail = models.ForeignKey(ArticleDetails)
   term = models.CharField(max_length=200,default='')
   idf = models.FloatField()
+  no_of_comments = models.IntegerField(default=0, null = True, blank = True)
 
-# store the term idf across the whole articles
-class idf(models.Model):
-  term = models.CharField(max_length=200,default='')
-  idf = models.FloatField()
+class article_analysis(models.Model):
+  articledetail = models.ForeignKey(ArticleDetails)
+  last_comment_id = models.IntegerField(default=0, null = True, blank = True)
+  no_of_cleaned_comment = models.IntegerField(default=0, null = True, blank = True)
