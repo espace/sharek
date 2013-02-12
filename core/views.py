@@ -48,7 +48,7 @@ from urllib2 import urlopen
 from operator import itemgetter, attrgetter
 
 from core.models import Info, User, Topic, Tag, ArticleDetails, ArticleHeader, ArticleRating, Feedback
-from pip.download import url_to_path
+#from pip.download import url_to_path
 
 
 # get first memcached URI
