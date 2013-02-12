@@ -832,14 +832,15 @@ class FeedbackManager(models.Manager):
     # by Amr
     def get_latest_comments(self, limit):
        query = '''SELECT auth_user.username, auth_user.first_name, auth_user.last_name, core_feedback.id, core_feedback.suggestion, core_articleheader.name, core_articledetails.mod_date,COALESCE(social_auth_usersocialauth.provider, 'facebook') as provider
-                    FROM core_feedback
-                    INNER JOIN auth_user ON core_feedback.user = auth_user.username
-                    INNER JOIN core_articledetails ON core_articledetails.id = core_feedback.articledetails_id
-                    INNER JOIN core_articleheader ON core_articledetails.header_id = core_articleheader.id
-                    LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
-                    GROUP BY auth_user.username, auth_user.first_name, auth_user.last_name, core_feedback.id, core_feedback.suggestion,
-                    social_auth_usersocialauth.provider, auth_user.is_active, core_articleheader.name, core_articledetails.mod_date
-                    HAVING auth_user.is_active IS TRUE AND core_feedback.parent_id IS NULL ORDER BY core_feedback.id DESC LIMIT %s '''
+                FROM core_feedback
+                INNER JOIN auth_user ON core_feedback.user = auth_user.username
+                INNER JOIN core_articledetails ON core_articledetails.id = core_feedback.articledetails_id
+                INNER JOIN core_articleheader ON core_articledetails.header_id = core_articleheader.id
+                LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
+                GROUP BY auth_user.username, auth_user.first_name, auth_user.last_name, core_feedback.id, core_feedback.suggestion,
+                social_auth_usersocialauth.provider, auth_user.is_active, core_articleheader.name, core_articledetails.mod_date,
+                core_feedback.parent_id
+                HAVING auth_user.is_active IS TRUE AND core_feedback.parent_id IS NULL ORDER BY core_feedback.id DESC LIMIT %s '''
        cursor = connection.cursor()
        cursor.execute(query, [limit])
 
