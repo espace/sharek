@@ -7,17 +7,17 @@ from django import db
 @classmethod
 def profile_likes(self, user):
        return profile_likes_dislikes(self, user, True)
-   SELECT DISTINCT ON (core_topic.id, core_topic.name) core_topic.name, core_topic.id, core_topic.slug, core_suggestion.description, core_articledetails.mod_date
-FROM core_topic
-INNER JOIN core_articleheader ON core_articleheader.topic_id = core_topic.id
-INNER JOIN core_articledetails ON core_articledetails.header_id = core_articleheader.id
-INNER JOIN core_suggestion ON core_suggestion.articledetails_id = core_articledetails.id
-
-INNER JOIN core_suggestionvotes ON core_suggestionvotes.suggestions_id = core_suggestion.id
-AND core_suggestionvotes.user = 'admin' AND core_suggestionvotes.vote IS true
-
-WHERE core_articledetails.current IS TRUE
-ORDER BY core_topic.id DESC limit 3
+#   SELECT DISTINCT ON (core_topic.id, core_topic.name) core_topic.name, core_topic.id, core_topic.slug, core_suggestion.description, core_articledetails.mod_date
+#FROM core_topic
+#INNER JOIN core_articleheader ON core_articleheader.topic_id = core_topic.id
+#INNER JOIN core_articledetails ON core_articledetails.header_id = core_articleheader.id
+#INNER JOIN core_suggestion ON core_suggestion.articledetails_id = core_articledetails.id
+#
+#INNER JOIN core_suggestionvotes ON core_suggestionvotes.suggestions_id = core_suggestion.id
+#AND core_suggestionvotes.user = 'admin' AND core_suggestionvotes.vote IS true
+#
+#WHERE core_articledetails.current IS TRUE
+#ORDER BY core_topic.id DESC limit 3
 
 
 
