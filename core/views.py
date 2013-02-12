@@ -48,15 +48,14 @@ from urllib2 import urlopen
 from operator import itemgetter, attrgetter
 
 from core.models import Info, User, Topic, Tag, ArticleDetails, ArticleHeader, ArticleRating, Feedback
-#from pip.download import url_to_path
+from pip.download import url_to_path
 
 
 # get first memcached URI
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
 
 def tmp(request):
-    #return HttpResponseRedirect(reverse('index'))
-    return HttpResponseRedirect('http://www.google.com')
+    return HttpResponseRedirect(reverse('index'))
 
 def index(request):
     
