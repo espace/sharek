@@ -2,7 +2,7 @@ $(document).ready(function() {
   $(".option").live("click",function(){
     $.ajax({
             type:"POST",
-            url :"/sharek/poll_select/",
+            url :poll_select_var,
             data:{'option_id':$(this).attr('value'),'state': $(this).is(':checked') ,'csrfmiddlewaretoken': $('#csrf_token').attr('value')},
             dataType:"json",
             error:function(data){},

@@ -87,11 +87,11 @@ urlpatterns = patterns('',
     url(r'^sharek/top_liked/', 'core.views.top_liked', name='top_liked'),
     url(r'^sharek/top_disliked/', 'core.views.top_disliked', name='top_disliked'),
     url(r'^sharek/top_commented/', 'core.views.top_commented', name='top_commented'),
-    url(r'sharek/statistics/$', 'core.views.statistics', name='statistics'),
+    url(r'^sharek/statistics/$', 'core.views.statistics', name='statistics'),
 
     url(r'^sharek/$', 'core.views.index', name='index'),
-    url(r'^sharek/about_us$', 'core.views.index', name='about_us'),
-    url(r'^sharek/contact_us$', 'core.views.index', name='contact_us'),
+    url(r'^sharek/about_us$', 'core.views.about_us', name='about_us'),
+    url(r'^sharek/contact_us$', 'core.views.contact_us', name='contact_us'),
 	
     url(r'^sharek/', include('core.social_auth.urls')),
     url(r'^sharek/login/', auth, name='login'), # by Amr to overwrite a url rule in social_auth

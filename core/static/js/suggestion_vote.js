@@ -2,7 +2,7 @@ $(document).ready(function() {
   $(".rate").live("click",function(){
     $.ajax({
             type:"POST",
-            url :"/sharek/suggestion_vote/",
+            url :suggestion_vote_var,
             data:{'article':$(this).attr('art_id'),'suggestion':$(this).attr('id'),'type': $(this).attr('vote') ,'csrfmiddlewaretoken': $('#csrf_token').attr('value')},
             dataType:"json",
             error:function(data){},

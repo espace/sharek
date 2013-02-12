@@ -43,7 +43,7 @@
                             
                             $.ajax({
                               type:"POST",
-                              url :"/sharek/tag_next_articles/",
+                              url :"{% url tag_next_articles %}",
                               data:{
                                   'page': ++page, 'tag': '{{ tag.slug }}',
                                   'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},

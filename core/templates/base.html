@@ -30,6 +30,9 @@
   <script type="text/javascript" src="{{ STATIC_URL }}js/waypoints.js" ></script>
 
    <script>
+      var static_url = "{{ STATIC_URL }}"
+      var poll_select_var = "{% url poll_select %}"
+      var suggestion_vote_var = "{% url suggestion_vote %}"
         $(function(){
           // carousel demo
           $('#myCarousel').carousel()

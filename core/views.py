@@ -24,7 +24,7 @@ from sharek import settings
 
 from django.db.models import Q, Count
 
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, get_urlconf
 from django.db.models.aggregates import Max
 import cgi
 import simplejson
@@ -48,6 +48,7 @@ from urllib2 import urlopen
 from operator import itemgetter, attrgetter
 
 from core.models import Info, User, Topic, Tag, ArticleDetails, ArticleHeader, ArticleRating, Feedback
+from pip.download import url_to_path
 
 
 # get first memcached URI
@@ -337,3 +338,9 @@ def shorten_url(long_url):
     req_url = bitly_url.format(username, password, long_url)
     short_url = urlopen(req_url).read()
     return short_url
+
+def about_us(request):
+    return render_to_response('about.html', {}, RequestContext(request))
+
+def contact_us(request):
+    return render_to_response('contact.html', {}, RequestContext(request))
