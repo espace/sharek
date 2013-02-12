@@ -55,7 +55,8 @@ from core.models import Info, User, Topic, Tag, ArticleDetails, ArticleHeader, A
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
 
 def tmp(request):
-    return HttpResponseRedirect(reverse('index'))
+    #return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect('http://www.google.com')
 
 def index(request):
     
