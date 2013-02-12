@@ -1,0 +1,26 @@
+<script type="text/javascript">
+  var word_array = [
+      {% for tfidf in tfidfs %}
+        {% if forloop.counter0 == 0 %}
+          {text:"{{tfidf.0}}", weight: {{tfidf.1|floatformat:"0"}}}
+        {%else%}
+          ,{text:"{{tfidf.0}}", weight: {{tfidf.1|floatformat:"0"}}}
+        {% endif %}
+      {% endfor %}
+  ];
+
+  $(document).ready(function() {
+    $("#article_cloud").jQCloud(word_array);
+  });
+</script>
+<script src="{{STATIC_URL}}js/jqcloud-1.0.2.js" type="text/javascript"></script>
+<link href="{{ STATIC_URL }}css/jqcloud.css" rel="stylesheet" />
+
+
+<script id="loading_temp" type="text/x-jquery-tmpl">
+    {% if user %}
+      {% if user.is_staff %}
+        <div id="cloud" style="width: 1000px; height: 1000px;"></div>
+      {% endif %}
+    {% endif %}
+</script>

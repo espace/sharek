@@ -43,7 +43,16 @@
   </div><!-- span3 -->
 
   <div id="ajax-container" class="span9">
-    
+    {% if user %}
+      {% if user.is_staff %}
+      <div style="display:none">
+        <div id="data">
+          <div id="article_cloud" style="width: 1000px; height: 550px;"></div>
+        </div>
+      </div>
+      {% endif %}
+    {% endif %}
+
     {% include "include/article_block.html" %}
     {% if just_comment == 1 %}
       {% include "include/single-comment.html" %}
@@ -63,15 +72,42 @@
   	  </ul>
       {% include "include/comments.html" %}
     {% endif %}
-
   </div><!-- span 8 -->
 
 </div><!-- row end -->
 
 
+<script type="text/javascript">
+  /*!
+   * Create an array of word objects, each representing a word in the cloud
+   */
+  var word_array = [
+      {% for tfidf in tfidfs %}
+        {% if forloop.counter0 == 0 %}
+          {text:"{{tfidf.0}}", weight: {{tfidf.1|floatformat:"0"}}}
+        {%else%}
+          ,{text:"{{tfidf.0}}", weight: {{tfidf.1|floatformat:"0"}}}
+        {% endif %}
+      {% endfor %}
+  ];
+
+  $(document).ready(function() {
+    $("a#inline").fancybox({
+    'hideOnContentClick': true
+    });
+    $("#article_cloud").jQCloud(word_array);
+  });
+</script>
 
 <input type="hidden" id="csrf_token" value="{{csrf_token}}"/>
 <script src="{{STATIC_URL}}js/suggestion_vote.js" type="text/javascript"></script>
 <script src="{{STATIC_URL}}js/poll_selection.js" type="text/javascript"></script>
+<script src="{{STATIC_URL}}js/article_cloud.js" type="text/javascript"></script>
+<script src="{{STATIC_URL}}js/jqcloud-1.0.2.js" type="text/javascript"></script>
+
+<script type="text/javascript" src="{{STATIC_URL}}js/jquery.fancybox.pack.js"></script>
+
+<link href="{{ STATIC_URL }}css/jqcloud.css" rel="stylesheet" />
+<link rel="stylesheet" href="{{ STATIC_URL }}css/jquery.fancybox.css" type="text/css" media="screen" />
   
 {% endblock %}

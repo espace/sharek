@@ -1,4 +1,5 @@
 # This Python file uses the following encoding: utf-8
+from sharek import settings
 from core.models import Feedback, article_idf, article_analysis
 import core.analysis.preprocessing as pre
 from django.db import connection
@@ -10,6 +11,7 @@ from copy import copy, deepcopy
 from django.template import Context, loader, RequestContext
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
+from core.views import mc
 
 
                         ########################### Utilities ###########################
@@ -81,18 +83,18 @@ def compute_idf(id , words, cleaned, last_comment_id):
     for string in cleaned:
       if word in string[1]:
         counter +=1
-    last_comment = article_analysis.objects.filter(articledetail_id = id)
-    last_comment[0].last_comment_id = last_comment_id
-    last_comment[0].save()
 
+    last_comment = article_analysis.objects.get(articledetail_id = id)    
+    last_comment.last_comment_id = last_comment_id
+    last_comment.save()
 
     term_idf = article_idf.objects.filter(articledetail_id = id , term = word)
     if term_idf:
-      term_idf[0].idf = math.log10(last_comment[0].no_of_cleaned_comment/((1+counter+term_idf[0].no_of_comments)*1.0))
+      term_idf[0].idf = math.log10(last_comment.no_of_cleaned_comment/((counter+term_idf[0].no_of_comments)*1.0))
       term_idf[0].no_of_comments = counter + term_idf[0].no_of_comments
       term_idf[0].save()
     else:
-      article_idf(articledetail_id = id , term = word, idf = math.log10(last_comment[0].no_of_cleaned_comment/((1+counter)*1.0)), no_of_comments = counter).save()
+      article_idf(articledetail_id = id , term = word, idf = math.log10(last_comment.no_of_cleaned_comment/((counter)*1.0)), no_of_comments = counter).save()
 
 def compute_tfidf(request):
   #query ='''SELECT distinct articledetails_id from core_feedback order by 1'''
@@ -147,6 +149,39 @@ def retrive_idf(article_id):
     terms[term[0]] = term[1]
   return terms
 
+
+def get_article_tfidf(article):
+  #if request.method == 'GET':
+  article_id =  article #request.POST.get("article")
+  tfidf = mc.get('article_cloud_'+str(article_id))
+  if not tfidf:
+    idf = retrive_idf(article_id)
+    cleaned = get_cleaned_suggestions(article_id)
+    tfidf = {}
+    for suggestion_vector in cleaned:
+      #compute tf of suggestion
+      words = collections.Counter()
+      words.update(suggestion_vector[1].split())
+      maximum = max(max(values) if hasattr(values,'__iter__') else values for values in dict(words).values())
+      d1 = dict(words)
+      tf = dict((k, float(d1[k]) / maximum) for k in d1)
+      #compute tfidf
+      for term in tf.keys():
+        tf_val = float(tf[term])
+        idf_val = idf[term]
+        try:
+          tfidf[term] = tfidf[term] + (tf_val * idf_val)
+        except: 
+          tfidf[term] = tf_val * idf_val
+    # get the max tfidf value to normalize
+    maximum = max(max(values) if hasattr(values,'__iter__') else values for values in tfidf.values())
+    # normalize the tfidf
+    tfidf = dict((k, float(tfidf[k]) / maximum) for k in tfidf)
+    # clear the tfidf range
+    tfidf = dict((k, float(tfidf[k]) * 100) for k in tfidf)      
+    mc.set('article_cloud_' + str(article_id), tfidf, settings.MEMCACHED_TIMEOUT)
+  return tfidf
+
 #summerize the suggestions accrding to cosien similarity
 def summerize(tfidfs):
   for index, v1 in enumerate(tfidfs):
@@ -187,8 +222,18 @@ def summerize(tfidfs):
   return summerized
 
 
+def recalculate_last_comment(request):
+  query ='''SELECT distinct articledetails_id from core_feedback order by 1'''
+  cursor = connection.cursor()
+  cursor.execute(query)
+  ids = cursor.fetchall()
 
-      
+  for id in ids:
+    last_comment_id = get_last_comment_id(id[0])
+    last_comment = article_analysis.objects.get(articledetail_id = id[0])    
+    last_comment.last_comment_id = last_comment_id
+    last_comment.save()
 
+  return render_to_response('operation.html',{'text':"recalculate_last_comment done isA"} ,RequestContext(request))
 
 

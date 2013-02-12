@@ -60,6 +60,12 @@
       <a class="{%if order_by = 'def' or order_by = 'latest' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}latest/#time" id="time">حسب الوقت</a>
     <a> | </a>
       <a class="{%if order_by = 'order' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}order/#rank" id="rank">حسب التصويت</a>
+    {% if user %}
+      {% if user.is_staff %}
+    <a> | </a>
+      <a id="inline" href="#data">الأكثر تكرارا</a>
+      {% endif %}
+    {% endif %}
 {% endif %}
 
 </div>

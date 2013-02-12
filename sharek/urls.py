@@ -11,6 +11,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^sharek/idf/$', 'core.analysis.tfidf.idf', name='idf'),
+    url(r'^sharek/recalculate_last_comment/$', 'core.analysis.tfidf.recalculate_last_comment', name='recalculate_last_comment'),
     url(r'^sharek/summerize/$', 'core.analysis.tfidf.compute_tfidf', name='summerize'),
     #url(r'^sharek/logged-in/$', 'core.profiles.views.profile', name='profile'),
 #	url(r'^sharek/api/', include(entry_resource.urls)),

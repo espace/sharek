@@ -9,6 +9,7 @@ from django.utils import simplejson
 
 from core.views import login,mc
 from core.helpers.diff_match import diff_match_patch
+import core.analysis.tfidf as tfidf
 
 
 from core.models import ArticleDetails, ArticleHeader, PollOptions, PollResult, Suggestion, SuggestionVotes, Topic, Feedback, Rating
@@ -112,11 +113,15 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             feedbacks = paginator.page(paginator.num_pages)
-
+        if request.user.is_staff:
+            tfidfs = tfidf.get_article_tfidf(article.id)
+        else:
+            tfidfs = {}
+        tfidfs = tfidfs.items()
         if classified_by == "tags":  
-            template_context = {'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
+            template_context = {'tfidfs':tfidfs,'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
         elif classified_by == "topics":
-            template_context = {'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
+            template_context = {'tfidfs':tfidfs,'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
 
     return render_to_response('article.html',template_context ,RequestContext(request))
 
