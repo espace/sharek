@@ -24,7 +24,7 @@ from sharek import settings
 
 from django.db.models import Q, Count
 
-from django.core.urlresolvers import reverse, get_urlconf
+from django.core.urlresolvers import reverse
 from django.db.models.aggregates import Max
 import cgi
 import simplejson
