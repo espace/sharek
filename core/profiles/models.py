@@ -7,24 +7,18 @@ from django import db
 @classmethod
 def profile_likes(self, user):
        return profile_likes_dislikes(self, user, True)
-#   SELECT DISTINCT ON (core_topic.id, core_topic.name) core_topic.name, core_topic.id, core_topic.slug, core_suggestion.description, core_articledetails.mod_date
-#FROM core_topic
-#INNER JOIN core_articleheader ON core_articleheader.topic_id = core_topic.id
-#INNER JOIN core_articledetails ON core_articledetails.header_id = core_articleheader.id
-#INNER JOIN core_suggestion ON core_suggestion.articledetails_id = core_articledetails.id
-#
-#INNER JOIN core_suggestionvotes ON core_suggestionvotes.suggestions_id = core_suggestion.id
-#AND core_suggestionvotes.user = 'admin' AND core_suggestionvotes.vote IS true
-#
-#WHERE core_articledetails.current IS TRUE
-#ORDER BY core_topic.id DESC limit 3
-
-
-
 
 @classmethod
 def profile_dislikes(self, user):
        return profile_likes_dislikes(self, user, False)
+
+@classmethod
+def profile_topics_likes(self, user):
+       return profile_topics_likes_dislikes(self, user, True)
+
+@classmethod
+def profile_topics_dislikes(self, user):
+       return profile_topics_likes_dislikes(self, user, False)
 
 def profile_likes_dislikes(self, user, is_likes):
        query = '''SELECT core_articleheader.topic_id, core_articleheader.name, core_topic.slug, core_articleheader.order,
@@ -67,5 +61,36 @@ def profile_likes_dislikes(self, user, is_likes):
        cursor.close()
        return articles_list
 
+def profile_topics_likes_dislikes(self, user, is_likes):
+       query = '''SELECT DISTINCT ON (core_topic.name, core_topic.id, core_topic.order) core_topic.id, core_topic.name, core_topic.slug, core_topic.summary, core_articledetails.mod_date
+            FROM core_topic
+            INNER JOIN core_articleheader ON core_articleheader.topic_id = core_topic.id
+            INNER JOIN core_articledetails ON core_articledetails.header_id = core_articleheader.id
+            INNER JOIN core_suggestion ON core_suggestion.articledetails_id = core_articledetails.id
+            INNER JOIN core_suggestionvotes ON core_suggestionvotes.suggestions_id = core_suggestion.id
+            AND core_suggestionvotes.user = %s AND core_suggestionvotes.vote IS %s
+            WHERE core_articledetails.current IS TRUE
+            GROUP BY core_topic.name, core_topic.id, core_topic.slug, core_suggestion.description, core_articledetails.mod_date
+            ORDER BY core_topic.order ASC'''
+
+       cursor = connection.cursor()
+       cursor.execute(query, [user, is_likes])
+
+       articles_list = []
+
+       for row in cursor.fetchall():
+           single_article = {}
+           single_article['name'] = row[1]
+           single_article['slug'] = row[2]
+           single_article['summary'] = row[3]
+           single_article['mod_date'] = row[4]
+           articles_list.append(single_article)
+
+       cursor.close()
+       return articles_list
+
 User.add_to_class('profile_likes', profile_likes)
 User.add_to_class('profile_dislikes', profile_dislikes)
+
+User.add_to_class('profile_topics_likes', profile_topics_likes)
+User.add_to_class('profile_topics_dislikes', profile_topics_dislikes)
