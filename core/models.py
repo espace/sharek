@@ -828,7 +828,44 @@ class FeedbackManager(models.Manager):
 
        cursor.close()
        return feedback_list
-   
+
+    def summerized_feedback_list(self, article_id, order, feedback_ids):
+      
+      query = '''SELECT core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
+          core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
+          core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook') provider,
+          count(reply.id)
+        FROM core_feedback
+        INNER JOIN auth_user on core_feedback.user = auth_user.username
+        LEFT JOIN social_auth_usersocialauth on social_auth_usersocialauth.user_id = auth_user.id
+        LEFT JOIN core_feedback reply on reply.parent_id = core_feedback.id
+        WHERE auth_user.is_active IS TRUE AND core_feedback.parent_id IS NULL AND core_feedback.articledetails_id = %s AND core_feedback.id in (%s)
+        GROUP BY core_feedback.id, core_feedback.name, core_feedback.email, core_feedback.date, core_feedback.order, core_feedback.user,
+          core_feedback.suggestion, core_feedback._suggestion_rendered, core_feedback.articledetails_id,
+          core_feedback.likes, core_feedback.dislikes, COALESCE(social_auth_usersocialauth.provider, 'facebook')
+        ORDER BY '''
+
+      if order == 'order':
+           query += "core_feedback.likes - core_feedback.dislikes DESC"
+      else:
+           query += "id DESC"
+
+      cursor = connection.cursor()
+      query = query % (article_id,feedback_ids)
+      cursor.execute(query)
+
+      feedback_list = []
+
+      for row in cursor.fetchall():
+         p = self.model(id=row[0], name=row[1], email=row[2], date=row[3], order=row[4], user=row[5], suggestion=row[6], _suggestion_rendered=row[7], articledetails_id=row[8], likes=row[9], dislikes=row[10])
+         p.provider = row[11]
+         p.children = row[12]
+
+         feedback_list.append(p)
+
+      cursor.close()
+      return feedback_list   
+      
     # by Amr
     def get_latest_comments(self, limit):
        query = '''SELECT auth_user.username, auth_user.first_name, auth_user.last_name, core_feedback.id, core_feedback.suggestion, core_articleheader.name, core_articledetails.mod_date,COALESCE(social_auth_usersocialauth.provider, 'facebook') as provider

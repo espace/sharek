@@ -48,9 +48,14 @@
 {% endif %}
   
  {% if user.is_staff and just_comment != 1 %}
-   <a target="_blank" href="{% url comments_pdf article_slug=article.slug %}" class="download-pdf ">
-   تحميل التعليقات
-   </a>
+     <a target="_blank" href="{% url comments_pdf article_slug=article.slug %}" class="download-pdf ">
+     تحميل التعليقات
+     </a>
+     
+      <a id="inline" href="#data" style="float:right;margin-right:14px;margin-top:15px;">شعبية الكلمات</a>
+
+      <a id="inline" href="{% url article_summerization classified_by="topics" class_slug=topic.slug article_slug=article.slug %}" style="float:right;margin-right:14px;margin-top:15px;">ملخص التعليقات</a>
+      
  {% endif %}
 
 {% if just_comment == 1 %}
@@ -60,12 +65,6 @@
       <a class="{%if order_by = 'def' or order_by = 'latest' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}latest/#time" id="time">حسب الوقت</a>
     <a> | </a>
       <a class="{%if order_by = 'order' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}order/#rank" id="rank">حسب التصويت</a>
-    {% if user %}
-      {% if user.is_staff %}
-    <a> | </a>
-      <a id="inline" href="#data">الأكثر تكرارا</a>
-      {% endif %}
-    {% endif %}
 {% endif %}
 
 </div>

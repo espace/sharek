@@ -12,7 +12,7 @@ urlpatterns = patterns('',
 
     url(r'^sharek/idf/$', 'core.analysis.tfidf.idf', name='idf'),
     url(r'^sharek/recalculate_last_comment/$', 'core.analysis.tfidf.recalculate_last_comment', name='recalculate_last_comment'),
-    url(r'^sharek/summerize/$', 'core.analysis.tfidf.compute_tfidf', name='summerize'),
+    
     #url(r'^sharek/logged-in/$', 'core.profiles.views.profile', name='profile'),
 #	url(r'^sharek/api/', include(entry_resource.urls)),
     url(r'^sharek/rename/$', 'core.entities.article.views.rename_articles', name='rename'),
@@ -69,6 +69,7 @@ urlpatterns = patterns('',
     url(r'^sharek/info/(?P<info_slug>[-\w]+)/$', 'core.views.info_detail', name='info'),
 
     #ArticleDetails detail URL    
+    url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/summarize/$', 'core.entities.article.views.article_summarization', name='article_summerization'),
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'core.entities.article.views.article_detail'),
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/$', 'core.entities.article.views.article_detail', name='article_detail'),
     url(r'^sharek/(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/comment/(?P<comment_no>[-\w]+)/$', 'core.entities.article.views.article_detail', name='comment_detail'),
