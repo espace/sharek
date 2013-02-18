@@ -40,7 +40,7 @@
           $('div#last_articles_loader').html('<img src="{{STATIC_URL}}images/loading.gif">');
           $.ajax({
             type:"GET",
-            url :"/sharek/ajx_search/",
+            url :"{% url ajx_search %}",
             data:{
                 'q': "{{query}}",
                 'page': ++page,

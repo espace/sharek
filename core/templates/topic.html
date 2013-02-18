@@ -72,7 +72,7 @@
                             $('div#last_articles_loader').html('<img src="{{STATIC_URL}}images/loading.gif">');
                             $.ajax({
                               type:"POST",
-                              url :"/sharek/topic_next_articles/",
+                              url :"{% url topic_next_articles %}",
                               data:{
                                   'page': ++page, 'topic': '{{ topic.slug }}',
                                   'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},

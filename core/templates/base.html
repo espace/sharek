@@ -3,13 +3,14 @@
 <html>
 <head>
 
-  <title>دستور مصر :: {% block title %}{% endblock %}&rlm;</title>
+  <title>قانون مصر :: {% block title %}{% endblock %}&rlm;</title>
   
-  <meta property="og:site_name" content="دستور مصر"/>
-  <meta property="og:image" content="http://dostour.eg/sharek/static/images/facebook.png"/>
+  <meta property="og:site_name" content="قانون مصر"/>
+  
+  <meta property="og:image" content="{{ STATIC_URL }}images/facebook.png"/>
   
   <meta name="description" content="{% block description %}{% endblock %}">
-  <meta name="keywords" content="الدستور, التأسيسية, الجمعية التأسيسية, دستور مصر, {% block keywords %}{% endblock %}">
+  <meta name="keywords" content="القانون, الشعب, مجلس الشعب, قانون مصر, {% block keywords %}{% endblock %}">
   
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,6 +30,9 @@
   <script type="text/javascript" src="{{ STATIC_URL }}js/waypoints.js" ></script>
 
    <script>
+      var static_url = "{{ STATIC_URL }}"
+      var poll_select_var = "{% url poll_select %}"
+      var suggestion_vote_var = "{% url suggestion_vote %}"
         $(function(){
           // carousel demo
           $('#myCarousel').carousel()
@@ -46,7 +50,7 @@
       var newwindow;
       var intId;
       function login(backend){
-          backend_url = "/sharek/login/"+backend+"/";
+          backend_url = "{% url login %}"+backend+"/";
           var  screenY     = typeof window.screenY     != 'undefined' ? window.screenY     : window.screenTop,
                screenX     = typeof window.screenX     != 'undefined' ? window.screenX     : window.screenLeft,
                outerWidth  = typeof window.outerWidth  != 'undefined' ? window.outerWidth  : document.body.clientWidth,

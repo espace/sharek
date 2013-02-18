@@ -54,12 +54,21 @@
  {% endif %}
 
 {% if just_comment == 1 %}
-{% else %} 
+{% else %}
+
 <div class="comment-block well top" {% if feedbacks|length == 0 %}style="display:none;"{% endif %}>
-{% if feedbacks|length > 0 %} 
-      <a class="{%if order_by = 'def' or order_by = 'latest' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}latest/#time" id="time">حسب الوقت</a>
-    <a> | </a>
-      <a class="{%if order_by = 'order' %}selected{%endif%}" href="/sharek{%if tags %}/tags/{{tag.slug}}{%else%}/topics/{{topic.slug}}{%endif%}/{{article.get_absolute_url}}order/#rank" id="rank">حسب التصويت</a>
+{% if feedbacks|length > 0 %}
+  {% if tags %}
+    <a class="{%if order_by = 'def' or order_by = 'latest' %}selected{%endif%}" href="{% url article_detail_ordered classified_by='tags' class_slug=topic.slug article_slug=article.slug order_by='latest' %}#time" id="time">حسب الوقت</a>
+  {% else %}
+    <a class="{%if order_by = 'def' or order_by = 'latest' %}selected{%endif%}" href="{% url article_detail_ordered classified_by='topics' class_slug=topic.slug article_slug=article.slug order_by='latest' %}#time" id="time">حسب الوقت</a>
+  {% endif %}
+  <a> | </a>
+  {% if tags %}
+    <a class="{%if order_by = 'order' %}selected{%endif%}" href="{% url article_detail_ordered classified_by='tags' class_slug=topic.slug article_slug=article.slug order_by='order' %}#rank" id="rank">حسب التصويت</a>
+  {% else %}
+    <a class="{%if order_by = 'order' %}selected{%endif%}" href="{% url article_detail_ordered classified_by='topics' class_slug=topic.slug article_slug=article.slug order_by='order' %}#rank" id="rank">حسب التصويت</a>
+  {% endif %}
 {% endif %}
 
 </div>
@@ -88,7 +97,7 @@ $(document).ready(function(){
 		
 		$.ajax({
 		  type:"POST",
-		  url :"/sharek/latest-comments/",
+		  url :"{% url latest_comments %}",
 		  data:{
 			  'page': ++page, 'article': {{article.id}}, 'order_by': '{{order_by}}',
 			  'csrfmiddlewaretoken': $("{% csrf_token %}").find("input").attr("value"),},

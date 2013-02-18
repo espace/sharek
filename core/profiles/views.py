@@ -35,10 +35,10 @@ def user(request, username=None, browsing_data="def"):
     voted_articles = ArticleRating.objects.filter(user = user_profile)
 
     if browsing_data == "likes" or browsing_data == "def":
-        liked_articles = User.profile_likes(user_profile.username)
+        liked_articles = User.profile_topics_likes(user_profile.username)
 
     elif browsing_data == "dislikes":
-        disliked_articles = User.profile_dislikes(user_profile.username)
+        disliked_articles = User.profile_topics_dislikes(user_profile.username)
 
     elif browsing_data == "comments":
         commented_ids = Feedback.objects.filter(user = user_profile,parent_id = None).values('articledetails').distinct()
@@ -72,10 +72,10 @@ def profile(request, browsing_data="def"):
     voted_articles = ArticleRating.objects.filter(user = user)
 
     if browsing_data == "likes" or browsing_data == "def":
-        liked_articles = User.profile_likes(user.username)
+        liked_articles = User.profile_topics_likes(user.username)
 
     elif browsing_data == "dislikes":
-        disliked_articles = User.profile_dislikes(user.username)
+        disliked_articles = User.profile_topics_dislikes(user.username)
 
     elif browsing_data == "comments":
         commented_ids = Feedback.objects.filter(user = user,parent_id = None).values('articledetails').distinct()

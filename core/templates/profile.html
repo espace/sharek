@@ -20,8 +20,8 @@
               <div class="attrs">
                 <p class="user_name">{{ user_profile.first_name }} {{ user_profile.last_name }}</p><br />
                 <span href="#"> <i class="icon-comment"></i> عدد المشاركات : {{ contributions }}</span>
-                <a href="#" onclick="login('facebook'); return false;" class="facebook" title="سجل دخول"><img src="/sharek/static/images/facebook.png" alt=""></a>
-                <a href="#" onclick="login('twitter'); return false;" class="twitter" title="سجل دخول"><img src="/sharek/static/images/twitter.png" alt=""></a>
+                <!-- <a href="#" onclick="login('facebook'); return false;" class="facebook" title="سجل دخول"><img src="{{ STATIC_URL }}images/facebook.png" alt=""></a>
+                <a href="#" onclick="login('twitter'); return false;" class="twitter" title="سجل دخول"><img src="{{ STATIC_URL }}images/twitter.png" alt=""></a> -->
               </div> 
             </div>
           </div>
@@ -32,23 +32,35 @@
     <div class="span12 profile-tabs">
       <ul class="nav nav-tabs " id="myTab">
       {% if url == 'user_profile' %}
-            <li {% if browsing_data = "likes" %}class="active"{% endif %}><a href="{% url user_profile username=user_profile.username browsing_data="likes" %}"><i class=" icon-thumbs-up"></i>  المواد التى أعجبتك  </a></li>
-            <li {% if browsing_data = "dislikes" %}class="active"{% endif %}><a href="{% url user_profile username=user_profile.username browsing_data="dislikes" %}"><i class=" icon-thumbs-down"></i>  المواد التى لم تعجبك  </a></li>
+            <li {% if browsing_data = "likes" %}class="active"{% endif %}><a href="{% url user_profile username=user_profile.username browsing_data="likes" %}"><i class=" icon-thumbs-up"></i>  القوانين التى أعجبتك  </a></li>
+            <li {% if browsing_data = "dislikes" %}class="active"{% endif %}><a href="{% url user_profile username=user_profile.username browsing_data="dislikes" %}"><i class=" icon-thumbs-down"></i>  القوانين التى لم تعجبك  </a></li>
             <li {% if browsing_data = "comments" %}class="active"{% endif %}><a href="{% url user_profile username=user_profile.username browsing_data="comments" %}"> <i class=" icon-comment "></i>  مشاركاتك  </a></li>
       {% else %}
-            <li {% if browsing_data = "likes" %}class="active"{% endif %}><a href="{% url profile browsing_data="likes" %}"><i class=" icon-thumbs-up"></i>  المواد التى أعجبتك  </a></li>
-            <li {% if browsing_data = "dislikes" %}class="active"{% endif %}><a href="{% url profile browsing_data="dislikes" %}"><i class=" icon-thumbs-down"></i>  المواد التى لم تعجبك  </a></li>
+            <li {% if browsing_data = "likes" %}class="active"{% endif %}><a href="{% url profile browsing_data="likes" %}"><i class=" icon-thumbs-up"></i>  القوانين التى أعجبتك  </a></li>
+            <li {% if browsing_data = "dislikes" %}class="active"{% endif %}><a href="{% url profile browsing_data="dislikes" %}"><i class=" icon-thumbs-down"></i>  القوانين التى لم تعجبك  </a></li>
             <li {% if browsing_data = "comments" %}class="active"{% endif %}><a href="{% url profile browsing_data="comments" %}"> <i class=" icon-comment "></i>  مشاركاتك  </a></li>
       {% endif %}
       </ul>
 
       <div class="tab-content" id="contributes">
   {% for article in liked_articles %}
-    {% include "include/article_block.html" %}
+      <div>
+        <div class="headtitle"><a href="{% url topic topic_slug=article.slug %}"><h4>{{article.name}}</h4></a></div>
+        <div class="comment-block">
+          <div><br />{{article.summary|truncatewords:"30"}}</div>
+          <span class="date"><a href="#">آخر تحديث {{article.mod_date|date:"d-m-Y"}} </a></span>
+        </div>
+      </div>
   {% endfor %}
 
   {% for article in disliked_articles %}
-    {% include "include/article_block.html" %}
+    <div>
+        <div class="headtitle"><a href="{% url topic topic_slug=article.slug %}"><h4>{{article.name}}</h4></a></div>
+        <div class="comment-block">
+          <div><br />{{article.summary|truncatewords:"30"}}</div>
+          <span class="date"><a href="#">آخر تحديث {{article.mod_date|date:"d-m-Y"}} </a></span>
+        </div>
+      </div>
   {% endfor %}
 
   {% for article in commented_articles %}

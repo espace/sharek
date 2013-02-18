@@ -85,15 +85,15 @@
     settings: {
       opacity      : 0.2,
       overlay      : true,
-      loadingImage : '/sharek/static/images/loading.gif',
-      closeImage   : '/sharek/static/images/closelabel.png',
+      loadingImage : static_url + 'images/loading.gif',
+      closeImage   : static_url + 'images/closelabel.png',
       imageTypes   : [ 'png', 'jpg', 'jpeg', 'gif' ],
       faceboxHtml  : '\
     <div id="facebox" style="display:none;"> \
       <div class="popup"> \
         <div class="content"> \
         </div> \
-        <a href="#" class="close"><img src="/sharek/static/images/closelabel.png" title="close" class="close_image" /></a> \
+        <a href="#" class="close"><img src="'+ static_url +'images/closelabel.png" title="close" class="close_image" /></a> \
       </div> \
     </div>'
     },
