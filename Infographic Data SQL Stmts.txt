@@ -1,0 +1,101 @@
+--SELECT gender, count(*), ROUND( 100 * count(*)/68027::float) || '%' AS percent_total FROM auth_user GROUP BY gender
+
+/*
+
+SELECT header_id, COUNT(*) FROM core_articledetails
+WHERE header_id IN (SELECT header_id FROM core_articledetails WHERE current IS TRUE ORDER BY header_id)
+GROUP BY header_id HAVING COUNT(*) > 1
+
+select TO_CHAR((current_date - interval '1 month' * a),'YYYY-MM') AS mmyyyy,
+TO_CHAR((current_date - interval '1 month' * a),'MM') AS mm,
+TO_CHAR((current_date - interval '1 month' * a),'YYYY') AS yyyy
+FROM generate_series(1,12,1) AS s(a)
+order by mm, yyyy
+
+
+SELECT TO_CHAR(mod_date, 'MM') AS mm, TO_CHAR(mod_date, 'YYYY-MM') AS mmyyyy, COUNT(id) AS articles,
+	sum(likes) AS likes, sum(dislikes) AS dislikes, sum(likes) + sum(dislikes) AS total,
+	ROUND( 100 * sum(likes)/(sum(likes) + sum(dislikes))::float) || '%' AS likes_percent,
+	ROUND( 100 * sum(dislikes)/(sum(likes) + sum(dislikes))::float) || '%' AS dislikes_percent
+FROM core_articledetails
+--WHERE current IS TRUE
+GROUP BY TO_CHAR(mod_date, 'YYYY-MM'), TO_CHAR(mod_date, 'MM')
+ORDER BY TO_CHAR(mod_date, 'MM')
+
+SELECT TO_CHAR(date, 'MM') AS mm, TO_CHAR(date, 'YYYY-MM') AS mmyyyy, COUNT(*)
+FROM core_feedback
+GROUP BY TO_CHAR(date, 'MM'), TO_CHAR(date, 'YYYY-MM');
+
+SELECT TO_CHAR(date_joined, 'MM') AS mm, TO_CHAR(date_joined, 'YYYY-MM') AS mmyyyy, COUNT(*)
+FROM auth_user
+GROUP BY TO_CHAR(date_joined, 'MM'), TO_CHAR(date_joined, 'YYYY-MM');
+
+// Articles Updates Frequency
+WITH RECURSIVE tmp AS (
+	SELECT core_articleheader.id, core_articleheader.name, count(core_articledetails.*) AS updates
+	FROM core_articleheader, core_articledetails
+	WHERE core_articleheader.id = core_articledetails.header_id
+	GROUP BY core_articleheader.id, core_articleheader.name
+)
+SELECT COUNT(*), updates FROM tmp GROUP BY updates ORDER BY updates
+
+// Most Liked Article - Wilson Method
+SELECT 'Liked', core_articleheader.name, core_articledetails.summary, 100 * ((likes + 1.9208) / (likes + dislikes) - 1.96 * SQRT((likes * dislikes) / (likes + dislikes) + 0.9604) / (likes + dislikes)) / (1 + 3.8416 / (likes + dislikes)) AS rating
+FROM core_articleheader, core_articledetails
+WHERE core_articleheader.id = core_articledetails.header_id
+AND likes + dislikes > 0 AND core_articledetails.current IS TRUE
+ORDER BY rating DESC LIMIT 1
+
+// Comments Count / Article
+SELECT core_articleheader.name, core_articledetails.summary, core_feedback.articledetails_id, COUNT( suggestion)
+FROM core_articleheader, core_articledetails, core_feedback
+WHERE core_articleheader.id = core_articledetails.header_id
+AND core_articledetails.id = core_feedback.articledetails_id
+AND core_articledetails.current IS TRUE
+GROUP BY core_articleheader.name, core_feedback.articledetails_id, core_articledetails.summary
+ORDER BY COUNT( suggestion) DESC;
+
+
+
+// User Contributions in Groups
+WITH RECURSIVE tbl AS (
+	SELECT feedback.user, feedback.count + rating.count AS count
+	FROM (SELECT "user", COUNT(*) FROM core_feedback GROUP BY "user") feedback,
+	(SELECT "user", COUNT(*) FROM core_rating GROUP BY "user") rating
+	WHERE feedback.user = rating.user
+)
+SELECT CASE 
+         WHEN count <= 5   THEN '1- < 5' WHEN count <= 20  THEN '2- 6:20' 
+         WHEN count <= 50  THEN '3- 21:50'  WHEN count <= 200 THEN '4- 51:200' 
+         WHEN count <= 500 THEN '5- 201:500'  ELSE '6- > 500' END AS groups, 
+       COUNT(*) AS n
+FROM tbl
+GROUP BY CASE 
+         WHEN count <= 5   THEN '1- < 5' WHEN count <= 20  THEN '2- 6:20' 
+         WHEN count <= 50  THEN '3- 21:50'  WHEN count <= 200 THEN '4- 51:200' 
+         WHEN count <= 500 THEN '5- 201:500'  ELSE '6- > 500' END
+ORDER BY groups
+
+
+
+
+*/
+
+
+
+WITH RECURSIVE tbl AS (
+	WITH RECURSIVE tmp AS (
+		SELECT core_articleheader.id, core_articleheader.name, count(core_articledetails.*) AS updates
+		FROM core_articleheader, core_articledetails
+		WHERE core_articleheader.id = core_articledetails.header_id
+		GROUP BY core_articleheader.id, core_articleheader.name
+	)
+	SELECT COUNT(*) totals, updates FROM tmp GROUP BY updates ORDER BY updates
+)
+SELECT CASE WHEN updates <= 2 THEN '1- < 2' WHEN updates <= 5  THEN '2- 3:5' ELSE '3- > 6' END AS groups, SUM(totals) AS n
+FROM tbl
+GROUP BY CASE WHEN updates <= 2  THEN '1- < 2' WHEN updates <= 5  THEN '2- 3:5' ELSE '3- > 6' END
+ORDER BY groups
+
+
+

@@ -25,6 +25,18 @@ from sharek import settings
 # get first memcached URI
 mc = memcache.Client([settings.MEMCACHED_BACKEND])
 
+def infographic(request, type=''):
+    user = None
+
+    login(request)
+
+    if request.user.is_authenticated():
+      user = request.user
+
+    template_context = {'type': type, 'settings': settings, 'user':user,}
+
+    return render_to_response('charts/infographic.html', template_context ,RequestContext(request))
+
 def comments_chart(request):
     user = None
 
