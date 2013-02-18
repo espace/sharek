@@ -140,7 +140,8 @@ class TopicManager(models.Manager):
    
    # by Amr
     def get_latest_topics(self, limit):
-      query = '''SELECT DISTINCT ON (core_topic.id, core_topic.name) core_topic.name, core_topic.id, core_topic.slug, core_suggestion.description, core_articledetails.mod_date
+      query = '''SELECT DISTINCT ON (core_topic.id, core_topic.name) core_topic.name, core_topic.id, core_topic.slug, core_suggestion.description,
+                 core_articledetails.mod_date, core_topic.summary
                  FROM core_topic
                  INNER JOIN core_articleheader ON core_articleheader.topic_id = core_topic.id
                  INNER JOIN core_articledetails ON core_articledetails.header_id = core_articleheader.id
@@ -156,7 +157,7 @@ class TopicManager(models.Manager):
          single_topic = {}
          single_topic['name'] = row[0]
          single_topic['slug'] = row[2]
-         single_topic['description'] = row[3]
+         single_topic['description'] = row[5]
          single_topic['mod_date'] = row[4]
          topics_list.append(single_topic)
       cursor.close()
@@ -590,6 +591,28 @@ class ArticleManager(models.Manager):
            article_list.append(p)
        cursor.close()    
        return article_list
+   
+    def get_topics_top_liked(self, limit):
+       query = '''SELECT core_topic.id, core_topic.name, core_topic.slug, core_topic.summary, 
+                    SUM(core_suggestion.likes) as total_likes
+                    FROM core_topic
+                    INNER JOIN core_articleheader ON core_articleheader.topic_id = core_topic.id
+                    INNER JOIN core_articledetails ON core_articledetails.header_id = core_articleheader.id
+                    INNER JOIN core_suggestion ON core_suggestion.articledetails_id = core_articledetails.id
+                    WHERE core_articledetails.current IS TRUE
+                    GROUP BY core_topic.name, core_topic.id, core_topic.slug
+                    ORDER BY total_likes desc limit %s'''
+       cursor = connection.cursor()
+       cursor.execute(query, [limit])
+
+       article_list = []
+       for row in cursor.fetchall():
+           p = self.model(slug=row[2], likes=row[4])
+           p.name = row[1]
+           p.text = row[3]
+           article_list.append(p)
+       cursor.close()    
+       return article_list
 
     def get_top_disliked(self, limit):
        query = '''SELECT core_articleheader.id, core_articleheader.name, core_topic.id, core_topic.name, core_topic.slug,
@@ -621,6 +644,28 @@ class ArticleManager(models.Manager):
            p.original_slug = row[12]
            article_list.append(p)
        cursor.close()
+       return article_list
+   
+    def get_topics_top_liked(self, limit):
+       query = '''SELECT core_topic.id, core_topic.name, core_topic.slug, core_topic.summary, 
+                    SUM(core_suggestion.likes) as total_likes
+                    FROM core_topic
+                    INNER JOIN core_articleheader ON core_articleheader.topic_id = core_topic.id
+                    INNER JOIN core_articledetails ON core_articledetails.header_id = core_articleheader.id
+                    INNER JOIN core_suggestion ON core_suggestion.articledetails_id = core_articledetails.id
+                    WHERE core_articledetails.current IS TRUE
+                    GROUP BY core_topic.name, core_topic.id, core_topic.slug
+                    ORDER BY total_likes desc limit %s'''
+       cursor = connection.cursor()
+       cursor.execute(query, [limit])
+
+       article_list = []
+       for row in cursor.fetchall():
+           p = self.model(slug=row[2], likes=row[4])
+           p.name = row[1]
+           p.text = row[3]
+           article_list.append(p)
+       cursor.close()    
        return article_list
 
     def get_top_commented(self, limit):

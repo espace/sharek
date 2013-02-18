@@ -58,7 +58,7 @@ def tmp(request):
     return HttpResponseRedirect(reverse('index'))
 
 def index(request):
-    
+    #cache._cache.flush_all() #uncomment this line to clear the memcache
     user = None
 
     login(request)
@@ -340,7 +340,15 @@ def shorten_url(long_url):
     return short_url
 
 def about_us(request):
-    return render_to_response('about.html', {}, RequestContext(request))
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+      
+    return render_to_response('about.html', {'request': request, 'user': user}, RequestContext(request))
 
 def contact_us(request):
-    return render_to_response('contact.html', {}, RequestContext(request))
+    user = None
+    if request.user.is_authenticated():
+      user = request.user
+      
+    return render_to_response('contact.html', {'request': request, 'user': user}, RequestContext(request))

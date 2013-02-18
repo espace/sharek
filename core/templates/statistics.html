@@ -31,7 +31,10 @@
       </div><!-- span3 -->
       <div id="ajax-container" class="span9">
         {% for article in articles %}
-        	{% include "include/article_block.html" %}
+        	<div class="topic article-block">
+        	  <h3><p class="mada-title"><a href="{% url topic article.slug %}">{{ article.name }}</a></p></h3>
+        	  <div class="suggestion-block ">{{ article.text }}</div>
+        	</div>
         {% endfor %}
         <div id="last_articles_loader"></div>
       </div>
@@ -39,7 +42,7 @@
 {% else %}
 <div class="topic">
     <h3>
-        <p class="mada-title">لا يوجد مواد</p>
+        <p class="mada-title">لا يوجد قوانين</p>
     </h3>  
 </div>
 {% endif %}
