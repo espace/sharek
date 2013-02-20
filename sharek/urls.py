@@ -11,7 +11,6 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^idf/$', 'core.analysis.tfidf.idf', name='idf'),
-    url(r'^summerize/$', 'core.analysis.tfidf.compute_tfidf', name='summerize'),
     url(r'^rename/$', 'core.entities.article.views.rename_articles', name='rename'),
     url(r'^recalculate_last_comment/$', 'core.analysis.tfidf.recalculate_last_comment', name='recalculate_last_comment'),
 	
