@@ -12,9 +12,8 @@ urlpatterns = patterns('',
 
     url(r'^idf/$', 'core.analysis.tfidf.idf', name='idf'),
     url(r'^summerize/$', 'core.analysis.tfidf.compute_tfidf', name='summerize'),
-    #url(r'^logged-in/$', 'core.profiles.views.profile', name='profile'),
-#	url(r'^api/', include(entry_resource.urls)),
     url(r'^rename/$', 'core.entities.article.views.rename_articles', name='rename'),
+    url(r'^recalculate_last_comment/$', 'core.analysis.tfidf.recalculate_last_comment', name='recalculate_last_comment'),
 	
     url(r'auto_post/$', 'core.facebook.views.auto_post', name='auto_post'),
 	
@@ -68,10 +67,11 @@ urlpatterns = patterns('',
     url(r'^info/(?P<info_slug>[-\w]+)/$', 'core.views.info_detail', name='info'),
 
     #ArticleDetails detail URL    
+
     url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'core.entities.article.views.article_detail', name='article_detail_ordered'),
     url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/$', 'core.entities.article.views.article_detail', name='article_detail'),
     url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/comment/(?P<comment_no>[-\w]+)/$', 'core.entities.article.views.article_detail', name='comment_detail'),
-	
+    url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/summarize/$', 'core.entities.article.views.article_summarization', name='article_summerization'),
     #Tag detail URL
     url(r'^tags/(?P<tag_slug>[-\w]+)/$', 'core.entities.tag.views.tag_detail', name='tag'),
 	

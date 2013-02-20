@@ -1,5 +1,4 @@
 # This Python file uses the following encoding: utf-8
-
 import re
 import collections
 import numpy as np

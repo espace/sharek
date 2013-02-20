@@ -9,6 +9,7 @@ from django.utils import simplejson
 
 from core.views import login,mc
 from core.helpers.diff_match import diff_match_patch
+import core.analysis.tfidf as tfidf
 
 
 from core.models import ArticleDetails, ArticleHeader, PollOptions, PollResult, Suggestion, SuggestionVotes, Topic, Feedback, Rating
@@ -82,8 +83,6 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
                  mc.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb, settings.MEMCACHED_TIMEOUT)
       
             voted_suggestion = mc.get('voted_suggestion_'+ str(user.id))
-
-            print voted_suggestion
             
             if not voted_suggestion:
                 voted_suggestion = []
@@ -112,11 +111,115 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
         except EmptyPage:
             # If page is out of range (e.g. 9999), deliver last page of results.
             feedbacks = paginator.page(paginator.num_pages)
-
+        if request.user.is_staff:
+            tfidfs = tfidf.get_article_tfidf(article.id)
+        else:
+            tfidfs = {}
+        tfidfs = tfidfs.items()
         if classified_by == "tags":  
-            template_context = {'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
+            template_context = {'tfidfs':tfidfs,'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
         elif classified_by == "topics":
-            template_context = {'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
+            template_context = {'tfidfs':tfidfs,'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'top_ranked':top_ranked,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
+
+    return render_to_response('article.html',template_context ,RequestContext(request))
+
+def article_summarization(request, classified_by, class_slug, article_slug, order_by="def", comment_no=None):
+    user = None
+
+    login(request)
+
+    if request.user.is_authenticated():
+      user = request.user
+
+    article = mc.get('article_' + str(article_slug))
+    if not article:
+         article = ArticleHeader.objects.get_article(article_slug)
+         mc.set('article_' + str(article_slug), article, settings.MEMCACHED_TIMEOUT)
+
+    topic = get_object_or_404( Topic, slug = article.topic_slug )
+
+    next = ArticleHeader.objects.get_next(article.topic_id, article.order)
+    prev = ArticleHeader.objects.get_prev(article.topic_id, article.order)
+
+    if classified_by == "tags":  
+        tags = Tag.objects.all
+        tag = get_object_or_404( Tag, slug=class_slug )
+    elif classified_by == "topics":
+        topics = Topic.objects.all
+    else:
+        return HttpResponseNotFound('<h1>Page not found</h1>')
+
+    
+    versions = []
+    arts = article.header.articledetails_set.all()
+
+    related_tags = mc.get('related_tags_' + str(article_slug))
+    if not related_tags:
+         related_tags = article.header.tags.all()
+         mc.set('related_tags_' + str(article_slug), related_tags, settings.MEMCACHED_TIMEOUT)
+
+    feedbacks = mc.get('article_summarized_feedbacks_' + str(article_slug))
+    if not feedbacks:
+        summarized_feedback_ids = tfidf.get_summarized_feedback_ids(article.id)
+        feedbacks = Feedback.objects.summerized_feedback_list(article.id, 'latest',summarized_feedback_ids)
+        mc.set('article_summarized_feedbacks_' + str(article_slug), feedbacks, settings.MEMCACHED_TIMEOUT)
+
+    paginator = Paginator(feedbacks, settings.paginator) 
+    page = request.GET.get('page')
+
+    voted_fb = []
+    voted_suggestion = []
+    poll_selection = []
+
+    suggestions = mc.get('suggestions' + str(article.id))
+    if not suggestions:
+        suggestions = article.get_suggestions()
+        mc.set('suggestions' + str(article.id), suggestions, settings.MEMCACHED_TIMEOUT)
+
+    if user:
+        voted_fb = mc.get('voted_fb_' + str(article.id) + '-' + str(user.id))
+        if not voted_fb:
+             voted_fb = Rating.objects.filter(articledetails_id = article.id, user = user)
+             mc.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb, settings.MEMCACHED_TIMEOUT)
+  
+        voted_suggestion = mc.get('voted_suggestion_'+ str(user.id))
+        
+        if not voted_suggestion:
+            voted_suggestion = []
+            for suggestion in suggestions:
+                votes = SuggestionVotes.objects.filter(suggestions_id = suggestion.id, user = user)
+                for vote in votes:
+                    voted_suggestion.append(vote)
+            mc.set('voted_suggestion_'+ str(user.id), voted_suggestion, settings.MEMCACHED_TIMEOUT)
+        poll_selection = mc.get('poll_selection_'+ str(user.id))
+        if not poll_selection:
+            poll_selection = PollResult.objects.filter(user_id = user.id)
+            mc.set('poll_selection_'+ str(user.id), poll_selection, settings.MEMCACHED_TIMEOUT)
+
+        article_rate = None
+        for art in voted_suggestion:
+            if art.vote == True:
+                article_rate = 1
+            else:
+                article_rate = -1
+
+        try:
+            feedbacks = paginator.page(page)
+        except PageNotAnInteger:
+            # If page is not an integer, deliver first page.
+            feedbacks = paginator.page(1)
+        except EmptyPage:
+            # If page is out of range (e.g. 9999), deliver last page of results.
+            feedbacks = paginator.page(paginator.num_pages)
+        if request.user.is_staff:
+            tfidfs = tfidf.get_article_tfidf(article.id)
+        else:
+            tfidfs = {}
+        tfidfs = tfidfs.items()
+        if classified_by == "tags":  
+            template_context = {'tfidfs':tfidfs,'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
+        elif classified_by == "topics":
+            template_context = {'tfidfs':tfidfs,'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
 
     return render_to_response('article.html',template_context ,RequestContext(request))
 
