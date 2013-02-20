@@ -1079,3 +1079,10 @@ class article_analysis(models.Model):
   articledetail = models.ForeignKey(ArticleDetails)
   last_comment_id = models.IntegerField(default=0, null = True, blank = True)
   no_of_cleaned_comment = models.IntegerField(default=0, null = True, blank = True)
+
+class summarized_feedbacks(models.Model):
+    suggestion = MarkupField(default='')
+    articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
+    avg_likes = models.IntegerField(default=0)
+    avd_dislikes = models.IntegerField(default=0)
+    no_similar_feedbacks = models.IntegerField(default=0)

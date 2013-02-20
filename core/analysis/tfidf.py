@@ -62,7 +62,7 @@ def get_cleaned_suggestions_for_idf(id):
 
 
 def get_cleaned_suggestions(id):
-  query = '''SELECT id,suggestion from core_feedback where parent_id is NULL and articledetails_id = %s '''
+  query = '''SELECT id,suggestion from core_feedback where parent_id is NULL and articledetails_id = %s order by id'''
   cursor = connection.cursor()
   cursor.execute(query, [id])
   suggestions = cursor.fetchall()
@@ -190,10 +190,14 @@ def get_article_tfidf(article):
 
 #summerize the suggestions accrding to cosien similarity
 def summerize(tfidfs):
+  similar_feedbacks = []
+  for ele in tfidfs:
+    print ele[0]
   for index, v1 in enumerate(tfidfs):
-    if not v1 == "":
+    if not v1 == "-":        
+      similar_feedbacks.append([v1[0],[]])
       for active, v2 in enumerate(tfidfs[index+1:]):
-        if not v2 == "":
+        if not v2 == "-":
           org_v1 = deepcopy(v1)
           only_v1 = set(org_v1[1].keys()) - set(v2[1].keys())
           only_v2 = set(v2[1].keys()) - set(org_v1[1].keys())
@@ -214,10 +218,15 @@ def summerize(tfidfs):
           similarity = np.dot(t1,t2)/(np.linalg.norm(t1)*np.linalg.norm(t2))
           #TODO : save index and return them to return the full suggesion 
           if similarity > 0.5:
-            tfidfs[active] = ""
+            similar_feedbacks[-1][1].append(v2[0])
+            tfidfs[active+index+1] = "-"
+  print "%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+  for ele in similar_feedbacks:
+    print ele
+  print "%%%%%%%%%%%%%%%%%%%%%%%%%%%"
   summerized = []
   for vector in tfidfs:
-    if not vector == "":
+    if not vector == "-":
       summerized.append(vector)
   return summerized
 
