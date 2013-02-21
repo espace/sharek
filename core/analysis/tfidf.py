@@ -42,7 +42,7 @@ def get_last_run_comment_id(article_id):
 def unique_words(strings):
   words = defaultdict(int)
   for string in strings:
-    items = string.split()
+    items = string
     for item in items:
       words[item]+=1
   words = words.items()
