@@ -42,7 +42,7 @@ def get_last_run_comment_id(article_id):
 def unique_words(strings):
   words = defaultdict(int)
   for string in strings:
-    items = string
+    items = string[1].split()
     for item in items:
       words[item]+=1
   words = words.items()
@@ -100,7 +100,7 @@ def compute_idf(id , words, cleaned, last_comment_id):
   for word in words.keys():
     counter = 0
     for string in cleaned:
-      if str(word) in string[1]:
+      if word in string[1]:
         counter +=1
 
     last_comment = article_analysis.objects.get(articledetail_id = id)    
