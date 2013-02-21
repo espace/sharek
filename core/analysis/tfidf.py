@@ -16,8 +16,6 @@ from django.utils import simplejson
 from core.views import mc
 
 
-idf()
-
                         ########################### Utilities ###########################
 # get the last comment id now
 def get_last_comment_id(article_id):
@@ -267,3 +265,4 @@ def recalculate_last_comment(request):
   return render_to_response('operation.html',{'text':"recalculate_last_comment done isA"} ,RequestContext(request))
 
 
+idf()
