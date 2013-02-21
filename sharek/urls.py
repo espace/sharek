@@ -11,6 +11,8 @@ admin.autodiscover()
 urlpatterns = patterns('',
 
     url(r'^idf/$', 'core.analysis.tfidf.idf', name='idf'),
+    # make ajax page to avoid time out error
+    url(r'^idf_page/$', 'core.analysis.tfidf.idf_page', name='idf_page'),
     url(r'^rename/$', 'core.entities.article.views.rename_articles', name='rename'),
     url(r'^recalculate_last_comment/$', 'core.analysis.tfidf.recalculate_last_comment', name='recalculate_last_comment'),
 	

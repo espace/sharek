@@ -12,6 +12,7 @@ from copy import copy, deepcopy
 from django.template import Context, loader, RequestContext
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts  import render_to_response, get_object_or_404, redirect
+from django.utils import simplejson
 from core.views import mc
 
 
@@ -82,6 +83,9 @@ def get_cleaned_suggestions(id):
 
                         ########################### Core Code ###########################
 
+def idf_page(request):
+  return render_to_response('idf.html',{} ,RequestContext(request))
+
 def idf(request):
   query ='''SELECT distinct articledetails_id from core_feedback order by 1'''
   cursor = connection.cursor()
@@ -94,7 +98,7 @@ def idf(request):
     last_comment_id = get_last_comment_id(id[0])
 
     compute_idf(id[0], words, cleaned, last_comment_id)
-  return render_to_response('operation.html',{'text':"done isA"} ,RequestContext(request))
+  return HttpResponse(simplejson.dumps({})) #render_to_response('operation.html',{'text':"done isA"} ,RequestContext(request))
 
 def compute_idf(id , words, cleaned, last_comment_id):
   for word in words.keys():
