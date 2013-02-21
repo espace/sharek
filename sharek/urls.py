@@ -66,11 +66,11 @@ urlpatterns = patterns('',
     url(r'^info/(?P<info_slug>[-\w]+)/$', 'core.views.info_detail', name='info'),
 
     #ArticleDetails detail URL    
-
+    url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/summarize/$', 'core.entities.article.views.article_summarization', name='article_summerization'),
     url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/(?P<order_by>[-\w]+)/$', 'core.entities.article.views.article_detail', name='article_detail_ordered'),
     url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/$', 'core.entities.article.views.article_detail', name='article_detail'),
     url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/comment/(?P<comment_no>[-\w]+)/$', 'core.entities.article.views.article_detail', name='comment_detail'),
-    url(r'^(?P<classified_by>[-\w]+)/(?P<class_slug>[-\w]+)/(?P<article_slug>[-\w]+)/summarize/$', 'core.entities.article.views.article_summarization', name='article_summerization'),
+    
     #Tag detail URL
     url(r'^tags/(?P<tag_slug>[-\w]+)/$', 'core.entities.tag.views.tag_detail', name='tag'),
 	

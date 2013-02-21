@@ -5,6 +5,7 @@ import core.analysis.preprocessing as pre
 from django.db import connection
 import math
 import collections
+from collections import defaultdict
 import numpy as np
 from copy import copy, deepcopy
 
@@ -39,9 +40,12 @@ def get_last_run_comment_id(article_id):
   return last_run_comment_id
 
 def unique_words(strings):
-  words = collections.Counter()
+  words = defaultdict(int)
   for string in strings:
-    words.update(string[1].split())
+    items = string.split()
+    for item in items:
+      words[item]+=1
+  words = words.items()
   return dict(words)
 
 def get_cleaned_suggestions_for_idf(id):
@@ -121,8 +125,14 @@ def get_summarized_feedback_ids(article_id):
   cleaned = get_cleaned_suggestions(article_id)
   for suggestion_vector in cleaned:
     #compute tf of suggestion
-    words = collections.Counter()
-    words.update(suggestion_vector[1].split())
+    #words = collections.Counter()
+    #words.update(suggestion_vector[1].split())
+    words = defaultdict(int)
+    items = suggestion_vector[1].split()
+    for item in items:
+      words[item]+=1
+    words = words.items()
+
     maximum = max(max(values) if hasattr(values,'__iter__') else values for values in dict(words).values())
     d1 = dict(words)
     tf = dict((k, float(d1[k]) / maximum) for k in d1)
@@ -164,8 +174,13 @@ def get_article_tfidf(article):
     tfidf = {}
     for suggestion_vector in cleaned:
       #compute tf of suggestion
-      words = collections.Counter()
-      words.update(suggestion_vector[1].split())
+      #words = collections.Counter()
+      #words.update(suggestion_vector[1].split())
+      words = defaultdict(int)
+      items = suggestion_vector[1].split()
+      for item in items:
+        words[item]+=1
+      words = words.items()
       maximum = max(max(values) if hasattr(values,'__iter__') else values for values in dict(words).values())
       d1 = dict(words)
       tf = dict((k, float(d1[k]) / maximum) for k in d1)
