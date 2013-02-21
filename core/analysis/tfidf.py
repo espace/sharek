@@ -265,4 +265,4 @@ def recalculate_last_comment(request):
   return render_to_response('operation.html',{'text':"recalculate_last_comment done isA"} ,RequestContext(request))
 
 
-idf()
+#idf()
