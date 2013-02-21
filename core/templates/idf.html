@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<a href="#" id="compute_idf">Compute idf</a>
+<div id="status"></div>
+<input type="hidden" id="csrf_token" value="{{csrf_token}}"/>
+
+<!-- call the idf compute as ajax to avoid the time out problem as it takes alot of time -->
+
+<script type="text/javascript">
+$(document).ready(function() {
+  $("#compute_idf").live("click",function(){
+
+    $.ajax({
+            type:"POST",
+            url :"{% url idf %}",
+            data:{'csrfmiddlewaretoken': $('#csrf_token').attr('value')},
+            dataType:"json",
+            error:function(data){
+              $("#status").text("fail");
+            },
+            success:function(data){
+              $("#status").text("success");
+            },
+          });
+  });
+});
+</script>
+{% endblock %}
