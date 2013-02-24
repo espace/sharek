@@ -86,7 +86,7 @@ def get_cleaned_suggestions(id):
 def idf_page(request):
   return render_to_response('idf.html',{} ,RequestContext(request))
 
-def idf():
+def idf(request):
   query ='''SELECT distinct articledetails_id from core_feedback order by 1'''
   cursor = connection.cursor()
   cursor.execute(query)
