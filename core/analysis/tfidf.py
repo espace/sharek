@@ -197,7 +197,8 @@ def get_article_tfidf(article):
           except: 
             tfidf[term] = tf_val * idf_val
         except:
-          
+          pass
+
     # get the max tfidf value to normalize
     maximum = max(max(values) if hasattr(values,'__iter__') else values for values in tfidf.values())
     # normalize the tfidf
