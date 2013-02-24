@@ -1141,7 +1141,7 @@ class article_analysis(models.Model):
   no_of_cleaned_comment = models.IntegerField(default=0, null = True, blank = True)
 
 class summarized_feedbacks(models.Model):
-    #suggestion = models.ForeignKey(Feedback, null = True, blank = True)
+    suggestion = models.ForeignKey(Feedback, null = True, blank = True)
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
     avg_likes = models.IntegerField(default=0)
     avd_dislikes = models.IntegerField(default=0)
