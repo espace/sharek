@@ -897,6 +897,7 @@ class FeedbackManager(models.Manager):
 
       cursor = connection.cursor()
       query = query % (article_id,feedback_ids)
+      #print query
       cursor.execute(query)
 
       feedback_list = []
@@ -910,7 +911,20 @@ class FeedbackManager(models.Manager):
 
       cursor.close()
       return feedback_list   
-      
+    
+    def get_avg_likes_dislikes_count(self, ids):
+      query = '''SELECT round(avg(likes),0), round(avg(dislikes),0), count(id) FROM core_feedback WHERE id IN (%s) '''
+
+      cursor = connection.cursor()
+      query = query % (ids)
+      cursor.execute(query)
+
+      row = cursor.fetchone()
+      avg_likes_dislikes_count = [row[0],row[1],row[2]]
+      cursor.close()
+
+      return avg_likes_dislikes_count
+
     # by Amr
     def get_latest_comments(self, limit):
        query = '''SELECT auth_user.username, auth_user.first_name, auth_user.last_name, core_feedback.id, core_feedback.suggestion, core_articleheader.name, core_articledetails.mod_date,COALESCE(social_auth_usersocialauth.provider, 'facebook') as provider
@@ -1127,7 +1141,7 @@ class article_analysis(models.Model):
   no_of_cleaned_comment = models.IntegerField(default=0, null = True, blank = True)
 
 class summarized_feedbacks(models.Model):
-    suggestion = MarkupField(default='')
+    #suggestion = models.ForeignKey(Feedback, null = True, blank = True)
     articledetails = models.ForeignKey(ArticleDetails, null = True, blank = True)
     avg_likes = models.IntegerField(default=0)
     avd_dislikes = models.IntegerField(default=0)

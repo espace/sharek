@@ -160,13 +160,26 @@ def article_summarization(request, classified_by, class_slug, article_slug, orde
 
     feedbacks = mc.get('article_summarized_feedbacks_' + str(article_slug))
     if not feedbacks:
-        summarized_feedback_ids = tfidf.get_summarized_feedback_ids(article.id)
-        feedbacks = Feedback.objects.summerized_feedback_list(article.id, 'latest',summarized_feedback_ids)
+        summarized_feedback = tfidf.get_summarized_feedback_ids(article.id)
+        feedbacks = Feedback.objects.summerized_feedback_list(article.id, 'latest',summarized_feedback[0])
+        similar_feedbacks = summarized_feedback[1]
+        avg_likes_dislikes_count = []
+        for record in similar_feedbacks:
+            if len(record[1]) > 0:
+                ids = str(record[1]).strip('[]')+','+str(record[0])
+            else:
+                ids = str(record[0])
+            avg_likes_dislikes_count.append([record[0],Feedback.objects.get_avg_likes_dislikes_count(ids)])
+        for ele in avg_likes_dislikes_count:
+            for feedback in feedbacks:
+                if ele[0] == feedback.id:
+                    feedback.likes = ele[1][0]
+                    feedback.dislikes = ele[1][1]
+                    feedback.no_similaar_feedbacks = ele[1][2]
+                    break
+
         mc.set('article_summarized_feedbacks_' + str(article_slug), feedbacks, settings.MEMCACHED_TIMEOUT)
-
-    paginator = Paginator(feedbacks, settings.paginator) 
-    page = request.GET.get('page')
-
+    feedback_count = len(feedbacks)
     voted_fb = []
     voted_suggestion = []
     poll_selection = []
@@ -176,50 +189,18 @@ def article_summarization(request, classified_by, class_slug, article_slug, orde
         suggestions = article.get_suggestions()
         mc.set('suggestions' + str(article.id), suggestions, settings.MEMCACHED_TIMEOUT)
 
-    if user:
-        voted_fb = mc.get('voted_fb_' + str(article.id) + '-' + str(user.id))
-        if not voted_fb:
-             voted_fb = Rating.objects.filter(articledetails_id = article.id, user = user)
-             mc.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb, settings.MEMCACHED_TIMEOUT)
-  
-        voted_suggestion = mc.get('voted_suggestion_'+ str(user.id))
-        
-        if not voted_suggestion:
-            voted_suggestion = []
-            for suggestion in suggestions:
-                votes = SuggestionVotes.objects.filter(suggestions_id = suggestion.id, user = user)
-                for vote in votes:
-                    voted_suggestion.append(vote)
-            mc.set('voted_suggestion_'+ str(user.id), voted_suggestion, settings.MEMCACHED_TIMEOUT)
-        poll_selection = mc.get('poll_selection_'+ str(user.id))
-        if not poll_selection:
-            poll_selection = PollResult.objects.filter(user_id = user.id)
-            mc.set('poll_selection_'+ str(user.id), poll_selection, settings.MEMCACHED_TIMEOUT)
 
-        article_rate = None
-        for art in voted_suggestion:
-            if art.vote == True:
-                article_rate = 1
-            else:
-                article_rate = -1
+    voted_fb = mc.get('voted_fb_' + str(article.id) + '-' + str(user.id))
+    if not voted_fb:
+         voted_fb = Rating.objects.filter(articledetails_id = article.id, user = user)
+         mc.set('voted_fb_' + str(article.id) + '-' + str(user.id), voted_fb, settings.MEMCACHED_TIMEOUT)
 
-        try:
-            feedbacks = paginator.page(page)
-        except PageNotAnInteger:
-            # If page is not an integer, deliver first page.
-            feedbacks = paginator.page(1)
-        except EmptyPage:
-            # If page is out of range (e.g. 9999), deliver last page of results.
-            feedbacks = paginator.page(paginator.num_pages)
-        if request.user.is_staff:
-            tfidfs = tfidf.get_article_tfidf(article.id)
-        else:
-            tfidfs = {}
-        tfidfs = tfidfs.items()
-        if classified_by == "tags":  
-            template_context = {'tfidfs':tfidfs,'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'tags':tags,'tag':tag}
-        elif classified_by == "topics":
-            template_context = {'tfidfs':tfidfs,'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion, 'article_rate':article_rate,'order_by':order_by,'voted_fb':voted_fb,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
+
+    tfidfs = tfidf.get_article_tfidf(article.id)
+    tfidfs = tfidfs.items()
+
+
+    template_context = {'feedback_count':feedback_count,'summarized':True,'tfidfs':tfidfs,'suggestions':suggestions,'poll_selection':poll_selection,'prev':prev,'next':next,'arts':arts,'voted_suggestions':voted_suggestion,'order_by':order_by,'voted_fb':voted_fb,'request':request, 'related_tags':related_tags,'feedbacks':feedbacks,'article': article,'user':user,'settings': settings,'topics':topics,'topic':topic}      
 
     return render_to_response('article.html',template_context ,RequestContext(request))
 

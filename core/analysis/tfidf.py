@@ -149,13 +149,12 @@ def get_summarized_feedback_ids(article_id):
     #tfidf = dict((k, float(tf[k]) * idf[k]) for k in tf)
     tfidfs.append([suggestion_vector[0],tfidf])
   #summerize the suggestions
-  summerized = summerize(tfidfs)
+  summerized_data = summerize(tfidfs)
   summerized_ids ="" 
-  for vector in summerized:
+  for vector in summerized_data[0]:
     summerized_ids+= str(vector[0])+","
-  summerized_ids+= str(summerized[0][0])
-
-  return summerized_ids
+  summerized_ids+= str(summerized_data[0][0][0])
+  return [summerized_ids,summerized_data[1]]
 
 def retrive_idf(article_id):
   query ='''SELECT term, idf from core_article_idf where articledetail_id = %s'''
@@ -210,8 +209,6 @@ def get_article_tfidf(article):
 #summerize the suggestions accrding to cosien similarity
 def summerize(tfidfs):
   similar_feedbacks = []
-  for ele in tfidfs:
-    print ele[0]
   for index, v1 in enumerate(tfidfs):
     if not v1 == "-":        
       similar_feedbacks.append([v1[0],[]])
@@ -239,15 +236,12 @@ def summerize(tfidfs):
           if similarity > 0.5:
             similar_feedbacks[-1][1].append(v2[0])
             tfidfs[active+index+1] = "-"
-  print "%%%%%%%%%%%%%%%%%%%%%%%%%%%"
-  for ele in similar_feedbacks:
-    print ele
-  print "%%%%%%%%%%%%%%%%%%%%%%%%%%%"
   summerized = []
   for vector in tfidfs:
     if not vector == "-":
       summerized.append(vector)
-  return summerized
+  summerized_data = [summerized,similar_feedbacks]
+  return summerized_data
 
 
 def recalculate_last_comment(request):

@@ -3,6 +3,8 @@
 {% load date_format %}
 {% load auth_provider %}
 <div class="like-group">
+    <a href="javascript:;" ><small class="dislike">{%if comment.no_similaar_feedbacks%}{{comment.no_similaar_feedbacks}}
+      {%else%}0{%endif%}</small></a>
     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="dislike vote L_vote {{comment.id}} {% if voted_fb|vote:comment.id == -1 %} active {% elif voted_fb|vote:comment.id == 1 %} disabled {% endif %} {{comment.id}}" id="{{comment.id}}" vote="0"><small class="dislike {{comment.id}}">{{comment.dislikes}}</small></a>
     <a {% if user %} href="javascript:;" {%else%} href="#not-logged" rel="facebox"{% endif %} class="like vote L_vote {{comment.id}} {% if voted_fb|vote:comment.id == 1 %} active {% elif voted_fb|vote:comment.id == -1 %} disabled {% endif %} {{comment.id}}" id="{{comment.id}}" vote="1"><small class="like {{comment.id}}">{{comment.likes}}</small></a>
 </div>

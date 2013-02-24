@@ -21,10 +21,14 @@
           {% endif %}
           
             <i  class="icon-comment "></i>
-              {% if article.feedback_count > 0 %}
-                  {{article.feedback_count}}
-                  تعليق
-              {% else %}لا توجد تعليقات{% endif %}
+              {% if not summarized %}
+                {% if article.feedback_count > 0 %}
+                    {{article.feedback_count}}
+                    تعليق
+                {% else %}لا توجد تعليقات{% endif %}
+              {% else %}
+               {{feedback_count}} تعليق
+              {% endif %}
           </a>
           
       </p>
