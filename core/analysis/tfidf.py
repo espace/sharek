@@ -200,7 +200,10 @@ def get_article_tfidf(article):
           pass
 
     # get the max tfidf value to normalize
-    maximum = max(max(values) if hasattr(values,'__iter__') else values for values in tfidf.values())
+    try:
+      maximum = max(max(values) if hasattr(values,'__iter__') else values for values in tfidf.values())
+    except:
+      maximum = 1
     # normalize the tfidf
     tfidf = dict((k, float(tfidf[k]) / maximum) for k in tfidf)
     # clear the tfidf range
