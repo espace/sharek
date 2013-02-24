@@ -98,7 +98,7 @@ def idf(request):
     last_comment_id = get_last_comment_id(id[0])
 
     compute_idf(id[0], words, cleaned, last_comment_id)
-  return "DONE isA"
+  return render_to_response('operation.html',{'text':"done isA"} ,RequestContext(request))
 
 def compute_idf(id , words, cleaned, last_comment_id):
   for word in words.keys():
