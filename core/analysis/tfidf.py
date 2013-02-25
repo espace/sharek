@@ -144,8 +144,11 @@ def get_summarized_feedback_ids(article_id):
     tfidf = {}
     for term in tf.keys():
       tf_val = float(tf[term])
-      idf_val = idf[term]
-      tfidf[term] = tf_val * idf_val 
+      try:
+        idf_val = idf[term]
+        tfidf[term] = tf_val * idf_val
+      except:
+        pass 
     #tfidf = dict((k, float(tf[k]) * idf[k]) for k in tf)
     tfidfs.append([suggestion_vector[0],tfidf])
   #summerize the suggestions
