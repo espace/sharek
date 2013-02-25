@@ -19,8 +19,8 @@
             <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}">{{article.name}}</a>
             <a href="{% url article_detail classified_by='topics' class_slug=article.topic_slug article_slug=article.slug %}" class="comments-number pull-left">
           {% endif %}
-          
-            <i  class="icon-comment "></i>
+            <input type="hidden" id="count" value={{article.feedback_count}}>
+            <i  class="icon-comment "></i><span id="feedback_counter">
               {% if not summarized %}
                 {% if article.feedback_count > 0 %}
                     {{article.feedback_count}}
@@ -28,7 +28,7 @@
                 {% else %}لا توجد تعليقات{% endif %}
               {% else %}
                {{feedback_count}} تعليق
-              {% endif %}
+              {% endif %}</span>
           </a>
           
       </p>

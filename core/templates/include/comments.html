@@ -326,13 +326,12 @@
                 }
                 else
                 {
-              $("#suggestion").val("");
-              $("#count").attr("value",parseInt($("#count").attr("value"))+1);
-              $("#feedback_counter").text($("#count").attr("value")+" تعليق");
-              $(".comment-block.well.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
-              $("#load-img").remove();
+                  $("#suggestion").val("");
+                  $("#count").attr("value",parseInt($("#count").attr("value"))+1);
+                  $("#feedback_counter").text($("#count").attr("value")+" تعليق");
+                  $(".comment-block.well.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
+                  $("#load-img").remove();
                 }
-
               },
           });
       }
