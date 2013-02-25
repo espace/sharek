@@ -112,7 +112,7 @@ def modify(request):
                     message = 'لقد شاركت في كتابة #قانون_مصر بالتعليق على '+get_object_or_404(ArticleDetails, id=request.POST.get("article")).header.name.encode('utf-8')+"  "+link
                     api.PostUpdate(message)
 
-                    
+            mc.delete('article_' + str(article.slug))      
             return HttpResponse(simplejson.dumps({'date':str(feedback[0].date),'id':feedback[0].id ,'suggestion':request.POST.get("suggestion")}))
 
 def reply_feedback(request):
