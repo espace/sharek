@@ -248,7 +248,8 @@ def summerize(tfidfs):
             tfidfs[active+index+1] = "-"
   summerized = []
   for ele in similar_feedbacks:
-    print ele
+    if ele[0] == 49970:
+      print ele
   for vector in tfidfs:
     if not vector == "-":
       summerized.append(vector)
