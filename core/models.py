@@ -600,7 +600,7 @@ class ArticleManager(models.Manager):
                     INNER JOIN core_articledetails ON core_articledetails.header_id = core_articleheader.id
                     INNER JOIN core_suggestion ON core_suggestion.articledetails_id = core_articledetails.id
                     WHERE core_articledetails.current IS TRUE AND core_suggestion.likes > 0
-                    GROUP BY core_topic.name, core_topic.id, core_topic.slug
+                    GROUP BY core_topic.name, core_topic.id, core_topic.slug, core_topic.summary
                     ORDER BY total_likes DESC limit %s'''
        cursor = connection.cursor()
        cursor.execute(query, [limit])
