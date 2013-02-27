@@ -223,7 +223,8 @@ def top_liked(request):
 
 #    if not request.user.is_staff:
 #        return HttpResponseRedirect(reverse('index'))
-    articles = ArticleDetails.objects.get_top_liked(settings.paginator)
+#    articles = ArticleDetails.objects.get_top_liked(settings.paginator)
+    articles = ArticleDetails.objects.get_topics_top_liked(settings.paginator)
     title = 'الأكثر قبولا'
     return render_to_response('statistics.html', {'type':"likes",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
@@ -233,9 +234,10 @@ def top_disliked(request):
     if request.user.is_authenticated():
       user = request.user
 
-    if not request.user.is_staff:
-        return HttpResponseRedirect(reverse('index'))
-    articles = ArticleDetails.objects.get_top_disliked(settings.paginator)
+#    if not request.user.is_staff:
+#        return HttpResponseRedirect(reverse('index'))
+#    articles = ArticleDetails.objects.get_top_disliked(settings.paginator)
+    articles = ArticleDetails.objects.get_topics_top_disliked(settings.paginator)
     title = 'الأكثر رفضا'
     return render_to_response('statistics.html', {'type':"dislikes",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
@@ -245,9 +247,10 @@ def top_commented(request):
     if request.user.is_authenticated():
       user = request.user
 
-    if not request.user.is_staff:
-        return HttpResponseRedirect(reverse('index'))
-    articles = ArticleDetails.objects.get_top_commented(settings.paginator)
+#    if not request.user.is_staff:
+#        return HttpResponseRedirect(reverse('index'))
+#    articles = ArticleDetails.objects.get_top_commented(settings.paginator)
+    articles = ArticleDetails.objects.get_topics_top_commented(settings.paginator)
     title = 'الأكثر مناقشة'
     return render_to_response('statistics.html', {'type':"comments",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
 
