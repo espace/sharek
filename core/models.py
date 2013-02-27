@@ -654,7 +654,7 @@ class ArticleManager(models.Manager):
                     INNER JOIN core_articledetails ON core_articledetails.header_id = core_articleheader.id
                     INNER JOIN core_suggestion ON core_suggestion.articledetails_id = core_articledetails.id
                     WHERE core_articledetails.current IS TRUE AND core_suggestion.dislikes > 0
-                    GROUP BY core_topic.name, core_topic.id, core_topic.slug
+                    GROUP BY core_topic.name, core_topic.id, core_topic.slug, core_topic.summary
                     ORDER BY total_dislikes desc limit %s'''
        cursor = connection.cursor()
        cursor.execute(query, [limit])
@@ -708,7 +708,7 @@ class ArticleManager(models.Manager):
                     INNER JOIN core_articledetails ON core_articleheader.id = core_articledetails.header_id
                     INNER JOIN core_topic ON core_articleheader.topic_id = core_topic.id
                     WHERE core_articledetails.current IS TRUE AND core_articledetails.feedback_count > 0
-                    GROUP BY core_topic.name, core_topic.id, core_topic.slug
+                    GROUP BY core_topic.name, core_topic.id, core_topic.slug, core_topic.summary
                     ORDER BY feedback_count DESC limit %s'''
        cursor = connection.cursor()
        cursor.execute(query, [limit])
