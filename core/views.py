@@ -221,8 +221,8 @@ def top_liked(request):
     if request.user.is_authenticated():
       user = request.user
 
-    if not request.user.is_staff:
-        return HttpResponseRedirect(reverse('index'))
+#    if not request.user.is_staff:
+#        return HttpResponseRedirect(reverse('index'))
     articles = ArticleDetails.objects.get_top_liked(settings.paginator)
     title = 'الأكثر قبولا'
     return render_to_response('statistics.html', {'type':"likes",'settings': settings,'user':user,'articles': articles, 'title': title} ,RequestContext(request))
