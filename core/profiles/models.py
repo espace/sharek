@@ -70,7 +70,7 @@ def profile_topics_likes_dislikes(self, user, is_likes):
             INNER JOIN core_suggestionvotes ON core_suggestionvotes.suggestions_id = core_suggestion.id
             AND core_suggestionvotes.user = %s AND core_suggestionvotes.vote IS %s
             WHERE core_articledetails.current IS TRUE
-            GROUP BY core_topic.name, core_topic.id, core_topic.slug, core_suggestion.description, core_articledetails.mod_date
+            GROUP BY core_topic.name, core_topic.id, core_topic.slug, core_suggestion.description, core_articledetails.mod_date, core_topic.summary
             ORDER BY core_topic.order ASC'''
 
        cursor = connection.cursor()
