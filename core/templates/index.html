@@ -55,11 +55,11 @@
         {% for comment in latest_comments %}
          <section>
             <figure>
-               <img src="{{ STATIC_URL }}images/profile/{{comment.username}}" alt="{{comment.username}}">
+               <img src="{{ STATIC_URL }}images/profile/{{comment.username}}" width="" height="" title="{{comment.username}}" alt="{{comment.username}}">
                 <h4>{{ comment.first_name }} {{ comment.last_name }}</h4>
                 <p>{{ comment.my_suggestion|truncatewords:"30" }}</p>
             </figure>
-          <time>تاريخ الإضافة : {{ comment.mod_date|date:"d-m-Y" }}</time> <span>على <a href="#">{{ comment.article_name }}</a></span>
+          <time>تاريخ الإضافة : {{ comment.mod_date|date:"d-m-Y" }}</time> <span>على <a href="{% url article_detail classified_by='topics' class_slug=comment.topic_slug article_slug=comment.article_slug %}">{{ comment.article_name }}</a></span>
         </section>
         {% endfor %}
     </div>

@@ -71,10 +71,11 @@ def index(request):
       latest_laws = Topic.objects.get_latest_topics(3)
       mc.set('latest_laws', latest_laws, settings.MEMCACHED_TIMEOUT)
 
-    latest_comments = mc.get('latest_comments')
-    if not latest_comments:
-      latest_comments = Feedback.objects.get_latest_comments(3)
-      mc.set('latest_comments', latest_comments, 900)
+    latest_comments = Feedback.objects.get_latest_comments(3)
+#    latest_comments = mc.get('latest_comments')
+#    if not latest_comments:
+#      latest_comments = Feedback.objects.get_latest_comments(3)
+#      mc.set('latest_comments', latest_comments, 900)
     
     feedback_count = Feedback.objects.all().count()
     articles_count = Topic.objects.count()

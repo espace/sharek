@@ -11,12 +11,13 @@
                   <li class="">
                     <a href="{% url index %}">الرئيسية</a>
                   </li>
+                  <li class="">
+                    <a href="{% url topics %}">القوانين</a>
+                  </li>
                   {% if user %}
                     <li class="">
                       <a href="{% url profile 'likes' %}">الملف الشخصي</a>
                     </li>
-                  {% endif %}
-                  {% if user.is_staff %}
                     <li class="">
                       <a href="{% url top_liked %}">الإحصائيات</a>
                     </li>
@@ -82,7 +83,11 @@
 
       <div class="span3">
         <div class="pull-right logo">
-            <a href="{% url index %}"><img src="{{STATIC_URL}}images/logo.png" alt="قانون مصر"></a>
+            {% if request.get_full_path == '/' %}
+              <img src="{{STATIC_URL}}images/logo.png" alt="قانون مصر">
+            {% else %}
+              <a href="{% url index %}"><img src="{{STATIC_URL}}images/logo.png" alt="قانون مصر"></a>
+            {% endif %}
         </div>
       </div><!-- logo end -->
       
