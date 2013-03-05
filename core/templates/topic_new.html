@@ -7,6 +7,8 @@
 {% block description %}{{topic.name}}{% endblock %}
 {% block keywords %}{{topic.name}}{% endblock %}
 
+{% block nav-topics %}<li class="active"><a href="{% url topics %}">القوانين</a></li>{% endblock %}
+
 {% block content %}
 
 {% if topic %}

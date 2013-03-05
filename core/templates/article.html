@@ -9,6 +9,8 @@
 {% block description %}{{article.summary|striptags }}{% endblock %}
 {% block keywords %}{% for related in related_tags %}{{related.name}}, {% endfor %}{% endblock %}
 
+{% block nav-topics %}<li class="active"><a href="{% url topics %}">القوانين</a></li>{% endblock %}
+
 {% block content %}
 
 <div class="row">

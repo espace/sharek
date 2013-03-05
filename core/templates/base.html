@@ -103,7 +103,74 @@
 </head>
 
 <body  data-spy="scroll" data-target=".navbar">
-    	
+    
+    <div class="nav-wrapper">
+
+      <div class="container navigation">
+        <div class="row">
+            <div class="span12">
+    
+              <div class="navbar-blue top-nav hidden-phone">
+                  <ul class="nav nav-pills ">
+                      
+                      {% block nav-index %}<li class=""><a href="{% url index %}">الرئيسية</a></li>{% endblock %}
+                      {% block nav-topics %}<li class=""><a href="{% url topics %}">القوانين</a></li>{% endblock %}
+                      
+                      {% if user %}
+                        {% block nav-profile %}<li class=""><a href="{% url profile 'likes' %}">الملف الشخصي</a></li>{% endblock %}
+                        {% block nav-stats %}<li class=""><a href="{% url top_liked %}">الإحصائيات</a></li>{% endblock %}
+                      {% endif %}
+                      
+                      {% block nav-about %}<li class=""><a href="{% url about_us %}">من نحن ؟</a></li>{% endblock %}
+                      {% block nav-contact %}<li class=""><a href="{% url contact_us %}">اتصل بنا</a></li>{% endblock %}
+    
+                    </ul>
+                    
+    
+                  <form class="navbar-search pull-left" action="{% url search %}" method="POST">
+                      {% csrf_token %}
+                       <input type="text" name="q" id="q" style="font: 11px tahoma;" class="search-query span2" placeholder="أدخل كلمات البحث">
+                  </form>
+              </div><!-- nav -end -->
+            <div class="navbar-blue top-nav  visible-phone">
+    
+                  <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn btn-large btn-inverse dropdown-toggle"><i class="icon-list icon-white"></i> <span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                  <li class="">
+                                    <a href="http://dostour.eg">الرئيسية</a>
+                                  </li>
+                                  <li class="">
+                                    <a href="{% url index %}">مبادرة <strong>"شارك"</strong></a>
+                                  </li>
+                                  {% if user %}
+                                    <li class="">
+                                      <a href="{% url profile 'likes' %}">الملف الشخصي</a>
+                                    </li>
+                                  {% endif %}
+                                  {% if user.is_staff %}
+                                    <li class="">
+                                      <a href="{% url top_liked %}">الإحصائيات</a>
+                                    </li>
+                                  {% endif %}
+                                   <li class="">
+                                    <a href="http://dostour.eg/home?view=article&id=220">اتصل بنا</a>
+                                  </li>
+                            </ul>
+                    </div>
+    
+                    <form class="navbar-search pull-left" action="{% url search %}" method="POST">
+                            {% csrf_token %}
+                             <input type="text" name="q" id="q" style="font: 11px tahoma;" class="search-query span2" placeholder="أدخل كلمات البحث">
+                    </form>
+               </div>
+            </div>
+            
+    
+        </div><!-- row end -->
+      </div><!-- content -->   
+    </div> <!-- nav-wrapper -->
+        
     {% include "include/header.html" %}
     
     <div id="target_container" class="container content">
