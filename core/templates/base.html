@@ -123,8 +123,15 @@
                       
                       {% block nav-about %}<li class=""><a href="{% url about_us %}">من نحن ؟</a></li>{% endblock %}
                       {% block nav-contact %}<li class=""><a href="{% url contact_us %}">اتصل بنا</a></li>{% endblock %}
-    
+                      
                     </ul>
+                    
+                    
+                    
+                    {% if user %}
+                        <li><a href="{% url logout %}"><i class="icon-off icon-white"></i> تسجيل خروج  </a></li>
+                    {% endif %}
+                    
                     
     
                   <form class="navbar-search pull-left" action="{% url search %}" method="POST">

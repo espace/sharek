@@ -21,15 +21,15 @@
                 {% if user %}
                 
                   <div class="attrs">
-                    <a href="{% url profile 'likes' %}" class="user_name">{{ user.first_name }} {{ user.last_name }}</a>
-                    <a href="{% url logout %}" class="log_out btn btn-info btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a>
+                    <a href="{% url profile 'likes' %}" class="user_name">مرحبا {{ user.first_name }} {{ user.last_name }}</a>
+                    <!-- <a href="{% url logout %}" class="log_out btn btn-info btn-mini"><i class="icon-off icon-white"></i> تسجيل خروج  </a> -->
                   </div>
                   
-                  {% if user.username = 'admin' or request.session.social_auth_last_login_backend = 'google' %}
+                  <!-- {% if user.username = 'admin' or request.session.social_auth_last_login_backend = 'google' %}
                     <a href="{% url profile 'likes' %}"><img src="{{STATIC_URL}}images/google_user.gif" class="user_img" /></a>
                   {% else %}
                     <a href="{% url profile 'likes' %}"><img src="{{STATIC_URL}}photos/profile/{{user}}" class="user_img" /></a>
-                  {% endif %}
+                  {% endif %} -->
                   
                 {% else %}  
                   {% if error %}
