@@ -44,7 +44,7 @@
       {% endif %}
       </ul>
 
-      <div class="tab-content" id="contributes">
+      <div class="tab-content" id="contributes" style="min-height: 250px">
   {% for article in liked_articles %}
       <div>
         <div class="headtitle"><a href="{% url topic topic_slug=article.slug %}"><h4>{{article.name}}</h4></a></div>
