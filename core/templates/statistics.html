@@ -34,7 +34,15 @@
       <div id="ajax-container" class="span9">
         {% for article in articles %}
         	<div class="topic article-block">
-        	   <h3><p class="mada-title"><a href="{% url topic article.slug %}" style="color: #53AED9">{{ article.name }}</a></p></h3>
+        	   <h3>
+        	       <p class="mada-title">
+        	           <a href="{% url topic article.slug %}" style="color: #53AED9">{{ article.name }}</a>
+        	           {% if type = 'comments' %}
+        	               <a class="comments-number pull-left" ><i class="icon-comment "></i><span id="feedback_counter">{{ article.feedback_count }} تعليق</span></a>
+                       {% endif %}
+        	       </p>
+        	   </h3>
+        	   
         	   <div class="suggestion-block ">{{ article.text }}</div>
         	   
         	   <div class="like-group" style="left: 50px;">
@@ -42,8 +50,6 @@
                  <a vote="1" id="2" art_id="6" class="like vote rate 2  disabled "><small class="like suggestion 2">{{ article.likes }}</small></a>
                {% elif type = 'dislikes' %}
                  <a vote="1" id="2" art_id="6" class="dislike vote rate 2  disabled "><small class="dislike suggestion 2">{{ article.dislikes }}</small></a>
-               {% elif type = 'comments' %}
-                 <i class="icon-comment "></i><span id="feedback_counter">{{ article.feedback_count }} تعليق</span>
                {% endif %}
              </div>
         	   

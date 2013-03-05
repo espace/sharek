@@ -117,7 +117,7 @@
                       {% block nav-topics %}<li class=""><a href="{% url topics %}">القوانين</a></li>{% endblock %}
                       
                       {% if user %}
-                        {% block nav-profile %}<li class=""><a href="{% url profile 'likes' %}">الملف الشخصي</a></li>{% endblock %}
+                        {% block nav-profile %}<li class=""><a href="{% url profile 'likes' %}">صفحتك الشخصية</a></li>{% endblock %}
                         {% block nav-stats %}<li class=""><a href="{% url top_liked %}">الإحصائيات</a></li>{% endblock %}
                       {% endif %}
                       
