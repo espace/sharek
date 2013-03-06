@@ -88,6 +88,33 @@ class Tag(models.Model):
        ordering = ["order"]
 
 class TopicManager(models.Manager):
+    
+    @classmethod
+    def get_liked_disliked_articles_in_topic(self, topic_id, user, is_likes):
+        query = '''SELECT core_articledetails.slug, core_articleheader.name
+                    FROM core_topic
+                    INNER JOIN core_articleheader ON core_articleheader.topic_id = core_topic.id
+                    INNER JOIN core_articledetails ON core_articledetails.header_id = core_articleheader.id
+                    INNER JOIN core_suggestion ON core_suggestion.articledetails_id = core_articledetails.id
+                    INNER JOIN core_suggestionvotes ON core_suggestionvotes.suggestions_id = core_suggestion.id
+                    AND core_suggestionvotes.user = %s AND core_suggestionvotes.vote IS %s
+                    WHERE core_articledetails.current IS TRUE AND core_topic.id = %s
+                    GROUP BY core_articledetails.slug, core_articleheader.name'''
+        
+        cursor = connection.cursor()
+        cursor.execute(query, [user, is_likes, topic_id])
+        
+        topics_list = []
+
+        for row in cursor.fetchall():
+           single_topic = {}
+           single_topic['slug'] = row[0]
+           single_topic['name'] = row[1]
+           topics_list.append(single_topic)
+
+        cursor.close()
+        return topics_list
+    
     def topics_tree(self):
        query = '''WITH RECURSIVE q AS
 					(

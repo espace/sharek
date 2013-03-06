@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from core.models import ArticleDetails
+from core.models import Topic
 from django.db import connection, models
 from django import db
 
@@ -84,6 +85,7 @@ def profile_topics_likes_dislikes(self, user, is_likes):
            single_article['slug'] = row[2]
            single_article['summary'] = row[3]
            single_article['mod_date'] = row[4]
+           single_article['related_topics'] = Topic.objects.get_liked_disliked_articles_in_topic(row[0], user, is_likes)
            articles_list.append(single_article)
 
        cursor.close()

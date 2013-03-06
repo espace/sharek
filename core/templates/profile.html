@@ -51,6 +51,11 @@
         <div class="comment-block">
           <div><br />{{article.summary|truncatewords:"30"}}</div>
           <span class="date"><a href="#">آخر تحديث {{article.mod_date|date:"d-m-Y"}} </a></span>
+          <br />
+          المواد التالية هى التى أعجبتك فى هذا القانون
+          {% for related_topic in article.related_topics %}
+            &nbsp;&nbsp;&nbsp;&nbsp; - <a href='{% url article_detail classified_by='topics' class_slug=article.slug article_slug=related_topic.slug %}'>{{ related_topic.name }}</a>
+          {% endfor %}
         </div>
       </div>
   {% endfor %}
@@ -61,6 +66,11 @@
         <div class="comment-block">
           <div><br />{{article.summary|truncatewords:"30"}}</div>
           <span class="date"><a href="#">آخر تحديث {{article.mod_date|date:"d-m-Y"}} </a></span>
+          <br />
+          المواد التالية هى التى لم تعجبك فى هذا القانون
+          {% for related_topic in article.related_topics %}
+            &nbsp;&nbsp;&nbsp;&nbsp; - <a href='{% url article_detail classified_by='topics' class_slug=article.slug article_slug=related_topic.slug %}'>{{ related_topic.name }}</a>
+          {% endfor %}
         </div>
       </div>
   {% endfor %}
