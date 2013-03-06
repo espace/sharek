@@ -33,16 +33,16 @@ class ArticleDetailsAdmin(admin.ModelAdmin):
     list_filter = ('header',)
     
 class ArticleForm(forms.ModelForm):
-    tags = forms.ModelMultipleChoiceField( queryset=Tag.objects.all(), widget=forms.CheckboxSelectMultiple)
+    #tags = forms.ModelMultipleChoiceField( queryset=Tag.objects.all(), widget=forms.CheckboxSelectMultiple)
 
     class Meta: 
          model = ArticleHeader
 
     def __init__(self, *args, **kwargs):
         super(ArticleForm, self).__init__(*args, **kwargs)
-        if self.instance:
-            tags = Tag.objects.all()
-            self.fields['tags'].queryset = tags
+#        if self.instance:
+#            tags = Tag.objects.all()
+#            self.fields['tags'].queryset = tags
 
 class ArticleHeaderAdmin(admin.ModelAdmin):
     #inlines = [ArticleDetailsInlineAdmin,]

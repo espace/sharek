@@ -44,10 +44,11 @@ def article_detail(request, classified_by, class_slug, article_slug, order_by="d
     versions = []
     arts = article.header.articledetails_set.all()
 
-    related_tags = mc.get('related_tags_' + str(article_slug))
-    if not related_tags:
-         related_tags = article.header.tags.all()
-         mc.set('related_tags_' + str(article_slug), related_tags, settings.MEMCACHED_TIMEOUT)
+    related_tags = []
+#    related_tags = mc.get('related_tags_' + str(article_slug))
+#    if not related_tags:
+#         related_tags = article.header.tags.all()
+#         mc.set('related_tags_' + str(article_slug), related_tags, settings.MEMCACHED_TIMEOUT)
 
     if comment_no != None:
         feedbacks = Feedback.objects.filter(id = comment_no)

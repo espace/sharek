@@ -194,8 +194,8 @@ class Topic(models.Model):
     name = models.CharField(max_length=100)
     short_name = models.CharField(max_length=30, default='')
     slug = models.SlugField(max_length=50, unique=True, help_text="created from name")
-    summary = MarkupField(blank=True, default='')
-    order = models.IntegerField(blank = True, null = True)
+    summary = MarkupField()
+    order = models.IntegerField(blank = True, unique=True, null = True)
     tags = models.ManyToManyField(Tag,blank = True, null = True)
     objects = TopicManager()
 
@@ -512,7 +512,7 @@ class ArticleHeaderManager(models.Manager):
       return p
     
 class ArticleHeader(models.Model):
-    tags = models.ManyToManyField(Tag,blank = True, null = True)
+    #tags = models.ManyToManyField(Tag,blank = True, null = True)
     topic = models.ForeignKey(Topic,null = True)
     chapter = ChainedForeignKey(
         Chapter, 
