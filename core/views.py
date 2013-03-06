@@ -260,12 +260,14 @@ def statistics(request):
             stat_type = request.POST.get("type")
 
             if stat_type == "likes":
-                articles = ArticleDetails.objects.get_top_liked(1000) #ArticleDetails.objects.filter(current = True).order_by('-likes')
+                #articles = ArticleDetails.objects.get_top_liked(1000) #ArticleDetails.objects.filter(current = True).order_by('-likes')
+                articles = ArticleDetails.objects.get_topics_top_liked(1000)
             elif stat_type == "dislikes":
-                articles = ArticleDetails.objects.get_top_disliked(1000) #ArticleDetails.objects.filter(current = True).order_by('-dislikes')
+                #articles = ArticleDetails.objects.get_top_disliked(1000) #ArticleDetails.objects.filter(current = True).order_by('-dislikes')
+                articles = ArticleDetails.objects.get_topics_top_disliked(1000)
             elif stat_type == "comments":
-                articles = ArticleDetails.objects.get_top_commented(1000) #ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')
-            
+                #articles = ArticleDetails.objects.get_top_commented(1000) #ArticleDetails.objects.filter(current = True).annotate(num_feedbacks=Count('feedback')).order_by('-num_feedbacks')
+                articles = ArticleDetails.objects.get_topics_top_commented(1000)
 
             paginator = Paginator(articles, settings.paginator)
             try:
