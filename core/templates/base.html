@@ -118,9 +118,9 @@
                       
                       {% if user %}
                         {% block nav-profile %}<li class=""><a href="{% url profile 'likes' %}">صفحتك الشخصية</a></li>{% endblock %}
-                        {% block nav-stats %}<li class=""><a href="{% url top_liked %}">الإحصائيات</a></li>{% endblock %}
                       {% endif %}
                       
+                      {% block nav-stats %}<li class=""><a href="{% url top_liked %}">الإحصائيات</a></li>{% endblock %}
                       {% block nav-about %}<li class=""><a href="{% url about_us %}">من نحن ؟</a></li>{% endblock %}
                       {% block nav-contact %}<li class=""><a href="{% url contact_us %}">اتصل بنا</a></li>{% endblock %}
                       
