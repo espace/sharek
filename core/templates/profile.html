@@ -50,7 +50,7 @@
         <div class="headtitle"><a href="{% url topic topic_slug=article.slug %}"><h4>{{article.name}}</h4></a></div>
         <div class="comment-block">
           <div><br />{{article.summary|truncatewords:"30"}}</div>
-          <span class="date"><a href="#">آخر تحديث {{article.mod_date|date:"d-m-Y"}} </a></span>
+          <span class="date">آخر تحديث {{article.mod_date|date:"d-m-Y"}} </span>
           <br />
           المواد التالية هى التى أعجبتك فى هذا القانون
           {% for related_topic in article.related_topics %}
@@ -65,7 +65,7 @@
         <div class="headtitle"><a href="{% url topic topic_slug=article.slug %}"><h4>{{article.name}}</h4></a></div>
         <div class="comment-block">
           <div><br />{{article.summary|truncatewords:"30"}}</div>
-          <span class="date"><a href="#">آخر تحديث {{article.mod_date|date:"d-m-Y"}} </a></span>
+          <span class="date">آخر تحديث {{article.mod_date|date:"d-m-Y"}} </span>
           <br />
           المواد التالية هى التى لم تعجبك فى هذا القانون
           {% for related_topic in article.related_topics %}
