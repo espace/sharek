@@ -10,7 +10,6 @@
        {% include "include/user-block.html" %}
     {% endwith %}
        
-    <p id='success_notification' style="color:green;"></p> 
     <p>
        <textarea rows="3" class="input-xlarge span7" id="suggestion"></textarea>
        <br />
@@ -321,19 +320,18 @@
               success:function(data){
                 if (data.duplicate == true)
                 {
-                  $("#success_notification").text('');
                   alert("عفوا, نص المشاركة موجود بالفعل.");
                   $("#suggestion").val("");
                   $("#load-img").remove();
                 }
                 else
                 {
-                  $("#success_notification").text('لقد تم اضافة تعليقك بنجاح');
                   $("#suggestion").val("");
                   $("#count").attr("value",parseInt($("#count").attr("value"))+1);
                   $("#feedback_counter").text($("#count").attr("value")+" تعليق");
                   $(".comment-block.well.top").after($("#modification_temp").tmpl({"id":data.id ,"date": "منذ قليل", "suggestion": data.suggestion}));
                   $("#load-img").remove();
+                  alert('لقد تم اضافة تعليقك بنجاح');
                 }
               },
           });
