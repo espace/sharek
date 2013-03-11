@@ -7,7 +7,7 @@
     </div>
     <h3>
     	<p class="name">
-        	<a href="{% url user username='username' %}">{{ name }}</a>
+        	<a href="{% url user username=username %}">{{ name }}</a>
             {% if response %}
             <span class="user-response"> ( {{ response }} )</span>
             {% endif %}
