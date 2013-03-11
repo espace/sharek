@@ -310,7 +310,8 @@ body {
 }
 
 .top-nav ul li.active a{
-    background:#222;
+    #background:#222;
+    background:#052940;
 }
 .top-nav ul li:hover a{
        background:transparent !important;
