@@ -32,7 +32,7 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine, python version
 
     sudo easy_install template_utils
 
-    easy_install django_evolution
+    sudo easy_install django_evolution
 
     sudo pip install django-markitup
 	
@@ -42,11 +42,19 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine, python version
 
     sudo apt-get install python-psycopg2
 
-    apt-get install python-simplejson ### easy_install simplejson
+    sudo apt-get install python-simplejson ### easy_install simplejson
 
     sudo apt-get install python-tz
 
     sudo easy_install humanize
+
+    sudo pip install python-memcached
+
+    sudo pip install python-openid
+
+    sudo pip install oauth2
+
+    sudo apt-get install python-numpy
 	
 	download git://github.com/digi604/django-smart-selects.git from https://github.com/digi604/django-smart-selects.git
 	cd django-smart-selects
@@ -63,7 +71,7 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine, python version
 	download git://github.com/ross/memcache-debug-panel.git
 	cd memcache-debug-panel/
 	sudo python setup.py install
-	sudo cp -r  memcache_toolbar/templates/*  /usr/local/lib/python2.6/dist-packages/debug_toolbar/templates/
+	sudo cp -r  memcache_toolbar/templates/*  /usr/local/lib/python2.6/dist-packages/templates/debug_toolbar
 	
 	
   ```
@@ -73,10 +81,16 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine, python version
 1. fork or clone the repo
 2. Create the proper database and database user to be used
 3. rename the file *sharek/settings_local.py.example* to *sharek/settings_local.py* and change all the custom configuration for database, facebook and twitter to your own settings
-4. Start the app using under development via:
+4. Setup database tables
 
 ```
- ./manage.py runserver 127.0.0.1:8000 --settings=settings
+./manage.py syncdb
+```
+
+5. Start the app using under development via:
+
+```
+ ./manage.py runserver 127.0.0.1:8000 --settings=sharek.settings
 ```
 
 ### Common problems and errors:
