@@ -7,7 +7,7 @@ On August 2012, the contribution platform has been released to the public at htt
 
 ## Installation
 
-Based on django 1.4.1 and uses PostgreSQL as the database engine
+Based on django 1.4.1 and uses PostgreSQL as the database engine, python version 2.6
 
 ### Setup on debian/ubuntu dependencies
 
@@ -70,7 +70,7 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine
 
 ### Getting the app up
 
-1. fork the and clone the repo
+1. fork or clone the repo
 2. Create the proper database and database user to be used
 3. rename the file *sharek/settings_local.py.example* to *sharek/settings_local.py* and change all the custom configuration for database, facebook and twitter to your own settings
 4. Start the app using under development via:
