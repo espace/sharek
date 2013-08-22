@@ -71,22 +71,21 @@ Based on django 1.4.1 and uses PostgreSQL as the database engine, python version
 	download git://github.com/ross/memcache-debug-panel.git
 	cd memcache-debug-panel/
 	sudo python setup.py install
-	sudo cp -r  memcache_toolbar/templates/*  /usr/local/lib/python2.6/dist-packages/templates/debug_toolbar
+	sudo cp -r  memcache_toolbar/templates/*  /usr/local/lib/python2.6/dist-packages/debug_toolbar/templates/debug_toolbar
 	
 	
   ```
 
 ### Getting the app up
 
-1. fork or clone the repo
+1. Fork or clone the repo
 2. Create the proper database and database user to be used
-3. rename the file *sharek/settings_local.py.example* to *sharek/settings_local.py* and change all the custom configuration for database, facebook and twitter to your own settings
+3. Copy and rename the file *sharek/settings_local.py.example* to *sharek/settings_local.py* and change all the custom configuration for database, facebook and twitter to your own settings
 4. Setup database tables
 
 ```
 ./manage.py syncdb
 ```
-
 5. Start the app using under development via:
 
 ```
